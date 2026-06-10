@@ -1,0 +1,277 @@
+{
+  "event_count": 425,
+  "holdout_accessed": false,
+  "definitions": {
+    "scheme_a": "ATR14[t-1] < ATR50[t-1]",
+    "scheme_b": "BBW20[t-1] < expanding historical BBW median available at t-1",
+    "atr": "simple rolling mean of standard True Range",
+    "bootstrap_samples": 1000,
+    "bootstrap_seed": 20260606
+  },
+  "scheme_a": {
+    "group_counts": {
+      "compression": 247,
+      "expansion": 178
+    },
+    "returns": {
+      "t6": {
+        "compression": {
+          "count": 247,
+          "mean": 0.006454673774954071,
+          "median": 0.0059798956614206,
+          "std": 0.041229622443971645
+        },
+        "expansion": {
+          "count": 178,
+          "mean": 0.009439355409232986,
+          "median": 0.01262125686567295,
+          "std": 0.04223215271438383
+        },
+        "welch_t_stat": -0.7259854239209802,
+        "welch_one_sided_p": 0.7658503293837414,
+        "bootstrap": {
+          "mean_difference": -0.0029846816342789153,
+          "ci_95_lower": -0.011143112580734027,
+          "ci_95_upper": 0.004664672034738561,
+          "bootstrap_p_one_sided": 0.7592407592407593,
+          "significant_positive_5pct": false
+        }
+      },
+      "t12": {
+        "compression": {
+          "count": 247,
+          "mean": 0.014261882023608572,
+          "median": 0.0110013642639365,
+          "std": 0.051717376187205406
+        },
+        "expansion": {
+          "count": 178,
+          "mean": 0.012770312439902363,
+          "median": 0.01354451638399035,
+          "std": 0.06178552916562916
+        },
+        "welch_t_stat": 0.2625488127865712,
+        "welch_one_sided_p": 0.39652898139593723,
+        "bootstrap": {
+          "mean_difference": 0.0014915695837062082,
+          "ci_95_lower": -0.00923649825453847,
+          "ci_95_upper": 0.012399286883067096,
+          "bootstrap_p_one_sided": 0.4035964035964036,
+          "significant_positive_5pct": false
+        }
+      },
+      "t24": {
+        "compression": {
+          "count": 247,
+          "mean": 0.023109126795397283,
+          "median": 0.020103353412138,
+          "std": 0.08179318002149923
+        },
+        "expansion": {
+          "count": 178,
+          "mean": 0.02374109783166865,
+          "median": 0.020639846527438402,
+          "std": 0.07886188957235722
+        },
+        "welch_t_stat": -0.08024433132308745,
+        "welch_one_sided_p": 0.5319579226383044,
+        "bootstrap": {
+          "mean_difference": -0.0006319710362713664,
+          "ci_95_lower": -0.015520135339163108,
+          "ci_95_upper": 0.015996926053561216,
+          "bootstrap_p_one_sided": 0.5154845154845155,
+          "significant_positive_5pct": false
+        }
+      }
+    },
+    "stop_proxy": {
+      "compression": {
+        "sweep_low_hit_first6_rate": 0.5748987854251012,
+        "mean_mae_first6": 0.03208814692373102,
+        "median_mae_first6": 0.023705827225828636,
+        "mae_first6_p80": 0.050357514277787875
+      },
+      "expansion": {
+        "sweep_low_hit_first6_rate": 0.4606741573033708,
+        "mean_mae_first6": 0.03142150724918651,
+        "median_mae_first6": 0.021001238363168306,
+        "mae_first6_p80": 0.045556844572152796
+      }
+    },
+    "period_distribution": {
+      "compression": {
+        "2019-2020": {
+          "count": 58,
+          "share_within_group": 0.23481781376518218
+        },
+        "2021": {
+          "count": 67,
+          "share_within_group": 0.27125506072874495
+        },
+        "2022": {
+          "count": 6,
+          "share_within_group": 0.024291497975708502
+        },
+        "2023-2024": {
+          "count": 116,
+          "share_within_group": 0.46963562753036436
+        }
+      },
+      "expansion": {
+        "2019-2020": {
+          "count": 25,
+          "share_within_group": 0.1404494382022472
+        },
+        "2021": {
+          "count": 34,
+          "share_within_group": 0.19101123595505617
+        },
+        "2022": {
+          "count": 6,
+          "share_within_group": 0.033707865168539325
+        },
+        "2023-2024": {
+          "count": 113,
+          "share_within_group": 0.6348314606741573
+        }
+      }
+    },
+    "events_2022": {
+      "compression": 6,
+      "expansion": 6
+    }
+  },
+  "scheme_b": {
+    "group_counts": {
+      "compression": 289,
+      "expansion": 136
+    },
+    "returns": {
+      "t6": {
+        "compression": {
+          "count": 289,
+          "mean": 0.0069869126685299454,
+          "median": 0.0081194324142715,
+          "std": 0.036313281027486675
+        },
+        "expansion": {
+          "count": 136,
+          "mean": 0.009230087676852738,
+          "median": 0.011034810622203,
+          "std": 0.05124695881574821
+        },
+        "welch_t_stat": -0.45909783305196983,
+        "welch_one_sided_p": 0.6766700881208387,
+        "bootstrap": {
+          "mean_difference": -0.002243175008322793,
+          "ci_95_lower": -0.012333405030723424,
+          "ci_95_upper": 0.007542247389785512,
+          "bootstrap_p_one_sided": 0.6603396603396603,
+          "significant_positive_5pct": false
+        }
+      },
+      "t12": {
+        "compression": {
+          "count": 289,
+          "mean": 0.012136284545998691,
+          "median": 0.0099994587021984,
+          "std": 0.04751136479148334
+        },
+        "expansion": {
+          "count": 136,
+          "mean": 0.016826575296619965,
+          "median": 0.019237544922012,
+          "std": 0.07106317796162696
+        },
+        "welch_t_stat": -0.6996304974104839,
+        "welch_one_sided_p": 0.7575013914971287,
+        "bootstrap": {
+          "mean_difference": -0.004690290750621273,
+          "ci_95_lower": -0.01697025526386122,
+          "ci_95_upper": 0.0088643051099795,
+          "bootstrap_p_one_sided": 0.7522477522477522,
+          "significant_positive_5pct": false
+        }
+      },
+      "t24": {
+        "compression": {
+          "count": 289,
+          "mean": 0.019448321434438767,
+          "median": 0.017367979644831,
+          "std": 0.07471214734510914
+        },
+        "expansion": {
+          "count": 136,
+          "mean": 0.03171547674961282,
+          "median": 0.02478112975068225,
+          "std": 0.09129133535140525
+        },
+        "welch_t_stat": -1.3664397068582983,
+        "welch_one_sided_p": 0.9134117765517733,
+        "bootstrap": {
+          "mean_difference": -0.012267155315174055,
+          "ci_95_lower": -0.029385584607801555,
+          "ci_95_upper": 0.00448833548111637,
+          "bootstrap_p_one_sided": 0.919080919080919,
+          "significant_positive_5pct": false
+        }
+      }
+    },
+    "stop_proxy": {
+      "compression": {
+        "sweep_low_hit_first6_rate": 0.5570934256055363,
+        "mean_mae_first6": 0.028077285223753887,
+        "median_mae_first6": 0.02247177184323903,
+        "mae_first6_p80": 0.04566960570906446
+      },
+      "expansion": {
+        "sweep_low_hit_first6_rate": 0.4632352941176471,
+        "mean_mae_first6": 0.039738714344499174,
+        "median_mae_first6": 0.02112141079143909,
+        "mae_first6_p80": 0.06119541664962362
+      }
+    },
+    "period_distribution": {
+      "compression": {
+        "2019-2020": {
+          "count": 52,
+          "share_within_group": 0.17993079584775087
+        },
+        "2021": {
+          "count": 56,
+          "share_within_group": 0.19377162629757785
+        },
+        "2022": {
+          "count": 10,
+          "share_within_group": 0.03460207612456748
+        },
+        "2023-2024": {
+          "count": 171,
+          "share_within_group": 0.5916955017301038
+        }
+      },
+      "expansion": {
+        "2019-2020": {
+          "count": 31,
+          "share_within_group": 0.22794117647058823
+        },
+        "2021": {
+          "count": 45,
+          "share_within_group": 0.33088235294117646
+        },
+        "2022": {
+          "count": 2,
+          "share_within_group": 0.014705882352941176
+        },
+        "2023-2024": {
+          "count": 58,
+          "share_within_group": 0.4264705882352941
+        }
+      }
+    },
+    "events_2022": {
+      "compression": 10,
+      "expansion": 2
+    }
+  }
+}

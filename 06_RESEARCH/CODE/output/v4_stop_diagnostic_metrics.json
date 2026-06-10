@@ -1,0 +1,200 @@
+{
+  "input": "06_RESEARCH/CODE/output/v4_strategy_trades.csv",
+  "trade_count": 360,
+  "overall_average_expectancy_r": 0.03195355660246789,
+  "exit_summary": [
+    {
+      "exit_reason": "STOP",
+      "trade_count": 210,
+      "share": 0.5833333333333334,
+      "average_holding_bars": 6.285714285714286,
+      "median_holding_bars": 1.0,
+      "average_expectancy_r": -0.9411907949656728,
+      "average_net_pnl": -924.6305728457158,
+      "tp1_hit_rate": 0.17142857142857143,
+      "ledger_count_check": 210
+    },
+    {
+      "exit_reason": "TP2",
+      "trade_count": 150,
+      "share": 0.4166666666666667,
+      "average_holding_bars": 9.366666666666667,
+      "median_holding_bars": 4.0,
+      "average_expectancy_r": 1.3943556487978652,
+      "average_net_pnl": 1428.5264518532483,
+      "tp1_hit_rate": 1.0,
+      "ledger_count_check": 150
+    },
+    {
+      "exit_reason": "RESEARCH_END",
+      "trade_count": 0,
+      "share": 0.0,
+      "average_holding_bars": null,
+      "median_holding_bars": null,
+      "average_expectancy_r": null,
+      "average_net_pnl": null,
+      "tp1_hit_rate": null,
+      "ledger_count_check": 0
+    }
+  ],
+  "stop_timing": {
+    "count": 210,
+    "mean_holding_bars": 6.285714285714286,
+    "median_holding_bars": 1.0,
+    "p25_holding_bars": 1.0,
+    "p75_holding_bars": 4.0,
+    "mode_holding_bars": 1,
+    "strictly_before_t6": 0.8,
+    "by_t6_close": 0.819047619047619,
+    "strictly_before_t12": 0.8761904761904762,
+    "by_t12_close": 0.8857142857142857,
+    "exact_bar_counts": {
+      "1": 118,
+      "2": 19,
+      "3": 14,
+      "4": 12,
+      "5": 5,
+      "6": 4,
+      "7": 5,
+      "8": 3,
+      "10": 2,
+      "11": 2,
+      "12": 2,
+      "13": 3,
+      "14": 2,
+      "16": 2,
+      "18": 2,
+      "19": 4,
+      "20": 1,
+      "23": 1,
+      "29": 1,
+      "30": 2,
+      "34": 1,
+      "48": 1,
+      "80": 1,
+      "88": 1,
+      "114": 1,
+      "193": 1
+    }
+  },
+  "holding_bucket_by_exit": [
+    {
+      "holding_bucket": "1-3",
+      "STOP": 151,
+      "TP2": 69,
+      "RESEARCH_END": 0
+    },
+    {
+      "holding_bucket": "4-6",
+      "STOP": 21,
+      "TP2": 28,
+      "RESEARCH_END": 0
+    },
+    {
+      "holding_bucket": "7-9",
+      "STOP": 8,
+      "TP2": 9,
+      "RESEARCH_END": 0
+    },
+    {
+      "holding_bucket": "10-11",
+      "STOP": 4,
+      "TP2": 8,
+      "RESEARCH_END": 0
+    },
+    {
+      "holding_bucket": "12+",
+      "STOP": 26,
+      "TP2": 36,
+      "RESEARCH_END": 0
+    }
+  ],
+  "by_symbol": [
+    {
+      "symbol": "BTC",
+      "trade_count": 156,
+      "stop_count": 89,
+      "stop_rate": 0.5705128205128205,
+      "average_holding_bars": 8.711538461538462,
+      "median_holding_bars": 3.0,
+      "average_expectancy_r": 0.043564868263768854,
+      "stop_average_holding_bars": 7.224719101123595,
+      "stop_median_holding_bars": 1.0,
+      "stops_by_t6_close": 0.7752808988764045
+    },
+    {
+      "symbol": "ETH",
+      "trade_count": 125,
+      "stop_count": 68,
+      "stop_rate": 0.544,
+      "average_holding_bars": 7.144,
+      "median_holding_bars": 2.0,
+      "average_expectancy_r": 0.11562684143038805,
+      "stop_average_holding_bars": 4.588235294117647,
+      "stop_median_holding_bars": 1.0,
+      "stops_by_t6_close": 0.8529411764705882
+    },
+    {
+      "symbol": "SOL",
+      "trade_count": 79,
+      "stop_count": 53,
+      "stop_rate": 0.6708860759493671,
+      "average_holding_bars": 5.987341772151899,
+      "median_holding_bars": 2.0,
+      "average_expectancy_r": -0.12336954748174701,
+      "stop_average_holding_bars": 6.886792452830188,
+      "stop_median_holding_bars": 1.0,
+      "stops_by_t6_close": 0.8490566037735849
+    }
+  ],
+  "by_period": [
+    {
+      "period": "2019-2020",
+      "trade_count": 67,
+      "stop_count": 42,
+      "stop_rate": 0.6268656716417911,
+      "average_holding_bars": 11.582089552238806,
+      "median_holding_bars": 3.0,
+      "average_expectancy_r": -0.1003799680324303,
+      "stop_average_holding_bars": 10.095238095238095,
+      "stop_median_holding_bars": 1.0,
+      "stops_by_t6_close": 0.7380952380952381
+    },
+    {
+      "period": "2021",
+      "trade_count": 87,
+      "stop_count": 46,
+      "stop_rate": 0.5287356321839081,
+      "average_holding_bars": 7.402298850574713,
+      "median_holding_bars": 3.0,
+      "average_expectancy_r": 0.20374892878581233,
+      "stop_average_holding_bars": 6.108695652173913,
+      "stop_median_holding_bars": 2.0,
+      "stops_by_t6_close": 0.8260869565217391
+    },
+    {
+      "period": "2022",
+      "trade_count": 11,
+      "stop_count": 10,
+      "stop_rate": 0.9090909090909091,
+      "average_holding_bars": 1.4545454545454546,
+      "median_holding_bars": 1.0,
+      "average_expectancy_r": -0.9260514138343406,
+      "stop_average_holding_bars": 1.1,
+      "stop_median_holding_bars": 1.0,
+      "stops_by_t6_close": 1.0
+    },
+    {
+      "period": "2023-2024",
+      "trade_count": 195,
+      "stop_count": 112,
+      "stop_rate": 0.5743589743589743,
+      "average_holding_bars": 6.61025641025641,
+      "median_holding_bars": 2.0,
+      "average_expectancy_r": 0.0548161383737094,
+      "stop_average_holding_bars": 5.392857142857143,
+      "stop_median_holding_bars": 1.0,
+      "stops_by_t6_close": 0.8303571428571429
+    }
+  ]
+}

@@ -1,0 +1,276 @@
+{
+  "source": "official Binance public data archive",
+  "latest_checked": "2026-06-05",
+  "symbols": [
+    {
+      "symbol": "BTCUSDT",
+      "source": "https://data.binance.vision/data/futures/um/daily/metrics",
+      "archive_start": "2020-09-01",
+      "archive_end": "2026-06-05",
+      "calendar_days": 2104,
+      "rows": 605318,
+      "expected_5m_rows": 605952,
+      "coverage_ratio": 0.998953712505281,
+      "first_timestamp": "2020-09-01 00:00:00",
+      "last_timestamp": "2026-06-06 00:00:00",
+      "frequency_mode": "0 days 00:05:00",
+      "timestamp_jitter_from_exact_5m": 5851,
+      "gaps_over_6m": 160,
+      "null_count_by_column": {
+        "create_time": 0,
+        "symbol": 0,
+        "sum_open_interest": 0,
+        "sum_open_interest_value": 0,
+        "count_toptrader_long_short_ratio": 92226,
+        "sum_toptrader_long_short_ratio": 92192,
+        "count_long_short_ratio": 5797,
+        "sum_taker_long_short_vol_ratio": 37271
+      },
+      "duplicate_timestamps_removed": 0,
+      "columns": [
+        "create_time",
+        "symbol",
+        "sum_open_interest",
+        "sum_open_interest_value",
+        "count_toptrader_long_short_ratio",
+        "sum_toptrader_long_short_ratio",
+        "count_long_short_ratio",
+        "sum_taker_long_short_vol_ratio"
+      ],
+      "field_coverage": {
+        "sum_open_interest": {
+          "valid_rows": 605318,
+          "null_rows": 0,
+          "first_valid_timestamp": "2020-09-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 2105,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "sum_open_interest_value": {
+          "valid_rows": 605318,
+          "null_rows": 0,
+          "first_valid_timestamp": "2020-09-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 2105,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "count_toptrader_long_short_ratio": {
+          "valid_rows": 513092,
+          "null_rows": 92226,
+          "first_valid_timestamp": "2020-09-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1790,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "sum_toptrader_long_short_ratio": {
+          "valid_rows": 513126,
+          "null_rows": 92192,
+          "first_valid_timestamp": "2020-09-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1790,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "count_long_short_ratio": {
+          "valid_rows": 599521,
+          "null_rows": 5797,
+          "first_valid_timestamp": "2020-09-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 2086,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "sum_taker_long_short_vol_ratio": {
+          "valid_rows": 568047,
+          "null_rows": 37271,
+          "first_valid_timestamp": "2020-09-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1977,
+          "observations_grade": "CONFIRMATORY"
+        }
+      },
+      "output": "06_RESEARCH/DATA/FUTURES/BTCUSDT_METRICS_5M.csv",
+      "observations_grade": "CONFIRMATORY",
+      "covers_2021_bull": true,
+      "covers_2022_bear": true
+    },
+    {
+      "symbol": "ETHUSDT",
+      "source": "https://data.binance.vision/data/futures/um/daily/metrics",
+      "archive_start": "2021-12-01",
+      "archive_end": "2026-06-05",
+      "calendar_days": 1648,
+      "rows": 474484,
+      "expected_5m_rows": 474624,
+      "coverage_ratio": 0.9997050296655879,
+      "first_timestamp": "2021-12-01 00:00:00",
+      "last_timestamp": "2026-06-06 00:00:00",
+      "frequency_mode": "0 days 00:05:00",
+      "timestamp_jitter_from_exact_5m": 3639,
+      "gaps_over_6m": 14,
+      "null_count_by_column": {
+        "create_time": 0,
+        "symbol": 0,
+        "sum_open_interest": 0,
+        "sum_open_interest_value": 0,
+        "count_toptrader_long_short_ratio": 92219,
+        "sum_toptrader_long_short_ratio": 92181,
+        "count_long_short_ratio": 5789,
+        "sum_taker_long_short_vol_ratio": 37247
+      },
+      "duplicate_timestamps_removed": 0,
+      "columns": [
+        "create_time",
+        "symbol",
+        "sum_open_interest",
+        "sum_open_interest_value",
+        "count_toptrader_long_short_ratio",
+        "sum_toptrader_long_short_ratio",
+        "count_long_short_ratio",
+        "sum_taker_long_short_vol_ratio"
+      ],
+      "field_coverage": {
+        "sum_open_interest": {
+          "valid_rows": 474484,
+          "null_rows": 0,
+          "first_valid_timestamp": "2021-12-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1649,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "sum_open_interest_value": {
+          "valid_rows": 474484,
+          "null_rows": 0,
+          "first_valid_timestamp": "2021-12-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1649,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "count_toptrader_long_short_ratio": {
+          "valid_rows": 382265,
+          "null_rows": 92219,
+          "first_valid_timestamp": "2021-12-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1334,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "sum_toptrader_long_short_ratio": {
+          "valid_rows": 382303,
+          "null_rows": 92181,
+          "first_valid_timestamp": "2021-12-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1334,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "count_long_short_ratio": {
+          "valid_rows": 468695,
+          "null_rows": 5789,
+          "first_valid_timestamp": "2021-12-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1630,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "sum_taker_long_short_vol_ratio": {
+          "valid_rows": 437237,
+          "null_rows": 37247,
+          "first_valid_timestamp": "2021-12-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1521,
+          "observations_grade": "CONFIRMATORY"
+        }
+      },
+      "output": "06_RESEARCH/DATA/FUTURES/ETHUSDT_METRICS_5M.csv",
+      "observations_grade": "CONFIRMATORY",
+      "covers_2021_bull": false,
+      "covers_2022_bear": true
+    },
+    {
+      "symbol": "SOLUSDT",
+      "source": "https://data.binance.vision/data/futures/um/daily/metrics",
+      "archive_start": "2021-12-01",
+      "archive_end": "2026-06-05",
+      "calendar_days": 1648,
+      "rows": 474467,
+      "expected_5m_rows": 474624,
+      "coverage_ratio": 0.9996692118392665,
+      "first_timestamp": "2021-12-01 00:00:00",
+      "last_timestamp": "2026-06-06 00:00:00",
+      "frequency_mode": "0 days 00:05:00",
+      "timestamp_jitter_from_exact_5m": 3974,
+      "gaps_over_6m": 18,
+      "null_count_by_column": {
+        "create_time": 0,
+        "symbol": 0,
+        "sum_open_interest": 0,
+        "sum_open_interest_value": 0,
+        "count_toptrader_long_short_ratio": 92217,
+        "sum_toptrader_long_short_ratio": 92181,
+        "count_long_short_ratio": 5790,
+        "sum_taker_long_short_vol_ratio": 37250
+      },
+      "duplicate_timestamps_removed": 0,
+      "columns": [
+        "create_time",
+        "symbol",
+        "sum_open_interest",
+        "sum_open_interest_value",
+        "count_toptrader_long_short_ratio",
+        "sum_toptrader_long_short_ratio",
+        "count_long_short_ratio",
+        "sum_taker_long_short_vol_ratio"
+      ],
+      "field_coverage": {
+        "sum_open_interest": {
+          "valid_rows": 474467,
+          "null_rows": 0,
+          "first_valid_timestamp": "2021-12-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1649,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "sum_open_interest_value": {
+          "valid_rows": 474467,
+          "null_rows": 0,
+          "first_valid_timestamp": "2021-12-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1649,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "count_toptrader_long_short_ratio": {
+          "valid_rows": 382250,
+          "null_rows": 92217,
+          "first_valid_timestamp": "2021-12-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1334,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "sum_toptrader_long_short_ratio": {
+          "valid_rows": 382286,
+          "null_rows": 92181,
+          "first_valid_timestamp": "2021-12-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1334,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "count_long_short_ratio": {
+          "valid_rows": 468677,
+          "null_rows": 5790,
+          "first_valid_timestamp": "2021-12-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1630,
+          "observations_grade": "CONFIRMATORY"
+        },
+        "sum_taker_long_short_vol_ratio": {
+          "valid_rows": 437217,
+          "null_rows": 37250,
+          "first_valid_timestamp": "2021-12-01 00:00:00",
+          "last_valid_timestamp": "2026-06-06 00:00:00",
+          "valid_calendar_days": 1521,
+          "observations_grade": "CONFIRMATORY"
+        }
+      },
+      "output": "06_RESEARCH/DATA/FUTURES/SOLUSDT_METRICS_5M.csv",
+      "observations_grade": "CONFIRMATORY",
+      "covers_2021_bull": false,
+      "covers_2022_bear": true
+    }
+  ]
+}

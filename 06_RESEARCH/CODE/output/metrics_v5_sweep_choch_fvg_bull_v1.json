@@ -1,0 +1,303 @@
+{
+  "experiment": "v5_sweep_choch_fvg_bull_v1",
+  "timeframe": "4H",
+  "holdout_returns_accessed": false,
+  "formal_signal_generation_truncated_before_holdout": true,
+  "data_start": "2020-09-13 08:00:00",
+  "analysis_end": "2025-02-17 12:00:00",
+  "holdout_starts": {
+    "BTCUSDT": "2025-02-19 00:00:00",
+    "ETHUSDT": "2025-02-17 16:00:00",
+    "SOLUSDT": "2025-04-11 00:00:00"
+  },
+  "symbol_metrics": {
+    "BTCUSDT": {
+      "candidate_count": 94,
+      "rejected_conflicts": 30,
+      "final_equity": 1.9815127549489948,
+      "total_return": 0.9815127549489948,
+      "sharpe": 0.7980611584458617,
+      "max_drawdown": -0.26494133454078983,
+      "trade_count": 64,
+      "win_rate": 0.46875,
+      "expectancy_r": 0.1436241155068786,
+      "funding_paid": 0.30010562789106493,
+      "train": {
+        "start": "2020-09-13 08:00:00",
+        "end": "2024-01-11 20:00:00",
+        "candidate_count": 63,
+        "final_equity": 1.8073440670742718,
+        "total_return": 0.8073440670742718,
+        "sharpe": 0.8924235962252925,
+        "max_drawdown": -0.26494133454078983,
+        "trade_count": 41,
+        "win_rate": 0.4878048780487805,
+        "expectancy_r": 0.19722228148606205,
+        "funding_paid": 0.23854685701977574
+      },
+      "validation": {
+        "start": "2024-01-12 00:00:00",
+        "end": "2025-02-17 12:00:00",
+        "candidate_count": 31,
+        "final_equity": 1.0963672003840785,
+        "total_return": 0.09636720038407853,
+        "sharpe": 0.4959893496950567,
+        "max_drawdown": -0.21623157208728516,
+        "trade_count": 23,
+        "win_rate": 0.43478260869565216,
+        "expectancy_r": 0.048079558761376484,
+        "funding_paid": 0.03406034965491687
+      }
+    },
+    "ETHUSDT": {
+      "candidate_count": 80,
+      "rejected_conflicts": 23,
+      "final_equity": 0.8410131837681183,
+      "total_return": -0.1589868162318817,
+      "sharpe": 0.049597159191689194,
+      "max_drawdown": -0.7193923142520466,
+      "trade_count": 57,
+      "win_rate": 0.43859649122807015,
+      "expectancy_r": 0.059498089824311345,
+      "funding_paid": 0.38724718792297774,
+      "train": {
+        "start": "2020-09-13 08:00:00",
+        "end": "2024-01-10 08:00:00",
+        "candidate_count": 60,
+        "final_equity": 1.0573422725371915,
+        "total_return": 0.057342272537191485,
+        "sharpe": 0.22306465174665033,
+        "max_drawdown": -0.6633121986812833,
+        "trade_count": 43,
+        "win_rate": 0.4186046511627907,
+        "expectancy_r": 0.044082551644972746,
+        "funding_paid": 0.3433296736785358
+      },
+      "validation": {
+        "start": "2024-01-10 12:00:00",
+        "end": "2025-02-17 12:00:00",
+        "candidate_count": 20,
+        "final_equity": 0.7954029698916965,
+        "total_return": -0.20459703010830355,
+        "sharpe": -0.5969098792447953,
+        "max_drawdown": -0.33730220607338934,
+        "trade_count": 14,
+        "win_rate": 0.5,
+        "expectancy_r": 0.1068458142322802,
+        "funding_paid": 0.04153575940840587
+      }
+    },
+    "SOLUSDT": {
+      "candidate_count": 52,
+      "rejected_conflicts": 15,
+      "final_equity": 2.244091955533382,
+      "total_return": 1.2440919555333818,
+      "sharpe": 0.6326378196145934,
+      "max_drawdown": -0.5012289361795667,
+      "trade_count": 37,
+      "win_rate": 0.4864864864864865,
+      "expectancy_r": 0.21170306794452806,
+      "funding_paid": 0.18940108293351518,
+      "train": {
+        "start": "2020-09-13 08:00:00",
+        "end": "2024-01-11 16:00:00",
+        "candidate_count": 25,
+        "final_equity": 2.0583449494604724,
+        "total_return": 1.0583449494604724,
+        "sharpe": 0.7137836442634846,
+        "max_drawdown": -0.5012289361795667,
+        "trade_count": 18,
+        "win_rate": 0.5,
+        "expectancy_r": 0.27293403426018437,
+        "funding_paid": 0.0591452933424883
+      },
+      "validation": {
+        "start": "2024-01-11 20:00:00",
+        "end": "2025-02-17 12:00:00",
+        "candidate_count": 27,
+        "final_equity": 1.0902409511688493,
+        "total_return": 0.09024095116884934,
+        "sharpe": 0.4004891297470609,
+        "max_drawdown": -0.3705396421729279,
+        "trade_count": 19,
+        "win_rate": 0.47368421052631576,
+        "expectancy_r": 0.15369478406653822,
+        "funding_paid": 0.06328180785498036
+      }
+    }
+  },
+  "portfolio_metrics": {
+    "final_equity": 1.6888726314168316,
+    "total_return": 0.6888726314168316,
+    "sharpe": 0.6016170824869965,
+    "max_drawdown": -0.33137608560937415,
+    "trade_count": 158,
+    "win_rate": 0.4620253164556962,
+    "expectancy_r": 0.12921739257198425,
+    "funding_paid": 0.8767538987475578
+  },
+  "portfolio_train_validation": {
+    "train": {
+      "start": "2020-09-13 08:00:00",
+      "end": "2024-01-11 16:00:00",
+      "candidate_count": 148,
+      "final_equity": 1.6410104296906454,
+      "total_return": 0.6410104296906454,
+      "sharpe": 0.7479579506929402,
+      "max_drawdown": -0.33137608560937415,
+      "trade_count": 102,
+      "win_rate": 0.46078431372549017,
+      "expectancy_r": 0.14602427331711465,
+      "funding_paid": 0.6410218240407998
+    },
+    "validation": {
+      "start": "2024-01-11 20:00:00",
+      "end": "2025-02-17 12:00:00",
+      "candidate_count": 78,
+      "final_equity": 0.9940037071482081,
+      "total_return": -0.005996292851791929,
+      "sharpe": 0.10933481504046146,
+      "max_drawdown": -0.21218271595422933,
+      "trade_count": 56,
+      "win_rate": 0.4642857142857143,
+      "expectancy_r": 0.09860485978621088,
+      "funding_paid": 0.1388779169183031
+    }
+  },
+  "walk_forward": [
+    {
+      "window": 1,
+      "train_start": "2020-09-13 08:00:00",
+      "train_end": "2023-06-24 04:00:00",
+      "validation_start": "2023-06-24 08:00:00",
+      "validation_end": "2024-01-11 16:00:00",
+      "candidate_count": 33,
+      "final_equity": 1.1352116031135158,
+      "total_return": 0.13521160311351577,
+      "sharpe": 1.8924477577059013,
+      "max_drawdown": -0.08882360617922802,
+      "trade_count": 23,
+      "win_rate": 0.5217391304347826,
+      "expectancy_r": 0.18375048584137274,
+      "funding_paid": 0.047165627388816654
+    },
+    {
+      "window": 2,
+      "train_start": "2020-09-13 08:00:00",
+      "train_end": "2024-01-11 16:00:00",
+      "validation_start": "2024-01-11 20:00:00",
+      "validation_end": "2024-07-31 00:00:00",
+      "candidate_count": 47,
+      "final_equity": 1.0747318438511606,
+      "total_return": 0.0747318438511606,
+      "sharpe": 0.5754156558890753,
+      "max_drawdown": -0.21136120068984998,
+      "trade_count": 30,
+      "win_rate": 0.4666666666666667,
+      "expectancy_r": 0.15623742317303388,
+      "funding_paid": 0.09991465567315322
+    },
+    {
+      "window": 3,
+      "train_start": "2020-09-13 08:00:00",
+      "train_end": "2024-07-31 00:00:00",
+      "validation_start": "2024-07-31 04:00:00",
+      "validation_end": "2025-02-17 12:00:00",
+      "candidate_count": 31,
+      "final_equity": 1.0434239173233941,
+      "total_return": 0.04342391732339412,
+      "sharpe": 0.5261036316239562,
+      "max_drawdown": -0.10616057349428543,
+      "trade_count": 26,
+      "win_rate": 0.5,
+      "expectancy_r": 0.1333772938219602,
+      "funding_paid": 0.03959312892299394
+    }
+  ],
+  "sensitivity": {
+    "sweep_lookback_16": {
+      "parameters": {
+        "sweep_lookback": 16
+      },
+      "candidate_count": 275,
+      "final_equity": 1.4711483389181839,
+      "total_return": 0.47114833891818386,
+      "sharpe": 0.46704916570003596,
+      "max_drawdown": -0.3728234871997631,
+      "trade_count": 179,
+      "win_rate": 0.44692737430167595,
+      "expectancy_r": 0.10387878829629903,
+      "funding_paid": 0.9295388302400456
+    },
+    "sweep_lookback_24": {
+      "parameters": {
+        "sweep_lookback": 24
+      },
+      "candidate_count": 194,
+      "final_equity": 1.4327147331466303,
+      "total_return": 0.43271473314663034,
+      "sharpe": 0.4495302803538055,
+      "max_drawdown": -0.3133562348196143,
+      "trade_count": 144,
+      "win_rate": 0.4444444444444444,
+      "expectancy_r": 0.08139757202748697,
+      "funding_paid": 0.6782287893853077
+    },
+    "swing_lookback_8": {
+      "parameters": {
+        "swing_lookback": 8
+      },
+      "candidate_count": 235,
+      "final_equity": 1.6108028845956752,
+      "total_return": 0.6108028845956752,
+      "sharpe": 0.5701933509840242,
+      "max_drawdown": -0.2821792550738562,
+      "trade_count": 166,
+      "win_rate": 0.46987951807228917,
+      "expectancy_r": 0.14905995353064233,
+      "funding_paid": 0.760821992900456
+    },
+    "swing_lookback_12": {
+      "parameters": {
+        "swing_lookback": 12
+      },
+      "candidate_count": 220,
+      "final_equity": 1.7818887818313491,
+      "total_return": 0.7818887818313491,
+      "sharpe": 0.6541361587638684,
+      "max_drawdown": -0.3341695094375007,
+      "trade_count": 155,
+      "win_rate": 0.4645161290322581,
+      "expectancy_r": 0.1312161621871908,
+      "funding_paid": 0.8795275421558851
+    },
+    "sequence_window_16": {
+      "parameters": {
+        "sequence_window": 16
+      },
+      "candidate_count": 205,
+      "final_equity": 1.7720359768960599,
+      "total_return": 0.7720359768960599,
+      "sharpe": 0.640432014311738,
+      "max_drawdown": -0.30746452589574647,
+      "trade_count": 143,
+      "win_rate": 0.45454545454545453,
+      "expectancy_r": 0.13253618094671313,
+      "funding_paid": 0.8284395869470838
+    },
+    "sequence_window_24": {
+      "parameters": {
+        "sequence_window": 24
+      },
+      "candidate_count": 234,
+      "final_equity": 1.5779794776256104,
+      "total_return": 0.5779794776256104,
+      "sharpe": 0.5372904220010788,
+      "max_drawdown": -0.31924190370079475,
+      "trade_count": 162,
+      "win_rate": 0.4506172839506173,
+      "expectancy_r": 0.10708948303841923,
+      "funding_paid": 0.8435170299370083
+    }
+  }
+}

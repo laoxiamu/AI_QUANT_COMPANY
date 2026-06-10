@@ -1,0 +1,113 @@
+{
+  "experiment": "v5_sweep_regime_bull_v4",
+  "validation": "zero_centered_synchronized_calendar_moving_block_bootstrap",
+  "holdout_accessed": false,
+  "input": "06_RESEARCH/CODE/output/events_v5_sweep_regime_bull_v4.csv",
+  "event_count": 425,
+  "event_counts_by_symbol": {
+    "BTC": 185,
+    "ETH": 143,
+    "SOL": 97
+  },
+  "parameters": {
+    "iterations": 10000,
+    "block_size_4h_bars": 20,
+    "random_seed": 20260606,
+    "one_sided_alternative": "combined mean > 0",
+    "p_value_estimator": "(extreme_count + 1) / (N + 1)"
+  },
+  "calendar": {
+    "calendar_start": "2019-07-22 16:00:00",
+    "calendar_end": "2024-12-03 12:00:00",
+    "calendar_4h_rows": 11766,
+    "block_size_4h_bars": 20
+  },
+  "method_note": "Pure permutation is invalid because it leaves the mean unchanged. Returns are demeaned within symbol, placed on one common 4H calendar, and resampled in synchronized circular 20-bar blocks. This retains event clustering, overlapping-window dependence, and contemporaneous cross-symbol dependence within sampled blocks. The non-centered version supplies the percentile confidence interval.",
+  "results": {
+    "6": {
+      "observed_mean": 0.00770472867119324,
+      "null_mean": 4.125299406368561e-05,
+      "null_std": 0.0030899219890072062,
+      "extreme_count": 57,
+      "p_one_sided_greater": 0.0057994200579942,
+      "observed_null_percentile": 99.42999999999999,
+      "bootstrap_mean": 0.007745422906872429,
+      "bootstrap_ci_95_percentile": [
+        0.001580899920419775,
+        0.013591540755420704
+      ]
+    },
+    "12": {
+      "observed_mean": 0.013637177586197499,
+      "null_mean": 5.679460410542351e-05,
+      "null_std": 0.004813104953120643,
+      "extreme_count": 19,
+      "p_one_sided_greater": 0.001999800019998,
+      "observed_null_percentile": 99.81,
+      "bootstrap_mean": 0.013688896402323422,
+      "bootstrap_ci_95_percentile": [
+        0.0038650938549259556,
+        0.022836550961479303
+      ]
+    },
+    "24": {
+      "observed_mean": 0.023373811135294468,
+      "null_mean": 6.026990946897501e-05,
+      "null_std": 0.0069126899072607636,
+      "extreme_count": 2,
+      "p_one_sided_greater": 0.00029997000299970003,
+      "observed_null_percentile": 99.98,
+      "bootstrap_mean": 0.023436736526394053,
+      "bootstrap_ci_95_percentile": [
+        0.009327223367842696,
+        0.0365564163705957
+      ]
+    }
+  },
+  "sensitivity_independent_symbol_event_mbb": {
+    "block_size_event_observations": 20,
+    "random_seed": 20260607,
+    "results": {
+      "6": {
+        "observed_mean": 0.00770472867119324,
+        "null_mean": -1.7069930604972042e-05,
+        "null_std": 0.0026286307151502978,
+        "extreme_count": 9,
+        "p_one_sided_greater": 0.000999900009999,
+        "observed_null_percentile": 99.91,
+        "bootstrap_mean": 0.007687658740588268,
+        "bootstrap_ci_95_percentile": [
+          0.002393188486824293,
+          0.01267227993428902
+        ]
+      },
+      "12": {
+        "observed_mean": 0.013637177586197499,
+        "null_mean": -1.213474848832627e-06,
+        "null_std": 0.0038377090429352547,
+        "extreme_count": 1,
+        "p_one_sided_greater": 0.00019998000199980003,
+        "observed_null_percentile": 99.99,
+        "bootstrap_mean": 0.013635964111348665,
+        "bootstrap_ci_95_percentile": [
+          0.0059077038599533805,
+          0.020810230867790522
+        ]
+      },
+      "24": {
+        "observed_mean": 0.023373811135294468,
+        "null_mean": 8.560716784414496e-06,
+        "null_std": 0.006144359117390472,
+        "extreme_count": 0,
+        "p_one_sided_greater": 9.999000099990002e-05,
+        "observed_null_percentile": 100.0,
+        "bootstrap_mean": 0.023382371852078882,
+        "bootstrap_ci_95_percentile": [
+          0.011390862366618638,
+          0.03538511871251116
+        ]
+      }
+    }
+  },
+  "figure": "06_RESEARCH/RESULTS/20260606_v4_bootstrap_null_distributions.png"
+}
