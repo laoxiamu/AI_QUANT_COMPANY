@@ -1,6 +1,6 @@
 # CLAUDE.md — AI Quant Company
 
-**版本：** 2.2 | **更新：** 2026-06-08 | **项目根目录：** /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+**版本：** 2.3 | **更新：** 2026-06-11（DEC-067：启动清单对齐文档权威层级）| **项目根目录：** /Users/yaomingyu/Documents/AI_QUANT_COMPANY
 
 ---
 
@@ -49,11 +49,10 @@
 **第一步——先读精简简报（省 token）：** `01_MEMORY_CORE/BOOT_BRIEF.md`。
 读完即可恢复运行认知；**仅当需要细节时**再按需读下列权威文件，不必每次全读：
 
-1. `01_MEMORY_CORE/CURRENT_STATE.md`（运行权威）
-2. `01_MEMORY_CORE/DECISION_LOG.md`
+1. `01_MEMORY_CORE/CURRENT_STATE.md`（运行权威，注意 §1b 活动区）
+2. `01_MEMORY_CORE/DECISION_LOG.md`（先查头部索引）
 3. `01_MEMORY_CORE/PROJECT_CONTEXT.md`
-4. `00_PROJECT_MANAGEMENT/PROJECT_OPERATING_STATE.md`
-5. `00_PROJECT_MANAGEMENT/PROJECT_MASTER_PLAN_v2.md`
+4. 公司 OS 四蓝图（战略产品 / 运营模型 / 投研风控 / 技术组织治理，见 PHASE1_TECH_ORG_GOVERNANCE_v1 §3.1）
 
 **第二步——主理人开局（恢复认知后、问用户做什么之前，强制先输出）：**
 (a) 这是什么阶段、什么问题类；(b) 适用哪个专业框架；(c) 我的论点 + 信息增益最高的下一步 + 理由；(d) 只有真 D 级（钱/阶段/范围/重大架构/方向反转）才上升为决策，且必带我的推荐，**不给开放菜单**。
@@ -103,8 +102,7 @@
 
 ## 审计文件归档（统一目录）
 
-所有审计/审查报告统一放 `00_PROJECT_MANAGEMENT/STAGE_AUDITS/`（含 L1 月审/深度审计、L2 阶段审计、L3 紧急审计、Opus 审计包、专项核查），不得散落到 `09_OPERATIONS/` 或 `99_TEMP/`。命名规范与待协调项见该目录 `README.md`。
-注：定时任务月报暂仍写入 `09_OPERATIONS/MONTHLY_REVIEW/`，待更新定时任务后归口本目录。
+所有审计/审查报告统一放 `00_PROJECT_MANAGEMENT/STAGE_AUDITS/`（含 L1 月审/深度审计、L2 阶段审计、L3 紧急审计、Opus 审计包、专项核查），不得散落到 `09_OPERATIONS/` 或 `99_TEMP/`。命名规范与待协调项见该目录 `README.md`。（定时任务已于 2026-06-11 更新 v2，月报归口本目录。）
 
 ---
 

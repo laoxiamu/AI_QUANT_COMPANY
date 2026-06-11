@@ -90,6 +90,7 @@
 | DEC-064 | 暂停当前研究队列，进时间盒重建"公司操作系统"（顶层设计） | ACTIVE |
 | DEC-065 | CLAUDE.md 升 v2.2 —— 固化主理人定位与工作 | ACTIVE |
 | DEC-066 | 6 项 parked 全部拍板（公司 OS 冻结前置之一完成 | ACTIVE |
+| DEC-067 | CLAUDE.md 升 v2.3：启动清单对齐文档权威层级 | ACTIVE |
 | DEC-DEPRECATED-001 | 三方AI协作模式（OpenClaw + DeepSeek + | DEPRECATED |
 
 ## 本项目自身决策
@@ -1804,6 +1805,21 @@ L3 紧急审计：
 决策时间：2026-06-10
 来源：Founder 逐条拍板（②③⑤⑥直接拍；①④经大白话解释后拍）+ Claude 主理人主张
 影响范围：公司 OS 冻结前置、Phase 1 研究主线与执行顺序、验收标准、熔断机制、风格档与资本表达
+状态：ACTIVE
+```
+
+---
+
+**[DEC-067]**
+```
+决策内容：CLAUDE.md 升 v2.3 —— 启动协议权威清单对齐文档权威层级
+  1. 启动第一步权威文件清单删去已降级的 PROJECT_OPERATING_STATE / PROJECT_MASTER_PLAN_v2，
+     换为"公司 OS 四蓝图"（见 PHASE1_TECH_ORG_GOVERNANCE_v1 §3.1）；CURRENT_STATE 注明§1b活动区、
+     DECISION_LOG 注明先查索引。
+  2. 删除"月报暂写 09_OPERATIONS"过时注记（定时任务已于 2026-06-11 重写 v2，月报归口 STAGE_AUDITS）。
+决策时间：2026-06-11
+来源：修宪提案 CLAUDE_MD_AMENDMENT_PROPOSAL_v2.3 + Founder 确认"同意"
+影响范围：所有新会话启动协议
 状态：ACTIVE
 ```
 
