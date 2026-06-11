@@ -8,7 +8,8 @@
 
 ## 一句话现状
 
-项目处于 **Phase 1**，公司 OS 四蓝图已产出，**6 项 parked 已全部拍板（DEC-066，2026-06-10）**；冻结只差跑一次最小验证（R2 验 A-2 持仓极端）。**TSMOM 新口径复读已完成：四件套全过，列为 R2 之后扩样本候选（P1-06 变体优先）**；强平采集器已写好待部署。**冻结前全盘审计已完成（`STAGE_AUDITS/L2_AUDIT_OS_FREEZE_2026-06-10.md`）：方向/方法验证通过，5项P0待清**——①四件套量化→Protocol v1.3 ②事件类成本压力档 ③事件研究样本/Holdout设计 ④定时任务旧口径重写 ⑤git立即建。四方向OS调优方案已出（`OS_TUNING_PLAN_v1.md`：编排/上下文/记忆/组织，新增第三执行层=低模型会话）；机械任务已打包 `04_AI_TEAM/LOW_TIER_TASKS/TASK_PACKAGE_2026-06-10.md`（T-01~13，Claude验收制）。**任务包 T-01~13 已执行并验收通过（2026-06-10）**：CURRENT_STATE瘦身109行/DEC索引/墓园索引/Protocol v1.3增补件/git baseline `cee7ca4` 全就位；第三执行层首跑成功。**6-11夜批N1-N8完成（Claude接管卡死的定时会话）**：P0-4定时任务v2✅/修宪提案v2.3【等Founder】/事件普查✅（R2须池化+单调性；A-2=funding负极端、A-1=6h OI骤降368个）/数据实际新鲜至2026-05（非2025-12）/P1-04 DSR 0.80-0.86强化不进Holdout/AGENTS草案✅。**6-11午批**：修宪v2.3已应用（DEC-067）；.tmp/git锁已清（commit 9e29f65）；采集器已部署但**当前代理节点被Binance拒绝，等Founder切节点**（脚本自动重连，支持LIQ_PROXY_HOST/PORT环境变量，当前默认127.0.0.1:7897 socks5h）；低模型任务包#2已发（TASK_PACKAGE_2026-06-11.md，4项文档一致性修复）。**6-11晚批**：包#2验收4/4✅（4处文档矛盾全清）；台账已填（累计811.93元，距止损4188元，月均~160健康）；GitHub=仓库已存在laoxiamu/AI_QUANT_COMPANY+deploy key表单已填，**卡在sudo邮件验证等Founder**；**Codex CLI未安装**（直调前提，待装+Founder登录授权）；模型路由定案：机械任务默认Claude spawn haiku子代理（TOOL_ROUTING已更新）。**6-11夜批2**：✅GitHub私库备份打通（laoxiamu/AI_QUANT_COMPANY，deploy key，master已推送）；✅**Codex直调通道验证通过（DEC-061落地）**：配方见`04_AI_TEAM/CODEX_DIRECT_CALL_RUNBOOK.md`（代理env+</dev/null+workspace-write三要素），AGENTS.md已部署项目根；台账更新871.93；⚠️采集器仍不通：**新加坡节点被Binance屏蔽，等Founder换香港/台湾/韩国节点**。执行序：Founder换节点 → Claude验证采集器+出R1特征库任务书（Codex直调首个真实任务）+起草R2预登记 → R2（最小验证+冻结OS）。
+项目处于 **Phase 1**，公司 OS 四蓝图已产出，**6 项 parked 已全部拍板（DEC-066，2026-06-10）**；冻结只差跑一次最小验证（R2 验 A-2 持仓极端）。**TSMOM 新口径复读已完成：四件套全过，列为 R2 之后扩样本候选（P1-06 变体优先）**；强平采集器已写好待部署。**冻结前全盘审计已完成（`STAGE_AUDITS/L2_AUDIT_OS_FREEZE_2026-06-10.md`）：方向/方法验证通过，5项P0待清**——①四件套量化→Protocol v1.3 ②事件类成本压力档 ③事件研究样本/Holdout设计 ④定时任务旧口径重写 ⑤git立即建。四方向OS调优方案已出（`OS_TUNING_PLAN_v1.md`：编排/上下文/记忆/组织，新增第三执行层=低模型会话）；机械任务已打包 `04_AI_TEAM/LOW_TIER_TASKS/TASK_PACKAGE_2026-06-10.md`（T-01~13，Claude验收制）。**任务包 T-01~13 已执行并验收通过（2026-06-10）**：CURRENT_STATE瘦身109行/DEC索引/墓园索引/Protocol v1.3增补件/git baseline `cee7ca4` 全就位；第三执行层首跑成功。**6-11夜批N1-N8完成（Claude接管卡死的定时会话）**：P0-4定时任务v2✅/修宪提案v2.3【等Founder】/事件普查✅（R2须池化+单调性；A-2=funding负极端、A-1=6h OI骤降368个）/数据实际新鲜至2026-05（非2025-12）/P1-04 DSR 0.80-0.86强化不进Holdout/AGENTS草案✅。**6-11午批**：修宪v2.3已应用（DEC-067）；.tmp/git锁已清（commit 9e29f65）；采集器已部署但**当前代理节点被Binance拒绝，等Founder切节点**（脚本自动重连，支持LIQ_PROXY_HOST/PORT环境变量，当前默认127.0.0.1:7897 socks5h）；低模型任务包#2已发（TASK_PACKAGE_2026-06-11.md，4项文档一致性修复）。**6-11晚批**：包#2验收4/4✅（4处文档矛盾全清）；台账已填（累计811.93元，距止损4188元，月均~160健康）；GitHub=仓库已存在laoxiamu/AI_QUANT_COMPANY+deploy key表单已填，**卡在sudo邮件验证等Founder**；**Codex CLI未安装**（直调前提，待装+Founder登录授权）；模型路由定案：机械任务默认Claude spawn haiku子代理（TOOL_ROUTING已更新）。**6-11 R2 完成（重大节点）**：R1特征库+R2事件研究经Codex直调全流程跑通（预登记→实现→pytest→独立验收→治理自动触发）——**最小工作流验证的流程目标达成，OS具备冻结条件（待Founder拍）**。研究结论：**A-2 FAILED**（方向整体相反：极端拥挤=延续非反转，与TSMOM动量证据互洽；详见 `06_RESEARCH/RESULTS/20260611_a2_event_study.md`）→ 计数6/8 → L3已出（建议：不暂停；执行序=TSMOM扩样本[不耗命]→A-1预登记+Risk Reviewer反审[第7条命]）。【等待Founder拍L3三项：①不暂停continue ②OS冻结 ③知悉剩2命】
+**6-11夜批2**：✅GitHub私库备份打通（laoxiamu/AI_QUANT_COMPANY，deploy key，master已推送）；✅**Codex直调通道验证通过（DEC-061落地）**：配方见`04_AI_TEAM/CODEX_DIRECT_CALL_RUNBOOK.md`（代理env+</dev/null+workspace-write三要素），AGENTS.md已部署项目根；台账更新871.93；⚠️采集器仍不通：**新加坡节点被Binance屏蔽，等Founder换香港/台湾/韩国节点**。执行序：Founder换节点 → Claude验证采集器+出R1特征库任务书（Codex直调首个真实任务）+起草R2预登记 → R2（最小验证+冻结OS）。
 
 ## 目标函数（DEC-063，钉死）
 
@@ -26,7 +27,7 @@
 
 ## 失败计数
 
-历史实验失败 **10**｜独立 Alpha **5/8** = **真闸门（DEC-066⑤冻结；6/8 强制触发 L3；新主线独立计数）**。
+历史实验失败 **11**｜独立 Alpha **6/8**（a2 funding极端反向 2026-06-11 FAILED 计入第6；**L3 已触发并出报告** `STAGE_AUDITS/L3_EMERGENCY_2026-06-11.md`；**剩 2 次，下一条独立命仅限 A-1**，其预登记须先过 Risk Reviewer 反审）。
 
 ## 重建路线（时间盒）
 
