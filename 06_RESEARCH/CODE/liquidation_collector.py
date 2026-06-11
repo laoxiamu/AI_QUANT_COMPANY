@@ -49,7 +49,7 @@ if __name__ == "__main__":
     threading.Thread(target=heartbeat_log, daemon=True).start()
     kw = dict(ping_interval=180, ping_timeout=10)
     if PROXY_HOST and PROXY_PORT:
-        kw.update(http_proxy_host=PROXY_HOST, http_proxy_port=PROXY_PORT, proxy_type="socks5h")
+        kw.update(http_proxy_host=PROXY_HOST, http_proxy_port=PROXY_PORT, proxy_type="http")
         print("using proxy %s:%s" % (PROXY_HOST, PROXY_PORT), flush=True)
     while True:  # 断线重连
         try:

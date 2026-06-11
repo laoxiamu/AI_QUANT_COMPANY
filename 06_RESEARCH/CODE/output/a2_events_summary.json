@@ -1,0 +1,49 @@
+{
+  "generated_at_utc": "2026-06-11T14:20:24Z",
+  "symbols": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "window_days": 365,
+  "min_history_days": 180,
+  "merge_window_hours": 24,
+  "total_events": 1092,
+  "work_events": 874,
+  "holdout_events": 218,
+  "work_to_holdout_ratio": 4.009174311926605,
+  "warmup_excluded_by_symbol": {
+    "BTCUSDT": 540,
+    "ETHUSDT": 540,
+    "SOLUSDT": 540
+  },
+  "warmup_excluded_total": 1620,
+  "tier_counts_all": {
+    "neg_P1": 117,
+    "neg_P2.5": 264,
+    "neg_P5": 407,
+    "pos_P95": 117,
+    "pos_P97.5": 103,
+    "pos_P99": 84
+  },
+  "tier_counts_work": {
+    "neg_P1": 91,
+    "neg_P2.5": 218,
+    "neg_P5": 319,
+    "pos_P95": 91,
+    "pos_P97.5": 85,
+    "pos_P99": 70
+  },
+  "tier_counts_holdout": {
+    "neg_P1": 26,
+    "neg_P2.5": 46,
+    "neg_P5": 88,
+    "pos_P95": 26,
+    "pos_P97.5": 18,
+    "pos_P99": 14
+  },
+  "outputs": {
+    "work": "06_RESEARCH/CODE/output/a2_events_work.csv",
+    "holdout": "06_RESEARCH/DATA/HOLDOUT/a2_events_holdout.csv"
+  }
+}
