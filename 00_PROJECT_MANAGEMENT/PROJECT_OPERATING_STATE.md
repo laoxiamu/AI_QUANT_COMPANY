@@ -1,5 +1,7 @@
 # PROJECT_OPERATING_STATE.md
 
+⚠️ **本文件已降级（2026-06-11，依据 CLAUDE.md v2.3 / DEC-067）**：仅作历史参考，禁止作为当前架构、计划或决策依据。现行权威：`01_MEMORY_CORE/BOOT_BRIEF.md` + 公司OS四蓝图。
+
 **版本：** 2.7  
 **更新时间：** 2026-06-07（状态同步:修正§1阶段Phase 0B→Phase 1;P1-01~P1-06已执行,失败计数10/独立Alpha 5/8;本表仅留早期闭环示意,运行实况以CURRENT_STATE为权威。三审计6-07共识:暂停新实验待Founder裁决D级。本文件与CURRENT_STATE重叠,Opus标P2待归并。）  
 **上版（2.6）：** 2026-06-06（DEC-053门槛校准:回撤按资金档定规模+保Sharpe>1;TSMOM封存;待选新纯永续方向性信号）  

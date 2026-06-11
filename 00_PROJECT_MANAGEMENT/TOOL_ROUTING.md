@@ -3,7 +3,7 @@
 |---|---|---|
 | 判断/设计/研究主张/验收 | Claude 主会话 | 唯一判断层；禁被动执行 |
 | 复杂实现（>100行/多文件/长迭代）| Codex | 文件式handoff+任务规格；R1起经直调通道 |
-| 机械批量（索引/横幅/搬运/格式化）| 低模型会话 | 按 LOW_TIER_CHARTER；Claude验收 |
+| 机械批量（索引/横幅/搬运/格式化）| **Claude 直接 spawn 低模型子代理（haiku）** | 按 LOW_TIER_CHARTER；Claude验收；无需Founder开新会话（2026-06-11起默认，Founder手动开低模型会话=备用通道）|
 | ≤50行分析脚本 | Claude 沙盒 bash | 一次性、可丢弃 |
 | 常驻进程（采集器等）| Mac launchd / 云VM | **沙盒禁**（会话结束即死）|
 | 定时巡检/月审/周监控 | scheduled task | SKILL与现行口径同步是Claude责任 |

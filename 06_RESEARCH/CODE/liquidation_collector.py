@@ -41,12 +41,20 @@ def heartbeat_log():
         n = sum(1 for _ in open(p)) if os.path.exists(p) else 0
         print("[heartbeat]", datetime.datetime.now(datetime.timezone.utc).isoformat(), "today_rows=", n, flush=True)
 
+# 代理（大陆网络直连 Binance 被阻断；默认走本机系统代理，可用环境变量覆盖/置空禁用）
+PROXY_HOST = os.environ.get("LIQ_PROXY_HOST", "127.0.0.1")
+PROXY_PORT = int(os.environ.get("LIQ_PROXY_PORT", "7897") or 0)
+
 if __name__ == "__main__":
     threading.Thread(target=heartbeat_log, daemon=True).start()
+    kw = dict(ping_interval=180, ping_timeout=10)
+    if PROXY_HOST and PROXY_PORT:
+        kw.update(http_proxy_host=PROXY_HOST, http_proxy_port=PROXY_PORT, proxy_type="socks5h")
+        print("using proxy %s:%s" % (PROXY_HOST, PROXY_PORT), flush=True)
     while True:  # 断线重连
         try:
             ws = websocket.WebSocketApp(WS_URL, on_message=on_message, on_error=on_error, on_close=on_close)
-            ws.run_forever(ping_interval=180, ping_timeout=10)
+            ws.run_forever(**kw)
         except Exception as e:
             print("reconnect after error:", e, flush=True)
         time.sleep(5)
