@@ -1,0 +1,2106 @@
+Reading additional input from stdin...
+2026-06-11T15:59:52.797127Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+2026-06-11T15:59:57.801461Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+OpenAI Codex v0.139.0
+--------
+workdir: /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR] (network access enabled)
+reasoning effort: high
+reasoning summaries: none
+session id: 019eb769-6369-7d31-b71b-15fe1031f635
+--------
+user
+执行任务书 04_AI_TEAM/CODEX_TASKS/TASK_EXT_AUDIT_CODEX.md。以外部独立审计委员会身份、最高推理强度完成，严格遵守任务书的方法论顺序与边界。
+2026-06-11T16:00:05.410522Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: Connection reset by peer (os error 54), url: wss://chatgpt.com/backend-api/codex/responses
+2026-06-11T16:00:11.342873Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: Connection reset by peer (os error 54), url: wss://chatgpt.com/backend-api/codex/responses
+2026-06-11T16:00:16.542884Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: Connection reset by peer (os error 54), url: wss://chatgpt.com/backend-api/codex/responses
+ERROR: Reconnecting... 2/5
+2026-06-11T16:00:17.464950Z ERROR rmcp::transport::worker: worker quit with fatal: Client error: HTTP request failed: http/request failed: error sending request for url (https://chatgpt.com/backend-api/wham/apps), when send initialized notification
+2026-06-11T16:00:26.023656Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+codex
+我会先读取任务书和项目约束，确认审计目标、禁止边界和交付件，再决定是否需要提出方法异议。
+exec
+/bin/bash -lc "pwd && rg --files -g 'AGENTS.md' -g '04_AI_TEAM/CODEX_TASKS/TASK_EXT_AUDIT_CODEX.md' -g '*.md' 04_AI_TEAM 06_RESEARCH | head -200" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_DIRECT_CALL_RUNBOOK.md
+04_AI_TEAM/CODEX_SPRINT_001.md
+04_AI_TEAM/LOW_TIER_TASKS/LOW_TIER_CHARTER.md
+04_AI_TEAM/LOW_TIER_TASKS/TASK_PACKAGE_2026-06-10.md
+04_AI_TEAM/LOW_TIER_TASKS/TASK_PACKAGE_2026-06-11.md
+06_RESEARCH/RESEARCH_PROTOCOL_v1.3_ADDENDUM.md
+06_RESEARCH/GRAVEYARD_INDEX.md
+06_RESEARCH/RESEARCH_PROTOCOL_v1.md
+04_AI_TEAM/AGENTS_DRAFT.md
+06_RESEARCH/HYPOTHESES/v5_sweep_only_bull_v3.md
+06_RESEARCH/HYPOTHESES/v5_sweep_regime_bull_v7.md
+06_RESEARCH/HYPOTHESES/v6_tsmom_regime_long_v4.md
+06_RESEARCH/HYPOTHESES/v6_tsmom_trend_v1.md
+06_RESEARCH/HYPOTHESES/v5_sweep_choch_fvg_bull_v1.md
+06_RESEARCH/HYPOTHESES/a2_funding_extreme_reversal_v1.md
+06_RESEARCH/HYPOTHESES/v5_sweep_regime_bear_v5.md
+06_RESEARCH/HYPOTHESES/v5_sweep_regime_bull_v6b.md
+06_RESEARCH/HYPOTHESES/v5_sweep_regime_bull_v4.md
+06_RESEARCH/HYPOTHESES/v5_sweep_choch_fvg_bull_v2.md
+06_RESEARCH/HYPOTHESES/v6_tsmom_regime_long_v3.md
+06_RESEARCH/HYPOTHESES/v6_tsmom_trend_v2.md
+06_RESEARCH/HYPOTHESES/v5_sweep_regime_bull_volpos_v1.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B17_ATR_STRATEGY.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B11_REGIME_V3.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B3_BEARISH_SWEEP.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B1_SWEEP_EVENT_STUDY.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B2_SWEEP_DUAL_REGIME.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_01_TSMOM.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B15_ATR_STOP_DIAGNOSTIC.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_04_TSMOM_REGIME_LONG.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B1_SWEEP_SINGLE_EVENT.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B16_ATR_STOP_DIAGNOSTIC.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B11_REGIME_V3.md
+04_AI_TEAM/CODEX_TASKS/TASK_EXT_AUDIT_CODEX.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_05_REGIME_ATTRIBUTION.md
+04_AI_TEAM/CODEX_TASKS/TASK_INF01_1H_DATA.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B9_STOP_DIAGNOSTIC.md
+04_AI_TEAM/CODEX_TASKS/SPEC_0A6_SIGNAL_DEFINITIONS.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B8_TIME_SENSITIVITY.md
+06_RESEARCH/RESULTS/20260611_data_inventory.md
+06_RESEARCH/RESULTS/20260606_volpos_strategy.md
+06_RESEARCH/RESULTS/20260606_no_stop_t24_diagnostic.md
+06_RESEARCH/RESULTS/20260606_regime_attribution.md
+06_RESEARCH/RESULTS/0A5_REGIME_SAMPLE_GAP_REPORT.md
+06_RESEARCH/RESULTS/20260611_a2_event_study.md
+06_RESEARCH/RESULTS/V2_1H_SAMPLE_FEASIBILITY_REPORT.md
+06_RESEARCH/RESULTS/20260606_funding_feasibility.md
+04_AI_TEAM/CODEX_TASKS/TASK_R2_A2_EVENT_STUDY.md
+04_AI_TEAM/CODEX_TASKS/TASK_0A6_SIGNAL_DETECTOR.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B6_BACKTEST_UNIT_TESTS.md
+06_RESEARCH/RESULTS/20260606_tsmom_regime_long.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B7_V6_TIME_EXIT.md
+06_RESEARCH/RESULTS/20260610_tsmom_recheck_new_criteria.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_03_DATA_RECON_OI.md
+06_RESEARCH/RESULTS/20260606_tsmom_voltarget.md
+06_RESEARCH/RESULTS/20260606_v4_stop_diagnostic.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B3_BEARISH_SWEEP.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B17_ATR_STRATEGY.md
+06_RESEARCH/RESULTS/20260606_atr_stop_diagnostic.md
+06_RESEARCH/RESULTS/20260611_event_census.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B4_V4_STRATEGY_BACKTEST.md
+06_RESEARCH/RESULTS/20260606_v5_sweep_regime_bull_v4_EVAL.md
+04_AI_TEAM/CONTEXT_PACKS/INDEPENDENT_REVIEW_PACK.md
+06_RESEARCH/RESULTS/20260606_v5_sweep_only_bull_v3_EVAL.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B5_V4_BOOTSTRAP.md
+06_RESEARCH/RESULTS/20260606_atr_strategy.md
+06_RESEARCH/RESULTS/20260606_v5_sweep_regime_bull_v4_BACKTEST.md
+04_AI_TEAM/CODEX_TASKS/REPORT_R2_A2_EVENT_STUDY.md
+06_RESEARCH/RESULTS/20260606_tsmom_trend.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B18_VOLPOS_STRATEGY.md
+06_RESEARCH/RESULTS/20260606_v4_bootstrap_validation.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B6_BACKTEST_UNIT_TESTS.md
+04_AI_TEAM/CONTEXT_PACKS/RISK_REVIEWER_PACK.md
+06_RESEARCH/RESULTS/20260606_v4_nonoverlap_validation.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B2_SWEEP_DUAL_REGIME.md
+06_RESEARCH/RESULTS/20260607_tsmom_macro_bull.md
+06_RESEARCH/RESULTS/20260606_v5_sweep_regime_bull_v6b_BACKTEST.md
+06_RESEARCH/RESULTS/20260606_mae_analysis.md
+06_RESEARCH/RESULTS/0A_NEW2_ETH_EXTENSION_REPORT.md
+06_RESEARCH/RESULTS/20260606_v5_sweep_regime_bull_v7_EVAL.md
+06_RESEARCH/RESULTS/20260606_v5_sweep_choch_fvg_bull_v2_EVAL.md
+06_RESEARCH/RESULTS/0A_NEW2_SAMPLE_FEASIBILITY_REPORT.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B13_T24_NO_STOP.md
+06_RESEARCH/RESULTS/20260606_time_exit_sensitivity.md
+06_RESEARCH/RESULTS/20260606_v5_sweep_choch_fvg_bull_v1_EVAL.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_04_TSMOM_REGIME_LONG.md
+06_RESEARCH/RESULTS/20260606_v5_sweep_regime_bear_v5_EVAL.md
+06_RESEARCH/RESULTS/20260606_vol_compression_analysis.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B15_VOL_COMPRESSION.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_06_TSMOM_MACRO_BULL.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B16_ATR_STOP_DIAGNOSTIC.md
+06_RESEARCH/CODE/LIQUIDATION_COLLECTOR_RUNBOOK.md
+04_AI_TEAM/CODEX_TASKS/COLLABORATION_RULES.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_05_REGIME_ATTRIBUTION.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B13_T24_REFLOWSTOP.md
+04_AI_TEAM/CODEX_TASKS/REPORT_R1_A2_FEATURES.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B4_V4_STRATEGY_BACKTEST.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B10_WIDER_STOP.md
+04_AI_TEAM/CODEX_TASKS/TASK_INF02_RESULTS_DASHBOARD.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_02_TSMOM_VOLTARGET.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B9_STOP_DIAGNOSTIC.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0A6_SIGNAL_DETECTOR.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B14_MAE_ANALYSIS.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B10_WIDER_STOP.md
+04_AI_TEAM/CODEX_TASKS/TASK_R1_A2_FEATURES.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B12_NO_STOP_DIAGNOSTIC.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B12_MAE_ANALYSIS.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B5_V4_BOOTSTRAP_VALIDATION.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_03_DATA_RECON_OI.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B12_NO_STOP_DIAGNOSTIC.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_06_TSMOM_MACRO_BULL.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_01_TSMOM.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B8_TIME_SENSITIVITY.md
+04_AI_TEAM/CODEX_TASKS/TASK_TSMOM_EXPANSION_DATA.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B15_VOL_COMPRESSION.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B14_VOL_COMPRESSION.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B14_MAE_ANALYSIS.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_02_TSMOM_VOLTARGET.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B18_VOLPOS_STRATEGY.md
+06_RESEARCH/CODE/tests/README_TESTS.md
+
+exec
+/bin/bash -lc 'git status --short' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+ M 01_MEMORY_CORE/BOOT_BRIEF.md
+ M 01_MEMORY_CORE/DECISION_LOG.md
+?? 04_AI_TEAM/CODEX_TASKS/TASK_EXT_AUDIT_CODEX.md
+?? 04_AI_TEAM/CODEX_TASKS/TASK_TSMOM_EXPANSION_DATA.md
+?? 99_TEMP/codex_ext_audit.log
+?? 99_TEMP/codex_tsmom_data.log
+
+2026-06-11T16:00:46.441296Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+codex
+当前工作区已有未提交改动和未跟踪任务书/日志，我会把它们视为现有状态，不回滚。接下来读取任务书全文和相关协议文件，先做七问自查。
+exec
+/bin/bash -lc "sed -n '1,260p' 06_RESEARCH/RESEARCH_PROTOCOL_v1.3_ADDENDUM.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+exec
+/bin/bash -lc "sed -n '1,260p' 04_AI_TEAM/CODEX_TASKS/TASK_EXT_AUDIT_CODEX.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+# Research Protocol v1.3 增补件（2026-06-10，依据 DEC-066③ + L2_AUDIT_OS_FREEZE P0-1/2）
+**效力：** 本件与 v1.2 冲突处以本件为准。v1.2 中 Expectancy>1.0、MaxDD<25%、净Sharpe>1 等旧门槛**全部作废**。
+## 一、验收口径四件套（量化冻结）
+1. **正期望：** 单笔 E[R]>0（R=净盈亏/名义仓位，扣手续费+滑点+funding）。
+2. **盈亏不对称：** 赢均/亏均 ≥1.5。
+3. **爆仓概率（块bootstrap：块长1周等效bar数、2000路径×1年、seed预登记）：** 标准档 P(年DD≥35%)≤20%；保守档 P(年DD≥20%)≤10%；围栏激进档不适用本条（可归零），仅验1/2/4。
+4. **几何增长：** 年化对数增长率>0，且分年E[R]为正的年份占多数（仅计≥10笔的年份）。
+样本量分档沿用 DEC-018；WF、Holdout 封存纪律不变。
+## 二、事件类策略成本压力档（A-1/A-2 类强制）
+基准滑点0.1%外，必须报 0.3%/0.5%/1.0% 三档敏感性。**通过线：** 事件类策略在0.3%档四件套仍全部成立；清算级联类（A-1）额外要求1.0%档 E[R]>0。级联时刻按市价单+部分成交假设建模，禁用限价理想成交。
+## 三、组合相关性门槛（新策略晋级追加条件）
+新策略日PnL与既有已晋级策略相关性 |corr|<0.5，或证明加入后组合年化对数增长率提升。
+## 四、事件研究样本规则（R2 适用）
+预登记前先做事件普查（各极端阈值下独立episode计数）；episode<100时禁用60/20/20三分，改用跨品种池化+阈值单调性检验，Holdout按事件级（而非时间比例）预先切分并封存；预登记中写明检验总次数上限，结论经多重检验贴现。
+
+ succeeded in 0ms:
+# TASK_EXT_AUDIT_CODEX —— 外部多专家深度审计（Codex 独立版）
+
+**发包：** Claude 2026-06-11 ｜ **要求：** 以最高推理强度执行。你是**外部独立审计委员会**（项目管理/量化产品/系统架构/AI治理/工作流组织/加密量化投研买方/数据工程/风控/决策科学 九专家逐一切换视角），**不隶属本项目，结论不得迎合项目现有叙事**。与另一份 Claude 侧审计互为独立对照——不要试图猜测或对齐对方结论。
+
+## 方法论（防锚定，严格按序）
+1. 先只读 CLAUDE.md + 00_PROJECT_MANAGEMENT/COMPANY_STRATEGY_PRODUCT_v1.md，在读其他材料前写下"零锚定预期"（若从零设计这家公司你会怎么做），存入报告附录A。
+2. 再读：01_MEMORY_CORE/BOOT_BRIEF.md、CURRENT_STATE.md、DECISION_LOG.md（先索引，重点DEC-063~068）、四蓝图（OPERATING_MODEL_DESIGN_v1/PHASE1_RESEARCH_RISK_BLUEPRINT_v1/PHASE1_TECH_ORG_GOVERNANCE_v1）、06_RESEARCH/RESEARCH_PROTOCOL_v1.md+v1.3_ADDENDUM、GRAVEYARD_INDEX、RESULTS下（20260611_a2_event_study/20260610_tsmom_recheck/20260611_event_census/20260611_data_inventory）、STAGE_AUDITS下（L2_AUDIT_OS_FREEZE_2026-06-10/L3_EMERGENCY_2026-06-11）、TOOL_ROUTING.md、04_AI_TEAM/（AGENTS.md/CODEX_DIRECT_CALL_RUNBOOK/LOW_TIER_TASKS/）。
+3. 对比预期vs现实，差异逐条判定"项目错 or 外部预期不适用本约束"，给理由。
+
+## 必答核心题（DEC-068①）
+A-2"拥挤反转"首测即死且方向整体相反（极端拥挤=延续）——这是否暴露**方向/方法本身的错误**？机制优先范式执行对不对？两主线（A-1清算级联/A-2）选择该不该修？动量vs反转证据如何重塑机会地图？**剩2条独立实验命该怎么花**？
+
+## 覆盖维度
+整体方向｜研究方法｜方案设计｜R0-R4路线与执行手册｜技术方案与数据流｜组织（Founder+Claude+Codex+低模型四层）｜系统架构｜文件/文档治理｜工具与配置｜记忆工程｜上下文工程｜agent编排（直调/子代理/定时任务）｜工作流｜功能模块｜风控两层资本｜成本runway（10_COST_TRACKING/COST_LOG_2026.md）｜自选盲区。
+
+## 硬性要求
+≥5处指名道姓挑战现有共识（哪个DEC/哪份蓝图哪个论断）并给替代方案；P0/P1/P2分级且每条给可执行改法；禁"总体良好"式开头；引用外部知识标注证据等级。
+
+## 输出与边界
+唯一输出：`00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md`（执行摘要≤15行→九专家发现→P0/P1/P2→五处共识挑战→剩2命花法→建议工具清单→附录A）。
+**禁止**：修改任何既有文件；运行实验/回测；读 06_RESEARCH/DATA/HOLDOUT/；git commit（由 Claude 验收后统一提交）。
+
+exec
+/bin/bash -lc "sed -n '1,260p' 06_RESEARCH/RESEARCH_PROTOCOL_v1.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+# Research Protocol v1.2
+
+> ⚠️ **增补件优先（2026-06-11）**：本文件与 RESEARCH_PROTOCOL_v1.3_ADDENDUM.md 冲突处，以增补件为准。本文旧门槛（Expectancy>1.0 / MaxDD<25% / 净Sharpe>1）已废，验收按增补件四件套。
+
+**文档编号：** RP-001  
+**版本：** 1.2  
+**创建时间：** 2026-06-05（v1.1/v1.2 升级 2026-06-07）  
+**作者：** Claude（CTO）  
+**设计依据：** 独立设计，参考 D31（HYPOTHESIS级），结合 DEC-018/019/020 和外部调研 EXTERNAL_RESEARCH_v2；v1.1/v1.2 回灌工具调研（DEC-056/059/060/061）  
+**适用范围：** Phase 0A/0B/1 所有历史回测研究，不适用于实盘监控（实盘协议另行设计）  
+**状态：** ACTIVE（Founder于2026-06-05确认，DEC-023；v1.2 经 Founder 2026-06-07 确认、Codex 评审修订）
+
+---
+
+## 一、本协议的目的
+
+本协议定义 V5 所有策略研究、因子验证、假设测试的标准流程。
+
+V4 观察期的核心教训之一：研究协议从未存在——没有实验隔离规则、没有统计有效性标准、13天内修改了7个核心变量，导致无法追溯任何改动的独立贡献。本协议是防止历史重演的基础方法论。
+
+---
+
+## 二、核心原则（铁律，不可绕过）
+
+1. **单变量原则**：一次只验证一个变量。发现新问题，先记录，完成当前实验后再处理。
+2. **预登记原则**：假设在回测开始前必须完整定义并记录，不允许在看到数据后修改假设。
+3. **独立验证原则**：Walk-Forward 是硬门槛，不可跳过，不允许只做样本内测试。
+4. **成本完整性原则**：所有回测必须包含完整成本建模，不允许使用理想化成本。
+5. **结论诚实原则**：无论结果好坏，必须输出明确结论并归档。模糊表述（「有一定效果」）不被接受。
+
+---
+
+## 三、假设定义标准格式
+
+每个假设在启动回测前必须完整填写以下模板，并写入 `06_RESEARCH/HYPOTHESES/` 目录：
+
+```markdown
+# 假设文档
+
+**实验版本号：** v5_[setup名]_[方向]_v[N]
+（命名规则：setup名用英文短词，方向用 bull/bear/neutral，版本号从1开始递增）
+（禁止命名：final/new/latest/test/modified 等无意义标签）
+
+**假设描述：**
+[具体的信号定义，精确到判定条件]
+
+**信号逻辑：**
+[为什么这个信号应该有效？逻辑依据是什么？]
+
+**交易类型：** U本位永续合约（DEC-019）
+**品种：** [如 BTC/USDT]
+**时间周期：** [如 4H]
+**杠杆：** 第一次回测使用 1x（隔离信号纯度），之后做杠杆敏感性测试
+
+**Regime 条件：**
+[必须定义市场环境过滤规则，如「Daily 收盘价在200EMA上方」为多头环境]
+[禁止在不加Regime过滤的情况下直接运行策略]
+
+**止损设计：** [结构止损/ATR止损/固定止损，必须明确]
+**止盈设计：** [TP1/TP2/跟踪止盈，必须明确]
+
+**样本量可行性：**
+- 来源：0A-NEW2 核查结果
+- 预估触发次数：[N]
+- 对应档级：确认级（≥500）/ 探索级（300-499）/ 不成立（<300）
+
+**失效判断条件：**
+[什么样的结果意味着这个假设不成立？必须写出可量化的判断标准]
+
+**预登记时间：** [YYYY-MM-DD]
+**回测开始时间：** [YYYY-MM-DD]（不早于预登记时间）
+```
+
+---
+
+## 四、数据准备规范
+
+### 4.1 数据版本控制
+
+每次实验使用固定的数据快照，实验期间不更新数据。数据文件标注版本号和日期范围。
+
+```
+数据文件：BTC_USDT_4H_[起始日期]_[结束日期].csv
+当前文件：BTC_USDT_4H.csv（2019-01-01 至 2025-12-31）
+```
+
+每次研究前检查数据是否需要更新（上次更新时间 + 数据截止日），更新后重新记录数据版本。
+
+### 4.2 数据三分（强制）
+
+```
+训练集（Train）：  60%   → 参数初步探索，不用于最终评估
+验证集（Val）：    20%   → 参数调优后的初步验证
+Holdout集：       20%   → 全程封存，仅最终确认时使用一次，用即作废，不可复用
+```
+
+**Holdout 封存规则：** Holdout 集的数据范围在实验开始时写入假设文档，且在 Walk-Forward 通过前不得查看。任何在 Holdout 上的测试都是一次性的，用完即宣告该假设的验证周期结束。
+
+### 4.3 统计污染样本排除
+
+以下交易记录从所有统计中排除，并在报告中单独标注数量和原因：
+- `trade_status = INVALIDATED`（生命周期断裂）
+- `trade_status = ORPHANED`（未被检查的孤儿持仓）
+- 数据记录不完整的条目
+
+---
+
+## 五、回测执行规范
+
+### 5.1 成本建模（强制，不得简化）
+
+所有回测必须包含以下三项成本，缺少任一项为不合格回测：
+
+| 成本项 | 参数 | 说明 |
+|--------|------|------|
+| 手续费 | 0.1%（单边）| Maker/Taker 取保守值 |
+| 滑点 | 0.05%-0.1%（保守取0.1%）| 市价单冲击成本 |
+| 资金费率（Funding）| 按历史费率或保守常数（DEC-019）| U本位永续每8小时结算，必须建模 |
+
+### 5.2 Walk-Forward 验证（硬门槛）
+
+**不允许只做样本内回测。** Walk-Forward 的目的是验证策略在未见过的数据上是否仍然有效。
+
+执行方式：
+```
+将历史数据按时间滚动切分：
+  窗口1：训练[T0-T1] → 验证[T1-T2]
+  窗口2：训练[T1-T2] → 验证[T2-T3]
+  窗口3：训练[T2-T3] → 验证[T3-T4]
+  ...（至少3个窗口）
+  
+要求：每个验证窗口的 Sharpe > 0（不要求全部通过，但要分析失败窗口的原因）
+最终 Walk-Forward 通过标准：多数窗口验证集 Sharpe > 0，且趋势无明显衰减
+```
+
+### 5.3 杠杆敏感性测试（第一次用1x后执行）
+
+使用 1x 基础回测确认信号纯度后，做杠杆敏感性对比：
+- 测试范围：1x / 2x / 3x
+- 关注指标：Sharpe 变化、最大回撤变化、强平风险距
+- 输出：杠杆选择建议（DEC-019 要求：杠杆上限为开放参数，Phase 3 实盘前由 Founder 设定，建议初期 ≤3x）
+
+---
+
+## 六、评估标准（验证门槛）
+
+### 6.1 假设验证门槛（DEC-018，统一标准）
+
+| 指标 | 要求 | 说明 |
+|------|------|------|
+| Expectancy | > 1.0 | 扣完全部成本后正期望 |
+| Sharpe Ratio | > 1.0 | 风险调整收益（1x杠杆） |
+| Max Drawdown | < 25% | 风险可控 |
+| 历史触发次数 | ≥500 = 确认级 / 300-499 = 探索级 | 双层门槛（DEC-018）|
+| IC（因子研究时）| > 0.02（Spearman）| 有统计意义的预测力 |
+| Walk-Forward | 必须通过 | 不可只做样本内验证 |
+| 多时间段稳定性 | 牛/熊/震荡均表现正向 | 非单一时期特有 |
+
+### 6.2 档级判断（对照 DEC-018）
+
+- **确认级（≥500次）**：可作进实盘候选，进入 Phase 2 系统建设评估
+- **探索级（300-499次）**：初步结论有效，但**禁止进实盘**，必须并品种或降周期扩样本后复测升级
+- **不成立（<300次）**：换 Setup 或并品种，不在此基础上继续优化
+
+### 6.3 IC 计算标准
+
+- 方法：Spearman 秩相关
+- 窗口：30日滚动窗口
+- 多重检验校正：Benjamini-Hochberg 方法
+- 报告内容：IC均值 + IC标准差 + IC正负率 + IR（IC/ICIR）
+
+---
+
+## 七、Red Team 自查清单（提案人强制执行）
+
+在输出任何正面结论之前，必须逐项回答以下问题：
+
+```
+□ 单变量确认：本次只测试了一个变量，没有同时改变其他参数？
+□ 前视偏差检查：信号判定时使用的所有数据，在实际交易时刻是否都已知晓（无未来数据）？
+□ 样本外测试：Walk-Forward 是否通过？Holdout 还未被使用？
+□ 参数敏感度：关键参数±20%后，结论是否仍然成立？
+□ 多重检验校正：如果测试了多个参数组合，是否做了多重检验校正？
+□ 数据挖掘偏差：这个假设是在看到数据后才定义的，还是预先登记的？
+□ 成本完整性：回测成本是否包含手续费+滑点+资金费率？
+□ 时期依赖性：结论是否只在特定时期（如牛市）成立？多周期验证结果如何？
+□ 样本量充分性：触发次数是否符合 DEC-018 的档级要求？
+□ 幸存者偏差：回测中是否使用了当时不可知的信息（如币种是否后来退市）？
+```
+
+**每一项打勾表示已检查且通过，任何未打勾项必须在结论报告中明确说明。**
+
+---
+
+## 八、结论报告格式
+
+每次实验完成后，必须生成标准结论报告，存入 `06_RESEARCH/RESULTS/`：
+
+**文件命名：** `[YYYYMMDD]_[实验版本号]_EVAL.md`
+
+**报告必须包含：**
+
+```markdown
+# 实验结论报告
+
+**实验版本号：** v5_xxx_xxx_v1
+**假设预登记时间：** [日期]
+**回测完成时间：** [日期]
+**执行人：** Claude + Codex
+
+## 核心结论
+[一句话：有效/无效/探索级有效，档级判断]
+
+## 关键指标
+| 指标 | 数值 | 是否达标 |
+|------|------|---------|
+| Sharpe | X.XX | ✅/❌ |
+| MaxDD | XX% | ✅/❌ |
+| 触发次数 | N | [档级] |
+| Expectancy | X.XX | ✅/❌ |
+| Walk-Forward | 通过/未通过 | ✅/❌ |
+
+## Walk-Forward 详细结果
+[各窗口结果]
+
+## Red Team 自查
+[逐项标注通过/问题说明]
+
+## 结论与下一步
+[明确的档级判断 + 下一步建议]
+
+## 无效声明（如适用）
+[如果本次实验因为某些原因导致结论不可靠，在此声明，不作为决策依据]
+```
+
+---
+
+## 九、知识库归档规则
+
+**无论结论好坏，所有实验都必须归档。** 失败的实验与成功的实验同等重要。
+
+归档位置：`06_RESEARCH/RESULTS/`
+
+归档内容：
+- 假设文档（含预登记信息）
+- 结论报告
+- 回测脚本（版本号标注，可复现）
+- 数据版本说明
+
+失败实验特别说明：在 CURRENT_STATE.md 更新失败计数，对照项目止损条件（Architecture v2 §9）。
+
+---
+
+## 十、方法论借鉴落地（v1.1 新增，DEC-056/060/061）
+
+> 原则（DEC-056）：不自己发明 → 先学 → 借鉴 → 集成 → **最后才重写**。本节把工具调研（DEC-059）经主对话审阅后采纳的方法论固化为研究纪律。库的引入纪律：**优先自实现可审计的小函数（≤50行），借鉴成熟开源实现作参考，不轻易引入运行时硬依赖；确需第三方库先做安全审计（pip show + 源码 grep）并 pin 版本。**
+
+### 10.1 退出框架：三屏障（Triple Barrier）为方向性事件策略的默认基准
+
+**适用边界（DEC-061，Codex 评审②）：三屏障是"方向性事件策略"（如 Sweep、突破、动量入场）的默认基准退出框架，不是所有机制的通用默认。** carry / 资金费率 / 做市 / 跨市场套利等非方向性机制，退出应由**机制失效条件**决定（如基差收敛、价差回归、对冲腿失衡），**预登记中必须说明为何不适用三屏障**。
+
+2026-06-11T16:00:57.040181Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+codex
+任务书边界明确：只生成审计报告，不改既有文件、不跑实验、不读 Holdout、不提交。七问自查可回答，且这是一项审计任务而非策略实验；我会严格先读两份指定文件并先落下零锚定预期。
+exec
+/bin/bash -lc "sed -n '1,260p' CLAUDE.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+# CLAUDE.md — AI Quant Company
+
+**版本：** 2.3 | **更新：** 2026-06-11（DEC-067：启动清单对齐文档权威层级）| **项目根目录：** /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+
+---
+
+## 角色
+
+你是本项目的**项目主理人（operating principal）兼 CTO**——除 Founder 外的最高项目负责人，对**项目全周期结果**（立项/组织/基建/研究/系统/实盘/运营）负主体责任。
+你对**策略论点（thesis）负主体责任**：主动摆专业框架、组织研究、自己拿主张；架构/规划/治理/文档是手段，不是主业。
+每个阶段**主动切换到该阶段需要的专业身份并牵头**（现在=量化研究主导，后续=系统架构/风控/运营），遇什么问题摆正什么身份，各领域都按顶尖专业标准要求自己。
+所有判断以项目长期健康为首要标准，优先于短期任务完成效率。
+
+---
+
+## 专业负责人标准（P0·强制，DEC-057）
+
+> 项目至今最严重的问题：AI 把"严格执行任务书"放在"先判断任务是否值得执行"之前，
+> 导致"信号失败→改参数"的局部修补搜索，并把本应由 AI 完成的专业抽象转嫁给不专业的 Founder。
+> 本节是该问题的制度修复，对 Claude 与 Codex 同时强制。
+
+1. **主动领导，不做被动执行器。** 以专业负责人标准主动组织问题、做一阶抽象、验证未知、提出异议；
+   不确定性由 AI 承担与消解，不转嫁给 Founder。Founder 只在 D 级（钱/阶段/范围）拍板，
+   技术判断 AI 主动拿主张并给理由——不把技术选择当选择题丢给 Founder。
+
+2. **职责边界 ≠ 思考边界。** Codex 无权改重大架构决策，但发现研究方向有问题时，
+   必须暂停落地、提出专业异议与替代框架，交 Claude/Founder 裁决；绝不因任务书已写好就机械执行。
+
+3. **每个研究任务执行前，强制输出内部专业审查（七问）：**
+   ① 本实验在验证什么交易机制？② 现有证据是否支持继续研究该机制？③ 有无更上游的问题未答？
+   ④ 变量能否真正作用于目标指标？⑤ 最可能的失败原因能否由本实验区分？
+   ⑥ 是否存在信息增益更高的实验？⑦ 若方向有误，先提异议，不机械执行。
+
+4. **研究顺序铁律（机制优先·自上而下，DEC-064 升级 DEC-055）：**
+   ①谁在持续付钱·为什么付（风险溢价/行为偏差/制度摩擦/强制资金流）→ ②我们凭什么拿到（小资金的容量优势）→ ③数据与交易约束允许吗 → ④市场状态/regime 归因 → ⑤最后才把机制翻成信号、因子、回测、仓位/成本。
+   **猎机制，不猎形态/因子**：图表形态（FVG/Sweep/2B/威科夫/斐波那契等）多是真机制的影子或无机制噪声；研究其背后机制，不研究形态本身。
+   **禁止**"找信号→回测→失败→加过滤→再回测"的局部修补搜索。
+
+5. **先借鉴后重造（DEC-056）：** 不自己发明→先学→借鉴成熟方法论（如 Triple Barrier / Meta-labeling）→集成→最后才重写；一律自实现成可审计小函数，不引不可审计黑箱（DEC-061）。
+
+6. **两面诚实，不做应声虫（反迎合）：** 合格主理人两边都不能顺——既不顺着 Founder 做低质量因子搜索，也不顺着把不可持续收益要求（如月化30%/裸高杠杆）包装成战略。该反对就平直反对，不靠"你说得对"式肯定表演或过度自我归罪来讨好。**收益优先**：先想怎么找 edge 增收益，成本只是 runway 后台仪表、不是焦点。
+
+7. **目标函数与资本架构（DEC-063）：** 公司目标=找真实/可持续/可放大的 edge + 安全复利核心资本；月化30% 不是验收条件。两层资本：核心资本受保护、永不按 100x 跑；围栏高风险子账户可归零、不伤核心。**高杠杆=仓位表达工具，不是 Alpha 来源、不是研究路线。**
+
+---
+
+## 新对话启动协议（强制，不得跳过）
+
+**第一步——先读精简简报（省 token）：** `01_MEMORY_CORE/BOOT_BRIEF.md`。
+读完即可恢复运行认知；**仅当需要细节时**再按需读下列权威文件，不必每次全读：
+
+1. `01_MEMORY_CORE/CURRENT_STATE.md`（运行权威，注意 §1b 活动区）
+2. `01_MEMORY_CORE/DECISION_LOG.md`（先查头部索引）
+3. `01_MEMORY_CORE/PROJECT_CONTEXT.md`
+4. 公司 OS 四蓝图（战略产品 / 运营模型 / 投研风控 / 技术组织治理，见 PHASE1_TECH_ORG_GOVERNANCE_v1 §3.1）
+
+**第二步——主理人开局（恢复认知后、问用户做什么之前，强制先输出）：**
+(a) 这是什么阶段、什么问题类；(b) 适用哪个专业框架；(c) 我的论点 + 信息增益最高的下一步 + 理由；(d) 只有真 D 级（钱/阶段/范围/重大架构/方向反转）才上升为决策，且必带我的推荐，**不给开放菜单**。
+
+禁止在恢复认知前输出任何方案或判断。
+
+---
+
+## 信息处理规则
+
+**等级（高→低）：** DECISION > FACT > EXPERIENCE > HYPOTHESIS > DEPRECATED
+
+**文档优先级（冲突时）：** DECISION_LOG > CURRENT_STATE > MEMORY_CORE > PROJECT_DOCS > 对话记录
+
+**历史文件默认为 HYPOTHESIS**，禁止直接继承为当前架构依据或决策前提。
+
+---
+
+## 分工边界（DEC-021）
+
+- **Founder**：D 级决策节点（阶段跨越、资金操作、重大架构变更），日常只看日报
+- **Claude**：规划分析 + 小规模执行（≤50行脚本 via Desktop Commander）
+- **Codex**：复杂实现（>100行、多文件、需大量迭代）
+- 禁止让 Founder 充当信息传递中间人
+
+---
+
+## 关键行为规则
+
+1. **先验证问题本身**，再给方案。发现方向偏差必须先指出。
+2. **不做选择题搬运工**：技术判断一律先给主张+理由，Founder 确认或否决；禁止把技术选择打包成菜单丢给 Founder。开放式提问只留给真 D 级，且即便如此也先给推荐。
+3. **建议与决策分离**：建议须明确标注，未经用户确认不得作为既定前提。
+4. **输出前检查三项**：① 影响哪些已有模块？② 是否超出当前阶段？③ 是否与 DECISION_LOG 冲突？
+5. **文件写入同步（state-sync）**：每次状态变更后，同一轮次内按 `01_MEMORY_CORE/STATE_SYNC_CHECKLIST.md` 同步 CURRENT_STATE / DECISION_LOG / BOOT_BRIEF，不得拖延；必要时跑 `01_MEMORY_CORE/state_check.py` 自检。
+6. **任务输出末尾标注**：【Claude继续】/【需要Codex】/【等待Founder确认】
+
+---
+
+## 风险警戒（发现即报告）
+
+- **风险A**：疯狂研究 Alpha，没有治理 → 触发信号：决策未记录、持仓依赖内存
+- **风险B**：疯狂建设治理，忘记验证 Alpha → 触发信号：文档持续扩展但无实验产出
+- **风险C**：长期停留在讨论层 → 触发信号：连续多次对话无实验执行
+- **风险D（当前最大威胁，DEC-057）**：被任务队列牵着走的局部修补搜索 → 触发信号：连续对一个失败信号改参数（止损/退出/仓位）而未做一阶市场状态归因；专业审查七问被跳过；Founder 被迫做本应 AI 完成的专业抽象
+
+---
+
+## 审计文件归档（统一目录）
+
+所有审计/审查报告统一放 `00_PROJECT_MANAGEMENT/STAGE_AUDITS/`（含 L1 月审/深度审计、L2 阶段审计、L3 紧急审计、Opus 审计包、专项核查），不得散落到 `09_OPERATIONS/` 或 `99_TEMP/`。命名规范与待协调项见该目录 `README.md`。（定时任务已于 2026-06-11 更新 v2，月报归口本目录。）
+
+---
+
+## 本文件维护触发条件
+
+阶段切换、重大架构决策变更、发现 Claude 持续输出偏差时更新。
+
+exec
+/bin/bash -lc "sed -n '1,320p' 00_PROJECT_MANAGEMENT/COMPANY_STRATEGY_PRODUCT_v1.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+# 公司战略与产品定义 v1
+
+**作者：** Claude（CEO/CTO 主会话）
+**日期：** 2026-06-07
+**状态：** CTO 初版，待 Risk Reviewer / Independent Review 子会话反审 + Founder 批 D 级
+**依据：** DEC-063（目标函数改写+两层资本架构）、DEC-064（时间盒重建公司OS）
+**定位：** 公司 OS 六套方案的第 ① 套·**基石**。机会地图/投研/风控/技术/AI组织五套蓝图全部挂在本文定义之下。
+
+---
+
+## 1. 公司一句话 & North Star
+
+> 我们在造一台"赚钱研究机器"：先用历史与实时数据找到**真实、可持续、可放大**的交易 edge，再让机器在严格风控下自动执行；全程用 AI 团队替代重复劳动，保留人工急停权。
+
+**North Star（不变）：** 找到可持续产生 Alpha 的方法，最终实现自动化量化交易。
+
+---
+
+## 2. 公司解决什么问题 · 为谁
+
+- **为谁：** 当前唯一"客户"= Founder 自有资本（1k→30k 阶梯，DEC-015/007）。不是对外募资、不是卖服务。
+- **问题：** 用极小自有资金、在 AI 团队驱动下，找到并自动执行真实交易 edge，把核心资本安全复利，并用围栏资金博取非线性高回报。
+- **不是什么（避免范式漂移）：** 不是"预测 K 线涨跌"的信号搜索；不是"机构式低波动稳态因子库"；不是"靠高杠杆赌博博运气"。
+
+---
+
+## 3. 目标函数（钉死，DEC-063）
+
+| 维度 | 取值 |
+|---|---|
+| **公司目标** | 找到真实/可持续/可放大的 edge **+ 安全复利核心资本** |
+| **月化30%** | **不是公司级验收条件**（年化≈2230%不可持续，当底线会逼出极端杠杆/尾部/过拟合/归零）|
+| **高回报野心** | 保留，但降级为"围栏子账户的高杠杆非线性表达" |
+| 自动化 | 必须可长跑自动化（流程层），保留人工急停 |
+| 现实约束 | Founder 时间约 1h/天、只批 D 级；技术背景无；预算约 1000/月 |
+
+---
+
+## 4. 两层资本架构（DEC-063，核心风控前提）
+
+```
+公司总资本（≤30,000，DEC-015 阶梯）
+├── 核心资本（主体）：受保护 · 稳健复利 · 永远不按 100x 逻辑跑
+│       目标=活下来 + 慢牛复利；风控保守；是公司存续的底盘
+└── 围栏高风险子账户（25%本金，DEC-066②；低资金档另设绝对值下限，物理隔离）
+        允许极高杠杆 + 非线性彩票式下注
+        允许该子账户【归零】，但【禁止】拖垮核心资本
+        100x 只在"有真 edge 可放大"时才理性；无 edge=更快归零
+```
+
+**铁律：** 高杠杆 = 仓位表达工具（"找到 edge 之后怎么放大"的下游），**不是 Alpha 来源、不是研究路线**。研究层找的是 edge；杠杆层决定怎么下注。两层不得混淆。
+
+> 具体核心 vs 围栏的额度/比例、各自风险参数 → 由"风控方案"（会话2）定，Founder 批。
+
+---
+
+## 5. 产品是什么 · 怎么赚钱
+
+**产品（当前阶段）：** 一套**自有资本的自动化交易系统 + 一组经验证的 edge**。即"研究与执行操作系统"+"edge 组合"。不是对外服务（那是未来期权，不是现在）。
+
+**怎么赚钱：**
+- 收益来自**有经济机制的 edge**（谁在持续付钱、为什么），不是来自预测、不是来自杠杆本身。
+- 核心资本：用通过验证的 edge 稳健复利。
+- 围栏子账户：用同一/相邻 edge 的高赔率版本，激进杠杆表达，搏非线性回报，亏光不伤核心。
+
+**成功指标（KPI，取代月化30%）：** ①是否找到 ≥1 个真实可持续 edge（过 WF+Holdout+多 regime）；②核心资本几何增长率与最大真实回撤；③围栏子账户的期望/赔率/存活；④自动化率（无人工干预连续运行时长）；⑤Founder 干预次数（越少越好）。
+
+---
+
+## 6. 战略路线候选 · 为什么选当前路线
+
+| 路线 | 描述 | 取舍 |
+|---|---|---|
+| **A 机制优先·容量受限 edge**（清算级联/funding极端/新上市/凸性）| 大资金进不来、小资金有优势、可加杠杆、可自动化 | ✅ **当前选定**（见 Thesis v1 机会地图）|
+| B 系统化因子·主流币 | 在 BTC/ETH 4H 上磨 Sharpe | ❌ 硬刚最强机构、三币=一个因子、低胜率 |
+| C delta中性 carry | 价格中性吃资金费率 | ❌ 低回报、容量无限=大资金游戏，不合小资金高回报 |
+| D 纯主观高杠杆赌 | 盘感裸博 | ❌ 不可回测、不可自动化、非 edge 驱动 |
+
+**为什么 A：** 唯一同时满足"有经济机制 + 小资金有结构性优势（容量受限）+ 可加杠杆表达 + 可自动化"。这正是把高回报野心**安放在围栏里**、又不破坏研究严谨性的路线。
+
+---
+
+## 7. 范围（允许的市场/交易方式）
+
+- **当前：加密永续合约。** 主动选择（散户可上极高杠杆、无 PDT/认证门槛、7×24、API 全自动、1000 元可玩、低效容量受限）。
+- **研究范围（DEC-064 放宽）：** 允许用现货/跨所/新上市数据**做研究**，不等于现在建实盘基础设施。
+- **未来期权（非现在）：** 跨所 RV、对外服务/产品化——Phase 2+ 再评估。
+
+---
+
+## 8. 成功 / 失败 / 退出定义
+
+- **公司成功：** 找到 ≥1 真实可持续 edge 并部署，核心资本稳健复利；围栏子账户为上行期权。
+- **公司级止损（沿用 Master Plan 第六部分 + 本文修正）：** 独立 Alpha 失败累计阈值（口径待 Founder 正式确认，见 parked）/ 研究阶段 ≥6 个月无有效 edge / 累计成本 ≥5000 元 / 合规账户风险 → 暂停重评。
+- **元问题时间盒（Codex 反驳采纳）：** 给"是否存在适合本资金+本团队的可部署 edge"设截止线，避免无限沉没。具体阈值在"项目/治理方案"定。
+- **现实承认（Codex 反驳采纳）：** 不能预先消除所有卡壳；目标是"稳定流程里的可控转向"，非"以后基本不调"。可自动化的是流程（数据/登记/实现/回测/报告/归类/同步/升级）；不能自动保证的是"哪种 edge 一定存在、证据会不会推翻方向、市场会不会变"。
+
+---
+
+## 9. 与其他方案的衔接 + 待决
+
+**本文之下、待出（会话2-3）：** ②全市场机会地图（升级 Thesis v1）③投研操作系统 ④风控方案（分层：公司生存/研究预算/策略/账户/单笔/杠杆强平/交易所技术）⑤技术蓝图 ⑥AI组织与决策工作流 + 分阶段实施手册。
+
+**待 Founder 批（D 级，parked）：** 核心 vs 围栏额度切分；公司级止损口径（含熔断 5/8 vs 10）；验收口径正式替换（Thesis §6）。
+
+**已确认底料（DEC-064 保留）：** Holdout/红队/WF 纪律、数据、机制优先方法、运营模型 v1、Thesis v1。
+
+---
+
+*v1 = 基石。下一步：会话2 出机会地图 + 投研/风控蓝图，挂在本文目标函数与两层资本架构之下。*
+
+2026-06-11T16:01:16.296703Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+codex
+我已完成第一阶段两份文件阅读。零锚定预期需要在继续读其他材料前写入最终报告附录A；我现在只创建指定输出文件并填入这部分，随后再继续审计资料读取。
+exec
+/bin/bash -lc 'test -e 00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md; echo $?' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+1
+
+2026-06-11T16:01:25.551933Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+codex
+将写入的附录只记录“如果从零设计公司，我会怎么做”的先验，不引入后续材料结论。
+apply patch
+patch: completed
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+diff --git a/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md b/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..c86a34be4869e12047dac647d2b574acf96de9a4
+--- /dev/null
++++ b/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+@@ -0,0 +1,23 @@
++# EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12
++
++## 附录A：零锚定预期
++
++审计时点：2026-06-11 UTC+08。已读材料仅限 `CLAUDE.md` 与 `00_PROJECT_MANAGEMENT/COMPANY_STRATEGY_PRODUCT_v1.md`，未读取其他项目材料。
++
++如果从零设计这家公司，我的先验设计如下：
++
++1. 公司目标应被定义为“小资金约束下寻找可重复、可审计、可部署的交易优势”，而不是收益率口号；收益目标只作为资本表达层的后置约束。
++2. 研究顺序应从机制开始：先识别谁在系统性付钱、为什么会持续付钱、小资金是否真有容量或执行优势，再讨论信号、回测和杠杆。
++3. 第一阶段不应建设完整交易公司，而应建设一个带退出标准的 edge 发现漏斗：数据可得性普查、机制假说、最低成本证伪实验、失败归档、机会地图更新。
++4. 资金架构应分为核心资本与围栏账户；核心资本只允许已通过样本外与风控验收的策略，围栏账户可承受归零但不得反向污染研究纪律。
++5. 研究协议必须把成本、滑点、funding、样本外验证、前视偏差、数据封存和多重检验写成硬门槛；失败结论必须和成功结论同等归档。
++6. 组织上应避免“Founder 提想法、AI 跑回测”的低质量循环；AI 负责人必须承担一阶抽象、机制筛选和反对无效任务的责任。
++7. Codex/执行层应负责可复跑代码、审计报告和工程约束，但不能被降级为无判断的实现工具；发现实验没有信息增益时必须暂停。
++8. 数据工程优先级应高于策略参数优化：没有可信数据血缘、版本冻结、字段语义、时间戳规范和缺失审计，任何回测数字都不应进入决策。
++9. 技术系统应按阶段演化：R0/R1 以离线研究和审计为主，R2 才建设事件数据管线，R3/R4 再考虑实盘执行与风控闭环，避免过早做生产级交易架构。
++10. 对加密小资金而言，优先机会应集中在容量受限、执行摩擦、强制资金流、杠杆约束、交易所制度差异、事件冲击后的流动性供需失衡；纯形态信号和主流币低频因子应默认低优先。
++11. 每个候选机制都应有预设“证伪成本上限”：若首批独立实验反向或无效，应更新机会地图，而不是围绕同一叙事继续调参。
++12. 文档治理应分层：决策日志是权威，状态文件是运行索引，任务报告是执行证据，研究结果是事实库；禁止把愿景、假设、事实和决策混写。
++13. 上下文工程应服务于减少认知漂移，而不是扩大文档量；启动简报要短、权威、可核验，过长的蓝图应被索引化。
++14. 工具选择应优先成熟、低维护、可导出、可审计；只有当自动化能减少人工错误或提升研究吞吐时才引入。
++15. 预期最大的失败模式不是“策略暂时找不到”，而是“在没有真 edge 的情况下用治理、参数、文档和代理编排制造进展感”。
+
+diff --git a/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md b/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..c86a34be4869e12047dac647d2b574acf96de9a4
+--- /dev/null
++++ b/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+@@ -0,0 +1,23 @@
++# EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12
++
++## 附录A：零锚定预期
++
++审计时点：2026-06-11 UTC+08。已读材料仅限 `CLAUDE.md` 与 `00_PROJECT_MANAGEMENT/COMPANY_STRATEGY_PRODUCT_v1.md`，未读取其他项目材料。
++
++如果从零设计这家公司，我的先验设计如下：
++
++1. 公司目标应被定义为“小资金约束下寻找可重复、可审计、可部署的交易优势”，而不是收益率口号；收益目标只作为资本表达层的后置约束。
++2. 研究顺序应从机制开始：先识别谁在系统性付钱、为什么会持续付钱、小资金是否真有容量或执行优势，再讨论信号、回测和杠杆。
++3. 第一阶段不应建设完整交易公司，而应建设一个带退出标准的 edge 发现漏斗：数据可得性普查、机制假说、最低成本证伪实验、失败归档、机会地图更新。
++4. 资金架构应分为核心资本与围栏账户；核心资本只允许已通过样本外与风控验收的策略，围栏账户可承受归零但不得反向污染研究纪律。
++5. 研究协议必须把成本、滑点、funding、样本外验证、前视偏差、数据封存和多重检验写成硬门槛；失败结论必须和成功结论同等归档。
++6. 组织上应避免“Founder 提想法、AI 跑回测”的低质量循环；AI 负责人必须承担一阶抽象、机制筛选和反对无效任务的责任。
++7. Codex/执行层应负责可复跑代码、审计报告和工程约束，但不能被降级为无判断的实现工具；发现实验没有信息增益时必须暂停。
++8. 数据工程优先级应高于策略参数优化：没有可信数据血缘、版本冻结、字段语义、时间戳规范和缺失审计，任何回测数字都不应进入决策。
++9. 技术系统应按阶段演化：R0/R1 以离线研究和审计为主，R2 才建设事件数据管线，R3/R4 再考虑实盘执行与风控闭环，避免过早做生产级交易架构。
++10. 对加密小资金而言，优先机会应集中在容量受限、执行摩擦、强制资金流、杠杆约束、交易所制度差异、事件冲击后的流动性供需失衡；纯形态信号和主流币低频因子应默认低优先。
++11. 每个候选机制都应有预设“证伪成本上限”：若首批独立实验反向或无效，应更新机会地图，而不是围绕同一叙事继续调参。
++12. 文档治理应分层：决策日志是权威，状态文件是运行索引，任务报告是执行证据，研究结果是事实库；禁止把愿景、假设、事实和决策混写。
++13. 上下文工程应服务于减少认知漂移，而不是扩大文档量；启动简报要短、权威、可核验，过长的蓝图应被索引化。
++14. 工具选择应优先成熟、低维护、可导出、可审计；只有当自动化能减少人工错误或提升研究吞吐时才引入。
++15. 预期最大的失败模式不是“策略暂时找不到”，而是“在没有真 edge 的情况下用治理、参数、文档和代理编排制造进展感”。
+
+2026-06-11T16:03:03.846724Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+2026-06-11T16:03:10.985409Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+codex
+零锚定附录已写入指定报告文件。下一步按任务书顺序读取运行状态、决策日志、四蓝图、研究结果与阶段审计；我会先索引文件位置，避免误读 Holdout 或无关数据。
+  → Read required audit source documents in task order
+  • Extract decisions, evidence, contradictions, and A-2 implications
+  • Draft external audit report in required structure
+  • Verify report coverage, boundaries, and git state
+diff --git a/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md b/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..c86a34be4869e12047dac647d2b574acf96de9a4
+--- /dev/null
++++ b/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+@@ -0,0 +1,23 @@
++# EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12
++
++## 附录A：零锚定预期
++
++审计时点：2026-06-11 UTC+08。已读材料仅限 `CLAUDE.md` 与 `00_PROJECT_MANAGEMENT/COMPANY_STRATEGY_PRODUCT_v1.md`，未读取其他项目材料。
++
++如果从零设计这家公司，我的先验设计如下：
++
++1. 公司目标应被定义为“小资金约束下寻找可重复、可审计、可部署的交易优势”，而不是收益率口号；收益目标只作为资本表达层的后置约束。
++2. 研究顺序应从机制开始：先识别谁在系统性付钱、为什么会持续付钱、小资金是否真有容量或执行优势，再讨论信号、回测和杠杆。
++3. 第一阶段不应建设完整交易公司，而应建设一个带退出标准的 edge 发现漏斗：数据可得性普查、机制假说、最低成本证伪实验、失败归档、机会地图更新。
++4. 资金架构应分为核心资本与围栏账户；核心资本只允许已通过样本外与风控验收的策略，围栏账户可承受归零但不得反向污染研究纪律。
++5. 研究协议必须把成本、滑点、funding、样本外验证、前视偏差、数据封存和多重检验写成硬门槛；失败结论必须和成功结论同等归档。
++6. 组织上应避免“Founder 提想法、AI 跑回测”的低质量循环；AI 负责人必须承担一阶抽象、机制筛选和反对无效任务的责任。
++7. Codex/执行层应负责可复跑代码、审计报告和工程约束，但不能被降级为无判断的实现工具；发现实验没有信息增益时必须暂停。
++8. 数据工程优先级应高于策略参数优化：没有可信数据血缘、版本冻结、字段语义、时间戳规范和缺失审计，任何回测数字都不应进入决策。
++9. 技术系统应按阶段演化：R0/R1 以离线研究和审计为主，R2 才建设事件数据管线，R3/R4 再考虑实盘执行与风控闭环，避免过早做生产级交易架构。
++10. 对加密小资金而言，优先机会应集中在容量受限、执行摩擦、强制资金流、杠杆约束、交易所制度差异、事件冲击后的流动性供需失衡；纯形态信号和主流币低频因子应默认低优先。
++11. 每个候选机制都应有预设“证伪成本上限”：若首批独立实验反向或无效，应更新机会地图，而不是围绕同一叙事继续调参。
++12. 文档治理应分层：决策日志是权威，状态文件是运行索引，任务报告是执行证据，研究结果是事实库；禁止把愿景、假设、事实和决策混写。
++13. 上下文工程应服务于减少认知漂移，而不是扩大文档量；启动简报要短、权威、可核验，过长的蓝图应被索引化。
++14. 工具选择应优先成熟、低维护、可导出、可审计；只有当自动化能减少人工错误或提升研究吞吐时才引入。
++15. 预期最大的失败模式不是“策略暂时找不到”，而是“在没有真 edge 的情况下用治理、参数、文档和代理编排制造进展感”。
+
+2026-06-11T16:03:22.756569Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+codex
+先做文件定位，尤其确认四蓝图、STAGE_AUDITS、TOOL_ROUTING 和 04_AI_TEAM/AGENTS.md 的实际路径。
+exec
+/bin/bash -lc "rg --files | rg '("'^|/)(BOOT_BRIEF|CURRENT_STATE|DECISION_LOG|OPERATING_MODEL_DESIGN_v1|PHASE1_RESEARCH_RISK_BLUEPRINT_v1|PHASE1_TECH_ORG_GOVERNANCE_v1|TOOL_ROUTING|AGENTS)'"\\.md"'$|STAGE_AUDITS|CODEX_DIRECT_CALL_RUNBOOK|LOW_TIER_TASKS|COST_LOG_2026|GRAVEYARD_INDEX|20260611_a2_event_study|20260610_tsmom_recheck|20260611_event_census|20260611_data_inventory'"'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+04_AI_TEAM/CODEX_DIRECT_CALL_RUNBOOK.md
+10_COST_TRACKING/COST_LOG_2026.md
+04_AI_TEAM/LOW_TIER_TASKS/LOW_TIER_CHARTER.md
+04_AI_TEAM/LOW_TIER_TASKS/TASK_PACKAGE_2026-06-10.md
+04_AI_TEAM/LOW_TIER_TASKS/TASK_PACKAGE_2026-06-11.md
+01_MEMORY_CORE/DECISION_LOG.md
+01_MEMORY_CORE/BOOT_BRIEF.md
+01_MEMORY_CORE/CURRENT_STATE.md
+00_PROJECT_MANAGEMENT/TOOL_ROUTING.md
+00_PROJECT_MANAGEMENT/PHASE1_TECH_ORG_GOVERNANCE_v1.md
+AGENTS.md
+00_PROJECT_MANAGEMENT/OPERATING_MODEL_DESIGN_v1.md
+00_PROJECT_MANAGEMENT/PHASE1_RESEARCH_RISK_BLUEPRINT_v1.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/OPUS_PACKAGE_2026-06.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L2_AUDIT_PHASE_0B_2026-06-06.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L2_AUDIT_PHASE_0A_2026-06-06.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L3_EMERGENCY_2026-06-11.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L2_AUDIT_OS_FREEZE_2026-06-10.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L2_AUDIT_PHASE_1_2026-06-07.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L3_EMERGENCY_20260606.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/README.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/AUDIT_REPORT_HISTORY_CONTAMINATION.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/OPUS_PACKAGE_PHASE_0A_2026-06-06.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/MONTHLY_AUDIT_2026-06.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L3_EMERGENCY_2026-06-06.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L1_DEEP_AUDIT_CODEX_2026-06-07.md
+06_RESEARCH/GRAVEYARD_INDEX.md
+06_RESEARCH/RESULTS/20260611_event_census.md
+06_RESEARCH/RESULTS/20260610_tsmom_recheck_new_criteria.md
+06_RESEARCH/RESULTS/20260611_data_inventory.md
+06_RESEARCH/RESULTS/20260611_a2_event_study.md
+
+exec
+/bin/bash -lc "find 00_PROJECT_MANAGEMENT 01_MEMORY_CORE 04_AI_TEAM 06_RESEARCH 10_COST_TRACKING -maxdepth 3 -type f | sort | sed -n '1,260p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+00_PROJECT_MANAGEMENT/.DS_Store
+00_PROJECT_MANAGEMENT/ADJUSTMENT_LIST_v1.md
+00_PROJECT_MANAGEMENT/AI_CAPABILITY_BASELINE.md
+00_PROJECT_MANAGEMENT/AI_CAPABILITY_TOOLING_AUDIT_v1.md
+00_PROJECT_MANAGEMENT/AI_QUANT_COMPANY_ARCHITECTURE_v1.md
+00_PROJECT_MANAGEMENT/AI_QUANT_COMPANY_ARCHITECTURE_v2.md
+00_PROJECT_MANAGEMENT/CLAUDE_MD_AMENDMENT_PROPOSAL_v2.3.md
+00_PROJECT_MANAGEMENT/CODEX_RESULT_INTAKE_TEMPLATES.md
+00_PROJECT_MANAGEMENT/COMPANY_STRATEGY_PRODUCT_v1.md
+00_PROJECT_MANAGEMENT/CONSTITUTION.md
+00_PROJECT_MANAGEMENT/DEGRADED_MODE_PLAYBOOK.md
+00_PROJECT_MANAGEMENT/EXECUTION_SPEC_v2_FREEZE.md
+00_PROJECT_MANAGEMENT/EXTERNAL_RESEARCH_REPORT_v1.md
+00_PROJECT_MANAGEMENT/EXTERNAL_RESEARCH_v3_STRATEGY_DIRECTION.md
+00_PROJECT_MANAGEMENT/INDEPENDENT_REVIEW_v1.md
+00_PROJECT_MANAGEMENT/OPERATING_MODEL_DESIGN_v0.md
+00_PROJECT_MANAGEMENT/OPERATING_MODEL_DESIGN_v1.md
+00_PROJECT_MANAGEMENT/OS_TUNING_PLAN_v1.md
+00_PROJECT_MANAGEMENT/PHASE1_RESEARCH_RISK_BLUEPRINT_v1.md
+00_PROJECT_MANAGEMENT/PHASE1_RESEARCH_THESIS_v1.md
+00_PROJECT_MANAGEMENT/PHASE1_TECH_ORG_GOVERNANCE_v1.md
+00_PROJECT_MANAGEMENT/PHASE_TRANSITION_ANALYSIS_0B_TO_1.md
+00_PROJECT_MANAGEMENT/PROJECT_MASTER_PLAN_v1.md
+00_PROJECT_MANAGEMENT/PROJECT_MASTER_PLAN_v2.md
+00_PROJECT_MANAGEMENT/PROJECT_OPERATING_STATE.md
+00_PROJECT_MANAGEMENT/RESEARCH_SNAPSHOT_0B.md
+00_PROJECT_MANAGEMENT/REVISION_WORKORDER_v2_FREEZE.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/AUDIT_REPORT_HISTORY_CONTAMINATION.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L1_DEEP_AUDIT_CODEX_2026-06-07.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L2_AUDIT_OS_FREEZE_2026-06-10.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L2_AUDIT_PHASE_0A_2026-06-06.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L2_AUDIT_PHASE_0B_2026-06-06.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L2_AUDIT_PHASE_1_2026-06-07.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L3_EMERGENCY_2026-06-06.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L3_EMERGENCY_2026-06-11.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/L3_EMERGENCY_20260606.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/MONTHLY_AUDIT_2026-06.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/OPUS_PACKAGE_2026-06.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/OPUS_PACKAGE_PHASE_0A_2026-06-06.md
+00_PROJECT_MANAGEMENT/STAGE_AUDITS/README.md
+00_PROJECT_MANAGEMENT/TOOL_RESEARCH_BRIEF_v1.md
+00_PROJECT_MANAGEMENT/TOOL_ROUTING.md
+00_PROJECT_MANAGEMENT/V5_TOOL_INTEGRATION_PLAN_v1.md
+00_PROJECT_MANAGEMENT/V5_TOOL_INTEGRATION_PLAN_v2.md
+00_PROJECT_MANAGEMENT/requirements_lock_20260610.txt
+01_MEMORY_CORE/.DS_Store
+01_MEMORY_CORE/ARCHIVE/RESEARCH_LOG_PHASE0_1_2026H1.md
+01_MEMORY_CORE/BOOT_BRIEF.md
+01_MEMORY_CORE/CURRENT_STATE.md
+01_MEMORY_CORE/DECISION_LOG.md
+01_MEMORY_CORE/MEMORY_EXTRACTION_PROTOCOL.md
+01_MEMORY_CORE/PROJECT_CONTEXT.md
+01_MEMORY_CORE/STATE_SYNC_CHECKLIST.md
+01_MEMORY_CORE/SYSTEM_RULES.md
+01_MEMORY_CORE/state_check.py
+04_AI_TEAM/AGENTS_DRAFT.md
+04_AI_TEAM/CODEX_DIRECT_CALL_RUNBOOK.md
+04_AI_TEAM/CODEX_SPRINT_001.md
+04_AI_TEAM/CODEX_TASKS/COLLABORATION_RULES.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0A6_SIGNAL_DETECTOR.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B10_WIDER_STOP.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B11_REGIME_V3.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B12_NO_STOP_DIAGNOSTIC.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B14_MAE_ANALYSIS.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B15_VOL_COMPRESSION.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B16_ATR_STOP_DIAGNOSTIC.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B17_ATR_STRATEGY.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B18_VOLPOS_STRATEGY.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B1_SWEEP_EVENT_STUDY.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B2_SWEEP_DUAL_REGIME.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B3_BEARISH_SWEEP.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B4_V4_STRATEGY_BACKTEST.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B5_V4_BOOTSTRAP.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B6_BACKTEST_UNIT_TESTS.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B8_TIME_SENSITIVITY.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B9_STOP_DIAGNOSTIC.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_01_TSMOM.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_02_TSMOM_VOLTARGET.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_03_DATA_RECON_OI.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_04_TSMOM_REGIME_LONG.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_05_REGIME_ATTRIBUTION.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_06_TSMOM_MACRO_BULL.md
+04_AI_TEAM/CODEX_TASKS/REPORT_R1_A2_FEATURES.md
+04_AI_TEAM/CODEX_TASKS/REPORT_R2_A2_EVENT_STUDY.md
+04_AI_TEAM/CODEX_TASKS/SPEC_0A6_SIGNAL_DEFINITIONS.md
+04_AI_TEAM/CODEX_TASKS/TASK_0A6_SIGNAL_DETECTOR.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B10_WIDER_STOP.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B11_REGIME_V3.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B12_MAE_ANALYSIS.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B12_NO_STOP_DIAGNOSTIC.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B13_T24_NO_STOP.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B13_T24_REFLOWSTOP.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B14_MAE_ANALYSIS.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B14_VOL_COMPRESSION.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B15_ATR_STOP_DIAGNOSTIC.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B15_VOL_COMPRESSION.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B16_ATR_STOP_DIAGNOSTIC.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B17_ATR_STRATEGY.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B18_VOLPOS_STRATEGY.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B1_SWEEP_SINGLE_EVENT.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B2_SWEEP_DUAL_REGIME.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B3_BEARISH_SWEEP.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B4_V4_STRATEGY_BACKTEST.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B5_V4_BOOTSTRAP_VALIDATION.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B6_BACKTEST_UNIT_TESTS.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B7_V6_TIME_EXIT.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B8_TIME_SENSITIVITY.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B9_STOP_DIAGNOSTIC.md
+04_AI_TEAM/CODEX_TASKS/TASK_EXT_AUDIT_CODEX.md
+04_AI_TEAM/CODEX_TASKS/TASK_INF01_1H_DATA.md
+04_AI_TEAM/CODEX_TASKS/TASK_INF02_RESULTS_DASHBOARD.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_01_TSMOM.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_02_TSMOM_VOLTARGET.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_03_DATA_RECON_OI.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_04_TSMOM_REGIME_LONG.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_05_REGIME_ATTRIBUTION.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_06_TSMOM_MACRO_BULL.md
+04_AI_TEAM/CODEX_TASKS/TASK_R1_A2_FEATURES.md
+04_AI_TEAM/CODEX_TASKS/TASK_R2_A2_EVENT_STUDY.md
+04_AI_TEAM/CODEX_TASKS/TASK_TSMOM_EXPANSION_DATA.md
+04_AI_TEAM/CONTEXT_PACKS/INDEPENDENT_REVIEW_PACK.md
+04_AI_TEAM/CONTEXT_PACKS/RISK_REVIEWER_PACK.md
+04_AI_TEAM/LOW_TIER_TASKS/LOW_TIER_CHARTER.md
+04_AI_TEAM/LOW_TIER_TASKS/TASK_PACKAGE_2026-06-10.md
+04_AI_TEAM/LOW_TIER_TASKS/TASK_PACKAGE_2026-06-11.md
+06_RESEARCH/CODE/.pytest_cache/.gitignore
+06_RESEARCH/CODE/.pytest_cache/CACHEDIR.TAG
+06_RESEARCH/CODE/.pytest_cache/README.md
+06_RESEARCH/CODE/LIQUIDATION_COLLECTOR_RUNBOOK.md
+06_RESEARCH/CODE/__pycache__/a2_event_study.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/backtest_rules.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/backtest_v5_sweep_choch_fvg_bull_v1.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/bearish_sweep_event_study.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/p1_01_tsmom.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/p1_02_tsmom_voltarget.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/p1_03_data_recon_oi.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/p1_04_tsmom_regime_long.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/p1_05_regime_attribution.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/p1_06_tsmom_macro_bull.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/test_a2_event_study.cpython-313-pytest-9.0.3.pyc
+06_RESEARCH/CODE/__pycache__/test_a2_event_study.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/test_backtest_rules.cpython-313-pytest-9.0.3.pyc
+06_RESEARCH/CODE/__pycache__/v10_wider_stop_backtest.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/v11_regime_v3_event_study.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/v12_no_stop_diagnostic.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/v14_mae_analysis.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/v15_vol_compression.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/v16_atr_stop_diagnostic.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/v17_atr_strategy.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/v18_volpos_strategy.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/v4_bootstrap_validation.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/v4_strategy_backtest.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/v8_time_sensitivity.cpython-313.pyc
+06_RESEARCH/CODE/__pycache__/v9_stop_diagnostic.cpython-313.pyc
+06_RESEARCH/CODE/a2_event_study.py
+06_RESEARCH/CODE/backtest_rules.py
+06_RESEARCH/CODE/backtest_v5_sweep_choch_fvg_bull_v1.py
+06_RESEARCH/CODE/bearish_sweep_event_study.py
+06_RESEARCH/CODE/collector.log
+06_RESEARCH/CODE/collector.log.old
+06_RESEARCH/CODE/download_futures_data.py
+06_RESEARCH/CODE/features/a2_funding_features.py
+06_RESEARCH/CODE/features/test_a2_features.py
+06_RESEARCH/CODE/liquidation_collector.py
+06_RESEARCH/CODE/output/a2_event_study_results.json
+06_RESEARCH/CODE/output/a2_events_summary.json
+06_RESEARCH/CODE/output/a2_events_work.csv
+06_RESEARCH/CODE/output/atr_stop_event_distances.csv
+06_RESEARCH/CODE/output/atr_stop_metrics.json
+06_RESEARCH/CODE/output/atr_vs_structure_stop_charts.png
+06_RESEARCH/CODE/output/equity_v5_sweep_choch_fvg_bull_v1.csv
+06_RESEARCH/CODE/output/equity_v5_sweep_choch_fvg_bull_v2.csv
+06_RESEARCH/CODE/output/events_v5_sweep_only_bull_v3.csv
+06_RESEARCH/CODE/output/events_v5_sweep_regime_bear_v5.csv
+06_RESEARCH/CODE/output/events_v5_sweep_regime_bull_v4.csv
+06_RESEARCH/CODE/output/events_v5_sweep_regime_bull_v7.csv
+06_RESEARCH/CODE/output/mae_distribution_chart.png
+06_RESEARCH/CODE/output/mae_metrics.json
+06_RESEARCH/CODE/output/mae_trade_level.csv
+06_RESEARCH/CODE/output/mae_vs_return_scatter.png
+06_RESEARCH/CODE/output/metrics_v5_sweep_choch_fvg_bull_v1.json
+06_RESEARCH/CODE/output/metrics_v5_sweep_choch_fvg_bull_v2.json
+06_RESEARCH/CODE/output/no_stop_equity_curve.png
+06_RESEARCH/CODE/output/no_stop_t24_btc_eth_equity.csv
+06_RESEARCH/CODE/output/no_stop_t24_btc_eth_trades.csv
+06_RESEARCH/CODE/output/no_stop_t24_metrics.json
+06_RESEARCH/CODE/output/no_stop_t24_three_symbols_equity.csv
+06_RESEARCH/CODE/output/no_stop_t24_three_symbols_trades.csv
+06_RESEARCH/CODE/output/p1_01_tsmom_equity.csv
+06_RESEARCH/CODE/output/p1_01_tsmom_equity_curve.png
+06_RESEARCH/CODE/output/p1_01_tsmom_metrics.json
+06_RESEARCH/CODE/output/p1_01_tsmom_trades.csv
+06_RESEARCH/CODE/output/p1_02_tsmom_voltarget_equity.csv
+06_RESEARCH/CODE/output/p1_02_tsmom_voltarget_equity_curve.png
+06_RESEARCH/CODE/output/p1_02_tsmom_voltarget_metrics.json
+06_RESEARCH/CODE/output/p1_02_tsmom_voltarget_trades.csv
+06_RESEARCH/CODE/output/p1_03_data_recon_oi.json
+06_RESEARCH/CODE/output/p1_04_tsmom_regime_long_equity.csv
+06_RESEARCH/CODE/output/p1_04_tsmom_regime_long_equity_curve.png
+06_RESEARCH/CODE/output/p1_04_tsmom_regime_long_metrics.json
+06_RESEARCH/CODE/output/p1_04_tsmom_regime_long_trades.csv
+06_RESEARCH/CODE/output/p1_05_regime_attribution.json
+06_RESEARCH/CODE/output/p1_06_tsmom_macro_bull_equity.csv
+06_RESEARCH/CODE/output/p1_06_tsmom_macro_bull_equity_curve.png
+06_RESEARCH/CODE/output/p1_06_tsmom_macro_bull_metrics.json
+06_RESEARCH/CODE/output/p1_06_tsmom_macro_bull_trades.csv
+06_RESEARCH/CODE/output/stats_v5_sweep_only_bull_v3.json
+06_RESEARCH/CODE/output/stats_v5_sweep_regime_bear_v5.json
+06_RESEARCH/CODE/output/stats_v5_sweep_regime_bull_v4.json
+06_RESEARCH/CODE/output/stats_v5_sweep_regime_bull_v7.json
+06_RESEARCH/CODE/output/time_sensitivity_btc_eth_t12_equity.csv
+06_RESEARCH/CODE/output/time_sensitivity_btc_eth_t12_trades.csv
+06_RESEARCH/CODE/output/time_sensitivity_btc_eth_t24_equity.csv
+06_RESEARCH/CODE/output/time_sensitivity_btc_eth_t24_trades.csv
+06_RESEARCH/CODE/output/time_sensitivity_btc_eth_t6_equity.csv
+06_RESEARCH/CODE/output/time_sensitivity_btc_eth_t6_trades.csv
+06_RESEARCH/CODE/output/time_sensitivity_equity_curves.png
+06_RESEARCH/CODE/output/time_sensitivity_metrics.json
+06_RESEARCH/CODE/output/time_sensitivity_three_symbols_t12_equity.csv
+06_RESEARCH/CODE/output/time_sensitivity_three_symbols_t12_trades.csv
+06_RESEARCH/CODE/output/time_sensitivity_three_symbols_t24_equity.csv
+06_RESEARCH/CODE/output/time_sensitivity_three_symbols_t24_trades.csv
+06_RESEARCH/CODE/output/time_sensitivity_three_symbols_t6_equity.csv
+06_RESEARCH/CODE/output/time_sensitivity_three_symbols_t6_trades.csv
+06_RESEARCH/CODE/output/trades_BTCUSDT_v5_sweep_choch_fvg_bull_v1.csv
+06_RESEARCH/CODE/output/trades_BTCUSDT_v5_sweep_choch_fvg_bull_v2.csv
+06_RESEARCH/CODE/output/trades_ETHUSDT_v5_sweep_choch_fvg_bull_v1.csv
+06_RESEARCH/CODE/output/trades_ETHUSDT_v5_sweep_choch_fvg_bull_v2.csv
+06_RESEARCH/CODE/output/trades_SOLUSDT_v5_sweep_choch_fvg_bull_v1.csv
+06_RESEARCH/CODE/output/trades_SOLUSDT_v5_sweep_choch_fvg_bull_v2.csv
+06_RESEARCH/CODE/output/triple_signals_BTCUSDT_4H.csv
+06_RESEARCH/CODE/output/triple_signals_ETHUSDT_4H.csv
+06_RESEARCH/CODE/output/triple_signals_SOLUSDT_4H.csv
+06_RESEARCH/CODE/output/v17_atr_1.9_equity.csv
+06_RESEARCH/CODE/output/v17_atr_1.9_trades.csv
+06_RESEARCH/CODE/output/v17_atr_3.5_equity.csv
+06_RESEARCH/CODE/output/v17_atr_3.5_trades.csv
+06_RESEARCH/CODE/output/v17_atr_equity_curve.png
+06_RESEARCH/CODE/output/v17_atr_metrics.json
+06_RESEARCH/CODE/output/v17_atr_trades.csv
+06_RESEARCH/CODE/output/v18_volpos_candidates_audit.csv
+06_RESEARCH/CODE/output/v18_volpos_equity.csv
+06_RESEARCH/CODE/output/v18_volpos_equity_curve.png
+06_RESEARCH/CODE/output/v18_volpos_metrics.json
+06_RESEARCH/CODE/output/v18_volpos_trades.csv
+06_RESEARCH/CODE/output/v4_bootstrap_validation.json
+06_RESEARCH/CODE/output/v4_stop_diagnostic_charts.png
+06_RESEARCH/CODE/output/v4_stop_diagnostic_metrics.json
+06_RESEARCH/CODE/output/v4_strategy_equity_curve.csv
+06_RESEARCH/CODE/output/v4_strategy_equity_curve.png
+06_RESEARCH/CODE/output/v4_strategy_metrics.json
+06_RESEARCH/CODE/output/v4_strategy_trades.csv
+06_RESEARCH/CODE/output/v6b_strategy_baseline_btc_eth_trades.csv
+06_RESEARCH/CODE/output/v6b_strategy_baseline_equity_curve.csv
+06_RESEARCH/CODE/output/v6b_strategy_baseline_equity_curve.png
+06_RESEARCH/CODE/output/v6b_strategy_baseline_trades.csv
+06_RESEARCH/CODE/output/v6b_strategy_btc_eth_trades.csv
+06_RESEARCH/CODE/output/v6b_strategy_equity_curve.csv
+06_RESEARCH/CODE/output/v6b_strategy_equity_curve.png
+
+diff --git a/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md b/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..c86a34be4869e12047dac647d2b574acf96de9a4
+--- /dev/null
++++ b/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+@@ -0,0 +1,23 @@
++# EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12
++
++## 附录A：零锚定预期
++
++审计时点：2026-06-11 UTC+08。已读材料仅限 `CLAUDE.md` 与 `00_PROJECT_MANAGEMENT/COMPANY_STRATEGY_PRODUCT_v1.md`，未读取其他项目材料。
++
++如果从零设计这家公司，我的先验设计如下：
++
++1. 公司目标应被定义为“小资金约束下寻找可重复、可审计、可部署的交易优势”，而不是收益率口号；收益目标只作为资本表达层的后置约束。
++2. 研究顺序应从机制开始：先识别谁在系统性付钱、为什么会持续付钱、小资金是否真有容量或执行优势，再讨论信号、回测和杠杆。
++3. 第一阶段不应建设完整交易公司，而应建设一个带退出标准的 edge 发现漏斗：数据可得性普查、机制假说、最低成本证伪实验、失败归档、机会地图更新。
++4. 资金架构应分为核心资本与围栏账户；核心资本只允许已通过样本外与风控验收的策略，围栏账户可承受归零但不得反向污染研究纪律。
++5. 研究协议必须把成本、滑点、funding、样本外验证、前视偏差、数据封存和多重检验写成硬门槛；失败结论必须和成功结论同等归档。
++6. 组织上应避免“Founder 提想法、AI 跑回测”的低质量循环；AI 负责人必须承担一阶抽象、机制筛选和反对无效任务的责任。
++7. Codex/执行层应负责可复跑代码、审计报告和工程约束，但不能被降级为无判断的实现工具；发现实验没有信息增益时必须暂停。
++8. 数据工程优先级应高于策略参数优化：没有可信数据血缘、版本冻结、字段语义、时间戳规范和缺失审计，任何回测数字都不应进入决策。
++9. 技术系统应按阶段演化：R0/R1 以离线研究和审计为主，R2 才建设事件数据管线，R3/R4 再考虑实盘执行与风控闭环，避免过早做生产级交易架构。
++10. 对加密小资金而言，优先机会应集中在容量受限、执行摩擦、强制资金流、杠杆约束、交易所制度差异、事件冲击后的流动性供需失衡；纯形态信号和主流币低频因子应默认低优先。
++11. 每个候选机制都应有预设“证伪成本上限”：若首批独立实验反向或无效，应更新机会地图，而不是围绕同一叙事继续调参。
++12. 文档治理应分层：决策日志是权威，状态文件是运行索引，任务报告是执行证据，研究结果是事实库；禁止把愿景、假设、事实和决策混写。
++13. 上下文工程应服务于减少认知漂移，而不是扩大文档量；启动简报要短、权威、可核验，过长的蓝图应被索引化。
++14. 工具选择应优先成熟、低维护、可导出、可审计；只有当自动化能减少人工错误或提升研究吞吐时才引入。
++15. 预期最大的失败模式不是“策略暂时找不到”，而是“在没有真 edge 的情况下用治理、参数、文档和代理编排制造进展感”。
+
+2026-06-11T16:03:33.274381Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+codex
+路径确认完毕：`04_AI_TEAM/AGENTS.md` 实际不存在，项目根有 `AGENTS.md`，另有 `04_AI_TEAM/AGENTS_DRAFT.md`。我会在报告里把这作为文档治理问题记录，并按最接近任务意图读取两者相关内容。
+exec
+/bin/bash -lc "sed -n '1,320p' 01_MEMORY_CORE/CURRENT_STATE.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+exec
+/bin/bash -lc "sed -n '1,260p' 01_MEMORY_CORE/BOOT_BRIEF.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+# BOOT_BRIEF —— 精简启动简报（新对话先读这一份，省 token）
+
+**用途：** 新对话/子会话冷启动**先读本文**即可恢复运行认知；只有需要细节时再去读巨型 CURRENT_STATE / DECISION_LOG。
+**性质：** 派生摘要，**不是权威源**（权威：运行状态=CURRENT_STATE；决策=DECISION_LOG）。每次状态变更后由 state-sync 流程更新。
+**最后更新：** 2026-06-10（DEC-066：6项parked全部拍板）
+
+---
+
+## 一句话现状
+
+**进行中（2026-06-12凌晨）**：①Claude侧外部深度审计=定时任务 external-deep-audit-20260612（3:30，已预授权）②Codex侧同款独立审计（直调后台跑，报告→STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md，日志99_TEMP/codex_ext_audit.log）③Codex TSMOM扩样本数据准备（后台，日志99_TEMP/codex_tsmom_data.log）。三者产出均待 Claude 日间验收，未验收前不作依据。
+**公司 OS 已正式冻结（DEC-068②，2026-06-11）**；不暂停但重评方向方法（DEC-068①，并入 6-12 凌晨3:30 外部深度审计定时任务 external-deep-audit-20260612）；剩 2 条独立命、A-1 优先且预登记须过 Risk Reviewer 反审（DEC-068③）；执行类任务尽量派 Codex（Claude 额度紧）。
+
+### 原现状记录
+
+项目处于 **Phase 1**，公司 OS 四蓝图已产出，**6 项 parked 已全部拍板（DEC-066，2026-06-10）**；冻结只差跑一次最小验证（R2 验 A-2 持仓极端）。**TSMOM 新口径复读已完成：四件套全过，列为 R2 之后扩样本候选（P1-06 变体优先）**；强平采集器已写好待部署。**冻结前全盘审计已完成（`STAGE_AUDITS/L2_AUDIT_OS_FREEZE_2026-06-10.md`）：方向/方法验证通过，5项P0待清**——①四件套量化→Protocol v1.3 ②事件类成本压力档 ③事件研究样本/Holdout设计 ④定时任务旧口径重写 ⑤git立即建。四方向OS调优方案已出（`OS_TUNING_PLAN_v1.md`：编排/上下文/记忆/组织，新增第三执行层=低模型会话）；机械任务已打包 `04_AI_TEAM/LOW_TIER_TASKS/TASK_PACKAGE_2026-06-10.md`（T-01~13，Claude验收制）。**任务包 T-01~13 已执行并验收通过（2026-06-10）**：CURRENT_STATE瘦身109行/DEC索引/墓园索引/Protocol v1.3增补件/git baseline `cee7ca4` 全就位；第三执行层首跑成功。**6-11夜批N1-N8完成（Claude接管卡死的定时会话）**：P0-4定时任务v2✅/修宪提案v2.3【等Founder】/事件普查✅（R2须池化+单调性；A-2=funding负极端、A-1=6h OI骤降368个）/数据实际新鲜至2026-05（非2025-12）/P1-04 DSR 0.80-0.86强化不进Holdout/AGENTS草案✅。**6-11午批**：修宪v2.3已应用（DEC-067）；.tmp/git锁已清（commit 9e29f65）；采集器已部署但**当前代理节点被Binance拒绝，等Founder切节点**（脚本自动重连，支持LIQ_PROXY_HOST/PORT环境变量，当前默认127.0.0.1:7897 socks5h）；低模型任务包#2已发（TASK_PACKAGE_2026-06-11.md，4项文档一致性修复）。**6-11晚批**：包#2验收4/4✅（4处文档矛盾全清）；台账已填（累计811.93元，距止损4188元，月均~160健康）；GitHub=仓库已存在laoxiamu/AI_QUANT_COMPANY+deploy key表单已填，**卡在sudo邮件验证等Founder**；**Codex CLI未安装**（直调前提，待装+Founder登录授权）；模型路由定案：机械任务默认Claude spawn haiku子代理（TOOL_ROUTING已更新）。**6-11 R2 完成（重大节点）**：R1特征库+R2事件研究经Codex直调全流程跑通（预登记→实现→pytest→独立验收→治理自动触发）——**最小工作流验证的流程目标达成，OS具备冻结条件（待Founder拍）**。研究结论：**A-2 FAILED**（方向整体相反：极端拥挤=延续非反转，与TSMOM动量证据互洽；详见 `06_RESEARCH/RESULTS/20260611_a2_event_study.md`）→ 计数6/8 → L3已出（建议：不暂停；执行序=TSMOM扩样本[不耗命]→A-1预登记+Risk Reviewer反审[第7条命]）。【等待Founder拍L3三项：①不暂停continue ②OS冻结 ③知悉剩2命】
+**6-11夜批2**：✅GitHub私库备份打通（laoxiamu/AI_QUANT_COMPANY，deploy key，master已推送）；✅**Codex直调通道验证通过（DEC-061落地）**：配方见`04_AI_TEAM/CODEX_DIRECT_CALL_RUNBOOK.md`（代理env+</dev/null+workspace-write三要素），AGENTS.md已部署项目根；台账更新871.93；⚠️采集器仍不通：**新加坡节点被Binance屏蔽，等Founder换香港/台湾/韩国节点**。执行序：Founder换节点 → Claude验证采集器+出R1特征库任务书（Codex直调首个真实任务）+起草R2预登记 → R2（最小验证+冻结OS）。
+
+## 目标函数（DEC-063，钉死）
+
+- 公司目标 = 找到**真实/可持续/可放大的 edge** + **安全复利核心资本**。**月化30% 不是验收条件**。
+- **两层资本架构**：核心资本（受保护、永不按 100x 跑）／围栏高风险子账户（可归零、不伤核心）。
+- 高杠杆 = **仓位表达工具**，不是 Alpha 来源、不是研究路线。
+- 收益优先：成本只是 5000 元 runway 的后台仪表，不是焦点。
+
+## 研究范式（已重置）
+
+- **机制优先（猎机制，不猎形态）**：先答"谁在持续付钱/为什么/我们凭什么拿到/数据成本容量"，最后才信号回测。
+- 主猎场（会话2 蓝图收敛，外部grounding）：**①强制清算级联 ②funding/持仓极端反向**（两条主线,机制硬+数据可得+可自动化）；波动率/VRP降为择时输入（外部证据纠正:加密VRP为负,卖方收溢价但左尾爆炸,不裸卖）；新上市=需建数据的并行候选。
+- 旧线处置（DEC-066④复读后更新）：Sweep 形态版=封存（机制版[止损簇→强平]并入A-1）；**TSMOM=新口径复读通过，列R2后扩样本候选（P1-06优先），非封存**。支撑压力→止损流、布林/波动→凸性 = 保留为机制版候选。
+- 系统化是对的（要自动化+无主观盘感），但≠只做统计因子。
+
+## 失败计数
+
+历史实验失败 **11**｜独立 Alpha **6/8**（a2 funding极端反向 2026-06-11 FAILED 计入第6；**L3 已触发并出报告** `STAGE_AUDITS/L3_EMERGENCY_2026-06-11.md`；**剩 2 次，下一条独立命仅限 A-1**，其预登记须先过 Risk Reviewer 反审）。
+
+## 重建路线（时间盒）
+
+- 会话1 ✅ 战略产品定义（`COMPANY_STRATEGY_PRODUCT_v1.md`）+ 锁 DEC-063/064。
+- 会话2 ✅ 投研与风控蓝图（`PHASE1_RESEARCH_RISK_BLUEPRINT_v1.md`：机会地图收敛2主线 + 投研OS流水线 + 风控七层 + 验收口径）。
+- 会话3 ✅ 技术/AI组织/治理/实施蓝图（`PHASE1_TECH_ORG_GOVERNANCE_v1.md`：技术分层/AI组织工作流/治理6轨+文档权威层级/分阶段实施手册/最小验证+冻结清单）。
+- **公司OS四蓝图全部产出**。冻结只差跑 R2 最小验证（A-2）。文档权威层级见会话3蓝图§3.1。
+
+## parked 拍板结果（DEC-066，2026-06-10，全部拍完）
+
+①论点认可：两主线（A-1清算级联/A-2持仓极端反向）+3优化点（A-2先行/强平数据前向采集随R1/预划A-1·A-2机制边界）｜②风格档双轨：研究验收一律标准档；围栏子账户25%本金按激进档表达已验证edge（归零即停/月度补充上限/盈利回流核心）｜③验收口径四件套：期望>0R扣全成本/赢亏比≥1.5–2/爆仓概率可估/几何增长正（取代Sharpe/MaxDD）｜④Sweep形态版封存、机制版并入A-1；TSMOM新口径复读（既有trades纯重算）再定生死；新主线不背旧计数｜⑤熔断见上｜⑥运营模型认可。剩余待办：成本台账填数（Founder）。
+
+## 新增轨
+
+AI 能力/自研 skill（boot-brief/state-sync 已建）｜外部知识摄取（不闭门造车）｜治理专项（文件/记忆-上下文/成本-token/版本-可复现/安全/数据质量）｜文档-任务-定时任务重新审计。合规账户：Founder 指示暂不考虑。
+
+## AI 团队工作方式（自我提醒）
+
+主理人开局（先判断阶段/问题/给主张+理由，不当被动记录员）；技术判断不做选择题搬运工；机制优先不猎形态；收益优先不抠成本；不奉承不肯定表演，该反对就反对。
+
+## 细节指针（需要才读）
+
+`CURRENT_STATE.md`（运行权威）｜`DECISION_LOG.md`（DEC-001~064）｜`COMPANY_STRATEGY_PRODUCT_v1` / `PHASE1_RESEARCH_THESIS_v1` / `OPERATING_MODEL_DESIGN_v1` / `AI_CAPABILITY_TOOLING_AUDIT_v1`（00_PROJECT_MANAGEMENT/）｜启动协议见 `CLAUDE.md`。
+
+ succeeded in 0ms:
+# CURRENT_STATE.md
+
+**版本：** 3.18  
+**最后更新：** 2026-06-10（**DEC-066：6项parked全部拍板**——①论点认可[两主线+3优化点] ②风格档双轨[标准档尺子+围栏25%激进表达] ③验收口径四件套 ④Sweep形态版封存/TSMOM新口径复读 ⑤熔断=独立Alpha 5/8冻结、6/8触发L3 ⑥运营模型认可。冻结只差R2最小验证。）  
+**上版（3.17）：** 2026-06-07（**战略级重置 DEC-063/064**:①目标函数改写——公司目标=找真edge+安全复利核心资本,月化30%不再是验收条件;两层资本架构[核心资本受保护never100x/围栏子账户可归零不伤核心];高杠杆=仓位表达非Alpha来源。②暂停TSMOM/Sweep研究队列,进时间盒[2-3聚焦会话]重建公司OS,保留已验证底料。已产出 Thesis v1 + 运营模型v1 + 战略产品定义v1。AI组织升级:CEO/CTO主会话+隔离子会话[Research Architect/Risk Reviewer否决权/独立复核]+Codex实现。）  
+**上版（3.16）：** 2026-06-07（文档治理同步:三审计共识修复失败计数8→10/独立Alpha 4/8→5/8、吸收P1-06、4权威文件状态同步、成本台账已建待填。）  
+**上版（3.15）：** 2026-06-07（P1-05两轴归因完成DEC-062:纠正Claude两假设[2022非纯熊市反弹仅64.7%;Sweep非震荡专属],94.4%亏损在宏观熊市;下一步P1-06=P1-04+宏观牛市过滤已预登记出任务,遵循Protocol v1.2规则式状态门控;Sweep列"牛市回调反弹"候选不复活）  
+**上版（3.14）：** 2026-06-07（工具调研回灌经Codex 7点评审:报告重写v2.1;三屏障=方向性事件默认基准;手动Meta改"规则式状态门控"去精确率召回率;NautilusTrader=LGPL-3.0/Freqtrade=2026.4;Protocol→v1.2;DC→Codex自动触发护栏）  
+**上版（3.12）：** 2026-06-06（P1-04 PASSED/EXPLORATORY=首个过门槛结果,Sharpe1.33/WF全>1,但2022 -23.72%[ADX不分牛熊];不进Holdout;下一步P1-05归因[扩两轴]）  
+**更新者：** Claude（CTO）  
+**最后月度审计（L1）：** 2026-06-07（🟡需关注；P0=0；P1=3[成本零跟踪/独立Alpha 5-8/治理文档滞后]；报告 `09_OPERATIONS/MONTHLY_REVIEW/MONTHLY_AUDIT_2026-06.md`；建议触发Opus L2）  
+**说明：** 本文件记录项目当前真实状态。每次阶段切换或重大变更后必须更新。新对话启动时优先读取本文件恢复运行认知。
+
+---
+
+## 1. 当前阶段
+
+**阶段名称：** Phase 1 — 找到有效赚钱规律（2026-06-06 跨越，DEC-049）  
+**上一阶段：** Phase 0A ✅（5/5）→ Phase 0B ✅（研究闭环能力经8个闭环证明，L2 CONDITIONAL GO）  
+**Phase 1 目标：** ≥3个假设完整测试，≥1个通过统计验证（扣全部成本含funding正期望、多时段稳定、Sharpe>1、WF+Holdout）  
+**首个方向：** 资金费率/基差 carry（DEC-048）；可行性前置完成（`06_RESEARCH/RESULTS/20260606_funding_feasibility.md`）
+
+**失败计数（双轨制；口径=DEC-066⑤）：历史 11 ｜ 独立 Alpha 6/8（a2_funding_extreme_reversal_v1 于 2026-06-11 FAILED 计入第6；L3 已触发并出报告；剩 2 次，下一条命仅限 A-1）**
+原记录： 历史实验失败 **10次**（v1/v2/v3/v5/v6/v6b/0B17/0B18/P1-01/P1-02）｜独立Alpha假设 **5/8**（v1/v2/v3/v5/TSMOM家族，管辖项目级止损，距8还有3次）｜v4实现变体 **CLOSED**；TSMOM家族 **封存**（DEC-053，与P1-04/P1-06续测的冲突待Founder裁定）  
+**Holdout 状态：** 全部实验均未读取，封存完整  
+**v4信号最终定性（DEC-047）：** 样本内统计边沿真实，但经止损/退出/仓位/恐惧度全维度实现测试，无一可部署 → **降级为"不可部署"归档，实现线CLOSED，永久停止任何v4变体**  
+**下一步：** 🔄 **战略级重置进行中（DEC-064）：暂停研究队列，时间盒重建公司OS（2-3聚焦会话）。** 会话1已出《战略产品定义v1》(`00_PROJECT_MANAGEMENT/COMPANY_STRATEGY_PRODUCT_v1.md`)；会话2=全市场机会地图+投研/风控蓝图；会话3=技术蓝图+AI组织工作流+分阶段实施手册→最小验证→冻结。目标函数已改写(DEC-063,两层资本架构)。⏸️ 旧parked项(carry/Deflated Sharpe/Sweep候选/熔断口径)并入OS重建一并处理。【Claude继续：出会话2蓝图】  
+**完成条件：** 五条验收标准全部满足（见 DECISION_LOG DEC-005）
+
+| 验收条件 | 状态 |
+|---------|------|
+| 1. Memory 恢复能力 | ✅ 满足（Cowork + Chat 双端验证） |
+| 2. Research Protocol 存在 | ✅ **2026-06-05 完成**（DEC-023，06_RESEARCH/RESEARCH_PROTOCOL_v1.md）|
+| 3. Backtest Framework 可运行 | ✅ **2026-06-04 完成** VectorBT 1.0.0 端到端验证通过 |
+| 4. 第一个假设被定义 | ✅ **2026-06-06完成**（DEC-027）|
+| 5. 第一个研究闭环完成 | ✅ **2026-06-06完成**（结论：FAILED，Holdout未运行）|
+
+---
+
+## 1b. 最近进展（活动区）
+
+**下一步（三份2026-06-07审计共识）：暂停新实验，先解决治理P0 + Founder裁决4项D级。**
+- 治理P0（Claude已直接处理）：成本台账已建（待Founder填数）；本轮已同步4个权威文件状态；P1-04 Deflated Sharpe待补算
+- D级待Founder：①熔断口径（原始10≥8 vs 双轨5/8哪个是真闸门）②是否修订DEC-019重开delta中性carry ③P1-06探索级是否继续确认 ④Phase1时间/成本盒子
+- 决策性冲突待裁：DEC-053封存TSMOM vs P1-04/P1-06续测；Protocol的Expectancy>1.0(应>0)与MaxDD<25%(vs DEC-053的<50%)失真
+- 详见 `STAGE_AUDITS/` 三份6-07审计（L1_DEEP_AUDIT_CODEX / L2_AUDIT_PHASE_1 / MONTHLY_AUDIT_2026-06）。
+
+**2026-06-08 进展：** 已建自研工具 `01_MEMORY_CORE/BOOT_BRIEF.md`（精简启动简报，省token）、`STATE_SYNC_CHECKLIST.md`、`state_check.py`（一致性自检）；已升 **CLAUDE.md v2.2**（DEC-065：主理人定位/机制优先研究顺序/两面诚实反迎合/boot-brief启动协议+主理人开局/不做选择题搬运工/state-sync）。能力审计已出（`AI_CAPABILITY_TOOLING_AUDIT_v1.md`）。**会话2 已完成**：`PHASE1_RESEARCH_RISK_BLUEPRINT_v1.md`（机会地图经外部grounding收敛为2主线[清算级联/持仓极端反向]+波动率降为择时输入[VRP为负的纠正]；投研OS流水线;风控七层+两层资本+三风格档+验收口径）。**会话3 已完成**：`PHASE1_TECH_ORG_GOVERNANCE_v1.md`（技术分层蓝图/AI组织工作流[CEO-CTO+隔离子会话+Codex直调通道]/治理6轨+文档权威层级§3.1/分阶段实施手册R0-R4/最小验证+冻结清单）。**公司OS四蓝图（战略产品/运营模型/投研风控/技术组织治理）全部产出。** 冻结只差：Founder 拍 parked + 跑一次最小验证(R2验A-2)。
+
+**2026-06-11 进展（R2，重大节点）：** R1_A2特征库（事件1092个/Holdout 218封存/无前视测试，Codex直调实现，commit 2d489e5）→ **R2 A-2事件研究 FAILED**（六检验全不显著且三主窗口方向相反：极端负funding后续跌、正funding后续涨=延续非反转；非重叠复核同向；pytest 6/6；判定严格按预登记）→ 独立Alpha **6/8**，L3触发并出报告（`STAGE_AUDITS/L3_EMERGENCY_2026-06-11.md`，建议不暂停+执行序TSMOM扩样本→A-1）。**最小工作流验证流程目标达成（全流水线无人工搬运跑通），OS具备冻结条件。** A-2入墓园（"延续"=同样本事后发现，污染，不得直接转新假设）。【等待Founder：L3三项确认】
+
+**2026-06-10 进展：6项parked全部拍板（DEC-066）。** ①论点认可（两主线A-1清算级联/A-2持仓极端反向 + 3优化点：A-2先行/强平数据前向采集随R1/预划A-1·A-2机制边界）②风格档双轨（研究验收一律标准档；围栏子账户25%本金≈7500元按激进档表达已验证edge，归零即停/月度补充上限/盈利回流核心）③验收口径四件套（期望>0R扣全成本/赢亏比≥1.5–2/爆仓概率可估/几何增长正且稳健）④Sweep形态版封存、机制版并入A-1；TSMOM新口径复读（P1-04/P1-06既有trades纯重算，无新实验）再定生死；新主线不背旧计数——同时解决DEC-053与P1-04/P1-06续测冲突 ⑤熔断=独立Alpha 5/8真闸门冻结、6/8强制触发L3（6-07审计D级①就此解决）⑥运营模型/RACI/工作流认可。
+**2026-06-10 进展（续）：TSMOM新口径复读完成 + 强平采集脚本落盘。** 复读（预登记判据→纯重算，seed=42）：P1-04/P1-06 四件套**全过**（E[R] +0.027/+0.028；赢亏比 2.66/2.45；P(年DD≥35%)@1x 16.9%/9.7%；年化log增长 0.468/0.397；分年正期望5/6）→ **TSMOM列为R2之后扩样本候选，P1-06变体优先**（风险面占优）。关键副产物：@2x爆仓概率61-76%=DEC-063"杠杆≠Alpha"的量化实证，趋势类只能1x内表达。报告 `06_RESEARCH/RESULTS/20260610_tsmom_recheck_new_criteria.md`。强平采集器 `06_RESEARCH/CODE/liquidation_collector.py` 已写好**待部署**（Mac launchd/nohup 或腾讯云VM，需常驻进程，沙盒无法代跑——R1事项）。
+**2026-06-10 进展（再续）：冻结前全盘审计完成。** 报告 `STAGE_AUDITS/L2_AUDIT_OS_FREEZE_2026-06-10.md`。总判定🟡：方向/方法/组织/架构全部验证通过，但**5项P0必须在冻结前清**（全部便宜，≤2会话）：P0-1 验收四件套量化冻结→Protocol v1.3；P0-2 事件类成本压力档（级联滑点×3~10）；P0-3 事件研究样本/Holdout设计（R2预登记前先事件普查）；P0-4 **两个定时任务仍按废弃口径审计（8次计数/旧Architecture/无风险D）须重写**；P0-5 git/锁/哈希立即做（从R1解绑）。P1十项/P2五项见报告。文档矛盾3处：Protocol旧门槛、运营模型§1.1残留"月化"、围栏"1000一档"vs"25%"。
+**2026-06-10 进展（三续）：四方向OS调优方案 + 低模型任务包已出。** `OS_TUNING_PLAN_v1.md`（多工具编排/上下文工程/记忆系统/一人公司组织四方向主张，含：新增第三执行层"低模型会话"、Context Pack 隔离独立复核、DECISION_LOG索引、墓园索引、CLAUDE.md启动清单与权威层级不一致待修宪）。机械任务已打包 `04_AI_TEAM/LOW_TIER_TASKS/TASK_PACKAGE_2026-06-10.md`（T-01~T-13，含 Protocol v1.3 增补件逐字payload、git初始化、CURRENT_STATE瘦身、降级横幅等；执行铁律6条；Claude验收制）。
+**2026-06-10 进展（四续）：低模型任务包 T-01~T-13 执行完毕，Claude 验收通过。** 核验：CURRENT_STATE 491→109行（§1b活动区完整）；DECISION_LOG 索引67条、正文零改动；7文件横幅✓；Protocol v1.3增补件门槛逐字✓；墓园索引10行✓；git baseline `cee7ca4`✓；state_check✓。第三执行层（低模型会话）首跑成功，三层路由（判断/实现/机械）正式可用。**待 Mac 端手工清理（Finder，沙盒权限删不掉）：** 00_PM 下 7 个 `.tmp` 文件 + `.git/index.lock`；清完后补一次 `git rm --cached *.tmp` 提交（.gitignore 已加 `*.tmp`）。
+**2026-06-11 进展：夜间批次 N1-N8 完成（定时会话卡死，Claude主会话接管）。** ①P0-4了结：周监控/月审定时任务热更新v2（5/8真闸门/风险A-D/四蓝图权威/R0-R4/月报归口/consolidate-memory）②修宪提案v2.3出稿【等待Founder】③**事件普查（P0-3）**：单品种单阈值全不够探索级→R2必须池化+单调性；A-2主战场=funding负极端(池化324/182)、A-1代理=6h OI骤降(池化368)，检验预算A-2≤6/A-1≤4次 ④**数据盘点：数据实际新鲜至2026-05/06（"截2025-12"为过时认知），缺5m价格K线（机制验证用1H够，执行层后补）** ⑤P1-04 Deflated Sharpe=0.80~0.86<0.95，强化不进Holdout ⑥AGENTS.md草案就绪。报告`99_TEMP/NIGHT_RUN_20260611_REPORT.md`。**午批（同日）**：修宪v2.3已应用（DEC-067，启动清单换四蓝图）；.tmp与git锁经Desktop Commander清除（commit 9e29f65）；强平采集器已部署至Mac（nohup，自动重连，代理127.0.0.1:7897 socks5h）但**当前代理节点被Binance拒绝——等Founder切节点即自动开始收数**；低模型任务包#2发出（U-01~04文档一致性修复）。R2设计前置（P0-3）已清，**R1剩余项仅：Codex直调接通+特征库（等Codex额度）+采集器部署（等Mac）**。
+**下一步（执行序）：** ①Founder开低模型新会话执行任务包（指令示例："读取 04_AI_TEAM/LOW_TIER_TASKS/TASK_PACKAGE_2026-06-10.md 并严格按铁律逐task执行"）→ ②Claude验收+P0-4定时任务重写+修宪提案 → ③R1（数据更新/粒度盘点/Codex直调/采集器部署）→ ④R2（最小验证+冻结OS）。【等待Founder：发包给低模型会话】
+
+
+---
+
+## 2. 工具链状态
+
+| 工具 | 状态 | 备注 |
+|------|------|------|
+| Claude Cowork | ✅ 完全可用 | **主工作区**，Memory恢复正常 |
+| Claude Code v2.1.161 | ✅ 已安装 | Cowork 底层依赖 |
+| Desktop Commander v0.2.41 | ✅ 完全可用 | **Mac本地执行环境**（start_process可在Mac运行任意命令，2026-06-05确认）|
+| Python 3.13.5 + 量化环境 | ✅ 完全可用 | **2026-06-04安装完成**：pandas/numpy/vectorbt/ccxt/matplotlib/scipy/statsmodels |
+| VectorBT 1.0.0 | ✅ 已验证 | 端到端回测管线通过，Phase 0A验收条件3满足 |
+| x-reader 0.2.0 + Playwright | ✅ 已安装 | **2026-06-05安装**，微信公众号批量抓取已验证（20篇，2分钟）|
+| Obsidian + Sync | ✅ 可用 | 被动读取，Claude 写入文件后自动同步 |
+| Codex | ✅ 已验证 | **2026-06-05完成0A-6首次真实任务**：信号检测器全量运行及验收通过 |
+| Context7 | ⚠️ 已安装未使用 | 本项目中尚未实际调用 |
+| Node.js v22.22.0 | ✅ 可用 | openclaw@2026.4.8 全局安装（Phase 2 评估是否使用）|
+| 腾讯云轻量（新加坡，2核4G） | ⚠️ 状态未知 | V4基础设施状态待Phase 2验证（P-001修正）|
+
+---
+
+## 6. 关键约束
+
+- 每月预算：约1000元
+- 可用时间：晚9点~2点（有帮带孩子时），约1小时（无帮带时）
+- 交易本金上限：30000元
+- 用户技术背景：无
+- 用户角色：Founder，纯做最终确认
+- 首要风险：风险C——长期停留在讨论层，没有真实实验
+
+---
+
+## 7. 工作主场说明
+
+**Cowork（主工作区）：** 日常任务执行、文件读写、调研、文档治理  
+**Chat（历史归档）：** 本对话保留作为项目历史记录，不再作为主工作区  
+**切换时机：** 已完成，从本次更新后所有新任务在 Cowork 执行
+
+---
+
+## 8. 新对话启动清单
+
+新对话开始时，Claude 必须按顺序读取：
+
+```
+1. 01_MEMORY_CORE/CURRENT_STATE.md        ← 当前状态
+2. 01_MEMORY_CORE/DECISION_LOG.md         ← 已确认决策
+3. 01_MEMORY_CORE/PROJECT_CONTEXT.md      ← 项目背景
+4. 00_PROJECT_MANAGEMENT/PROJECT_OPERATING_STATE.md  ← 目录状态
+5. 00_PROJECT_MANAGEMENT/PROJECT_MASTER_PLAN_v2.md   ← 任务手册（确认当前任务队列）
+```
+
+读完后向用户确认当前阶段和本次目标，再开始工作。
+
+---
+
+exec
+/bin/bash -lc "sed -n '1,260p' 01_MEMORY_CORE/DECISION_LOG.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+# DECISION_LOG.md
+
+**版本：** 1.0  
+**初始化时间：** 2026-06-02  
+**写入依据：** MEMORY_EXTRACTION_PROTOCOL v1.0  
+**说明：** 本文件记录所有经用户明确确认的决策。对话中的分析、建议、推演不得写入。每条决策标注来源、时间、影响范围。
+
+---
+
+## 格式说明
+
+```
+[DEC-XXX]
+决策内容：
+决策时间：
+来源：
+影响范围：
+状态：ACTIVE / DEPRECATED
+```
+
+---
+
+## 索引（2026-06-10 机械生成，以正文为准）
+
+| 编号 | 决策一句话 | 状态 |
+|------|-----------|------|
+| DEC-001 | 工具链选型确认 | ACTIVE |
+| DEC-002 | 项目目录确认 | ACTIVE |
+| DEC-003 | MEMORY_EXTRACTION_PROTOCOL v1. | ACTIVE |
+| DEC-004 | 项目定位升级 | ACTIVE |
+| DEC-005 | Phase 0A 重新定义 | ACTIVE |
+| DEC-006 | 角色分工确认 | ACTIVE |
+| DEC-007 | 资源约束确认（影响技术选型和阶段节奏） | ACTIVE |
+| DEC-008 | PostgreSQL 为唯一权威状态源 | ACTIVE |
+| DEC-009 | 禁止同向覆盖机制 | ACTIVE |
+| DEC-010 | 持仓唯一标识改用全局唯一 trade_id | ACTIVE |
+| DEC-011 | 建立 Reconciliation Loop + Orpha | ACTIVE |
+| DEC-012 | PROJECT_MASTER_PLAN_v2.md 作为项目 | ACTIVE |
+| DEC-013 | 项目协作架构原则确认 | ACTIVE |
+| DEC-014 | 回测框架选用 VectorBT | ACTIVE |
+| DEC-015 | 实盘资金阶梯最大亏损阈值（修正版） | ACTIVE |
+| DEC-016 | 操作模式升级——减少Founder参与，提升自动化程度 | ACTIVE |
+| DEC-017 | 目录结构方案——保持现有结构，新结构为Phase 0B目标 | ACTIVE |
+| DEC-018 | 样本量门槛——双层制 | ACTIVE |
+| DEC-019 | 交易类型——U本位永续合约 | ACTIVE |
+| DEC-020 | 架构v2 + 计划书v2.1 正式冻结 | ACTIVE |
+| DEC-021 | Claude/Codex 分工边界——成本驱动，非能力驱动 |  |
+| DEC-022 | 三级项目审计体系（长期制度） |  |
+| DEC-023 | Research Protocol v1.0 正式确认 | ACTIVE |
+| DEC-024 | 首个Setup样本扩展优先并入ETH/USDT 4H | ACTIVE |
+| DEC-025 | 首个Setup的止损与重复入场口径 | ACTIVE |
+| DEC-026 | SOL/USDT 4H纳入首个探索级假设候选范围 | ACTIVE |
+| DEC-027 | 首个验证假设v5_sweep_choch_fvg_bull_ | ACTIVE |
+| DEC-028 | 第二个候选假设改用1H周期做独立验证 | ACTIVE |
+| DEC-029 | 第二个验证假设v5_sweep_choch_fvg_bull | ACTIVE |
+| DEC-030 | Phase 0A → Phase 0B 正式跨越 | ACTIVE |
+| DEC-031 | L3审计结论确认 + 第四个假设方向 | ACTIVE |
+| DEC-032 | 测试做空镜像信号（Bearish Liquidity Swe | ACTIVE |
+| DEC-033 | v4策略失败根因诊断与下一研究方向确定 | ACTIVE |
+| DEC-034 | 0B8/0B9/0B10/0B11 结果回收结论 | ACTIVE |
+| DEC-035 | ref_low 语义纠错——ref_low 对多头是更紧止损 | ACTIVE（永久语义约束） |
+| DEC-040 | 0B13（t+24 + ref_low止损策略回测）明确暂不 | ACTIVE |
+| DEC-036 | 2022年极端熊市处理方式——改为仓位缩减，不再堆叠Regi | ACTIVE |
+| DEC-037 | 短边（做空）研究独立立项，信号重新设计，不沿用Bearish | ACTIVE |
+| DEC-038 | 当前诊断队列确认（均不计失败次数），0B13暂缓 | ACTIVE |
+| DEC-039 | 0B12无止损诊断结论确认 | ACTIVE |
+| DEC-041 | 0B14/0B15/0B16 三诊断结论归档（均不计失败次数 |  |
+| DEC-042 | 0B17策略回测预登记 — ATR×1.9止损 + t+24 |  |
+| DEC-043 | 0B17（ATR动态止损策略）结论确认 — FAILED，失 |  |
+| DEC-044 | 失败计数双轨化 —— 区分「独立Alpha假设失败」与「同一 |  |
+| DEC-045 | 最后一个v4实现杠杆 —— 波动率/恐惧度缩仓策略（0B18 | ACTIVE |
+| DEC-046 | 采纳Codex对L3审计的复核修正（5项），收紧表述与计数记 |  |
+| DEC-047 | 0B18 FAILED/机制无效 → v4 实现线正式关闭 |  |
+| DEC-048 | 股票市场偏向复盘 → 第一个Phase 1方向由"截面动量" |  |
+| DEC-049 | Phase 0B → Phase 1 正式跨越 | ACTIVE |
+| DEC-050 | 交易范围保持纯永续（DEC-019不变）；首个Phase 1 | ACTIVE |
+| DEC-051 | P1-01 TSMOM 结论确认 = FAILED / CO |  |
+| DEC-052 | P1-02 TSMOM v2（波动率目标定仓）= FAILE |  |
+| DEC-053 | Phase 1 验收标准校准（方向性策略）+ TSMOM 正 |  |
+| DEC-054 | 下一个纯永续方向性独立Alpha = 持仓量(OI)/清算微 | ACTIVE |
+| DEC-055 | 确立 regime-first（自上而下）为 Phase 1 |  |
+| DEC-056 | 补做 V5 工具/框架借鉴调研，采纳"借鉴成熟方法论"原则与 | ACTIVE |
+| DEC-057 | 制度化"专业负责人标准"——修复项目至今最严重问题（P0）， |  |
+| DEC-058 | 按研究顺序铁律(DEC-057)重排队列——先做"市场状态框 | ACTIVE |
+| DEC-059 | 设立"工具/框架/Skill 借鉴集成调研"为独立并行支线， | ACTIVE |
+| DEC-060 | P1-04 结论 = PASSED / EXPLORATOR |  |
+| DEC-061 | 工具调研（DEC-059）回灌 —— 方法论采纳、库纪律、S |  |
+| DEC-062 | P1-05 两轴归因结论确认；纠正 Claude 两个假设； |  |
+| DEC-063 | 目标函数改写 + 两层资本架构（纠正"月化30%/高杠杆"被 | ACTIVE |
+| DEC-064 | 暂停当前研究队列，进时间盒重建"公司操作系统"（顶层设计） | ACTIVE |
+| DEC-065 | CLAUDE.md 升 v2.2 —— 固化主理人定位与工作 | ACTIVE |
+| DEC-066 | 6 项 parked 全部拍板（公司 OS 冻结前置之一完成 | ACTIVE |
+| DEC-067 | CLAUDE.md 升 v2.3：启动清单对齐文档权威层级 | ACTIVE |
+| DEC-068 | L3处置：不暂停+重评方向方法；公司OS正式冻结；剩2命A-1优先 | ACTIVE |
+| DEC-DEPRECATED-001 | 三方AI协作模式（OpenClaw + DeepSeek + | DEPRECATED |
+
+## 本项目自身决策
+
+---
+
+**[DEC-001]**
+```
+决策内容：工具链选型确认
+  主控AI：Claude Desktop
+  执行AI：Codex
+  本地文件系统访问：Desktop Commander v0.2.41
+  知识管理：Obsidian（含Sync）
+  文档检索：Context7
+决策时间：2026-06-01（Phase 0A 启动时）
+来源：用户确认，本项目启动约束
+影响范围：所有AI协作任务的工具选择
+状态：ACTIVE
+```
+
+---
+
+**[DEC-002]**
+```
+决策内容：项目目录确认
+  路径：/Users/yaomingyu/Documents/AI_QUANT_COMPANY
+  结构：00~10号目录 + 99_TEMP
+决策时间：2026-06-01（Phase 0A 启动时）
+来源：用户确认
+影响范围：所有文件的存放位置
+状态：ACTIVE
+```
+
+---
+
+**[DEC-003]**
+```
+决策内容：MEMORY_EXTRACTION_PROTOCOL v1.0 作为信息提炼协议
+  所有历史资料提炼必须遵守该协议
+  信息等级：DECISION > FACT > EXPERIENCE > HYPOTHESIS > DEPRECATED > CONFLICT > UNKNOWN
+  历史资料默认为 HYPOTHESIS，未经验证不得作为架构依据
+决策时间：2026-06-01（TASK 2 完成后）
+来源：用户确认
+影响范围：所有历史文档的读取、提炼、归档操作
+状态：ACTIVE
+```
+
+---
+
+**[DEC-004]**
+```
+决策内容：项目定位升级
+  从：AI Quant Company（公司概念）
+  到：AI-Native Quant Research Operating System（研发操作系统概念）
+  North Star 不变：找到可持续产生Alpha的方法，最终实现自动化量化交易
+  当前阶段目标：建立研究能力基础设施，而非直接研发交易系统
+决策时间：2026-06-02（三方论证收敛后）
+来源：用户确认，ChatGPT + Claude 三方论证结论
+影响范围：项目所有阶段规划、优先级判断、资源分配
+状态：ACTIVE
+```
+
+---
+
+**[DEC-005]**
+```
+决策内容：Phase 0A 重新定义
+  名称：Research Capability Infrastructure（研究能力基础设施）
+  验收标准（五条，全部满足方可进入下一阶段）：
+    1. Memory恢复能力：新对话能恢复项目上下文
+    2. Research Protocol存在：知道如何执行实验
+    3. Backtest Framework可运行：能产生可判断的数字
+    4. 第一个假设被定义：具体的、可验证的研究对象
+    5. 第一个研究闭环完成：无论结论好坏，完整走完一遍
+  第5条为最重要条件，前四条是能力，第5条证明能力真实存在
+决策时间：2026-06-02（三方论证收敛后）
+来源：用户确认，ChatGPT + Claude 三方论证结论
+影响范围：Phase 0A 所有工作的方向和优先级
+状态：ACTIVE
+```
+
+---
+
+**[DEC-006]**
+```
+决策内容：角色分工确认
+  用户：Founder + 最终决策者，纯粹做最终确认，不参与技术判断
+  Claude：CTO，负责架构设计、规划、任务分解、阶段判断、文档治理
+  Codex：工程执行，负责代码实现、部署、调试
+  Claude → Codex 交接：必须包含目标、约束条件、验收标准、禁止事项
+决策时间：2026-06-02
+来源：用户确认
+影响范围：所有任务分配和协作流程
+状态：ACTIVE
+```
+
+---
+
+**[DEC-007]**
+```
+决策内容：资源约束确认（影响技术选型和阶段节奏）
+  每月预算：约1000元（研发阶段，无利润产出期）
+  交易本金路径：模拟盘验证 → 1000元小资金 → 10000元 → 最大30000元
+  风险容忍：1000本金最大亏损30%，10000本金最大10%，30000本金最大3%
+  服务器：MacBook Pro M1 + Windows i7-11700/16G + 腾讯云轻量2核4G（新加坡）
+  终态目标：全自动无人值守实盘，保留手动停止权
+决策时间：2026-06-02
+来源：用户提供
+影响范围：技术选型、策略方向、风控参数设计
+状态：ACTIVE
+```
+
+---
+
+## 来自历史文档的确认决策（来源：D34 决策记录）
+
+以下决策来自 V4 时期历史文档 D34，经用户在 2026-06-02 逐条确认，升级为当前项目 DECISION。
+
+---
+
+**[DEC-008]**
+```
+决策内容：PostgreSQL 为唯一权威状态源
+  所有巡检、复盘、评估、风控检查必须直接从 PostgreSQL 读取
+  _positions 字典降级为缓存，不得作为风控输入
+  CSV 文件降级为历史快照，仅供参考
+历史决策时间：2026-05-07（D34 AD-1）
+当前项目确认时间：2026-06-02
+来源：D34：决策记录.md，Ghost Position 事故根因验证
+影响范围：所有涉及持仓状态读取的模块
+状态：ACTIVE
+```
+
+---
+
+**[DEC-009]**
+```
+决策内容：禁止同向覆盖机制
+  新信号到达时，如已有同币种同方向活跃持仓，直接拒绝新信号
+  后续通过 REPLACED 状态实现有序替换（先平旧仓→记录PnL→再开新仓）
+  完整 Lifecycle Engine 建立前，禁止任何形式的自动持仓替换
+历史决策时间：2026-05-08 深夜（D34 AD-4）
+当前项目确认时间：2026-06-02
+来源：D34：决策记录.md，与 D10 CM-1 互相印证
+影响范围：信号处理逻辑、持仓生命周期管理
+状态：ACTIVE
+```
+
+---
+
+**[DEC-010]**
+```
+决策内容：持仓唯一标识改用全局唯一 trade_id
+  废弃以 symbol_direction 作为持仓唯一标识
+  每个持仓必须有全局唯一 trade_id，格式：{symbol}_{direction}_{timestamp}_{hash4}
+  log_trade() 改为 WHERE trade_id=? 精确匹配
+  废弃 ORDER BY timestamp DESC LIMIT 1 粗粒度匹配
+历史决策时间：2026-05-08 深夜（D34 AD-5）
+当前项目确认时间：2026-06-02
+来源：D34：决策记录.md，与 D10 CM-3 互相印证
+影响范围：数据库设计、交易记录函数、持仓查询逻辑
+状态：ACTIVE
+```
+
+---
+
+
+exec
+/bin/bash -lc 'rg -n "DEC-06[3-8]|DEC-057|DEC-061" 01_MEMORY_CORE/DECISION_LOG.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+83:| DEC-057 | 制度化"专业负责人标准"——修复项目至今最严重问题（P0）， |  |
+84:| DEC-058 | 按研究顺序铁律(DEC-057)重排队列——先做"市场状态框 | ACTIVE |
+87:| DEC-061 | 工具调研（DEC-059）回灌 —— 方法论采纳、库纪律、S |  |
+89:| DEC-063 | 目标函数改写 + 两层资本架构（纠正"月化30%/高杠杆"被 | ACTIVE |
+90:| DEC-064 | 暂停当前研究队列，进时间盒重建"公司操作系统"（顶层设计） | ACTIVE |
+91:| DEC-065 | CLAUDE.md 升 v2.2 —— 固化主理人定位与工作 | ACTIVE |
+92:| DEC-066 | 6 项 parked 全部拍板（公司 OS 冻结前置之一完成 | ACTIVE |
+93:| DEC-067 | CLAUDE.md 升 v2.3：启动清单对齐文档权威层级 | ACTIVE |
+94:| DEC-068 | L3处置：不暂停+重评方向方法；公司OS正式冻结；剩2命A-1优先 | ACTIVE |
+1464:**[DEC-057]**
+1501:决策内容：按研究顺序铁律(DEC-057)重排队列——先做"市场状态框架+跨信号归因"，暂挂 P1-04/P1-03
+1519:来源：Founder 追问研究顺序 + Claude(CTO)按DEC-057自我应用七问
+1569:    - 不立即加方向层"修"2022（那又是局部修补搜索，违反DEC-057）。
+1589:**[DEC-061]**
+1637:    - 护栏（强制）：①派发前必过"专业审查七问"(DEC-057)，防风险D局部修补搜索被自动化加速；
+1658:关联：落实 DEC-056；纠偏并重写 v2 报告为 v2.1；与 DEC-060/TASK_P1_05 两轴口径一致；研究顺序服从 DEC-057/058
+1689:    （口径对齐：2026-06-07 经 Codex 评审，DEC-061/Protocol v1.2 已将"手动Meta-Label+P/R"
+1707:**[DEC-063]**
+1735:**[DEC-064]**
+1753:     非"以后基本不调"；②月化30%不能当基础目标（见 DEC-063）。
+1767:**[DEC-065]**
+1773:  3. 研究顺序铁律升级为"机制优先"(谁付钱→凭什么拿→约束→regime→才信号)；猎机制不猎形态(DEC-064)。
+1776:  5. 把 DEC-063 目标函数与两层资本架构写入宪法正文。
+1781:影响范围：所有后续对话的启动与工作方式；落地 DEC-057/063/064
+1787:**[DEC-066]**
+1814:**[DEC-068]**
+1832:**[DEC-067]**
+
+diff --git a/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md b/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..c86a34be4869e12047dac647d2b574acf96de9a4
+--- /dev/null
++++ b/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+@@ -0,0 +1,23 @@
++# EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12
++
++## 附录A：零锚定预期
++
++审计时点：2026-06-11 UTC+08。已读材料仅限 `CLAUDE.md` 与 `00_PROJECT_MANAGEMENT/COMPANY_STRATEGY_PRODUCT_v1.md`，未读取其他项目材料。
++
++如果从零设计这家公司，我的先验设计如下：
++
++1. 公司目标应被定义为“小资金约束下寻找可重复、可审计、可部署的交易优势”，而不是收益率口号；收益目标只作为资本表达层的后置约束。
++2. 研究顺序应从机制开始：先识别谁在系统性付钱、为什么会持续付钱、小资金是否真有容量或执行优势，再讨论信号、回测和杠杆。
++3. 第一阶段不应建设完整交易公司，而应建设一个带退出标准的 edge 发现漏斗：数据可得性普查、机制假说、最低成本证伪实验、失败归档、机会地图更新。
++4. 资金架构应分为核心资本与围栏账户；核心资本只允许已通过样本外与风控验收的策略，围栏账户可承受归零但不得反向污染研究纪律。
++5. 研究协议必须把成本、滑点、funding、样本外验证、前视偏差、数据封存和多重检验写成硬门槛；失败结论必须和成功结论同等归档。
++6. 组织上应避免“Founder 提想法、AI 跑回测”的低质量循环；AI 负责人必须承担一阶抽象、机制筛选和反对无效任务的责任。
++7. Codex/执行层应负责可复跑代码、审计报告和工程约束，但不能被降级为无判断的实现工具；发现实验没有信息增益时必须暂停。
++8. 数据工程优先级应高于策略参数优化：没有可信数据血缘、版本冻结、字段语义、时间戳规范和缺失审计，任何回测数字都不应进入决策。
++9. 技术系统应按阶段演化：R0/R1 以离线研究和审计为主，R2 才建设事件数据管线，R3/R4 再考虑实盘执行与风控闭环，避免过早做生产级交易架构。
++10. 对加密小资金而言，优先机会应集中在容量受限、执行摩擦、强制资金流、杠杆约束、交易所制度差异、事件冲击后的流动性供需失衡；纯形态信号和主流币低频因子应默认低优先。
++11. 每个候选机制都应有预设“证伪成本上限”：若首批独立实验反向或无效，应更新机会地图，而不是围绕同一叙事继续调参。
++12. 文档治理应分层：决策日志是权威，状态文件是运行索引，任务报告是执行证据，研究结果是事实库；禁止把愿景、假设、事实和决策混写。
++13. 上下文工程应服务于减少认知漂移，而不是扩大文档量；启动简报要短、权威、可核验，过长的蓝图应被索引化。
++14. 工具选择应优先成熟、低维护、可导出、可审计；只有当自动化能减少人工错误或提升研究吞吐时才引入。
++15. 预期最大的失败模式不是“策略暂时找不到”，而是“在没有真 edge 的情况下用治理、参数、文档和代理编排制造进展感”。
+
+2026-06-11T16:03:46.967975Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+exec
+/bin/bash -lc "sed -n '1440,1855p' 01_MEMORY_CORE/DECISION_LOG.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+        查证：V5 有方向性调研(EXTERNAL_RESEARCH v1/v2/v3)，但"借鉴成熟开源框架而非重造"被忽略，
+        与我们手写回测/退出/持仓反复栽跟头直接相关。Claude(CTO)主动补做调研并出计划。
+  计划文件：00_PROJECT_MANAGEMENT/V5_TOOL_INTEGRATION_PLAN_v1.md
+  
+  采纳（立即）：
+    - 原则：不自己发明→先学→借鉴→集成→最后才重写。
+    - Triple Barrier Method = 标准退出框架（止盈/止损/时间三屏障），取代手写退出。
+    - Meta-Labeling = regime-first 的学术正名（主信号+二级"做/不做"模型）；P1-04 即其手动实例。
+    - 事件采样 = 减少"马后炮"滞后的采样方法。
+    - 三者写入研究方法论；需库时先安全审计(D38纪律:ClawHub恶意Skill风险)。
+  
+  推迟（不在现在）：
+    - Freqtrade/NautilusTrader = Phase 2 系统参考（学架构不搬码）。
+    - 重型多智能体编排(A2A/LangGraph) = Phase 2 有可部署策略后再建；现保持文件式 handoff。
+    - 理由：先验证 Alpha，避免重蹈 V4/风险B（建系统在前、Alpha 在后）。
+
+决策时间：2026-06-06
+来源：Founder 指出调研缺失；Claude（CTO）补做调研 + 决断
+影响范围：研究方法论(退出/交易过滤/采样)、工具引入纪律、agent协作自动化时机
+状态：ACTIVE
+```
+
+---
+
+**[DEC-057]**
+```
+决策内容：制度化"专业负责人标准"——修复项目至今最严重问题（P0），写入宪法
+  问题定性（Founder 提出 + Codex 自审确认，P0）：
+    AI（Claude 与 Codex）把"严格执行任务书"置于"先判断任务是否值得执行"之前，
+    形成"信号失败→改止损→改退出→改仓位→加过滤"的局部修补搜索；
+    把本应由 AI 完成的一阶专业抽象（如 regime-first）转嫁给不专业的 Founder。
+    实际损害：浪费 v2 整轮实验、历史失败增至10、研究退化为局部搜索、独立Alpha配额面临系统性浪费。
+  
+  根因：工作模式错误（非态度）——职责边界被误解成思考边界；可靠的实验执行 ≠ 可靠的研究领导。
+  
+  制度修复（写入 CLAUDE.md v2.1「专业负责人标准」节，对 Claude+Codex 同时强制）：
+    1. 主动领导不做被动执行器；不确定性由AI承担，不转嫁Founder；技术不当选择题丢给Founder。
+    2. 职责边界≠思考边界：Codex发现方向有问题须暂停落地、提异议，不机械执行。
+    3. 任务执行前强制"专业审查七问"（验证什么机制/证据是否支持/有无更上游问题/
+       变量能否作用于目标/失败原因能否区分/有无更高信息增益实验/方向错先提异议）。
+    4. 研究顺序铁律：市场状态划分→各状态归因→确认edge存在的状态→状态过滤后信号验证→仓位成本优化；
+       禁止局部修补搜索。
+    5. 先借鉴后重造（DEC-056）。
+    新增「风险D（当前最大威胁）」：被任务队列牵着走的局部修补搜索。
+  
+  Codex 协作规范补充：Codex 在每个研究任务执行前同样输出"专业审查七问"，
+    发现方向问题先在执行报告提异议并暂停，由 Claude/Founder 裁决。
+  
+  自我认定（Claude CTO）：此前我以"谨慎研究记录员"姿态工作，未尽主动建框架之责，
+    该批评成立、非小偏差；作为CTO主动抽象的责任主要在我。此后按本标准执行。
+
+决策时间：2026-06-06
+来源：Founder（定性为最严重问题，要求写入宪法）+ Codex自审(P0确认) + Claude(CTO)接受并制度化
+影响范围：Claude与Codex全部后续工作模式；宪法CLAUDE.md；研究组织方式
+状态：ACTIVE（永久行为约束）
+```
+
+---
+
+**[DEC-058]**
+```
+决策内容：按研究顺序铁律(DEC-057)重排队列——先做"市场状态框架+跨信号归因"，暂挂 P1-04/P1-03
+  自我应用七问于 P1-04(Claude CTO)：发现 P1-04 仍是"先包一个过滤(ADX)再测"，略越级；
+    更上游问题"edge 活在哪个市场状态、哪个信号在哪个状态有效"从未被系统回答。
+    P1-04 若失败无法区分是信号无效还是状态定义错。故 P1-04 越级。
+  
+  重排（按铁律 市场状态划分→各状态归因→确认edge存在的状态→状态过滤后信号验证→仓位成本）：
+    - 新第一步（诊断，不计失败、不碰Holdout、不耗独立Alpha配额）：
+      市场状态框架 + 跨信号归因（TASK_P1_05）。
+      用标准独立分类器(ADX + 趋势符号/MA, ER交叉校验)划分 趋势↑/趋势↓/震荡；
+      把现有 TSMOM v1 交易、以及 Sweep 家族事件前向收益 按状态切分归因；
+      产出"信号×状态 edge 地图"——明确 edge 到底活在哪。
+      关键假设之一：**Sweep 家族可能只在震荡期有效**（当年只在EMA200多头regime测过，从未按趋势/震荡隔离）→ 可能被误杀。
+    - 暂挂 P1-04（regime长TSMOM）：归因确认状态定义后，它很可能成为"状态过滤后信号验证"的第4步策略。
+    - 暂挂 P1-03（OI数据核查）：属"下一个新信号"，在状态基础打好前越级；归因后再定是否需要。
+  
+  归因结果将决定下一个预登记策略的设计（信号、状态过滤、方向），从根上停止"信号失败就改参数"的局部搜索。
+
+决策时间：2026-06-06
+来源：Founder 追问研究顺序 + Claude(CTO)按DEC-057自我应用七问
+影响范围：Phase 1 研究队列重排；P1-04/P1-03 暂挂；新增归因诊断为第一步
+状态：ACTIVE
+```
+
+---
+
+**[DEC-059]**
+```
+决策内容：设立"工具/框架/Skill 借鉴集成调研"为独立并行支线，在新对话执行
+  Founder 计划把工具调研放到新对话单独执行。Claude(CTO)出自包含任务书。
+  任务书：00_PROJECT_MANAGEMENT/TOOL_RESEARCH_BRIEF_v1.md
+  
+  关键设定：
+    - 并行支线，**不得阻塞主线**（P1-05 归因 + Alpha 研究）——风险B护栏。
+    - 产出=集成决策矩阵(V5_TOOL_INTEGRATION_PLAN_v2)+落地说明+回灌建议，非装工具/写代码。
+    - 分层：Tier1 Phase1方法论(Triple Barrier/Meta-labeling/状态分类/AFML，立即可用)；
+      Tier2 系统参考(Freqtrade/Nautilus，Phase2)；Tier3 编排/记忆/治理(多Phase2，含"Claude↔Codex自动化最小路径"评估)；
+      Tier4 Skill；TierX 携带D38否决清单不重论证。
+    - 时间盒1~2工作单元；每候选先过七问"该不该碰"。
+    - 安装类Skill须安全审计(D38)。
+    - 回灌：新对话不改Memory Core，产出经主对话Claude审阅后升级DECISION_LOG/Research Protocol；
+      "改方法论/改交易标的或资金"的引入属D级须Founder确认。
+
+决策时间：2026-06-06
+来源：Founder（计划新对话执行）+ Claude(CTO)设计任务书
+影响范围：新增并行调研支线；不影响主线研究顺序
+状态：ACTIVE
+```
+
+---
+
+**[DEC-060]**
+```
+决策内容：P1-04 结论 = PASSED / EXPLORATORY（项目首个通过校准门槛的结果）；不进 Holdout；下一步仍是 P1-05 归因（扩范围）
+  结果（Codex REPORT_P1_04，Claude验收）：
+    - 净 Sharpe 1.327 / 原始 MaxDD 41.31%（<50%脆弱上限）→ 通过 DEC-053 校准门槛。
+    - WF 三段 Sharpe 1.199 / 1.374 / 1.460，全 >1 且无衰减 ← 项目首次跨期稳定。
+    - ADX 过滤真有效：对照无过滤长偏向(Sharpe 1.062/MaxDD 67.42%)，ADX +0.265 Sharpe、-26pp 回撤。
+    - 392 段 = 探索级(DEC-018)；毛 Sharpe 1.652；自动测试18/18；Holdout未访问。
+    - ⚠️ 2022 收益 -23.72%、Sharpe -1.670，严重反证。
+    - 机制澄清(Codex)：改善非"过滤掉亏损段"(被过滤段无成本累计仍为正)，而是缩短暴露/降funding/改回撤路径。
+  
+  计数：PASSED → 不增失败计数；独立 Alpha 维持 5/8。
+  
+  关键判断（Claude CTO，按专业审查）：
+    - 这是 regime-first / meta-labeling 框架方向正确的首个积极证据，但不是终局。
+    - 2022 根因精确定位：**ADX 只测趋势强度，不分牛熊方向**；熊市反弹被误判为上升趋势→做多挨打。
+      缺口=独立的"高周期牛熊方向"层（强度与方向是两个不同的轴，我们一直只用了强度轴）。
+    - 不进 Holdout（探索级 + 2022 未解释，Codex 同此建议）。
+    - 不立即加方向层"修"2022（那又是局部修补搜索，违反DEC-057）。
+  
+  下一步（重申研究顺序铁律）：先跑 P1-05 归因，并扩范围：
+    将"状态"显式拆为 强度(ADX/效率比) × 方向(牛/熊,高周期) 两轴；
+    用两轴状态归因 P1-04 交易，确认 2022 -23.72% 是否全来自熊市反弹误判；
+    顺带验证 Sweep 家族是否在震荡态被误杀。归因结果 → Claude 设计下一策略(P1-04+方向层+扩样本)。
+  
+  附带修正：v6_tsmom_regime_long_v3 预登记 §5"<300才探索级"与 DEC-018"300-499探索级"冲突，
+    以 DEC-018 为准，392=探索级；文档口径以 DEC-018 为唯一标准。
+  
+  P1-03：OI/LSR/taker 数据到位(1,554,269行,无缺失)，清算不可得；OI 信号属地基打好后的下一新信号，暂不立项、不耗配额。
+
+决策时间：2026-06-06
+来源：Codex REPORT_P1_04/P1_03 + Claude(CTO)专业评估
+影响范围：首个通过结果的处理；Holdout 纪律；P1-05 扩范围；OI 延后
+状态：ACTIVE
+```
+
+---
+
+**[DEC-061]**
+```
+决策内容：工具调研（DEC-059）回灌 —— 方法论采纳、库纪律、Skill 反转、协作自动化、分类器方向轴定调
+  来源：并行支线产出 V5_TOOL_INTEGRATION_PLAN_v2.md，经主对话 Claude(CTO) 审阅；
+        Founder 2026-06-07 确认"全部执行"（含下列 D 级项）；
+        **2026-06-07 经 Codex 评审（7点）修订，Founder 转发认可** → 本条已纳入修订。
+  关系：本条是 DEC-056 的落实与细化 + 对 v2 报告的纠偏；报告重写为干净 v2.1。
+
+  立即采纳（已写入 Research Protocol v1.2 第十节）：
+    1. 三屏障(Triple Barrier)为**方向性事件策略**的默认基准退出框架（波动率动态设障，对应0B16 ATR×1.9）。
+       **非方向性机制（carry/资金费率/做市/跨市套利等）按"机制失效条件"设计退出**，
+       预登记须说明为何不适用三屏障。（Codex 评审②；carry 正是 DEC-048 的下一候选方向）
+    2. **规则式状态门控（rule-based state gating）= Phase 1 状态过滤的正式名称**；
+       "Meta-Labeling"仅作方法论来源（严格 Meta-Label 含独立二级模型，本阶段不做）。
+       报告指标用 **覆盖率/保留率/状态间收益差异**（描述性，不诱导按事后盈利标签调参）；
+       **精确率/召回率 + Purged/Embargo CV 仅在真正训练二级模型时强制**。（Codex 评审③，防过拟合回流）
+    3. Purged/Embargo 交叉验证写入硬纪律：参数优化禁用朴素KFold，标签重叠时加 purge+embargo。
+       （当前 P1-05 为归因诊断，不涉参数优化，暂不触发；下一策略验证时生效）
+    4. 借鉴前置纪律(DEC-056)：新信号/策略预登记前须先答"有无成熟方案可借鉴"。
+    5. 报告新增必填字段：三屏障触发分布（仅方向性事件策略）、覆盖率/保留率/状态间收益差异、两轴状态归因。
+
+  研究顺序（工具方法不得打断主线，Codex 评审④）：
+    ① 先完成 P1-05 两轴归因（禁改信号/退出，TASK_P1_05 §5）→ ② 据 edge 地图选下一策略
+    → ③ **仅当下一策略属方向性事件策略时**才引入三屏障 → ④ 再做 purge/embargo 与退出敏感性。
+    **P1-05 才是当前最高价值动作，三屏障不是。**
+
+  库引入纪律（纠偏①，对 v2 §1.1）：
+    - Triple Barrier / Purged CV / 状态分类器一律**自实现可审计小函数(≤50行)**，
+      借鉴 MLFinPy/López de Prado 实现作参考；**不引入 MLFinPy 运行时硬依赖**。
+    - 理由：与"否决不可审计 Skill"(下条)逻辑自洽；MLFinPy 为单维护者年轻包，
+      逻辑简单无需硬依赖；确需第三方库先 pip show + 源码 grep 审计并 pin 版本。
+
+  状态分类器方向轴定调（纠偏②，对 v2 §1.6/§6.3）：
+    - v2 报告 §6.3 用 ADX+ER+同周期 DI± 的单轴分类器**不采纳**——DI± 同周期同源，
+      无法区分高周期牛熊，会复现 P1-04 的 2022 盲点。
+    - 以 TASK_P1_05_REGIME_ATTRIBUTION.md §2 与 DEC-060 的**两轴**为准：
+      轴1 强度(ADX/ER) × 轴2 独立高周期牛熊方向。Research Protocol §10.3 已固化。
+    - 重要：TASK_P1_05 现有规格本就正确(两轴)，P1-05 可按现任务书执行，无需因本次回灌返工。
+
+  D38 Skill 反转否决（Founder 确认）：
+    - quant-research-platform、trading-devbox 两 Skill **从"采纳(待装)"反转为否决**：
+      ClawHub 生态与 Cowork 工具链脱节、V5 无法安全审计；功能已被
+      MLFinPy(借鉴)+Desktop Commander+VectorBT 组合覆盖。
+    - market-sentiment 维持 Phase 2 候选；binance-pro/self-improving-agent/taskmaster/
+      onchain/crypto-cog/trading-research 维持否决。
+
+  协作自动化（D级，Founder 确认）：
+    - 近期最小路径 = Claude 经 Desktop Commander 直接调用 Codex CLI，免 Founder 手搬文件。
+    - 护栏（强制）：①派发前必过"专业审查七问"(DEC-057)，防风险D局部修补搜索被自动化加速；
+      ②保留 TASK_*/REPORT_* 文件作审计留痕(不取消文件式记录)；③设成本/迭代上限；
+      ④D级决策仍保留 Founder 人工确认。
+    - A2A/LangGraph/Claude Agent SDK 维持 Phase 2（DEC-056）。
+
+  延后/不引入：
+    - VectorBT 继续用开源版；PRO($20/月)延后，需大规模参数扫描或内置Purged CV时再评估(属付费D级)。
+    - Mem0/Graphiti 不引入(现 Markdown Memory Core 已够，无状态漂移风险)。
+    - Freqtrade/NautilusTrader 维持 Phase 2 参考(学架构不搬码)。
+
+  文档治理（Codex 评审①⑤⑥⑦）：
+    - 报告重写为干净 **v2.1**（删失效正文/折叠更正/不靠顶部补丁），防后续 Agent 只读正文执行错误方案。
+    - 事实更正：**NautilusTrader 许可证 = LGPL-3.0**（原写 BSL 1.1 错误，2026-06-07 核实）；
+      **Freqtrade 撰写时最新 = 2026.4（2026-04-30）**（原写 2026.1 过时）。补来源表 + 访问日期。
+    - 任务书要求但未逐项评估的项（分数差分/trend-scanning/HH-HL/MCP/CrewAI/AutoGen）
+      明确标为"主动排除/延后"，不再声称 Tier1~4 全覆盖。
+    - 同轮更新 CURRENT_STATE（治理规则：写文件后同轮同步）。
+
+决策时间：2026-06-07（当日经 Codex 评审修订）
+来源：Claude(CTO) 审阅 V5_TOOL_INTEGRATION_PLAN_v2 + Founder 确认全部执行 + Codex 7点评审（Founder转发认可）
+影响范围：Research Protocol v1.2；研究方法论；库/Skill 引入纪律；Claude↔Codex 协作流程；P1-05 状态分类口径；工具计划 v2.1
+关联：落实 DEC-056；纠偏并重写 v2 报告为 v2.1；与 DEC-060/TASK_P1_05 两轴口径一致；研究顺序服从 DEC-057/058
+状态：ACTIVE
+```
+
+---
+
+**[DEC-062]**
+```
+决策内容：P1-05 两轴归因结论确认；纠正 Claude 两个假设；据归因设计下一步 = P1-04 + 宏观牛市过滤
+  归因结果（Codex REPORT_P1_05，Claude验收；诊断不计失败、未访问Holdout、5/5测试）：
+  
+  纠正1（Claude假设被部分否定，诚实记录）：
+    "2022 几乎全是趋势上涨·熊市反弹陷阱"未达预设80%标准——trend_up_bear 仅占2022负向状态格亏损 64.7%。
+    更准确：P1-04 正edge几乎全在宏观牛市（trend_up_bull +$1,085,554/135笔；trend_down_bull +$330,917/146笔）；
+    两个宏观熊市格合计解释 94.4% 亏损。问题=在宏观熊市继续做多，不是仅熊市反弹。
+  
+  纠正2（Claude假设被否定）：
+    Sweep 无证据"只在震荡态有效"。v4有效格更像"牛市中下跌/震荡后反弹"
+    （trend_down_bull t+24 +2.56% p=5.5e-6；range_bull +2.32% p=4.5e-4），
+    但 v4 输入已带双regime筛选=条件选择，不能算独立edge证据。
+    → Sweep 不复活，保留为"牛市回调反弹"候选机制，日后单独预登记验证。
+  
+  全部单格 <300 = INSUFFICIENT(DEC-018)，仅定位用。ADX/ER一致率37.4%因ER>0.5阈值在4H过严，不否定ADX。
+  
+  据此决断（数据驱动的铁律第4步，非局部修补）：
+    下一策略 = P1-04(regime-first长TSMOM) + 宏观牛市过滤（唯一新变量）。
+    宏观定义=各品种前一完整日收盘 > 日线SMA200（无前视，标准值，与归因/Research Protocol §10.3 两轴口径一致）；
+    宏观熊市不做多、不持多。预期2022亏损大幅消除；须验证 Sharpe 仍>1、WF稳定。
+    与 v1.2 合规：本策略 = **规则式状态门控**（非 ML，**不报精确率/召回率**；
+    报告用 覆盖率/保留率/状态间收益差异 + 两轴状态归因）；
+    退出暂保持 P1-04 口径(单变量纪律)，三屏障作为后续候选变量另测，不在本轮叠加。
+    （口径对齐：2026-06-07 经 Codex 评审，DEC-061/Protocol v1.2 已将"手动Meta-Label+P/R"
+     改为规则式门控+描述性指标；与本条对话最终结论及 TASK_P1_06 一致。原措辞为早一版残留。）
+  
+  过拟合纪律（强制）：
+    剔除"样本内已知亏钱的宏观熊市段"必然改善样本内结果——预期内、不算证据。
+    真证据=WF稳定 + 最终Holdout；SMA200用标准值不调参；样本进一步缩小(宏观牛市约281笔)仍探索级，
+    须后续扩品种/扩历史升确认级。参数若需优化用 Purged/Embargo CV。
+  
+  计数：TSMOM家族细化，失败不增独立Alpha(仍5/8)；通过=探索级，不进Holdout、不上实盘。
+
+决策时间：2026-06-07
+来源：Codex REPORT_P1_05 + Claude(CTO)评估（接受对自身假设的纠正）
+影响范围：下一预登记策略(P1-04+宏观过滤)；Sweep候选机制归档；样本扩张需求；遵循 Research Protocol v1.x
+状态：ACTIVE
+```
+
+---
+
+**[DEC-063]**
+```
+决策内容：目标函数改写 + 两层资本架构（纠正"月化30%/高杠杆"被误当验收条件）
+  背景：Claude 在认领"被动记录员"失职时，顺势把 Founder 的高回报诉求
+        （35–100x、月化30%底线）抬成了项目验收条件。经 Codex 独立批评 +
+        Claude(CTO) 接受纠正：合格 CTO 两边都不能顺——不能顺着做低质量因子搜索，
+        也不能顺着把不可持续收益要求包装成战略。
+
+  改写后（Founder 2026-06-07 确认"接受，这本来就是投资中资金配置/仓位管理的部分"）：
+  1. 公司目标函数 = 找到真实、可持续、可放大的 edge + 安全复利核心资本。
+     月化30% 不再是公司级验收条件。
+  2. 两层资本架构：
+     - 核心资本（公司总资本 ≤3万主体）：受保护、稳健复利、永远不按 100x 逻辑跑。
+     - 围栏隔离的高风险子账户（如 1000 一档）：允许极高杠杆与非线性彩票式下注，
+       允许该子账户归零，但禁止拖垮核心资本。
+  3. 高杠杆 = 仓位表达工具（"找到真 edge 之后怎么放大"的下游），
+     不是 Alpha 来源，不是研究路线。围栏内 100x 也只在有真 edge 时才理性。
+  4. 验收口径随之以 Thesis §6 为准（正期望/不对称赔率/可控分档爆仓概率/几何增长），
+     待正式确认后取代旧 Sharpe>1/MaxDD 门槛。
+
+决策时间：2026-06-07
+来源：Codex 独立批评 + Claude(CTO) 评估 + Founder 明确确认
+影响范围：投研验收口径、风控方案分层、Phase 1 论点、资金管理（衔接 DEC-015）
+状态：ACTIVE
+```
+
+---
+
+**[DEC-064]**
+```
+决策内容：暂停当前研究队列，进时间盒重建"公司操作系统"（顶层设计）
+  背景：项目真正的病不是几个实验做错，是从未完成公司级顶层设计；
+        现有架构是"建工具→找信号→回测→失败→改信号"，
+        而非"商业目标→机会空间→产品路线→研究/风控体系→技术架构→AI团队稳定运行"。
+        历史文件(V4)隐含范式(Alpha=K线/因子、研究=逐个回测、永续=预测涨跌、
+        改进=止损过滤仓位)未被真正重建。旧顶层文档(架构v2/计划v2)不合格。
+
+  决策（Founder 2026-06-07 批准"2–3 个聚焦会话出齐"）：
+  1. 暂停 TSMOM/Sweep 研究队列。
+  2. 时间盒重建公司 OS：战略产品定义 → 全市场机会地图 → 投研/风控/技术蓝图
+     → AI 组织与决策工作流 → 分阶段实施手册 → 最小验证后冻结自动流程。
+  3. 不是 blank slate：保留并升级已验证底料（Holdout/红队/WF 纪律、数据、
+     机制优先方法、运营模型骨架 v1、Thesis v1）。暂停的是研究队列。
+  4. 时间盒：2–3 个聚焦会话出齐 → 跑一次最小工作流验证 → 修订一次 → 冻结。
+     目的=能自主连续执行、少 Founder 干预、证据变了能纪律转向的公司 OS，不是写更多文档。
+  5. 接受 Codex 反驳的两条现实：①不能预先消除所有卡壳，目标是"稳定流程里的可控转向"
+     非"以后基本不调"；②月化30%不能当基础目标（见 DEC-063）。
+
+  AI 组织（采纳 Codex 建议）：Claude 主会话=CEO/CTO 综合裁决；
+    Research Architect / Risk Reviewer(独立否决权) / Product-Ops / Independent Review 为隔离子会话；
+    Codex=实现会话。关键方案流程：主责起草→独立角色反审→主责修订→CTO 裁决→Founder 仅批 D 级。
+
+决策时间：2026-06-07
+来源：Codex 独立批评（六套公司方案 + 时间盒）+ Claude(CTO) 评估细化 + Founder 批准
+影响范围：研究节奏、文档治理、AI 协作工作流、后续所有阶段
+状态：ACTIVE
+```
+
+---
+
+**[DEC-065]**
+```
+决策内容：CLAUDE.md 升 v2.2 —— 固化主理人定位与工作方式（Founder 2026-06-08 指示"先做 CLAUDE.md"）
+  1. 角色：CTO → 项目主理人(operating principal)兼 CTO，对全周期结果+策略论点负主体责任，按阶段切专业身份。
+  2. 启动协议：先读 BOOT_BRIEF.md(省 token)，需细节才读 5 大文件；加"主理人开局"
+     (恢复认知后先判断阶段/问题/给论点+下一步+理由；真 D 级才上升且必带推荐，不给开放菜单)。
+  3. 研究顺序铁律升级为"机制优先"(谁付钱→凭什么拿→约束→regime→才信号)；猎机制不猎形态(DEC-064)。
+  4. 加"两面诚实不做应声虫"(不顺低质量因子搜索，也不顺把月化30%/裸高杠杆包装成战略；
+     反迎合、不肯定表演/过度自责；收益优先，成本只是 runway 后台仪表)。
+  5. 把 DEC-063 目标函数与两层资本架构写入宪法正文。
+  6. 关键行为规则加"不做选择题搬运工"；文件同步升级为 state-sync 流程
+     (BOOT_BRIEF / STATE_SYNC_CHECKLIST / state_check.py，01_MEMORY_CORE/)。
+决策时间：2026-06-08
+来源：Founder 指示 + 本对话谈定的工作方式纠正（反被动记录员/反迎合/主理人定位）
+影响范围：所有后续对话的启动与工作方式；落地 DEC-057/063/064
+状态：ACTIVE
+```
+
+---
+
+**[DEC-066]**
+```
+决策内容：6 项 parked 全部拍板（公司 OS 冻结前置之一完成；前一会话被周额度截断，本会话续完）
+  1. ①论点：认可三蓝图"机制优先 + 两主线（A-1 清算级联 / A-2 持仓极端反向）"论点；
+     附 3 个执行层优化点：A-2 先行（数据现成）；立即开始前向采集交易所强平流数据（脚本随 R1 一起出，
+     历史不可得但从今起自建）；预登记时划清 A-1/A-2 机制边界（拥挤尽头即级联，防同一 edge 重复计数）。
+  2. ②风格档：尺子与油门分开的双轨制——研究/验收一律按标准档口径，风格档不影响 edge 成立与否的判定；
+     围栏子账户以 25% 本金（约 7500 元）按激进档表达"已验证的 edge"，归零即停、月度补充上限、
+     盈利部分回流核心资本；edge 反复验证后围栏比例可升（30%→40%）。Founder 偏激进的诉求由此通道承接。
+  3. ③验收口径：换四件套——单笔期望>0R（扣全成本含 funding）、赢均/亏均≥1.5–2、
+     分档爆仓概率可估且可接受、几何增长率为正且稳健；取代"净Sharpe>1 + MaxDD"旧尺子；
+     DEC-018 样本量分档、WF、Holdout 纪律全部保留。
+  4. ④旧线处置：Sweep 形态版（看图下单）正式封存=已探索已退出；其机制版（止损簇→强平）并入 A-1 验证。
+     TSMOM 不盲目封存→"新口径复读"：用 P1-04/P1-06 既有 trades 按四件套纯重算（无新实验、不调参），
+     过=列为 R2 之后的扩样本候选（不挤主线），不过=封存。新主线不背旧计数压力。
+     本条同时解决 DEC-053（封存TSMOM）与 P1-04/P1-06 续测的决策冲突。
+  5. ⑤熔断：正式认"独立 Alpha 5/8"为真闸门并就地冻结；6/8 强制触发 L3 紧急审计。
+     结合第 4 条松绑：新主线独立计数。
+  6. ⑥运营模型/RACI/工作流（OPERATING_MODEL_DESIGN_v1）：认可。
+决策时间：2026-06-10
+来源：Founder 逐条拍板（②③⑤⑥直接拍；①④经大白话解释后拍）+ Claude 主理人主张
+影响范围：公司 OS 冻结前置、Phase 1 研究主线与执行顺序、验收标准、熔断机制、风格档与资本表达
+状态：ACTIVE
+```
+
+---
+
+**[DEC-068]**
+```
+决策内容：L3（2026-06-11）三项处置 + 公司 OS 冻结
+  1. 项目不暂停；但须重新评估既有方法与方向是否本身有错（是否因方向/方法错误影响结果）——
+     该评估并入 2026-06-12 凌晨深度外部审计任务（多专家身份、站在项目外诊断）。
+  2. 公司 OS 正式冻结（最小工作流验证流程目标已达成：预登记→Codex直调实现→独立验收→治理自动触发，
+     全程无人工搬运）。冻结物=CLAUDE.md v2.3 + 四蓝图 + 投研流水线/验收口径(v1.3增补件) + 风控分层/两层资本 +
+     文档权威层级 + state-sync。仅阶段切换或重大决策变更时可改。
+  3. 知悉独立 Alpha 剩 2 次：下一条独立实验命仅限 A-1（清算级联），其预登记须先过 Risk Reviewer 独立反审；
+     TSMOM 家族扩样本不耗独立计数，并行推进。运营注记：Claude 额度紧张，执行类任务尽量派 Codex（直调）。
+决策时间：2026-06-11
+来源：L3_EMERGENCY_2026-06-11 报告 + Founder 逐项确认
+影响范围：项目存续、OS 状态、研究配额纪律、任务路由
+状态：ACTIVE
+```
+
+---
+
+**[DEC-067]**
+```
+决策内容：CLAUDE.md 升 v2.3 —— 启动协议权威清单对齐文档权威层级
+  1. 启动第一步权威文件清单删去已降级的 PROJECT_OPERATING_STATE / PROJECT_MASTER_PLAN_v2，
+     换为"公司 OS 四蓝图"（见 PHASE1_TECH_ORG_GOVERNANCE_v1 §3.1）；CURRENT_STATE 注明§1b活动区、
+     DECISION_LOG 注明先查索引。
+  2. 删除"月报暂写 09_OPERATIONS"过时注记（定时任务已于 2026-06-11 重写 v2，月报归口 STAGE_AUDITS）。
+决策时间：2026-06-11
+来源：修宪提案 CLAUDE_MD_AMENDMENT_PROPOSAL_v2.3 + Founder 确认"同意"
+影响范围：所有新会话启动协议
+状态：ACTIVE
+```
+
+---
+
+## 已废弃决策
+
+---
+
+**[DEC-DEPRECATED-001]**
+```
+决策内容：三方AI协作模式（OpenClaw + DeepSeek + ChatGPT 平权协作）
+  原方案：重要方案和诊断结论须经至少两个独立AI交叉验证
+  数据由OpenClaw提取，DeepSeek负责整合，ChatGPT负责校核
+
+diff --git a/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md b/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..c86a34be4869e12047dac647d2b574acf96de9a4
+--- /dev/null
++++ b/00_PROJECT_MANAGEMENT/STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md
+@@ -0,0 +1,23 @@
++# EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12
++
++## 附录A：零锚定预期
++
++审计时点：2026-06-11 UTC+08。已读材料仅限 `CLAUDE.md` 与 `00_PROJECT_MANAGEMENT/COMPANY_STRATEGY_PRODUCT_v1.md`，未读取其他项目材料。
++
++如果从零设计这家公司，我的先验设计如下：
++
++1. 公司目标应被定义为“小资金约束下寻找可重复、可审计、可部署的交易优势”，而不是收益率口号；收益目标只作为资本表达层的后置约束。
++2. 研究顺序应从机制开始：先识别谁在系统性付钱、为什么会持续付钱、小资金是否真有容量或执行优势，再讨论信号、回测和杠杆。
++3. 第一阶段不应建设完整交易公司，而应建设一个带退出标准的 edge 发现漏斗：数据可得性普查、机制假说、最低成本证伪实验、失败归档、机会地图更新。
++4. 资金架构应分为核心资本与围栏账户；核心资本只允许已通过样本外与风控验收的策略，围栏账户可承受归零但不得反向污染研究纪律。
++5. 研究协议必须把成本、滑点、funding、样本外验证、前视偏差、数据封存和多重检验写成硬门槛；失败结论必须和成功结论同等归档。
++6. 组织上应避免“Founder 提想法、AI 跑回测”的低质量循环；AI 负责人必须承担一阶抽象、机制筛选和反对无效任务的责任。
++7. Codex/执行层应负责可复跑代码、审计报告和工程约束，但不能被降级为无判断的实现工具；发现实验没有信息增益时必须暂停。
++8. 数据工程优先级应高于策略参数优化：没有可信数据血缘、版本冻结、字段语义、时间戳规范和缺失审计，任何回测数字都不应进入决策。
++9. 技术系统应按阶段演化：R0/R1 以离线研究和审计为主，R2 才建设事件数据管线，R3/R4 再考虑实盘执行与风控闭环，避免过早做生产级交易架构。
++10. 对加密小资金而言，优先机会应集中在容量受限、执行摩擦、强制资金流、杠杆约束、交易所制度差异、事件冲击后的流动性供需失衡；纯形态信号和主流币低频因子应默认低优先。
++11. 每个候选机制都应有预设“证伪成本上限”：若首批独立实验反向或无效，应更新机会地图，而不是围绕同一叙事继续调参。
++12. 文档治理应分层：决策日志是权威，状态文件是运行索引，任务报告是执行证据，研究结果是事实库；禁止把愿景、假设、事实和决策混写。
++13. 上下文工程应服务于减少认知漂移，而不是扩大文档量；启动简报要短、权威、可核验，过长的蓝图应被索引化。
++14. 工具选择应优先成熟、低维护、可导出、可审计；只有当自动化能减少人工错误或提升研究吞吐时才引入。
++15. 预期最大的失败模式不是“策略暂时找不到”，而是“在没有真 edge 的情况下用治理、参数、文档和代理编排制造进展感”。
+
+2026-06-11T16:03:53.060244Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
