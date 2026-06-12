@@ -1,58 +1,34 @@
 # BOOT_BRIEF —— 精简启动简报（新对话先读这一份，省 token）
 
-**用途：** 新对话/子会话冷启动**先读本文**即可恢复运行认知；只有需要细节时再去读巨型 CURRENT_STATE / DECISION_LOG。
-**性质：** 派生摘要，**不是权威源**（权威：运行状态=CURRENT_STATE；决策=DECISION_LOG）。每次状态变更后由 state-sync 流程更新。
-**最后更新：** 2026-06-10（DEC-066：6项parked全部拍板）
-
----
+**性质：** 派生摘要，非权威源（运行权威=CURRENT_STATE v4.0 看板；决策=DECISION_LOG 索引）。预算 ≤60 行。
+**最后更新：** 2026-06-12（DEC-069 双审计裁决包执行）
 
 ## 一句话现状
 
-**进行中（2026-06-12凌晨）**：①Claude侧外部深度审计=定时任务 external-deep-audit-20260612（3:30，已预授权）②Codex侧同款独立审计（直调后台跑，报告→STAGE_AUDITS/EXTERNAL_DEEP_AUDIT_CODEX_2026-06-12.md，日志99_TEMP/codex_ext_audit.log）③Codex TSMOM扩样本数据准备（后台，日志99_TEMP/codex_tsmom_data.log）。三者产出均待 Claude 日间验收，未验收前不作依据。
-**公司 OS 已正式冻结（DEC-068②，2026-06-11）**；不暂停但重评方向方法（DEC-068①，并入 6-12 凌晨3:30 外部深度审计定时任务 external-deep-audit-20260612）；剩 2 条独立命、A-1 优先且预登记须过 Risk Reviewer 反审（DEC-068③）；执行类任务尽量派 Codex（Claude 额度紧）。
+Phase 1。公司 OS **原则层已冻结**、机会地图与运行层 v0.x 可迭代（DEC-069②）。A-2 已死（新范式第1败），**机会地图已重排**：TSMOM=Baseline（扩样本含多空两引擎，不耗命）｜A-1=Conditional（第7命须过四门）｜A-4=Candidate（第8命默认）｜carry=可行性核算中｜funding/OI=状态变量。详见 `00_PROJECT_MANAGEMENT/OPPORTUNITY_MAP_STATUS.md`。
 
-### 原现状记录
+## 目标函数（DEC-063，原则层冻结）
 
-项目处于 **Phase 1**，公司 OS 四蓝图已产出，**6 项 parked 已全部拍板（DEC-066，2026-06-10）**；冻结只差跑一次最小验证（R2 验 A-2 持仓极端）。**TSMOM 新口径复读已完成：四件套全过，列为 R2 之后扩样本候选（P1-06 变体优先）**；强平采集器已写好待部署。**冻结前全盘审计已完成（`STAGE_AUDITS/L2_AUDIT_OS_FREEZE_2026-06-10.md`）：方向/方法验证通过，5项P0待清**——①四件套量化→Protocol v1.3 ②事件类成本压力档 ③事件研究样本/Holdout设计 ④定时任务旧口径重写 ⑤git立即建。四方向OS调优方案已出（`OS_TUNING_PLAN_v1.md`：编排/上下文/记忆/组织，新增第三执行层=低模型会话）；机械任务已打包 `04_AI_TEAM/LOW_TIER_TASKS/TASK_PACKAGE_2026-06-10.md`（T-01~13，Claude验收制）。**任务包 T-01~13 已执行并验收通过（2026-06-10）**：CURRENT_STATE瘦身109行/DEC索引/墓园索引/Protocol v1.3增补件/git baseline `cee7ca4` 全就位；第三执行层首跑成功。**6-11夜批N1-N8完成（Claude接管卡死的定时会话）**：P0-4定时任务v2✅/修宪提案v2.3【等Founder】/事件普查✅（R2须池化+单调性；A-2=funding负极端、A-1=6h OI骤降368个）/数据实际新鲜至2026-05（非2025-12）/P1-04 DSR 0.80-0.86强化不进Holdout/AGENTS草案✅。**6-11午批**：修宪v2.3已应用（DEC-067）；.tmp/git锁已清（commit 9e29f65）；采集器已部署但**当前代理节点被Binance拒绝，等Founder切节点**（脚本自动重连，支持LIQ_PROXY_HOST/PORT环境变量，当前默认127.0.0.1:7897 socks5h）；低模型任务包#2已发（TASK_PACKAGE_2026-06-11.md，4项文档一致性修复）。**6-11晚批**：包#2验收4/4✅（4处文档矛盾全清）；台账已填（累计811.93元，距止损4188元，月均~160健康）；GitHub=仓库已存在laoxiamu/AI_QUANT_COMPANY+deploy key表单已填，**卡在sudo邮件验证等Founder**；**Codex CLI未安装**（直调前提，待装+Founder登录授权）；模型路由定案：机械任务默认Claude spawn haiku子代理（TOOL_ROUTING已更新）。**6-11 R2 完成（重大节点）**：R1特征库+R2事件研究经Codex直调全流程跑通（预登记→实现→pytest→独立验收→治理自动触发）——**最小工作流验证的流程目标达成，OS具备冻结条件（待Founder拍）**。研究结论：**A-2 FAILED**（方向整体相反：极端拥挤=延续非反转，与TSMOM动量证据互洽；详见 `06_RESEARCH/RESULTS/20260611_a2_event_study.md`）→ 计数6/8 → L3已出（建议：不暂停；执行序=TSMOM扩样本[不耗命]→A-1预登记+Risk Reviewer反审[第7条命]）。【等待Founder拍L3三项：①不暂停continue ②OS冻结 ③知悉剩2命】
-**6-11夜批2**：✅GitHub私库备份打通（laoxiamu/AI_QUANT_COMPANY，deploy key，master已推送）；✅**Codex直调通道验证通过（DEC-061落地）**：配方见`04_AI_TEAM/CODEX_DIRECT_CALL_RUNBOOK.md`（代理env+</dev/null+workspace-write三要素），AGENTS.md已部署项目根；台账更新871.93；⚠️采集器仍不通：**新加坡节点被Binance屏蔽，等Founder换香港/台湾/韩国节点**。执行序：Founder换节点 → Claude验证采集器+出R1特征库任务书（Codex直调首个真实任务）+起草R2预登记 → R2（最小验证+冻结OS）。
+找真实/可持续/可放大 edge + 安全复利核心资本；月化30%不是验收条件；两层资本（核心受保护 / 围栏**按证据等级解锁**，DEC-069④）；高杠杆=表达工具非Alpha来源（实证：@2x年爆仓61-76%）。
 
-## 目标函数（DEC-063，钉死）
+## 止损与计数（DEC-069①）
 
-- 公司目标 = 找到**真实/可持续/可放大的 edge** + **安全复利核心资本**。**月化30% 不是验收条件**。
-- **两层资本架构**：核心资本（受保护、永不按 100x 跑）／围栏高风险子账户（可归零、不伤核心）。
-- 高杠杆 = **仓位表达工具**，不是 Alpha 来源、不是研究路线。
-- 收益优先：成本只是 5000 元 runway 的后台仪表，不是焦点。
+旧范式 5 败封账；**新范式独立计数=1（a2）**，计数=L3触发器（每+2复评）；**主闸=时间盒（2026-06-07起6个月无edge）+成本盒（5000元，已用871.93）+L3裁量**。"剩N命"倒计时废止。
 
-## 研究范式（已重置）
+## 研究范式（原则层冻结）
 
-- **机制优先（猎机制，不猎形态）**：先答"谁在持续付钱/为什么/我们凭什么拿到/数据成本容量"，最后才信号回测。
-- 主猎场（会话2 蓝图收敛，外部grounding）：**①强制清算级联 ②funding/持仓极端反向**（两条主线,机制硬+数据可得+可自动化）；波动率/VRP降为择时输入（外部证据纠正:加密VRP为负,卖方收溢价但左尾爆炸,不裸卖）；新上市=需建数据的并行候选。
-- 旧线处置（DEC-066④复读后更新）：Sweep 形态版=封存（机制版[止损簇→强平]并入A-1）；**TSMOM=新口径复读通过，列R2后扩样本候选（P1-06优先），非封存**。支撑压力→止损流、布林/波动→凸性 = 保留为机制版候选。
-- 系统化是对的（要自动化+无主观盘感），但≠只做统计因子。
+机制优先七问（含"付的钱经什么路径到我口袋"）；预登记+单变量+WF+Holdout物理封存；事件类按 v1.3 增补件（池化+单调性+成本压力档）；**预登记须含 MDE 功效段、验收含同状态被动基准对照（v1.4 起草中）**；不显著点估计禁作方向结论（墓园禁引用措辞字段）。新假设先查 `06_RESEARCH/GRAVEYARD_INDEX.md`。
 
-## 失败计数
+## 在途与等待
 
-历史实验失败 **11**｜独立 Alpha **6/8**（a2 funding极端反向 2026-06-11 FAILED 计入第6；**L3 已触发并出报告** `STAGE_AUDITS/L3_EMERGENCY_2026-06-11.md`；**剩 2 次，下一条独立命仅限 A-1**，其预登记须先过 Risk Reviewer 反审）。
+- Codex（直调后台）：universe 数据资产（含退市币 point-in-time）+ carry 可行性核算。
+- 等 Founder：**采集器换节点或上云 VM（P0，前向数据每日永久流失）**。
+- Claude 队列：Protocol v1.4 → TSMOM 扩样本预登记（多空两引擎）→ A-1 四门评估；低模型队列：治理三件套。
 
-## 重建路线（时间盒）
+## 团队工作方式（自我提醒）
 
-- 会话1 ✅ 战略产品定义（`COMPANY_STRATEGY_PRODUCT_v1.md`）+ 锁 DEC-063/064。
-- 会话2 ✅ 投研与风控蓝图（`PHASE1_RESEARCH_RISK_BLUEPRINT_v1.md`：机会地图收敛2主线 + 投研OS流水线 + 风控七层 + 验收口径）。
-- 会话3 ✅ 技术/AI组织/治理/实施蓝图（`PHASE1_TECH_ORG_GOVERNANCE_v1.md`：技术分层/AI组织工作流/治理6轨+文档权威层级/分阶段实施手册/最小验证+冻结清单）。
-- **公司OS四蓝图全部产出**。冻结只差跑 R2 最小验证（A-2）。文档权威层级见会话3蓝图§3.1。
+主理人开局；不做选择题搬运工（D级=修改Founder已拍决策，必带推荐整包上）；两面诚实反迎合；跑批可靠性排序=Codex nohup > 白天定时 > 夜间定时；低模型只做逐字/格式/索引；产出未经 Claude 验收不作依据。
 
-## parked 拍板结果（DEC-066，2026-06-10，全部拍完）
+## 细节指针
 
-①论点认可：两主线（A-1清算级联/A-2持仓极端反向）+3优化点（A-2先行/强平数据前向采集随R1/预划A-1·A-2机制边界）｜②风格档双轨：研究验收一律标准档；围栏子账户25%本金按激进档表达已验证edge（归零即停/月度补充上限/盈利回流核心）｜③验收口径四件套：期望>0R扣全成本/赢亏比≥1.5–2/爆仓概率可估/几何增长正（取代Sharpe/MaxDD）｜④Sweep形态版封存、机制版并入A-1；TSMOM新口径复读（既有trades纯重算）再定生死；新主线不背旧计数｜⑤熔断见上｜⑥运营模型认可。剩余待办：成本台账填数（Founder）。
-
-## 新增轨
-
-AI 能力/自研 skill（boot-brief/state-sync 已建）｜外部知识摄取（不闭门造车）｜治理专项（文件/记忆-上下文/成本-token/版本-可复现/安全/数据质量）｜文档-任务-定时任务重新审计。合规账户：Founder 指示暂不考虑。
-
-## AI 团队工作方式（自我提醒）
-
-主理人开局（先判断阶段/问题/给主张+理由，不当被动记录员）；技术判断不做选择题搬运工；机制优先不猎形态；收益优先不抠成本；不奉承不肯定表演，该反对就反对。
-
-## 细节指针（需要才读）
-
-`CURRENT_STATE.md`（运行权威）｜`DECISION_LOG.md`（DEC-001~064）｜`COMPANY_STRATEGY_PRODUCT_v1` / `PHASE1_RESEARCH_THESIS_v1` / `OPERATING_MODEL_DESIGN_v1` / `AI_CAPABILITY_TOOLING_AUDIT_v1`（00_PROJECT_MANAGEMENT/）｜启动协议见 `CLAUDE.md`。
+CURRENT_STATE v4.0（看板）｜DECISION_LOG（索引→DEC-069为最新）｜OPPORTUNITY_MAP_STATUS｜双审计+裁决（STAGE_AUDITS/ EXTERNAL_DEEP_AUDIT*_2026-06-12 + AUDIT_CROSS_ADJUDICATION）｜直调配方 04_AI_TEAM/CODEX_DIRECT_CALL_RUNBOOK｜启动协议见 CLAUDE.md v2.3。
