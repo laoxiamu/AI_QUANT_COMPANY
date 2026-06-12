@@ -1,0 +1,910 @@
+Reading additional input from stdin...
+OpenAI Codex v0.139.0
+--------
+workdir: /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: high
+reasoning summaries: none
+session id: 019ebb81-2af9-7751-b650-e9fd94b9f60f
+--------
+user
+执行任务书 04_AI_TEAM/CODEX_TASKS/TASK_TSMOM_DUAL_ENGINE.md（注意其中2026-06-12勘误：评估窗口硬切断2024-12-09，2026H1与2024-12-10后数据禁读）。先读任务书、预登记（含勘误）、AGENTS.md。两引擎独立判定，零调参。
+codex
+我会先读取本地 `AGENTS.md`、任务书和对应预登记/勘误，确认机制、验收口径和禁读边界，再决定是否可以执行。
+exec
+/bin/bash -lc "pwd && rg --files -g 'AGENTS.md' -g 'TASK_TSMOM_DUAL_ENGINE.md' -g '*TSMOM*' -g '*tsmom*' -g '*勘误*' -g '*ERRATA*' -g '*prereg*' -g '*PRE*'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY
+02_KNOWLEDGE_BASE/TREND_TSMOM_LESSONS_v1.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_02_TSMOM_VOLTARGET.md
+04_AI_TEAM/CODEX_TASKS/TASK_TSMOM_DUAL_ENGINE.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_06_TSMOM_MACRO_BULL.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_01_TSMOM.md
+04_AI_TEAM/CODEX_TASKS/TASK_TSMOM_EXPANSION_DATA.md
+04_AI_TEAM/CODEX_TASKS/REPORT_0B15_VOL_COMPRESSION.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B14_VOL_COMPRESSION.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_02_TSMOM_VOLTARGET.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_06_TSMOM_MACRO_BULL.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_04_TSMOM_REGIME_LONG.md
+04_AI_TEAM/CODEX_TASKS/REPORT_TSMOM_EXPANSION_DATA.md
+04_AI_TEAM/CODEX_TASKS/TASK_0B15_VOL_COMPRESSION.md
+04_AI_TEAM/CODEX_TASKS/TASK_P1_01_TSMOM.md
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_04_TSMOM_REGIME_LONG.md
+AGENTS.md
+99_TEMP/delayed_dispatch_tsmom.sh
+99_TEMP/codex_tsmom_data.log
+06_RESEARCH/CODE/p1_02_tsmom_voltarget.py
+06_RESEARCH/CODE/p1_04_tsmom_regime_long.py
+06_RESEARCH/CODE/prepare_tsmom_expansion_data.py
+06_RESEARCH/CODE/p1_06_tsmom_macro_bull.py
+06_RESEARCH/CODE/p1_01_tsmom.py
+06_RESEARCH/CODE/output/p1_01_tsmom_trades.csv
+06_RESEARCH/CODE/output/p1_01_tsmom_metrics.json
+06_RESEARCH/CODE/output/p1_04_tsmom_regime_long_metrics.json
+06_RESEARCH/CODE/output/p1_01_tsmom_equity_curve.png
+06_RESEARCH/CODE/output/p1_06_tsmom_macro_bull_equity.csv
+06_RESEARCH/CODE/output/p1_02_tsmom_voltarget_equity.csv
+06_RESEARCH/CODE/output/p1_06_tsmom_macro_bull_metrics.json
+06_RESEARCH/CODE/output/p1_04_tsmom_regime_long_trades.csv
+06_RESEARCH/CODE/output/p1_02_tsmom_voltarget_metrics.json
+06_RESEARCH/CODE/output/p1_04_tsmom_regime_long_equity_curve.png
+06_RESEARCH/CODE/output/p1_06_tsmom_macro_bull_trades.csv
+06_RESEARCH/CODE/output/p1_02_tsmom_voltarget_trades.csv
+06_RESEARCH/CODE/output/p1_04_tsmom_regime_long_equity.csv
+06_RESEARCH/CODE/output/p1_01_tsmom_equity.csv
+06_RESEARCH/CODE/output/p1_02_tsmom_voltarget_equity_curve.png
+06_RESEARCH/CODE/output/p1_06_tsmom_macro_bull_equity_curve.png
+06_RESEARCH/CODE/tests/test_p1_06_tsmom_macro_bull.py
+06_RESEARCH/CODE/tests/test_tsmom_voltarget.py
+06_RESEARCH/CODE/tests/test_tsmom_regime_long.py
+06_RESEARCH/CODE/tests/test_tsmom_rules.py
+06_RESEARCH/RESULTS/20260610_tsmom_recheck_new_criteria.md
+06_RESEARCH/RESULTS/20260606_tsmom_voltarget.md
+06_RESEARCH/RESULTS/20260606_tsmom_regime_long.md
+06_RESEARCH/HYPOTHESES/v6_tsmom_trend_v2.md
+06_RESEARCH/RESULTS/20260606_tsmom_trend.md
+06_RESEARCH/HYPOTHESES/v6_tsmom_regime_long_v3.md
+06_RESEARCH/HYPOTHESES/tsmom_expansion_dual_engine_v1.md
+06_RESEARCH/HYPOTHESES/v6_tsmom_regime_long_v4.md
+06_RESEARCH/HYPOTHESES/v6_tsmom_trend_v1.md
+06_RESEARCH/RESULTS/20260607_tsmom_macro_bull.md
+
+exec
+/bin/bash -lc 'git status --short' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+M  00_PROJECT_MANAGEMENT/OPPORTUNITY_MAP_STATUS.md
+A  04_AI_TEAM/AGENT_REGISTRY.md
+A  04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_FEASIBILITY.md
+A  04_AI_TEAM/CODEX_TASKS/REPORT_UNIVERSE_PIT.md
+A  04_AI_TEAM/CODEX_TASKS/TASK_TSMOM_DUAL_ENGINE.md
+A  04_AI_TEAM/RUN_LOG.jsonl
+A  06_RESEARCH/CODE/build_universe_pit.py
+A  06_RESEARCH/CODE/carry_feasibility.py
+A  06_RESEARCH/CODE/output/carry_feasibility_capital_efficiency.csv
+A  06_RESEARCH/CODE/output/carry_feasibility_cost_sensitivity.csv
+A  06_RESEARCH/CODE/output/carry_feasibility_mark_proxy.csv
+A  06_RESEARCH/CODE/output/carry_feasibility_overall.csv
+A  06_RESEARCH/CODE/output/carry_feasibility_summary.json
+A  06_RESEARCH/CODE/output/carry_feasibility_yearly.csv
+A  06_RESEARCH/CODE/tests/test_universe_pit.py
+A  06_RESEARCH/DATA/UNIVERSE_PIT.csv
+A  06_RESEARCH/HYPOTHESES/tsmom_expansion_dual_engine_v1.md
+M  06_RESEARCH/RESEARCH_PROTOCOL_v1.3_ADDENDUM.md
+A  06_RESEARCH/RESULTS/20260612_carry_feasibility.md
+M  99_TEMP/codex_carry.log
+AM 99_TEMP/codex_dual_engine.log
+M  99_TEMP/codex_universe.log
+A  99_TEMP/delayed_dispatch_tsmom.sh
+A  scripts/no_holdout_lint.sh
+
+codex
+当前工作树已有较多新增/修改文件，包括任务书和预登记本身。我会把这些视为既有上下文，只在本任务需要的代码、结果和报告范围内追加或修改。
+exec
+/bin/bash -lc "sed -n '1,260p' 04_AI_TEAM/CODEX_TASKS/TASK_TSMOM_DUAL_ENGINE.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+exec
+/bin/bash -lc "sed -n '1,240p' AGENTS.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+# TASK_TSMOM_DUAL_ENGINE —— TSMOM 扩样本·多空双引擎回测
+
+**发包：** Claude 2026-06-12 ｜ **口径权威：** 预登记 `06_RESEARCH/HYPOTHESES/tsmom_expansion_dual_engine_v1.md`（逐条遵守，本文不复述）+ AGENTS.md + Protocol v1.3/v1.4 增补件。
+
+## 实现要点
+1. 复用 `06_RESEARCH/CODE/p1_06_tsmom_macro_bull.py` 的冻结逻辑（参数零改动），扩 universe 至 8 品种（数据：FUTURES/ 下 MARK_4H 与 FUNDING_8H）。**〔勘误 2026-06-12，随预登记勘误同步〕评估窗口=各自上市→2024-12-09 23:59 UTC：代码硬编码 cutoff，加载后立即截断；*_2026H1 增量文件与 2024-12-10 之后的任何行情数据一律禁读（它们是家族确认级 Holdout）；报告须印出每品种实际使用的末条时间戳以证明未越界。** 上市满 540 根 4H 才可入场（PIT 规则，参照 UNIVERSE_PIT.csv）。
+2. 引擎 S=严格镜像实现（做空、SMA200下方、close<close[t-540]、ADX同参；funding 方向正确结算）。
+3. 输出：每引擎 trades/equity/metrics（命名 tsmom_dual_L_* / tsmom_dual_S_*）+ 四件套与第五件基准对照计算（块bootstrap seed=20260612）+ WF 三段 + P1-04/P1-06 基准对照追溯 + L/S 相关性与组合描述。
+4. pytest：镜像逻辑对称性（构造序列：上涨样本 L 触发 S 不触发，反之）；PIT 入场规则；funding 方向结算正误用例。
+5. 报告：`06_RESEARCH/RESULTS/20260612_tsmom_dual_engine.md`（两引擎独立判定 PASSED/FAILED，按预登记失效条款，禁模糊）+ REPORT_TSMOM_DUAL_ENGINE.md（验收自检）。
+
+## 验收
+pytest 全绿；参数与 P1-06 逐项一致的对照表；判定二值；未碰 Holdout；未改既有文件；no git commit。
+
+ succeeded in 0ms:
+
+
+# AGENTS.md — AI Quant Company（Codex 实现会话指令）
+
+## 角色
+你是本项目的实现工程师（Codex），对交付代码与报告的**正确性、可复现性、可审计性**负责。判断与方向由 Claude（主理人/CTO）负责，但你有**专业异议义务**：发现任务书的研究方向/方法有问题，先暂停并书面提异议，不机械执行（DEC-057）。
+
+## 任务执行前强制自查（七问精简版）
+①任务在验证什么机制？②任务书的验收标准是否可量化？③有无更便宜的等效实现？④是否会触碰禁止项（见下）？任一答不出 → 先问 Claude，不要猜。
+
+## 研究铁律（Research Protocol v1.2 + v1.3 增补件，冲突以 v1.3 为准）
+1. 单变量原则；预登记后禁改假设；结论诚实（禁"有一定效果"类模糊话）。
+2. 成本完整：手续费 0.1%/边 + 滑点 0.1%（保守）+ 真实 funding。**事件类策略必须加报滑点 0.3/0.5/1.0% 压力档**（v1.3 §二）。
+3. 验收四件套（v1.3 §一）：E[R]>0 / 赢亏比≥1.5 / 分档爆仓概率（块bootstrap，seed预登记）/ 年化log增长>0 且分年正期望占多数。旧门槛（Sharpe>1、MaxDD<25%、Expectancy>1.0）作废。
+4. WF 硬门槛；Holdout 物理封存、**任何情况下不得读取**；事件研究按 v1.3 §四（episode<300 用池化+单调性，禁60/20/20三分）。
+5. 阈值/分位数一律滚动或扩张窗口计算，**禁全样本分位（前视）**。
+
+## 工程纪律
+- 库纪律（DEC-061）：Triple Barrier/Purged CV/统计校验等一律**自实现为可审计小函数**；MLFinPy 等仅作参考，不引硬依赖。
+- 持仓/状态以 DB 或文件为权威，禁内存字典（V4 事故根因）。
+- 输出三件套：CODE（可复跑脚本+固定seed）/ RESULTS（结论md）/ CODEX_TASKS 执行报告（含验收标准逐条自检）。
+- 数据：只读 06_RESEARCH/DATA/；产出写 06_RESEARCH/CODE/output/；UTC 时间戳。
+- git：每任务完成 commit，message 带任务号。
+
+## 禁止项
+碰 Holdout｜改预登记文档｜简化成本模型｜全样本分位｜引入不可审计黑箱依赖｜把失败结果写成"部分成功"｜超任务书范围"顺手优化"。
+
+## 交接
+完成后报告写入 04_AI_TEAM/CODEX_TASKS/REPORT_[任务号].md，等 Claude 验收；验收不过按退回意见修，不抗辩成本与工期以外的验收标准。
+
+exec
+/bin/bash -lc "sed -n '1,280p' 06_RESEARCH/HYPOTHESES/tsmom_expansion_dual_engine_v1.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+exec
+/bin/bash -lc "sed -n '1,220p' 06_RESEARCH/RESEARCH_PROTOCOL_v1.3_ADDENDUM.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+# 假设文档：TSMOM 扩样本·多空双引擎 v1
+
+**实验版本号：** tsmom_expansion_dual_engine_v1
+**家族：** TSMOM regime 家族（DEC-066④/069③：家族变体**不耗独立计数**）｜ **状态依据：** OPPORTUNITY_MAP=Baseline
+**预登记时间：** 2026-06-12 ｜ **执行：** Codex（直调）｜ **协议：** v1.2 + v1.3/v1.4 增补件全部适用
+
+## 命题（机制）
+
+加密数天周期延续效应（herding+资金流惯性）：①宏观牛市中顺势做多有净 edge（P1-04/P1-06 已探索级证实）；②**镜像未测**：宏观熊市中顺势做空是否有净 edge（Founder 多空对称指示；外部先验偏低——空头腿受逼空与负费率拖累，预期=填认知空白）。
+
+## 设计（每引擎一个变量：universe 扩展；参数全部继承冻结，禁止调参）
+
+- **引擎 L（多头）**：完全继承 P1-06 冻结参数（90d 动量、ADX25/20 滞回、日线 SMA200 上方门控、1x、t+1 open 执行、全成本含真实 funding），唯一新变量=universe 从 3 品种扩至 8（BTC/ETH/SOL/BNB/XRP/DOGE/ADA/LTC，各自上市起）。
+- **〔勘误 2026-06-12，执行前/未触任何数据〕评估窗口统一为各自上市 → 2024-12-09**：P1-04 预登记定义"最后20% Holdout 物理截断禁读"（即 BTC/ETH/SOL 约 2024-12-10 起为家族封存区），原稿"+2026H1 数据"与之冲突，删除。**全部 8 品种 2024-12-10 之后数据（含 2025、2026H1）本轮一律不读**，整体指定为本家族确认级 Holdout（一次性使用，动用须 Founder 批准另案）。新增 5 币虽无既往封存，统一窗口以保口径一致并为确认步留弹药。
+- **引擎 S（空头）**：引擎 L 的严格镜像（SMA200 **下方** + ADX 趋势确认 → 只做空；close[t]<close[t-540] 入场；其余参数镜像继承，**零调参**）。funding 按空头方向真实结算（正费率=收入）。
+- 品种纳入按 `06_RESEARCH/DATA/UNIVERSE_PIT.csv` point-in-time 规则（上市满 540 根 4H 后才可入场，防新币 warmup 偏差）；本次 8 品种为现有数据约束下的子集，**报告须声明这仍非完整 universe，幸存者偏差未完全消除**（8 币均存活至今）——结论定级受此限制。
+- 资金：等权风险预算 1/N 在当期可交易品种间分配，1x 杠杆帽（同 P1-04 审计规则）。
+
+## 检验预算（4 次主判定，超出贴现）
+
+引擎 L 全样本四件套 ＋ 引擎 L WF 三段；引擎 S 全样本四件套 ＋ 引擎 S WF 三段。两引擎独立判定，不合并粉饰。
+
+## 验收（v1.3 四件套 + v1.4 第五件 + 协议既有）
+
+- 四件套（标准档口径）；WF 三段几何增长>0 占多数段。
+- **第五件基准对照**：引擎 L 须超同门控（牛市窗口）8 币等权买入持有；引擎 S 基准=现金 0（并附报同门控持有的对照仅作参考）。**追溯报告** P1-04/P1-06 对其门控基准的超额。
+- 组合视角（描述性）：L+S 合成年度覆盖率与几何增长 vs 单 L；与既有 P1-06 日收益相关性。
+- 样本量：预计 L>500 笔（确认级口径首次可能达成）、S 笔数未知（熊市窗口稀少，若 <300 按探索级定级并如实声明）。
+
+## MDE 功效段（v1.4 §六）
+
+以 P1-06 实测单笔 R 分布（σ≈0.19，E[R]=0.028）为参照：n=500 时 α=0.05 单侧可检测 E[R] 下限≈0.014——合理效应（0.02-0.03）可检测 ✅；引擎 S 若 n<200 则 MDE≈0.022 贴近合理效应上限，届时结论只许"探索级方向性证据"。
+
+## AI 证据三行（v1.4 §七）
+
+①假设由 Claude 提出（机制=已有内部证据延伸+Founder 指示），非 LLM 信号；②最可能错处：空头侧——熊市反弹暴力+正费率反转为成本，镜像参数可能系统性不适配空头节奏（但按单变量纪律本轮禁调参，失败即如实记录）；③无多 agent 共识依据。
+
+## 失效判断（预登记锁死）
+
+- 引擎 L：四件套或第五件任一不过 → L 扩样本 FAILED（家族内记录，不耗独立计数；Baseline 地位降级评估）。
+- 引擎 S：四件套+第五件全过且 WF 多数段>0 → 空头引擎候选成立（探索/确认级按样本量）；任一不过 → 空头镜像版 FAILED 入墓园（记"镜像参数版"，不排除日后独立设计的空头假设，但须新机制依据）。
+- 禁止：调参重跑、按结果挑品种、合并 L+S 掩盖单引擎失败、碰一切 Holdout。
+
+**Holdout：** 本实验为家族扩样本，沿用协议：WF 通过且达确认级后才允许动用一次性 Holdout（另案申请，本轮不动）。
+
+ succeeded in 0ms:
+# Research Protocol v1.3/v1.4 增补件（v1.3=2026-06-10 DEC-066③；v1.4=2026-06-12 DEC-069）
+**效力：** 本件与 v1.2 冲突处以本件为准。v1.2 中 Expectancy>1.0、MaxDD<25%、净Sharpe>1 等旧门槛**全部作废**。
+## 一、验收口径四件套（量化冻结）
+1. **正期望：** 单笔 E[R]>0（R=净盈亏/名义仓位，扣手续费+滑点+funding）。
+2. **盈亏不对称：** 赢均/亏均 ≥1.5。
+3. **爆仓概率（块bootstrap：块长1周等效bar数、2000路径×1年、seed预登记）：** 标准档 P(年DD≥35%)≤20%；保守档 P(年DD≥20%)≤10%；围栏激进档不适用本条（可归零），仅验1/2/4。
+4. **几何增长：** 年化对数增长率>0，且分年E[R]为正的年份占多数（仅计≥10笔的年份）。
+样本量分档沿用 DEC-018；WF、Holdout 封存纪律不变。
+## 二、事件类策略成本压力档（A-1/A-2 类强制）
+基准滑点0.1%外，必须报 0.3%/0.5%/1.0% 三档敏感性。**通过线：** 事件类策略在0.3%档四件套仍全部成立；清算级联类（A-1）额外要求1.0%档 E[R]>0。级联时刻按市价单+部分成交假设建模，禁用限价理想成交。
+## 三、组合相关性门槛（新策略晋级追加条件）
+新策略日PnL与既有已晋级策略相关性 |corr|<0.5，或证明加入后组合年化对数增长率提升。
+## 四、事件研究样本规则（R2 适用）
+预登记前先做事件普查（各极端阈值下独立episode计数）；episode<100时禁用60/20/20三分，改用跨品种池化+阈值单调性检验，Holdout按事件级（而非时间比例）预先切分并封存；预登记中写明检验总次数上限，结论经多重检验贴现。
+
+# ——以下为 v1.4 增补（2026-06-12，DEC-069）——
+## 五、验收第五件：状态匹配被动基准对照（防 beta 伪装）
+任何策略在四件套之外必须证明：在其声称的状态门控窗口内，净收益**超过同门控被动基准**（多头类=同门控买入持有标的等权；空头/中性/事件类=现金零基准），超额>0 为通过必要条件。TSMOM 扩样本起适用，并对 P1-04/P1-06 追溯报告。
+## 六、MDE 功效门（耗独立计数实验的前置）
+预登记必含功效段：给定样本量 n、收益方差估计、α=0.05，计算最小可检测效应（MDE，自实现小函数）；并写明该机制"合理效应上限"的依据。**若 MDE > 合理效应上限，禁止立项耗独立计数**——改为攒数据或换设计。
+## 七、AI 证据三行（预登记模板新增字段）
+①本假设是否由 AI 生成（模型/知识截止日期）；②反向检验：它最可能错在哪里、为什么；③若以多 agent 共识为依据，附单 agent 基线与分歧率。仅当 LLM 信号/共识被用作证据时触发完整审查。
+## 八、叙事纪律（DEC-069⑤）
+不显著实验的点估计不得以方向性结论写入任何权威文件；墓园"禁引用措辞"字段具有约束力，审计抽查。
+## 九、自动化边界（双审计共识）
+任何 AI（含外部审计、子代理、Codex、低模型、定时任务）**不得自动触发消耗独立计数的实验**；耗独立计数实验必须：预登记 → Risk Reviewer 物理盲审 → Founder 知会 → Claude 主会话人工派发，四步缺一不可。家族变体/诊断/核算类不受此限但仍须预登记或任务书留痕。
+
+codex
+任务书和预登记可执行性明确：验证 8 品种扩样本下冻结多头引擎，以及严格镜像空头引擎；验收是二值且量化。关键约束是评估硬切到 `2024-12-09 23:59 UTC`，我会让数据加载器在读入后立即断言末条时间不越界，并避免读取任何 `*_2026H1` 文件。
+exec
+/bin/bash -lc "sed -n '1,280p' 06_RESEARCH/CODE/p1_06_tsmom_macro_bull.py" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""Phase 1 P1-06: P1-04 long TSMOM with macro bull gating."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+import json
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+from v4_strategy_backtest import (
+    INITIAL_CAPITAL,
+    SYMBOL_CONFIG,
+    SYMBOL_ORDER,
+    metrics,
+    slice_metrics,
+)
+from p1_05_regime_attribution import (
+    directional_indicators,
+    prior_daily_bull_state,
+)
+
+
+ROOT = Path(__file__).resolve().parents[2]
+OUTPUT = ROOT / "06_RESEARCH" / "CODE" / "output"
+LOOKBACK_BARS = 540
+FEE_RATE = 0.0005
+SLIPPAGE_RATE = 0.001
+TARGET_WEIGHT = 1 / 3
+LEVERAGE_CAP = 1.0
+ADX_PERIOD = 14
+ADX_ENTRY = 25.0
+ADX_EXIT = 20.0
+MACRO_MA_DAYS = 200
+
+
+@dataclass
+class Position:
+    symbol: str
+    direction: int
+    signal_time: pd.Timestamp
+    entry_time: pd.Timestamp
+    raw_entry_price: float
+    entry_price: float
+    quantity: float
+    initial_quantity: float
+    initial_notional: float
+    entry_equity: float
+    entry_fee: float
+    entry_slippage_cost: float
+    partial_gross_pnl: float = 0.0
+    partial_exit_fee: float = 0.0
+    partial_exit_slippage_cost: float = 0.0
+    funding_cost: float = 0.0
+    holding_bars: int = 0
+
+
+@dataclass
+class Result:
+    trades: pd.DataFrame
+    equity: pd.Series
+    max_gross_leverage: float
+    max_marked_gross_leverage: float
+    exposure_scaled_entries: int
+    forced_deleveraging_count: int
+
+
+def signal_from_prices(current_close: float, lagged_close: float) -> int:
+    difference = current_close - lagged_close
+    return 1 if difference > 0 else -1 if difference < 0 else 0
+
+
+def execution_price(raw_price: float, direction: int, is_entry: bool) -> float:
+    side = direction if is_entry else -direction
+    return raw_price * (1 + side * SLIPPAGE_RATE)
+
+
+def funding_payment(
+    direction: int,
+    quantity: float,
+    mark_price: float,
+    rate: float,
+) -> float:
+    """Positive return value is a cash cost; negative is funding income."""
+    return direction * quantity * mark_price * rate
+
+
+def wilder_average(values: pd.Series, period: int) -> pd.Series:
+    return values.ewm(alpha=1 / period, adjust=False, min_periods=period).mean()
+
+
+def calculate_adx(bars: pd.DataFrame, period: int = ADX_PERIOD) -> pd.Series:
+    high = bars["high"].astype(float)
+    low = bars["low"].astype(float)
+    close = bars["close"].astype(float)
+    up_move = high.diff()
+    down_move = -low.diff()
+    plus_dm = pd.Series(
+        np.where((up_move > down_move) & (up_move > 0), up_move, 0.0),
+        index=bars.index,
+    )
+    minus_dm = pd.Series(
+        np.where((down_move > up_move) & (down_move > 0), down_move, 0.0),
+        index=bars.index,
+    )
+    true_range = pd.concat(
+        [
+            high - low,
+            (high - close.shift(1)).abs(),
+            (low - close.shift(1)).abs(),
+        ],
+        axis=1,
+    ).max(axis=1)
+    atr = wilder_average(true_range, period)
+    plus_di = 100 * wilder_average(plus_dm, period) / atr
+    minus_di = 100 * wilder_average(minus_dm, period) / atr
+    denominator = (plus_di + minus_di).replace(0, np.nan)
+    dx = 100 * (plus_di - minus_di).abs() / denominator
+    return wilder_average(dx, period)
+
+
+def hysteresis_regime(
+    adx: pd.Series,
+    entry: float = ADX_ENTRY,
+    exit_: float = ADX_EXIT,
+) -> pd.Series:
+    state = False
+    output: list[bool] = []
+    for value in adx:
+        if np.isfinite(value):
+            if value > entry:
+                state = True
+            elif value < exit_:
+                state = False
+        output.append(state)
+    return pd.Series(output, index=adx.index, dtype=bool)
+
+
+def desired_long_position(
+    trend_signal: int,
+    trend_regime: bool,
+    macro_bull: object,
+) -> int:
+    macro_is_bull = not pd.isna(macro_bull) and bool(macro_bull)
+    return int(trend_signal == 1 and trend_regime and macro_is_bull)
+
+
+def load_pre_holdout() -> tuple[
+    dict[str, pd.DataFrame],
+    dict[str, pd.DataFrame],
+]:
+    bars_by_symbol = {}
+    funding_by_symbol = {}
+    for symbol, config in SYMBOL_CONFIG.items():
+        research_rows = config["expected_research_rows"]
+        bars = pd.read_csv(
+            config["bars"],
+            parse_dates=["datetime"],
+            nrows=research_rows,
+        )
+        if len(bars) != research_rows:
+            raise ValueError(f"{symbol} research snapshot changed")
+        if bars["datetime"].max() >= config["holdout_start"]:
+            raise ValueError(f"{symbol} Holdout boundary crossed")
+        if bars["datetime"].duplicated().any():
+            raise ValueError(f"{symbol} duplicate bars")
+        if not bars["datetime"].is_monotonic_increasing:
+            raise ValueError(f"{symbol} bars not ascending")
+        bars["signal"] = np.sign(
+            bars["close"] - bars["close"].shift(LOOKBACK_BARS)
+        ).replace(0, np.nan).ffill().fillna(0).astype(int)
+        bars["execution_signal"] = bars["signal"].shift(1).fillna(0).astype(int)
+        bars["signal_time"] = bars["datetime"].shift(1)
+        bars["adx"] = calculate_adx(bars)
+        bars["trend_regime"] = hysteresis_regime(bars["adx"])
+        bars["macro_bull"] = prior_daily_bull_state(
+            bars["datetime"],
+            bars["close"],
+            ma_days=MACRO_MA_DAYS,
+        )
+        bars["plus_di"], bars["minus_di"] = directional_indicators(bars)
+        bars["base_desired_long"] = [
+            int(signal == 1 and regime)
+            for signal, regime in zip(
+                bars["signal"],
+                bars["trend_regime"],
+                strict=True,
+            )
+        ]
+        bars["desired_long"] = [
+            desired_long_position(signal, regime, macro)
+            for signal, regime, macro in zip(
+                bars["signal"],
+                bars["trend_regime"],
+                bars["macro_bull"],
+                strict=True,
+            )
+        ]
+        bars["execution_base_long"] = (
+            bars["base_desired_long"].shift(1).fillna(0).astype(int)
+        )
+        bars["execution_long"] = (
+            bars["desired_long"].shift(1).fillna(0).astype(int)
+        )
+        bars["execution_adx"] = bars["adx"].shift(1)
+        bars["execution_macro_bull"] = bars["macro_bull"].shift(1)
+        bars["execution_plus_di"] = bars["plus_di"].shift(1)
+        bars["execution_minus_di"] = bars["minus_di"].shift(1)
+        bars_by_symbol[symbol] = bars
+
+        funding = pd.read_csv(
+            config["funding"],
+            parse_dates=["datetime"],
+            nrows=config["funding_research_rows"],
+        )
+        if len(funding) != config["funding_research_rows"]:
+            raise ValueError(f"{symbol} funding snapshot changed")
+        if funding["datetime"].max() >= config["holdout_start"]:
+            raise ValueError(f"{symbol} funding Holdout boundary crossed")
+        if funding["datetime"].duplicated().any():
+            raise ValueError(f"{symbol} duplicate funding timestamps")
+        funding["last_funding_rate"] = pd.to_numeric(
+            funding["last_funding_rate"]
+        )
+        funding_by_symbol[symbol] = funding
+    return bars_by_symbol, funding_by_symbol
+
+
+def _maps(
+    frames: dict[str, pd.DataFrame],
+) -> tuple[pd.DatetimeIndex, dict[str, dict[pd.Timestamp, object]]]:
+    timeline = pd.DatetimeIndex(
+        sorted(set().union(*(set(frame["datetime"]) for frame in frames.values())))
+    )
+    maps = {
+        symbol: {row.datetime: row for row in frame.itertuples(index=False)}
+        for symbol, frame in frames.items()
+    }
+    return timeline, maps
+
+
+def run_backtest(
+    bars_by_symbol: dict[str, pd.DataFrame],
+    funding_by_symbol: dict[str, pd.DataFrame],
+    *,
+    include_fees: bool,
+    include_slippage: bool,
+    include_funding: bool,
+    use_regime: bool = True,
+    symbols: tuple[str, ...] = SYMBOL_ORDER,
+) -> Result:
+    common_end = min(
+        pd.Timestamp(bars_by_symbol[symbol]["datetime"].max())
+        for symbol in symbols
+    )
+    selected = {
+        symbol: bars_by_symbol[symbol][
+            bars_by_symbol[symbol]["datetime"] <= common_end
+        ].reset_index(drop=True)
+        for symbol in symbols
+    }
+    timeline, bar_maps = _maps(selected)
+    funding_maps = {
+        symbol: {
+            row.datetime: float(row.last_funding_rate)
+            for row in funding_by_symbol[symbol].itertuples(index=False)
+        }
+        for symbol in symbols
+    }
+    fee_rate = FEE_RATE if include_fees else 0.0
+    slippage_rate = SLIPPAGE_RATE if include_slippage else 0.0
+
+    cash = INITIAL_CAPITAL
+    positions: dict[str, Position] = {}
+    last_price: dict[str, float] = {}
+    trades: list[dict[str, object]] = []
+    equity_points: list[tuple[pd.Timestamp, float]] = []
+
+exec
+/bin/bash -lc "sed -n '1,220p' 06_RESEARCH/CODE/p1_04_tsmom_regime_long.py" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+#!/usr/bin/env python3
+"""Phase 1 P1-04: regime-first long-only 90-day TSMOM."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass
+import json
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+from v4_strategy_backtest import (
+    INITIAL_CAPITAL,
+    SYMBOL_CONFIG,
+    SYMBOL_ORDER,
+    metrics,
+    slice_metrics,
+)
+
+
+ROOT = Path(__file__).resolve().parents[2]
+OUTPUT = ROOT / "06_RESEARCH" / "CODE" / "output"
+LOOKBACK_BARS = 540
+FEE_RATE = 0.0005
+SLIPPAGE_RATE = 0.001
+TARGET_WEIGHT = 1 / 3
+LEVERAGE_CAP = 1.0
+ADX_PERIOD = 14
+ADX_ENTRY = 25.0
+ADX_EXIT = 20.0
+
+
+@dataclass
+class Position:
+    symbol: str
+    direction: int
+    signal_time: pd.Timestamp
+    entry_time: pd.Timestamp
+    raw_entry_price: float
+    entry_price: float
+    quantity: float
+    initial_quantity: float
+    initial_notional: float
+    entry_equity: float
+    entry_fee: float
+    entry_slippage_cost: float
+    partial_gross_pnl: float = 0.0
+    partial_exit_fee: float = 0.0
+    partial_exit_slippage_cost: float = 0.0
+    funding_cost: float = 0.0
+    holding_bars: int = 0
+
+
+@dataclass
+class Result:
+    trades: pd.DataFrame
+    equity: pd.Series
+    max_gross_leverage: float
+    max_marked_gross_leverage: float
+    exposure_scaled_entries: int
+    forced_deleveraging_count: int
+
+
+def signal_from_prices(current_close: float, lagged_close: float) -> int:
+    difference = current_close - lagged_close
+    return 1 if difference > 0 else -1 if difference < 0 else 0
+
+
+def execution_price(raw_price: float, direction: int, is_entry: bool) -> float:
+    side = direction if is_entry else -direction
+    return raw_price * (1 + side * SLIPPAGE_RATE)
+
+
+def funding_payment(
+    direction: int,
+    quantity: float,
+    mark_price: float,
+    rate: float,
+) -> float:
+    """Positive return value is a cash cost; negative is funding income."""
+    return direction * quantity * mark_price * rate
+
+
+def wilder_average(values: pd.Series, period: int) -> pd.Series:
+    return values.ewm(alpha=1 / period, adjust=False, min_periods=period).mean()
+
+
+def calculate_adx(bars: pd.DataFrame, period: int = ADX_PERIOD) -> pd.Series:
+    high = bars["high"].astype(float)
+    low = bars["low"].astype(float)
+    close = bars["close"].astype(float)
+    up_move = high.diff()
+    down_move = -low.diff()
+    plus_dm = pd.Series(
+        np.where((up_move > down_move) & (up_move > 0), up_move, 0.0),
+        index=bars.index,
+    )
+    minus_dm = pd.Series(
+        np.where((down_move > up_move) & (down_move > 0), down_move, 0.0),
+        index=bars.index,
+    )
+    true_range = pd.concat(
+        [
+            high - low,
+            (high - close.shift(1)).abs(),
+            (low - close.shift(1)).abs(),
+        ],
+        axis=1,
+    ).max(axis=1)
+    atr = wilder_average(true_range, period)
+    plus_di = 100 * wilder_average(plus_dm, period) / atr
+    minus_di = 100 * wilder_average(minus_dm, period) / atr
+    denominator = (plus_di + minus_di).replace(0, np.nan)
+    dx = 100 * (plus_di - minus_di).abs() / denominator
+    return wilder_average(dx, period)
+
+
+def hysteresis_regime(
+    adx: pd.Series,
+    entry: float = ADX_ENTRY,
+    exit_: float = ADX_EXIT,
+) -> pd.Series:
+    state = False
+    output: list[bool] = []
+    for value in adx:
+        if np.isfinite(value):
+            if value > entry:
+                state = True
+            elif value < exit_:
+                state = False
+        output.append(state)
+    return pd.Series(output, index=adx.index, dtype=bool)
+
+
+def desired_long_position(trend_signal: int, trend_regime: bool) -> int:
+    return int(trend_signal == 1 and trend_regime)
+
+
+def load_pre_holdout() -> tuple[
+    dict[str, pd.DataFrame],
+    dict[str, pd.DataFrame],
+]:
+    bars_by_symbol = {}
+    funding_by_symbol = {}
+    for symbol, config in SYMBOL_CONFIG.items():
+        research_rows = config["expected_research_rows"]
+        bars = pd.read_csv(
+            config["bars"],
+            parse_dates=["datetime"],
+            nrows=research_rows,
+        )
+        if len(bars) != research_rows:
+            raise ValueError(f"{symbol} research snapshot changed")
+        if bars["datetime"].max() >= config["holdout_start"]:
+            raise ValueError(f"{symbol} Holdout boundary crossed")
+        if bars["datetime"].duplicated().any():
+            raise ValueError(f"{symbol} duplicate bars")
+        if not bars["datetime"].is_monotonic_increasing:
+            raise ValueError(f"{symbol} bars not ascending")
+        bars["signal"] = np.sign(
+            bars["close"] - bars["close"].shift(LOOKBACK_BARS)
+        ).replace(0, np.nan).ffill().fillna(0).astype(int)
+        bars["execution_signal"] = bars["signal"].shift(1).fillna(0).astype(int)
+        bars["signal_time"] = bars["datetime"].shift(1)
+        bars["adx"] = calculate_adx(bars)
+        bars["trend_regime"] = hysteresis_regime(bars["adx"])
+        bars["desired_long"] = [
+            desired_long_position(signal, regime)
+            for signal, regime in zip(
+                bars["signal"],
+                bars["trend_regime"],
+                strict=True,
+            )
+        ]
+        bars["execution_long"] = (
+            bars["desired_long"].shift(1).fillna(0).astype(int)
+        )
+        bars["execution_adx"] = bars["adx"].shift(1)
+        bars_by_symbol[symbol] = bars
+
+        funding = pd.read_csv(
+            config["funding"],
+            parse_dates=["datetime"],
+            nrows=config["funding_research_rows"],
+        )
+        if len(funding) != config["funding_research_rows"]:
+            raise ValueError(f"{symbol} funding snapshot changed")
+        if funding["datetime"].max() >= config["holdout_start"]:
+            raise ValueError(f"{symbol} funding Holdout boundary crossed")
+        if funding["datetime"].duplicated().any():
+            raise ValueError(f"{symbol} duplicate funding timestamps")
+        funding["last_funding_rate"] = pd.to_numeric(
+            funding["last_funding_rate"]
+        )
+        funding_by_symbol[symbol] = funding
+    return bars_by_symbol, funding_by_symbol
+
+
+def _maps(
+    frames: dict[str, pd.DataFrame],
+) -> tuple[pd.DatetimeIndex, dict[str, dict[pd.Timestamp, object]]]:
+    timeline = pd.DatetimeIndex(
+        sorted(set().union(*(set(frame["datetime"]) for frame in frames.values())))
+    )
+    maps = {
+        symbol: {row.datetime: row for row in frame.itertuples(index=False)}
+        for symbol, frame in frames.items()
+    }
+    return timeline, maps
+
+
+def run_backtest(
+    bars_by_symbol: dict[str, pd.DataFrame],
+    funding_by_symbol: dict[str, pd.DataFrame],
+    *,
+    include_fees: bool,
+    include_slippage: bool,
+    include_funding: bool,
+
+exec
+/bin/bash -lc "sed -n '1,220p' 06_RESEARCH/CODE/tests/test_p1_06_tsmom_macro_bull.py" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+"""Synthetic tests for P1-06 macro-bull-gated long TSMOM."""
+
+from pathlib import Path
+import sys
+
+import numpy as np
+import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from p1_06_tsmom_macro_bull import (
+    ADX_ENTRY,
+    ADX_EXIT,
+    ADX_PERIOD,
+    MACRO_MA_DAYS,
+    calculate_adx,
+    desired_long_position,
+    hysteresis_regime,
+    prior_daily_bull_state,
+    run_backtest,
+)
+
+
+def test_frozen_adx_constants() -> None:
+    assert ADX_PERIOD == 14
+    assert ADX_ENTRY == 25
+    assert ADX_EXIT == 20
+    assert MACRO_MA_DAYS == 200
+
+
+def test_hysteresis_enters_exits_and_holds_band() -> None:
+    adx = pd.Series([np.nan, 19, 26, 24, 21, 19, 23, 26])
+    assert hysteresis_regime(adx).tolist() == [
+        False,
+        False,
+        True,
+        True,
+        True,
+        False,
+        False,
+        True,
+    ]
+
+
+def test_adx_uses_only_current_and_past_bars() -> None:
+    size = 100
+    close = pd.Series(np.linspace(100, 130, size))
+    bars = pd.DataFrame({
+        "high": close + 1,
+        "low": close - 1,
+        "close": close,
+    })
+    original = calculate_adx(bars)
+    changed = bars.copy()
+    changed.loc[80:, ["high", "low", "close"]] *= 2
+    perturbed = calculate_adx(changed)
+    pd.testing.assert_series_equal(original.iloc[:80], perturbed.iloc[:80])
+
+
+def test_flat_market_never_enters_trend_regime() -> None:
+    bars = pd.DataFrame({
+        "high": [101.0] * 100,
+        "low": [99.0] * 100,
+        "close": [100.0] * 100,
+    })
+    assert not hysteresis_regime(calculate_adx(bars)).any()
+
+
+def test_position_is_long_only_and_requires_both_conditions() -> None:
+    assert desired_long_position(1, True, True) == 1
+    assert desired_long_position(1, True, False) == 0
+    assert desired_long_position(1, True, pd.NA) == 0
+    assert desired_long_position(1, False, True) == 0
+    assert desired_long_position(-1, True, True) == 0
+    assert desired_long_position(0, True, True) == 0
+
+
+def test_macro_state_uses_only_previous_completed_day() -> None:
+    dates = pd.date_range("2020-01-01", periods=205 * 6, freq="4h")
+    close = pd.Series(np.arange(len(dates)), dtype=float)
+    original = prior_daily_bull_state(pd.Series(dates), close)
+    changed = close.copy()
+    changed.iloc[-1] = -1_000_000
+    perturbed = prior_daily_bull_state(pd.Series(dates), changed)
+    pd.testing.assert_series_equal(original, perturbed)
+
+
+def test_macro_warmup_is_unknown_and_blocks_long() -> None:
+    dates = pd.date_range("2020-01-01", periods=20 * 6, freq="4h")
+    close = pd.Series(np.arange(len(dates)), dtype=float)
+    state = prior_daily_bull_state(pd.Series(dates), close)
+    assert state.isna().all()
+    assert desired_long_position(1, True, state.iloc[-1]) == 0
+
+
+def test_macro_bear_transition_exits_at_next_open() -> None:
+    dates = pd.date_range("2022-01-01", periods=4, freq="4h")
+    bars = pd.DataFrame({
+        "datetime": dates,
+        "open": [100.0, 101.0, 102.0, 103.0],
+        "high": [101.0, 102.0, 103.0, 104.0],
+        "low": [99.0, 100.0, 101.0, 102.0],
+        "close": [100.5, 101.5, 102.5, 103.5],
+        "execution_long": [0, 1, 1, 0],
+        "execution_signal": [0, 1, 1, 1],
+        "execution_adx": [np.nan, 30.0, 30.0, 30.0],
+        "execution_macro_bull": [pd.NA, True, True, False],
+        "signal_time": dates - pd.Timedelta(hours=4),
+    })
+    funding = pd.DataFrame(columns=["datetime", "last_funding_rate"])
+    result = run_backtest(
+        {"BTC": bars},
+        {"BTC": funding},
+        include_fees=False,
+        include_slippage=False,
+        include_funding=False,
+        symbols=("BTC",),
+    )
+    assert len(result.trades) == 1
+    trade = result.trades.iloc[0]
+    assert trade["entry_time"] == dates[1]
+    assert trade["exit_time"] == dates[3]
+    assert trade["exit_reason"] == "MACRO_BEAR_EXIT"
+    assert (result.trades["direction"] == 1).all()
+
+exec
+/bin/bash -lc "find 06_RESEARCH/DATA -maxdepth 3 -type f | sort | sed -n '1,220p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+06_RESEARCH/DATA/DATA_HASHES_20260610.txt
+06_RESEARCH/DATA/DATA_HASHES_20260611.txt
+06_RESEARCH/DATA/FUTURES/ADAUSDT_FUNDING_8H.csv
+06_RESEARCH/DATA/FUTURES/ADAUSDT_MARK_4H.csv
+06_RESEARCH/DATA/FUTURES/BNBUSDT_FUNDING_8H.csv
+06_RESEARCH/DATA/FUTURES/BNBUSDT_MARK_4H.csv
+06_RESEARCH/DATA/FUTURES/BTCUSDT_FUNDING_8H.csv
+06_RESEARCH/DATA/FUTURES/BTCUSDT_FUNDING_8H_2026H1.csv
+06_RESEARCH/DATA/FUTURES/BTCUSDT_MARK_1H.csv
+06_RESEARCH/DATA/FUTURES/BTCUSDT_MARK_1H_2026H1.csv
+06_RESEARCH/DATA/FUTURES/BTCUSDT_MARK_4H.csv
+06_RESEARCH/DATA/FUTURES/BTCUSDT_MARK_4H_2026H1.csv
+06_RESEARCH/DATA/FUTURES/BTCUSDT_METRICS_5M.csv
+06_RESEARCH/DATA/FUTURES/DOGEUSDT_FUNDING_8H.csv
+06_RESEARCH/DATA/FUTURES/DOGEUSDT_MARK_4H.csv
+06_RESEARCH/DATA/FUTURES/ETHUSDT_FUNDING_8H.csv
+06_RESEARCH/DATA/FUTURES/ETHUSDT_FUNDING_8H_2026H1.csv
+06_RESEARCH/DATA/FUTURES/ETHUSDT_MARK_1H.csv
+06_RESEARCH/DATA/FUTURES/ETHUSDT_MARK_1H_2026H1.csv
+06_RESEARCH/DATA/FUTURES/ETHUSDT_MARK_4H.csv
+06_RESEARCH/DATA/FUTURES/ETHUSDT_MARK_4H_2026H1.csv
+06_RESEARCH/DATA/FUTURES/ETHUSDT_METRICS_5M.csv
+06_RESEARCH/DATA/FUTURES/LTCUSDT_FUNDING_8H.csv
+06_RESEARCH/DATA/FUTURES/LTCUSDT_MARK_4H.csv
+06_RESEARCH/DATA/FUTURES/SOLUSDT_FUNDING_8H.csv
+06_RESEARCH/DATA/FUTURES/SOLUSDT_FUNDING_8H_2026H1.csv
+06_RESEARCH/DATA/FUTURES/SOLUSDT_MARK_1H.csv
+06_RESEARCH/DATA/FUTURES/SOLUSDT_MARK_1H_2026H1.csv
+06_RESEARCH/DATA/FUTURES/SOLUSDT_MARK_4H.csv
+06_RESEARCH/DATA/FUTURES/SOLUSDT_MARK_4H_2026H1.csv
+06_RESEARCH/DATA/FUTURES/SOLUSDT_METRICS_5M.csv
+06_RESEARCH/DATA/FUTURES/XRPUSDT_FUNDING_8H.csv
+06_RESEARCH/DATA/FUTURES/XRPUSDT_MARK_4H.csv
+06_RESEARCH/DATA/HOLDOUT/a2_events_holdout.csv
+06_RESEARCH/DATA/UNIVERSE_PIT.csv
+

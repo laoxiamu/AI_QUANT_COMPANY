@@ -1,0 +1,724 @@
+{
+  "task_id": "CARRY_FEASIBILITY",
+  "seed": 20260612,
+  "generated_utc": "2026-06-12 07:14:55 UTC",
+  "read_boundary": "06_RESEARCH/DATA/FUTURES only",
+  "funding_extreme_abs_rate": 0.001,
+  "fee_scenarios": [
+    {
+      "name": "VIP0_task_conservative",
+      "spot_fee_per_side": 0.001,
+      "perp_fee_per_side": 0.001,
+      "slippage_per_side": 0.001,
+      "note": "Task-mandated conservative fee 0.10%/side on spot and perp; slippage 0.10%/side.",
+      "round_trip_cost": 0.008
+    },
+    {
+      "name": "BNB_fee_discount_sensitivity",
+      "spot_fee_per_side": 0.00075,
+      "perp_fee_per_side": 0.0009,
+      "slippage_per_side": 0.001,
+      "note": "Sensitivity only: spot fee 25% lower and perp fee 10% lower than the task 0.10%/side fee; slippage unchanged.",
+      "round_trip_cost": 0.0073
+    }
+  ],
+  "sources": {
+    "BTCUSDT": [
+      {
+        "file": "06_RESEARCH/DATA/FUTURES/BTCUSDT_FUNDING_8H.csv",
+        "sha256": "5803cb5e8ffb4dc8b5a1cb4a989ea7477597882341fafbf2a54e0f7148a3b7bf",
+        "rows": 7029
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES/BTCUSDT_FUNDING_8H_2026H1.csv",
+        "sha256": "d1af8ceff1a5ddb3b07dfedbedba07f8a8f28142a0fb954e15bb5a2efaa6a270",
+        "rows": 15
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES/BTCUSDT_MARK_4H.csv",
+        "sha256": "7127294528e65f78965765d315f3bb684dca61941b5f3edc2140081cfa080e47",
+        "rows": 14010
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES/BTCUSDT_MARK_4H_2026H1.csv",
+        "sha256": "a20868ae0c9120a697d37aa841e1bca6b411bc24e3f34687bbce8b9bbc3dccb9",
+        "rows": 30
+      }
+    ],
+    "ETHUSDT": [
+      {
+        "file": "06_RESEARCH/DATA/FUTURES/ETHUSDT_FUNDING_8H.csv",
+        "sha256": "e3333672e3dd7b9e46592df34a86a33cb599ee6ee8458a09db0d0236e3c76d08",
+        "rows": 7029
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES/ETHUSDT_FUNDING_8H_2026H1.csv",
+        "sha256": "d9455df4c77062496492f33e4d85e26392cd1830734cd3bc60fce625f8fb05f5",
+        "rows": 15
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES/ETHUSDT_MARK_4H.csv",
+        "sha256": "53135ef7aca6d4dd713cadc3c937b7b3aafcabce76ac20bfa4ab5865d5bba567",
+        "rows": 14046
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES/ETHUSDT_MARK_4H_2026H1.csv",
+        "sha256": "c36066e1255a5d8813460b73aa5eeda04459186db583e4347865aa1d1e66472b",
+        "rows": 30
+      }
+    ],
+    "SOLUSDT": [
+      {
+        "file": "06_RESEARCH/DATA/FUTURES/SOLUSDT_FUNDING_8H.csv",
+        "sha256": "24456f2c9e71caf27b910aab0b2a1bf7f17b2ee9f0048486a1e07541e3ae3df3",
+        "rows": 6334
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES/SOLUSDT_FUNDING_8H_2026H1.csv",
+        "sha256": "78e9975b010cd52b992335b78f4423f417d251b684ac0f74c99c3e28f6246dcd",
+        "rows": 15
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES/SOLUSDT_MARK_4H.csv",
+        "sha256": "fc58a2e85afa0d71d7d5cd4ef6a56a6975512a9cde4ac0084ebaf5f3d2f6ceb8",
+        "rows": 12478
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES/SOLUSDT_MARK_4H_2026H1.csv",
+        "sha256": "5af950d485f333418b267d79ce7fa4756504493256c6ee456cdc064d194e4cc1",
+        "rows": 30
+      }
+    ]
+  },
+  "overall": [
+    {
+      "symbol": "BTCUSDT",
+      "start": "2020-01-01 00:00:00 UTC",
+      "end": "2026-06-05 16:00:00 UTC",
+      "periods": 7044,
+      "observed_days": 2348.0,
+      "annualized_funding_return": 0.12038159014906304,
+      "negative_period_share": 0.14366837024417944,
+      "longest_negative_periods": 24,
+      "longest_negative_days": 8.0,
+      "mean_8h": 0.00010986227711527543,
+      "median_8h": 9.797500000000001e-05,
+      "non_8h_periods": 0
+    },
+    {
+      "symbol": "ETHUSDT",
+      "start": "2020-01-01 00:00:00 UTC",
+      "end": "2026-06-05 16:00:00 UTC",
+      "periods": 7044,
+      "observed_days": 2348.0,
+      "annualized_funding_return": 0.14348526267355197,
+      "negative_period_share": 0.1365701306076093,
+      "longest_negative_periods": 25,
+      "longest_negative_days": 8.333333333333334,
+      "mean_8h": 0.00013094707978421352,
+      "median_8h": 0.0001,
+      "non_8h_periods": 0
+    },
+    {
+      "symbol": "SOLUSDT",
+      "start": "2020-09-13 16:00:00 UTC",
+      "end": "2026-06-05 16:00:00 UTC",
+      "periods": 6349,
+      "observed_days": 2091.25,
+      "annualized_funding_return": 0.0012933805965331707,
+      "negative_period_share": 0.2809891321467948,
+      "longest_negative_periods": 53,
+      "longest_negative_days": 15.166666666666666,
+      "mean_8h": 1.166371082060164e-06,
+      "median_8h": 9.188e-05,
+      "non_8h_periods": 101
+    }
+  ],
+  "yearly": [
+    {
+      "symbol": "BTCUSDT",
+      "year": 2020,
+      "periods": 1098,
+      "observed_days": 366.0,
+      "sum_funding_return": 0.17239718999999998,
+      "annualized_funding_return": 0.17204391706967212,
+      "negative_period_share": 0.1429872495446266,
+      "longest_negative_periods": 24,
+      "longest_negative_days": 8.0
+    },
+    {
+      "symbol": "BTCUSDT",
+      "year": 2021,
+      "periods": 1095,
+      "observed_days": 365.0,
+      "sum_funding_return": 0.30608423,
+      "annualized_funding_return": 0.3062938767328767,
+      "negative_period_share": 0.0730593607305936,
+      "longest_negative_periods": 9,
+      "longest_negative_days": 3.0
+    },
+    {
+      "symbol": "BTCUSDT",
+      "year": 2022,
+      "periods": 1095,
+      "observed_days": 365.0,
+      "sum_funding_return": 0.04164925,
+      "annualized_funding_return": 0.04167777688356165,
+      "negative_period_share": 0.22100456621004566,
+      "longest_negative_periods": 10,
+      "longest_negative_days": 3.3333333333333335
+    },
+    {
+      "symbol": "BTCUSDT",
+      "year": 2023,
+      "periods": 1095,
+      "observed_days": 365.0,
+      "sum_funding_return": 0.07865712000000001,
+      "annualized_funding_return": 0.07871099473972604,
+      "negative_period_share": 0.10136986301369863,
+      "longest_negative_periods": 7,
+      "longest_negative_days": 2.3333333333333335
+    },
+    {
+      "symbol": "BTCUSDT",
+      "year": 2024,
+      "periods": 1098,
+      "observed_days": 366.0,
+      "sum_funding_return": 0.11956883000000001,
+      "annualized_funding_return": 0.11932381190573771,
+      "negative_period_share": 0.08378870673952642,
+      "longest_negative_periods": 18,
+      "longest_negative_days": 6.0
+    },
+    {
+      "symbol": "BTCUSDT",
+      "year": 2025,
+      "periods": 1095,
+      "observed_days": 365.0,
+      "sum_funding_return": 0.051264279999999995,
+      "annualized_funding_return": 0.05129939252054794,
+      "negative_period_share": 0.12876712328767123,
+      "longest_negative_periods": 10,
+      "longest_negative_days": 3.3333333333333335
+    },
+    {
+      "symbol": "BTCUSDT",
+      "year": 2026,
+      "periods": 468,
+      "observed_days": 156.0,
+      "sum_funding_return": 0.004248980000000001,
+      "annualized_funding_return": 0.009948332980769234,
+      "negative_period_share": 0.40384615384615385,
+      "longest_negative_periods": 14,
+      "longest_negative_days": 4.666666666666667
+    },
+    {
+      "symbol": "ETHUSDT",
+      "year": 2020,
+      "periods": 1098,
+      "observed_days": 366.0,
+      "sum_funding_return": 0.27489957000000004,
+      "annualized_funding_return": 0.27433625120901645,
+      "negative_period_share": 0.026411657559198543,
+      "longest_negative_periods": 3,
+      "longest_negative_days": 1.0
+    },
+    {
+      "symbol": "ETHUSDT",
+      "year": 2021,
+      "periods": 1095,
+      "observed_days": 365.0,
+      "sum_funding_return": 0.37537255,
+      "annualized_funding_return": 0.3756296544863014,
+      "negative_period_share": 0.0410958904109589,
+      "longest_negative_periods": 6,
+      "longest_negative_days": 2.0
+    },
+    {
+      "symbol": "ETHUSDT",
+      "year": 2022,
+      "periods": 1095,
+      "observed_days": 365.0,
+      "sum_funding_return": 0.007872559999999997,
+      "annualized_funding_return": 0.00787795216438356,
+      "negative_period_share": 0.3415525114155251,
+      "longest_negative_periods": 25,
+      "longest_negative_days": 8.333333333333334
+    },
+    {
+      "symbol": "ETHUSDT",
+      "year": 2023,
+      "periods": 1095,
+      "observed_days": 365.0,
+      "sum_funding_return": 0.08259507000000002,
+      "annualized_funding_return": 0.08265164196575345,
+      "negative_period_share": 0.091324200913242,
+      "longest_negative_periods": 8,
+      "longest_negative_days": 2.6666666666666665
+    },
+    {
+      "symbol": "ETHUSDT",
+      "year": 2024,
+      "periods": 1098,
+      "observed_days": 366.0,
+      "sum_funding_return": 0.12996919,
+      "annualized_funding_return": 0.12970285969262296,
+      "negative_period_share": 0.04189435336976321,
+      "longest_negative_periods": 12,
+      "longest_negative_days": 4.0
+    },
+    {
+      "symbol": "ETHUSDT",
+      "year": 2025,
+      "periods": 1095,
+      "observed_days": 365.0,
+      "sum_funding_return": 0.04928719,
+      "annualized_funding_return": 0.049320948349315066,
+      "negative_period_share": 0.16164383561643836,
+      "longest_negative_periods": 5,
+      "longest_negative_days": 1.6666666666666667
+    },
+    {
+      "symbol": "ETHUSDT",
+      "year": 2026,
+      "periods": 468,
+      "observed_days": 156.0,
+      "sum_funding_return": 0.0023950999999999994,
+      "annualized_funding_return": 0.005607758173076923,
+      "negative_period_share": 0.4081196581196581,
+      "longest_negative_periods": 16,
+      "longest_negative_days": 5.333333333333333
+    },
+    {
+      "symbol": "SOLUSDT",
+      "year": 2020,
+      "periods": 328,
+      "observed_days": 109.33333333333333,
+      "sum_funding_return": -0.03749881,
+      "annualized_funding_return": -0.12527232029725607,
+      "negative_period_share": 0.2530487804878049,
+      "longest_negative_periods": 21,
+      "longest_negative_days": 7.0
+    },
+    {
+      "symbol": "SOLUSDT",
+      "year": 2021,
+      "periods": 1095,
+      "observed_days": 365.0,
+      "sum_funding_return": 0.28594697,
+      "annualized_funding_return": 0.2861428240890411,
+      "negative_period_share": 0.047488584474885846,
+      "longest_negative_periods": 9,
+      "longest_negative_days": 3.0
+    },
+    {
+      "symbol": "SOLUSDT",
+      "year": 2022,
+      "periods": 1170,
+      "observed_days": 364.9166666666667,
+      "sum_funding_return": -0.3799753700000001,
+      "annualized_funding_return": -0.3803224587143184,
+      "negative_period_share": 0.4581196581196581,
+      "longest_negative_periods": 53,
+      "longest_negative_days": 15.166666666666666
+    },
+    {
+      "symbol": "SOLUSDT",
+      "year": 2023,
+      "periods": 1095,
+      "observed_days": 365.0,
+      "sum_funding_return": 0.01296501000000001,
+      "annualized_funding_return": 0.012973890143835626,
+      "negative_period_share": 0.28127853881278536,
+      "longest_negative_periods": 25,
+      "longest_negative_days": 8.333333333333334
+    },
+    {
+      "symbol": "SOLUSDT",
+      "year": 2024,
+      "periods": 1098,
+      "observed_days": 366.0,
+      "sum_funding_return": 0.13657023000000001,
+      "annualized_funding_return": 0.1362903729713115,
+      "negative_period_share": 0.1029143897996357,
+      "longest_negative_periods": 7,
+      "longest_negative_days": 2.3333333333333335
+    },
+    {
+      "symbol": "SOLUSDT",
+      "year": 2025,
+      "periods": 1095,
+      "observed_days": 365.0,
+      "sum_funding_return": 0.003507029999999999,
+      "annualized_funding_return": 0.003509432075342465,
+      "negative_period_share": 0.39452054794520547,
+      "longest_negative_periods": 12,
+      "longest_negative_days": 4.0
+    },
+    {
+      "symbol": "SOLUSDT",
+      "year": 2026,
+      "periods": 468,
+      "observed_days": 156.0,
+      "sum_funding_return": -0.014109769999999999,
+      "annualized_funding_return": -0.03303585572115385,
+      "negative_period_share": 0.5555555555555556,
+      "longest_negative_periods": 21,
+      "longest_negative_days": 7.0
+    }
+  ],
+  "cost_sensitivity": [
+    {
+      "symbol": "BTCUSDT",
+      "scenario": "VIP0_task_conservative",
+      "hold_days": 30,
+      "round_trip_cost": 0.008,
+      "gross_ann_on_notional": 0.12038159014906304,
+      "annualized_cost_drag": 0.0974,
+      "net_ann_on_notional": 0.022981590149063036,
+      "break_even_days": 24.2728144426554
+    },
+    {
+      "symbol": "BTCUSDT",
+      "scenario": "VIP0_task_conservative",
+      "hold_days": 90,
+      "round_trip_cost": 0.008,
+      "gross_ann_on_notional": 0.12038159014906304,
+      "annualized_cost_drag": 0.03246666666666667,
+      "net_ann_on_notional": 0.08791492348239636,
+      "break_even_days": 24.2728144426554
+    },
+    {
+      "symbol": "BTCUSDT",
+      "scenario": "VIP0_task_conservative",
+      "hold_days": 365,
+      "round_trip_cost": 0.008,
+      "gross_ann_on_notional": 0.12038159014906304,
+      "annualized_cost_drag": 0.008005479452054796,
+      "net_ann_on_notional": 0.11237611069700824,
+      "break_even_days": 24.2728144426554
+    },
+    {
+      "symbol": "BTCUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "hold_days": 30,
+      "round_trip_cost": 0.0073,
+      "gross_ann_on_notional": 0.12038159014906304,
+      "annualized_cost_drag": 0.0888775,
+      "net_ann_on_notional": 0.03150409014906304,
+      "break_even_days": 22.148943178923048
+    },
+    {
+      "symbol": "BTCUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "hold_days": 90,
+      "round_trip_cost": 0.0073,
+      "gross_ann_on_notional": 0.12038159014906304,
+      "annualized_cost_drag": 0.029625833333333334,
+      "net_ann_on_notional": 0.0907557568157297,
+      "break_even_days": 22.148943178923048
+    },
+    {
+      "symbol": "BTCUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "hold_days": 365,
+      "round_trip_cost": 0.0073,
+      "gross_ann_on_notional": 0.12038159014906304,
+      "annualized_cost_drag": 0.007305,
+      "net_ann_on_notional": 0.11307659014906303,
+      "break_even_days": 22.148943178923048
+    },
+    {
+      "symbol": "ETHUSDT",
+      "scenario": "VIP0_task_conservative",
+      "hold_days": 30,
+      "round_trip_cost": 0.008,
+      "gross_ann_on_notional": 0.14348526267355197,
+      "annualized_cost_drag": 0.0974,
+      "net_ann_on_notional": 0.046085262673551966,
+      "break_even_days": 20.364460750564593
+    },
+    {
+      "symbol": "ETHUSDT",
+      "scenario": "VIP0_task_conservative",
+      "hold_days": 90,
+      "round_trip_cost": 0.008,
+      "gross_ann_on_notional": 0.14348526267355197,
+      "annualized_cost_drag": 0.03246666666666667,
+      "net_ann_on_notional": 0.1110185960068853,
+      "break_even_days": 20.364460750564593
+    },
+    {
+      "symbol": "ETHUSDT",
+      "scenario": "VIP0_task_conservative",
+      "hold_days": 365,
+      "round_trip_cost": 0.008,
+      "gross_ann_on_notional": 0.14348526267355197,
+      "annualized_cost_drag": 0.008005479452054796,
+      "net_ann_on_notional": 0.13547978322149717,
+      "break_even_days": 20.364460750564593
+    },
+    {
+      "symbol": "ETHUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "hold_days": 30,
+      "round_trip_cost": 0.0073,
+      "gross_ann_on_notional": 0.14348526267355197,
+      "annualized_cost_drag": 0.0888775,
+      "net_ann_on_notional": 0.05460776267355197,
+      "break_even_days": 18.58257043489019
+    },
+    {
+      "symbol": "ETHUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "hold_days": 90,
+      "round_trip_cost": 0.0073,
+      "gross_ann_on_notional": 0.14348526267355197,
+      "annualized_cost_drag": 0.029625833333333334,
+      "net_ann_on_notional": 0.11385942934021863,
+      "break_even_days": 18.58257043489019
+    },
+    {
+      "symbol": "ETHUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "hold_days": 365,
+      "round_trip_cost": 0.0073,
+      "gross_ann_on_notional": 0.14348526267355197,
+      "annualized_cost_drag": 0.007305,
+      "net_ann_on_notional": 0.13618026267355196,
+      "break_even_days": 18.58257043489019
+    },
+    {
+      "symbol": "SOLUSDT",
+      "scenario": "VIP0_task_conservative",
+      "hold_days": 30,
+      "round_trip_cost": 0.008,
+      "gross_ann_on_notional": 0.0012933805965331707,
+      "annualized_cost_drag": 0.0974,
+      "net_ann_on_notional": -0.09610661940346683,
+      "break_even_days": 2259.1957911168965
+    },
+    {
+      "symbol": "SOLUSDT",
+      "scenario": "VIP0_task_conservative",
+      "hold_days": 90,
+      "round_trip_cost": 0.008,
+      "gross_ann_on_notional": 0.0012933805965331707,
+      "annualized_cost_drag": 0.03246666666666667,
+      "net_ann_on_notional": -0.0311732860701335,
+      "break_even_days": 2259.1957911168965
+    },
+    {
+      "symbol": "SOLUSDT",
+      "scenario": "VIP0_task_conservative",
+      "hold_days": 365,
+      "round_trip_cost": 0.008,
+      "gross_ann_on_notional": 0.0012933805965331707,
+      "annualized_cost_drag": 0.008005479452054796,
+      "net_ann_on_notional": -0.0067120988555216254,
+      "break_even_days": 2259.1957911168965
+    },
+    {
+      "symbol": "SOLUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "hold_days": 30,
+      "round_trip_cost": 0.0073,
+      "gross_ann_on_notional": 0.0012933805965331707,
+      "annualized_cost_drag": 0.0888775,
+      "net_ann_on_notional": -0.08758411940346683,
+      "break_even_days": 2061.516159394168
+    },
+    {
+      "symbol": "SOLUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "hold_days": 90,
+      "round_trip_cost": 0.0073,
+      "gross_ann_on_notional": 0.0012933805965331707,
+      "annualized_cost_drag": 0.029625833333333334,
+      "net_ann_on_notional": -0.028332452736800164,
+      "break_even_days": 2061.516159394168
+    },
+    {
+      "symbol": "SOLUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "hold_days": 365,
+      "round_trip_cost": 0.0073,
+      "gross_ann_on_notional": 0.0012933805965331707,
+      "annualized_cost_drag": 0.007305,
+      "net_ann_on_notional": -0.006011619403466829,
+      "break_even_days": 2061.516159394168
+    }
+  ],
+  "mark_proxy": [
+    {
+      "symbol": "BTCUSDT",
+      "extreme_threshold_abs": 0.001,
+      "extreme_periods": 92,
+      "usable_windows": 92,
+      "negative_extreme_periods": 3,
+      "positive_extreme_periods": 89,
+      "median_abs_return_24h": 0.021675096819788797,
+      "p90_abs_return_24h": 0.07892004411736568,
+      "max_abs_return_24h": 0.1323817718999769,
+      "median_high_low_range_24h": 0.07179567966594524,
+      "p90_high_low_range_24h": 0.17682272915347205,
+      "max_high_low_range_24h": 0.26178060707177897,
+      "worst_24h_return": -0.12798428692885788,
+      "best_24h_return": 0.1323817718999769
+    },
+    {
+      "symbol": "ETHUSDT",
+      "extreme_threshold_abs": 0.001,
+      "extreme_periods": 151,
+      "usable_windows": 151,
+      "negative_extreme_periods": 7,
+      "positive_extreme_periods": 144,
+      "median_abs_return_24h": 0.030885712340046334,
+      "p90_abs_return_24h": 0.08389285808112867,
+      "max_abs_return_24h": 0.22215819291223227,
+      "median_high_low_range_24h": 0.09186466433504736,
+      "p90_high_low_range_24h": 0.21153315514062276,
+      "max_high_low_range_24h": 0.44859298181367446,
+      "worst_24h_return": -0.22215819291223227,
+      "best_24h_return": 0.17536137954447018
+    },
+    {
+      "symbol": "SOLUSDT",
+      "extreme_threshold_abs": 0.001,
+      "extreme_periods": 218,
+      "usable_windows": 218,
+      "negative_extreme_periods": 122,
+      "positive_extreme_periods": 96,
+      "median_abs_return_24h": 0.0549998555068556,
+      "p90_abs_return_24h": 0.15367982134250685,
+      "max_abs_return_24h": 0.5180595843373494,
+      "median_high_low_range_24h": 0.14034038588709463,
+      "p90_high_low_range_24h": 0.3582638872038563,
+      "max_high_low_range_24h": 1.4016775372772643,
+      "worst_24h_return": -0.3777612383387108,
+      "best_24h_return": 0.5180595843373494
+    }
+  ],
+  "capital_efficiency": [
+    {
+      "symbol": "BTCUSDT",
+      "scenario": "VIP0_task_conservative",
+      "perp_margin_rate": 0.1,
+      "spot_notional": 15000.0,
+      "margin_required": 1500.0,
+      "free_cash_buffer": 13500.0,
+      "net_ann_on_principal": 0.05618805534850412,
+      "net_annual_cash": 1685.6416604551237
+    },
+    {
+      "symbol": "BTCUSDT",
+      "scenario": "VIP0_task_conservative",
+      "perp_margin_rate": 0.2,
+      "spot_notional": 15000.0,
+      "margin_required": 3000.0,
+      "free_cash_buffer": 12000.0,
+      "net_ann_on_principal": 0.05618805534850412,
+      "net_annual_cash": 1685.6416604551237
+    },
+    {
+      "symbol": "BTCUSDT",
+      "scenario": "VIP0_task_conservative",
+      "perp_margin_rate": 0.5,
+      "spot_notional": 15000.0,
+      "margin_required": 7500.0,
+      "free_cash_buffer": 7500.0,
+      "net_ann_on_principal": 0.05618805534850412,
+      "net_annual_cash": 1685.6416604551237
+    },
+    {
+      "symbol": "BTCUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "perp_margin_rate": 0.1,
+      "spot_notional": 15000.0,
+      "margin_required": 1500.0,
+      "free_cash_buffer": 13500.0,
+      "net_ann_on_principal": 0.056538295074531515,
+      "net_annual_cash": 1696.1488522359455
+    },
+    {
+      "symbol": "BTCUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "perp_margin_rate": 0.2,
+      "spot_notional": 15000.0,
+      "margin_required": 3000.0,
+      "free_cash_buffer": 12000.0,
+      "net_ann_on_principal": 0.056538295074531515,
+      "net_annual_cash": 1696.1488522359455
+    },
+    {
+      "symbol": "BTCUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "perp_margin_rate": 0.5,
+      "spot_notional": 15000.0,
+      "margin_required": 7500.0,
+      "free_cash_buffer": 7500.0,
+      "net_ann_on_principal": 0.056538295074531515,
+      "net_annual_cash": 1696.1488522359455
+    },
+    {
+      "symbol": "ETHUSDT",
+      "scenario": "VIP0_task_conservative",
+      "perp_margin_rate": 0.1,
+      "spot_notional": 15000.0,
+      "margin_required": 1500.0,
+      "free_cash_buffer": 13500.0,
+      "net_ann_on_principal": 0.06773989161074859,
+      "net_annual_cash": 2032.1967483224576
+    },
+    {
+      "symbol": "ETHUSDT",
+      "scenario": "VIP0_task_conservative",
+      "perp_margin_rate": 0.2,
+      "spot_notional": 15000.0,
+      "margin_required": 3000.0,
+      "free_cash_buffer": 12000.0,
+      "net_ann_on_principal": 0.06773989161074859,
+      "net_annual_cash": 2032.1967483224576
+    },
+    {
+      "symbol": "ETHUSDT",
+      "scenario": "VIP0_task_conservative",
+      "perp_margin_rate": 0.5,
+      "spot_notional": 15000.0,
+      "margin_required": 7500.0,
+      "free_cash_buffer": 7500.0,
+      "net_ann_on_principal": 0.06773989161074859,
+      "net_annual_cash": 2032.1967483224576
+    },
+    {
+      "symbol": "ETHUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "perp_margin_rate": 0.1,
+      "spot_notional": 15000.0,
+      "margin_required": 1500.0,
+      "free_cash_buffer": 13500.0,
+      "net_ann_on_principal": 0.06809013133677598,
+      "net_annual_cash": 2042.7039401032794
+    },
+    {
+      "symbol": "ETHUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "perp_margin_rate": 0.2,
+      "spot_notional": 15000.0,
+      "margin_required": 3000.0,
+      "free_cash_buffer": 12000.0,
+      "net_ann_on_principal": 0.06809013133677598,
+      "net_annual_cash": 2042.7039401032794
+    },
+    {
+      "symbol": "ETHUSDT",
+      "scenario": "BNB_fee_discount_sensitivity",
+      "perp_margin_rate": 0.5,
+      "spot_notional": 15000.0,
+      "margin_required": 7500.0,
+      "free_cash_buffer": 7500.0,
+      "net_ann_on_principal": 0.06809013133677598,
+      "net_annual_cash": 2042.7039401032794
+    }
+  ]
+}
