@@ -1,0 +1,218 @@
+{
+  "experiment": "tsmom_expansion_dual_engine_v1",
+  "engine": "S",
+  "holdout_accessed": true,
+  "strategy_data_holdout_accessed": false,
+  "holdout_incident": "Codex session rg search matched 06_RESEARCH/DATA/HOLDOUT/a2_events_holdout.csv snippets; not used by this TSMOM backtest.",
+  "cutoff_utc": "2024-12-09 23:59:00",
+  "parameters": {
+    "lookback_bars": 540,
+    "adx_period": 14,
+    "adx_entry": 25.0,
+    "adx_exit": 20.0,
+    "macro_ma_days": 200,
+    "fee_each_side": 0.001,
+    "slippage_each_side": 0.001,
+    "funding": "real 8H rates, direction-aware",
+    "bootstrap_seed": 20260612
+  },
+  "data_audit": {
+    "BTC": {
+      "bars_first_timestamp": "2020-01-01 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10782,
+      "funding_first_timestamp": "2020-01-01 00:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5415,
+      "onboard_date": "2019-09-08 00:00:00",
+      "pit_eligible_from": "2019-12-07 00:00:00"
+    },
+    "ETH": {
+      "bars_first_timestamp": "2020-01-01 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10818,
+      "funding_first_timestamp": "2020-01-01 00:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5415,
+      "onboard_date": "2019-11-27 00:00:00",
+      "pit_eligible_from": "2020-02-25 00:00:00"
+    },
+    "SOL": {
+      "bars_first_timestamp": "2020-09-13 08:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 9250,
+      "funding_first_timestamp": "2020-09-13 16:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 4720,
+      "onboard_date": "2020-09-14 00:00:00",
+      "pit_eligible_from": "2020-12-13 00:00:00"
+    },
+    "BNB": {
+      "bars_first_timestamp": "2020-02-01 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10596,
+      "funding_first_timestamp": "2020-02-10 08:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5294,
+      "onboard_date": "2020-02-10 00:00:00",
+      "pit_eligible_from": "2020-05-10 00:00:00"
+    },
+    "XRP": {
+      "bars_first_timestamp": "2020-01-06 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10758,
+      "funding_first_timestamp": "2020-01-06 08:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5399,
+      "onboard_date": "2020-01-06 00:00:00",
+      "pit_eligible_from": "2020-04-05 00:00:00"
+    },
+    "DOGE": {
+      "bars_first_timestamp": "2020-07-10 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 9672,
+      "funding_first_timestamp": "2020-07-10 08:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 4841,
+      "onboard_date": "2020-07-10 00:00:00",
+      "pit_eligible_from": "2020-10-08 00:00:00"
+    },
+    "ADA": {
+      "bars_first_timestamp": "2020-01-19 08:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10708,
+      "funding_first_timestamp": "2020-01-19 16:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5359,
+      "onboard_date": "2020-01-31 00:00:00",
+      "pit_eligible_from": "2020-04-30 00:00:00"
+    },
+    "LTC": {
+      "bars_first_timestamp": "2020-01-09 04:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10769,
+      "funding_first_timestamp": "2020-01-09 08:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5390,
+      "onboard_date": "2020-01-09 00:00:00",
+      "pit_eligible_from": "2020-04-08 00:00:00"
+    }
+  },
+  "metrics": {
+    "starting_equity": 100000.0,
+    "ending_equity": 71467.85694546376,
+    "net_profit": -28532.14305453624,
+    "total_return": -0.2853214305453624,
+    "annualized_log_growth": -0.06798031235050306,
+    "sharpe_reference": -0.21814630409810135,
+    "max_drawdown": -0.42668709752239786,
+    "trade_count": 398,
+    "win_rate": 0.3793969849246231,
+    "expectancy_r": -0.0048353294874998376,
+    "average_win_r": 0.06749837971995662,
+    "average_loss_r": 0.049055532282341635,
+    "win_loss_ratio": 1.3759585632761302,
+    "average_holding_days": 4.993299832495813,
+    "average_nominal_pct": 0.12468659026698765,
+    "fees": 8557.844473741767,
+    "slippage_cost": 8557.831400175903,
+    "funding_cost": -1657.0982048906303,
+    "max_gross_leverage": 1.0000000001015146,
+    "max_marked_gross_leverage": 1.0884996498301478,
+    "exposure_scaled_entries": 6,
+    "forced_deleveraging_count": 70
+  },
+  "annual_trade_expectancy": {
+    "by_year": {
+      "2020": {
+        "trade_count": 8,
+        "expectancy_r": -0.042020585206355994,
+        "counted_for_majority": false
+      },
+      "2021": {
+        "trade_count": 38,
+        "expectancy_r": -0.03142473765573878,
+        "counted_for_majority": true
+      },
+      "2022": {
+        "trade_count": 191,
+        "expectancy_r": 0.009116482929610297,
+        "counted_for_majority": true
+      },
+      "2023": {
+        "trade_count": 35,
+        "expectancy_r": -0.03092793878997988,
+        "counted_for_majority": true
+      },
+      "2024": {
+        "trade_count": 126,
+        "expectancy_r": -0.00835656194731972,
+        "counted_for_majority": true
+      }
+    },
+    "positive_years": 1,
+    "counted_years": 4,
+    "positive_years_majority": false
+  },
+  "liquidation_bootstrap": {
+    "block_bars": 42,
+    "year_bars": 2191,
+    "iterations": 2000,
+    "seed": 20260612,
+    "standard_dd35_probability": 0.1005,
+    "conservative_dd20_probability": 0.591
+  },
+  "walk_forward": [
+    {
+      "window": 1,
+      "start": "2020-01-01 00:00:00",
+      "end": "2021-08-24 12:00:00",
+      "trade_count": 26,
+      "starting_equity": 100000.0,
+      "ending_equity": 81333.93276437532,
+      "annualized_log_growth": -0.12549048746010796,
+      "positive_log_growth": false,
+      "expectancy_r": -0.05998257960133447
+    },
+    {
+      "window": 2,
+      "start": "2021-08-24 12:00:00",
+      "end": "2023-04-18 04:00:00",
+      "trade_count": 211,
+      "starting_equity": 81333.93276437532,
+      "ending_equity": 95001.99311597148,
+      "annualized_log_growth": 0.09432216927570856,
+      "positive_log_growth": true,
+      "expectancy_r": 0.008390950694887874
+    },
+    {
+      "window": 3,
+      "start": "2023-04-18 04:00:00",
+      "end": "2024-12-10 00:00:00",
+      "trade_count": 161,
+      "starting_equity": 95001.99311597148,
+      "ending_equity": 71467.85694546376,
+      "annualized_log_growth": -0.17279718354669257,
+      "positive_log_growth": false,
+      "expectancy_r": -0.013263383000071929
+    }
+  ],
+  "walk_forward_positive_windows": 1,
+  "benchmark": {
+    "ending_equity": 100000.0,
+    "net_profit": 0.0,
+    "excess_profit": -28532.14305453624
+  },
+  "checks": {
+    "positive_expectancy": false,
+    "win_loss_ratio_ge_1_5": false,
+    "standard_dd35_prob_le_20pct": true,
+    "conservative_dd20_prob_le_10pct": false,
+    "annualized_log_growth_positive": false,
+    "positive_years_majority": false,
+    "walk_forward_majority_positive": false,
+    "fifth_benchmark_excess_positive": false
+  },
+  "decision": "FAILED",
+  "sample_grade": "EXPLORATORY"
+}
