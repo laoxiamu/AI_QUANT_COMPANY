@@ -1,0 +1,108 @@
+{
+  "generated_at_utc": "2026-06-12T17:18:08Z",
+  "task": "BATCH_20260612N/B4",
+  "cutoff_exclusive_utc": "2024-12-10T00:00:00Z",
+  "symbols": [
+    "BTCUSDT",
+    "ETHUSDT",
+    "SOLUSDT"
+  ],
+  "oi_trigger": {
+    "feature": "d6h_rolling_pctl",
+    "threshold": 0.01,
+    "warmup_excluded": true,
+    "merge_window_hours": 24
+  },
+  "holdout_presplit": {
+    "rule": "pooled chronological event ordinals with ordinal mod 5 == 4 held out; count-only precheck does not write or read holdout files",
+    "total_episodes": 203,
+    "holdout_n": 40,
+    "usable_n": 163
+  },
+  "mde_formula": "MDE_h = z_(1-alpha) * sqrt(Var[r_h]) / sqrt(n_work), alpha=0.05 one-sided",
+  "count_rows": [
+    {
+      "symbol": "BTCUSDT",
+      "p1_trigger_rows": 290,
+      "episodes_merged_24h": 75
+    },
+    {
+      "symbol": "ETHUSDT",
+      "p1_trigger_rows": 218,
+      "episodes_merged_24h": 76
+    },
+    {
+      "symbol": "SOLUSDT",
+      "p1_trigger_rows": 208,
+      "episodes_merged_24h": 52
+    }
+  ],
+  "variance_rows": [
+    {
+      "horizon_hours": 24,
+      "return_obs": 123061,
+      "variance": 0.0023550778269208934,
+      "stdev": 0.0485291440983755,
+      "btc_obs": 42984,
+      "eth_obs": 43200,
+      "sol_obs": 36877
+    },
+    {
+      "horizon_hours": 48,
+      "return_obs": 122941,
+      "variance": 0.004580084227170507,
+      "stdev": 0.06767631954510017,
+      "btc_obs": 42936,
+      "eth_obs": 43176,
+      "sol_obs": 36829
+    },
+    {
+      "horizon_hours": 72,
+      "return_obs": 122821,
+      "variance": 0.006935463661144432,
+      "stdev": 0.08327943120089397,
+      "btc_obs": 42888,
+      "eth_obs": 43152,
+      "sol_obs": 36781
+    }
+  ],
+  "mde_rows": [
+    {
+      "horizon_hours": 24,
+      "usable_n_after_holdout": 163,
+      "alpha_one_sided": 0.05,
+      "z_1_minus_alpha": 1.6448536269514715,
+      "stdev_unconditional_log_return": 0.0485291440983755,
+      "mde_log_return": 0.006252246417643748,
+      "mde_pct": 0.6252246417643748,
+      "mechanism_lower_pct": 1.5,
+      "mechanism_upper_pct": 3.0,
+      "passes_power_gate_precheck": true
+    },
+    {
+      "horizon_hours": 48,
+      "usable_n_after_holdout": 163,
+      "alpha_one_sided": 0.05,
+      "z_1_minus_alpha": 1.6448536269514715,
+      "stdev_unconditional_log_return": 0.06767631954510017,
+      "mde_log_return": 0.008719070453363512,
+      "mde_pct": 0.8719070453363512,
+      "mechanism_lower_pct": 1.5,
+      "mechanism_upper_pct": 3.0,
+      "passes_power_gate_precheck": true
+    },
+    {
+      "horizon_hours": 72,
+      "usable_n_after_holdout": 163,
+      "alpha_one_sided": 0.05,
+      "z_1_minus_alpha": 1.6448536269514715,
+      "stdev_unconditional_log_return": 0.08327943120089397,
+      "mde_log_return": 0.01072929545869794,
+      "mde_pct": 1.072929545869794,
+      "mechanism_lower_pct": 1.5,
+      "mechanism_upper_pct": 3.0,
+      "passes_power_gate_precheck": true
+    }
+  ],
+  "overall_power_gate_precheck": true
+}

@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-06-12 16:58:50 UTC",
+  "universe_rows": 646,
+  "new_listings_2022_plus": 530,
+  "matured_30d_windows": 524,
+  "immature_30d_windows": 6,
+  "kline_complete": 474,
+  "funding_complete": 521,
+  "archive_window_available": 472,
+  "archive_window_available_rate": 0.9007633587786259,
+  "head_probe_rows": 16750,
+  "proxy": "http://127.0.0.1:7897"
+}

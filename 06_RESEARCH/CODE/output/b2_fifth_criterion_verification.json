@@ -1,0 +1,124 @@
+{
+  "run_timestamp_utc": "2026-06-12T16:52:23.082899+00:00",
+  "parameters": {
+    "initial_capital": 100000.0,
+    "fee_rate_each_side": 0.001,
+    "slippage_rate_each_side": 0.001,
+    "funding": "real 8H, long pays positive rate",
+    "target_weight": 0.3333333333333333,
+    "leverage_cap": 1.0,
+    "adx_period": 14,
+    "adx_entry": 25.0,
+    "adx_exit": 20.0,
+    "lookback_bars": 540,
+    "macro_ma_days": 200
+  },
+  "data_audit": {
+    "BTC": {
+      "bars_path": "BTC_USDT_4H.csv",
+      "bars_rows": 13013,
+      "bars_first": "2019-01-01 00:00:00",
+      "bars_last": "2024-12-09 12:00:00",
+      "funding_path": "06_RESEARCH/DATA/FUTURES/BTCUSDT_FUNDING_8H.csv",
+      "funding_rows": 5414,
+      "funding_first": "2020-01-01 00:00:00",
+      "funding_last": "2024-12-09 08:00:00",
+      "holdout_start": "2024-12-09 16:00:00"
+    },
+    "ETH": {
+      "bars_path": "ETH_USDT_4H.csv",
+      "bars_rows": 13013,
+      "bars_first": "2019-01-01 00:00:00",
+      "bars_last": "2024-12-09 12:00:00",
+      "funding_path": "06_RESEARCH/DATA/FUTURES/ETHUSDT_FUNDING_8H.csv",
+      "funding_rows": 5414,
+      "funding_first": "2020-01-01 00:00:00",
+      "funding_last": "2024-12-09 08:00:00",
+      "holdout_start": "2024-12-09 16:00:00"
+    },
+    "SOL": {
+      "bars_path": "SOL_USDT_4H.csv",
+      "bars_rows": 10194,
+      "bars_first": "2020-08-11 04:00:00",
+      "bars_last": "2025-04-06 00:00:00",
+      "funding_path": "06_RESEARCH/DATA/FUTURES/SOLUSDT_FUNDING_8H.csv",
+      "funding_rows": 4997,
+      "funding_first": "2020-09-13 16:00:00",
+      "funding_last": "2025-03-12 00:00:00",
+      "holdout_start": "2025-04-06 04:00:00"
+    }
+  },
+  "comparison": {
+    "P1-04": {
+      "strategy": {
+        "label": "p1-04_strategy",
+        "ending_equity": 1413672.4847788075,
+        "net_profit": 1313672.4847788075,
+        "trade_count": 392,
+        "fees": 172637.52592739026,
+        "slippage_cost": 172639.39703657932,
+        "funding_cost": 212159.79045509474,
+        "max_gross_leverage": 0.9999999999977864,
+        "forced_deleveraging_count": 260
+      },
+      "benchmark": {
+        "label": "p1-04_benchmark",
+        "ending_equity": 1694715.6139757996,
+        "net_profit": 1594715.6139757996,
+        "trade_count": 415,
+        "fees": 256850.39204975654,
+        "slippage_cost": 256852.85178946803,
+        "funding_cost": 351320.8671077379,
+        "max_gross_leverage": 0.9999999999965032,
+        "forced_deleveraging_count": 523
+      },
+      "excess": -281043.12919699214,
+      "passes_fifth": false
+    },
+    "P1-06": {
+      "strategy": {
+        "label": "p1-06_strategy",
+        "ending_equity": 954160.040243922,
+        "net_profit": 854160.040243922,
+        "trade_count": 309,
+        "fees": 93561.6198918707,
+        "slippage_cost": 93562.79541920018,
+        "funding_cost": 134242.87899777418,
+        "max_gross_leverage": 0.999999999995402,
+        "forced_deleveraging_count": 198
+      },
+      "benchmark": {
+        "label": "p1-06_benchmark",
+        "ending_equity": 703090.2430209768,
+        "net_profit": 603090.2430209768,
+        "trade_count": 57,
+        "fees": 11443.16398890228,
+        "slippage_cost": 11444.004510147097,
+        "funding_cost": 214543.83391856015,
+        "max_gross_leverage": 0.9999999999997763,
+        "forced_deleveraging_count": 1499
+      },
+      "excess": 251069.79722294526,
+      "passes_fifth": true
+    }
+  },
+  "existing_p1_outputs": {
+    "P1-04": {
+      "path": "06_RESEARCH/CODE/output/p1_04_tsmom_regime_long_equity.csv",
+      "ending_equity": 1608559.5983360363
+    },
+    "P1-06": {
+      "path": "06_RESEARCH/CODE/output/p1_06_tsmom_macro_bull_equity.csv",
+      "ending_equity": 1056648.2031861595
+    }
+  },
+  "prior_dual_engine_retrospective": {
+    "source": "06_RESEARCH/RESULTS/20260612_tsmom_dual_engine.md",
+    "p1_04": {
+      "excess_profit": -12745.95
+    },
+    "p1_06": {
+      "excess_profit": -1101379.86
+    }
+  }
+}

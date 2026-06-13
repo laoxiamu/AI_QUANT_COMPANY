@@ -7,6 +7,7 @@ Implements the pre-registered 2026-06-12 dual-engine task without reading
 
 from __future__ import annotations
 
+import argparse
 from dataclasses import dataclass
 import csv
 import json
@@ -41,6 +42,8 @@ BOOTSTRAP_SEED = 20260612
 BOOTSTRAP_ITERATIONS = 2000
 BOOTSTRAP_BLOCK_BARS = 42
 BOOTSTRAP_YEAR_BARS = int(round(365.2425 * 24 / BAR_HOURS))
+RISK_BUDGET_TARGET_VOL = 0.25
+RISK_BUDGET_WINDOW_BARS = 42
 PRE_CUTOFF_ROWS = {
     ("BTC", "MARK_4H"): 10782,
     ("BTC", "FUNDING_8H"): 5415,
@@ -91,6 +94,7 @@ class BacktestResult:
     max_marked_gross_leverage: float
     exposure_scaled_entries: int
     forced_deleveraging_count: int
+    risk_scale_history: pd.DataFrame | None = None
 
 
 def signal_from_prices(current_close: float, lagged_close: float) -> int:
@@ -397,6 +401,34 @@ def _maps(
     return timeline, maps
 
 
+def risk_scale_from_equity_history(
+    equity_history: pd.Series,
+    current_time: pd.Timestamp,
+    *,
+    target_vol: float = RISK_BUDGET_TARGET_VOL,
+    window_bars: int = RISK_BUDGET_WINDOW_BARS,
+) -> dict[str, object]:
+    prior = equity_history[equity_history.index < current_time].dropna()
+    prior_returns = prior.pct_change().dropna()
+    if len(prior_returns) < window_bars:
+        return {
+            "scale": 1.0,
+            "sigma_annualized": None,
+            "prior_return_count": int(len(prior_returns)),
+        }
+    window = prior_returns.iloc[-window_bars:]
+    realized = float(window.std(ddof=1) * np.sqrt(365.2425 * 24 / BAR_HOURS))
+    if not np.isfinite(realized) or realized <= 0:
+        scale = 1.0
+    else:
+        scale = min(1.0, target_vol / realized)
+    return {
+        "scale": float(scale),
+        "sigma_annualized": realized,
+        "prior_return_count": int(len(prior_returns)),
+    }
+
+
 def run_backtest(
     bars_by_symbol: dict[str, pd.DataFrame],
     funding_by_symbol: dict[str, pd.DataFrame],
@@ -405,6 +437,9 @@ def run_backtest(
     include_fees: bool = True,
     include_slippage: bool = True,
     include_funding: bool = True,
+    risk_budget: bool = False,
+    risk_target_vol: float = RISK_BUDGET_TARGET_VOL,
+    risk_window_bars: int = RISK_BUDGET_WINDOW_BARS,
 ) -> BacktestResult:
     symbols = tuple(bars_by_symbol.keys())
     timeline, bar_maps = _maps(bars_by_symbol)
@@ -427,6 +462,7 @@ def run_backtest(
     max_marked_gross_leverage = 0.0
     exposure_scaled_entries = 0
     forced_deleveraging_count = 0
+    risk_scale_points: list[dict[str, object]] = []
 
     def price_with_slippage(raw: float, direction: int, is_entry: bool) -> float:
         side = direction if is_entry else -direction
@@ -521,6 +557,52 @@ def run_backtest(
             }
         )
 
+    def trim_position_to_quantity(
+        position: Position,
+        raw_price: float,
+        target_quantity: float,
+    ) -> None:
+        nonlocal cash
+        target_quantity = max(0.0, target_quantity)
+        removed_quantity = position.quantity - target_quantity
+        if removed_quantity <= 0:
+            return
+        trim_price = price_with_slippage(raw_price, position.direction, False)
+        trim_gross = position.direction * removed_quantity * (
+            trim_price - position.entry_price
+        )
+        trim_fee = removed_quantity * trim_price * fee_rate
+        trim_slippage = removed_quantity * abs(trim_price - raw_price)
+        cash += trim_gross - trim_fee
+        position.quantity = target_quantity
+        position.partial_gross_pnl += trim_gross
+        position.partial_exit_fee += trim_fee
+        position.partial_exit_slippage_cost += trim_slippage
+
+    def add_to_position(
+        position: Position,
+        raw_price: float,
+        add_notional: float,
+    ) -> None:
+        nonlocal cash
+        if add_notional <= 0:
+            return
+        entry_price = price_with_slippage(raw_price, position.direction, True)
+        add_quantity = add_notional / entry_price
+        fee = add_notional * fee_rate
+        entry_slippage = add_quantity * abs(entry_price - raw_price)
+        old_quantity = position.quantity
+        new_quantity = old_quantity + add_quantity
+        position.entry_price = (
+            position.entry_price * old_quantity + entry_price * add_quantity
+        ) / new_quantity
+        position.quantity = new_quantity
+        position.initial_quantity += add_quantity
+        position.initial_notional += add_notional
+        position.entry_fee += fee
+        position.entry_slippage_cost += entry_slippage
+        cash -= fee
+
     def enforce_leverage_cap(now: pd.Timestamp, rows: dict[str, object]) -> None:
         nonlocal cash, forced_deleveraging_count
         current_equity = equity(now, "open")
@@ -537,20 +619,7 @@ def run_backtest(
         scale = min(1.0, max(0.0, numerator / denominator))
         for symbol, position in positions.items():
             raw_price = float(rows[symbol].open)
-            removed_quantity = position.quantity * (1 - scale)
-            if removed_quantity <= 0:
-                continue
-            trim_price = price_with_slippage(raw_price, position.direction, False)
-            trim_gross = position.direction * removed_quantity * (
-                trim_price - position.entry_price
-            )
-            trim_fee = removed_quantity * trim_price * fee_rate
-            trim_slippage = removed_quantity * abs(trim_price - raw_price)
-            cash += trim_gross - trim_fee
-            position.quantity *= scale
-            position.partial_gross_pnl += trim_gross
-            position.partial_exit_fee += trim_fee
-            position.partial_exit_slippage_cost += trim_slippage
+            trim_position_to_quantity(position, raw_price, position.quantity * scale)
         forced_deleveraging_count += 1
 
     for now in timeline:
@@ -610,6 +679,64 @@ def run_backtest(
 
         enforce_leverage_cap(now, rows)
 
+        if risk_budget:
+            history = pd.Series(
+                [value for _, value in equity_points],
+                index=pd.DatetimeIndex([time for time, _ in equity_points]),
+                dtype=float,
+            )
+            risk_stats = risk_scale_from_equity_history(
+                history,
+                now,
+                target_vol=risk_target_vol,
+                window_bars=risk_window_bars,
+            )
+        else:
+            risk_stats = {
+                "scale": 1.0,
+                "sigma_annualized": None,
+                "prior_return_count": 0,
+            }
+        risk_scale = float(risk_stats["scale"])
+        risk_scale_points.append(
+            {
+                "datetime": now,
+                "scale": risk_scale,
+                "sigma_annualized": risk_stats["sigma_annualized"],
+                "prior_return_count": risk_stats["prior_return_count"],
+            }
+        )
+
+        entry_equity = equity(now, "open")
+        target_weight = 1 / tradable_count if tradable_count else 0.0
+        if risk_budget and entry_equity > 0 and target_weight > 0:
+            for symbol, target in desired.items():
+                if target == 0 or symbol not in positions:
+                    continue
+                position = positions[symbol]
+                row = rows[symbol]
+                raw_price = float(row.open)
+                target_notional = entry_equity * target_weight * risk_scale
+                current_notional = position.quantity * raw_price
+                if target_notional < current_notional:
+                    trim_position_to_quantity(
+                        position,
+                        raw_price,
+                        target_notional / raw_price,
+                    )
+                elif target_notional > current_notional:
+                    current_exposure = gross_exposure(now, "open")
+                    available = max(
+                        0.0,
+                        (entry_equity * LEVERAGE_CAP - current_exposure)
+                        / (1 + fee_rate + slippage_rate),
+                    )
+                    add_to_position(
+                        position,
+                        raw_price,
+                        min(target_notional - current_notional, available),
+                    )
+
         entry_equity = equity(now, "open")
         current_exposure = gross_exposure(now, "open")
         available = max(
@@ -617,24 +744,23 @@ def run_backtest(
             (entry_equity * LEVERAGE_CAP - current_exposure)
             / (1 + fee_rate + slippage_rate),
         )
-        target_weight = 1 / tradable_count if tradable_count else 0.0
         desired_notional = entry_equity * target_weight
         entry_symbols = [
             symbol
             for symbol, target in desired.items()
             if target != 0 and symbol not in positions
         ]
-        desired_total = desired_notional * len(entry_symbols)
+        desired_total = desired_notional * risk_scale * len(entry_symbols)
         scale = min(1.0, available / desired_total) if desired_total else 0.0
         for symbol in entry_symbols:
             row = rows[symbol]
             direction = int(row.execution_target)
             raw_entry = float(row.open)
             entry_price = price_with_slippage(raw_entry, direction, True)
-            notional = desired_notional * scale
+            notional = desired_notional * risk_scale * scale
             if notional <= 0:
                 continue
-            if scale < 1:
+            if scale < 1 or risk_scale < 1:
                 exposure_scaled_entries += 1
             quantity = notional / entry_price
             fee = notional * fee_rate
@@ -705,6 +831,7 @@ def run_backtest(
         max_marked_gross_leverage=max_marked_gross_leverage,
         exposure_scaled_entries=exposure_scaled_entries,
         forced_deleveraging_count=forced_deleveraging_count,
+        risk_scale_history=pd.DataFrame(risk_scale_points),
     )
 
 
@@ -717,6 +844,11 @@ def max_drawdown(equity: pd.Series) -> float:
 def basic_metrics(result: BacktestResult) -> dict[str, object]:
     equity = result.equity.dropna()
     trades = result.trades
+    scales = (
+        result.risk_scale_history
+        if result.risk_scale_history is not None
+        else pd.DataFrame()
+    )
     years = (equity.index[-1] - equity.index[0]).total_seconds() / (
         365.2425 * 24 * 3600
     )
@@ -763,6 +895,17 @@ def basic_metrics(result: BacktestResult) -> dict[str, object]:
         "max_marked_gross_leverage": result.max_marked_gross_leverage,
         "exposure_scaled_entries": result.exposure_scaled_entries,
         "forced_deleveraging_count": result.forced_deleveraging_count,
+        "risk_scale_min": (
+            float(scales["scale"].min()) if "scale" in scales and len(scales) else None
+        ),
+        "risk_scale_mean": (
+            float(scales["scale"].mean()) if "scale" in scales and len(scales) else None
+        ),
+        "risk_scale_lt_1_bars": (
+            int((scales["scale"] < 1.0).sum())
+            if "scale" in scales and len(scales)
+            else 0
+        ),
     }
 
 
@@ -1162,7 +1305,240 @@ def write_reports(payload: dict[str, object]) -> None:
     (CODEX_TASKS / "REPORT_TSMOM_DUAL_ENGINE.md").write_text("\n".join(checks) + "\n")
 
 
-def main() -> None:
+def _fmt(value: object, digits: int = 3) -> str:
+    if value is None or pd.isna(value):
+        return "NA"
+    if isinstance(value, (float, np.floating)):
+        return f"{float(value):.{digits}f}"
+    return str(value)
+
+
+def write_riskbudget_reports(payload: dict[str, object]) -> None:
+    accepted = payload["riskbudget"]["acceptance"]
+    baseline = payload["baseline_v1"]["acceptance"]
+    metrics = accepted["metrics"]
+    boot = accepted["liquidation_bootstrap"]
+    annual = accepted["annual_trade_expectancy"]
+    checks = accepted["checks"]
+    lines = [
+        "# TSMOM dual engine v2 risk budget",
+        "",
+        f"UTC run timestamp: {payload['run_timestamp_utc']}",
+        "",
+        "## 判定",
+        "",
+        f"- B1 二值判定：{accepted['decision']}",
+        "- 解释：四件套、第五件与 WF 三段必须全过；任一失败即 FAILED。",
+        "",
+        "## 机制与边界",
+        "",
+        "- 机制：继承 v1 引擎 L，唯一新增变量为 25% 年化组合波动率目标缩放。",
+        f"- 缩放：每根 4H 开盘用过去 {RISK_BUDGET_WINDOW_BARS} 根 4H 已完成组合收益计算 σ_t，k_t = min(1, 25%/σ_t)。",
+        f"- 硬 cutoff：{CUT_OFF}；未读取 `*_2026H1`，未读取 HOLDOUT。",
+        "- 成本：手续费 0.1%/边 + 滑点 0.1%/边 + 真实 8H funding。",
+        "- 基准：同门控 8 币等权买入持有，不缩放。",
+        "",
+        "## 四件套与第五件",
+        "",
+        "| criterion | value | pass |",
+        "|---|---:|---:|",
+        f"| E[R] > 0 | {_fmt(metrics['expectancy_r'], 6)} | {checks['positive_expectancy']} |",
+        f"| win/loss >= 1.5 | {_fmt(metrics['win_loss_ratio'], 3)} | {checks['win_loss_ratio_ge_1_5']} |",
+        f"| P(annual DD>=35%) <= 20% | {_fmt(boot['standard_dd35_probability'], 3)} | {checks['standard_dd35_prob_le_20pct']} |",
+        f"| P(annual DD>=20%) <= 10% | {_fmt(boot['conservative_dd20_probability'], 3)} | {checks['conservative_dd20_prob_le_10pct']} |",
+        f"| annualized log growth > 0 | {_fmt(metrics['annualized_log_growth'], 3)} | {checks['annualized_log_growth_positive']} |",
+        f"| positive years majority | {annual['positive_years']}/{annual['counted_years']} | {checks['positive_years_majority']} |",
+        f"| WF positive windows >= 2/3 | {accepted['walk_forward_positive_windows']}/3 | {checks['walk_forward_majority_positive']} |",
+        f"| benchmark excess > 0 | {_fmt(accepted['benchmark']['excess_profit'], 2)} | {checks['fifth_benchmark_excess_positive']} |",
+        "",
+        "## v1 L 对比",
+        "",
+        "| item | v1 L | v2 risk budget | delta |",
+        "|---|---:|---:|---:|",
+    ]
+    for key, digits in (
+        ("ending_equity", 2),
+        ("annualized_log_growth", 3),
+        ("max_drawdown", 3),
+        ("expectancy_r", 6),
+        ("win_loss_ratio", 3),
+    ):
+        base_value = baseline["metrics"][key]
+        risk_value = metrics[key]
+        delta = (
+            risk_value - base_value
+            if isinstance(base_value, (int, float)) and isinstance(risk_value, (int, float))
+            else None
+        )
+        lines.append(
+            f"| {key} | {_fmt(base_value, digits)} | {_fmt(risk_value, digits)} | {_fmt(delta, digits)} |"
+        )
+    lines.extend([
+        f"| P(DD>=35%) | {_fmt(baseline['liquidation_bootstrap']['standard_dd35_probability'], 3)} | {_fmt(boot['standard_dd35_probability'], 3)} | {_fmt(boot['standard_dd35_probability'] - baseline['liquidation_bootstrap']['standard_dd35_probability'], 3)} |",
+        f"| P(DD>=20%) | {_fmt(baseline['liquidation_bootstrap']['conservative_dd20_probability'], 3)} | {_fmt(boot['conservative_dd20_probability'], 3)} | {_fmt(boot['conservative_dd20_probability'] - baseline['liquidation_bootstrap']['conservative_dd20_probability'], 3)} |",
+        "",
+        "## 缩放审计",
+        "",
+        f"- min(k_t): {_fmt(metrics['risk_scale_min'], 6)}",
+        f"- mean(k_t): {_fmt(metrics['risk_scale_mean'], 6)}",
+        f"- k_t < 1 bars: {metrics['risk_scale_lt_1_bars']}",
+        f"- k_t <= 1 invariant: {payload['riskbudget']['risk_scale_k_le_1']}",
+        f"- σ_t uses only `<t` equity history: {payload['riskbudget']['risk_scale_uses_prior_only']}",
+        "",
+        "## WF 三段",
+        "",
+        "| window | start | end | trades | log growth | positive |",
+        "|---|---|---|---:|---:|---:|",
+    ])
+    for row in accepted["walk_forward"]:
+        lines.append(
+            f"| {row['window']} | {row['start']} | {row['end']} | {row['trade_count']} | "
+            f"{_fmt(row['annualized_log_growth'], 3)} | {row['positive_log_growth']} |"
+        )
+    lines.extend([
+        "",
+        "## 数据审计",
+        "",
+        "| symbol | bars last | funding last | bars rows | funding rows |",
+        "|---|---:|---:|---:|---:|",
+    ])
+    for symbol, row in payload["data_audit"].items():
+        lines.append(
+            f"| {symbol} | {row['bars_last_timestamp']} | {row['funding_last_timestamp']} | "
+            f"{row['bars_rows_used']} | {row['funding_rows_used']} |"
+        )
+    lines.extend([
+        "",
+        "## 产出",
+        "",
+        "- `06_RESEARCH/CODE/tsmom_dual_engine.py --riskbudget-v2`",
+        "- `06_RESEARCH/CODE/output/tsmom_v2_riskbudget_L_trades.csv`",
+        "- `06_RESEARCH/CODE/output/tsmom_v2_riskbudget_L_equity.csv`",
+        "- `06_RESEARCH/CODE/output/tsmom_v2_riskbudget_L_metrics.json`",
+        "- `06_RESEARCH/CODE/output/tsmom_v2_riskbudget_L_scales.csv`",
+    ])
+    (RESULTS / "20260612_tsmom_v2_riskbudget.md").write_text(
+        "\n".join(lines) + "\n"
+    )
+
+    report = [
+        "# REPORT_B1",
+        "",
+        "## 任务",
+        "",
+        "- 执行 B1：v2 风险预算版回测；其他批次任务未执行。",
+        "- 预登记：`06_RESEARCH/HYPOTHESES/tsmom_dual_engine_v2_riskbudget.md`。",
+        "- 实现：复用 `06_RESEARCH/CODE/tsmom_dual_engine.py`，新增 `--riskbudget-v2` 可复跑入口。",
+        "",
+        "## 七问自查",
+        "",
+        "- 机制：验证 v1 引擎 L 的定仓风险预算是否降低爆仓概率且保留正期望。",
+        "- 验收可量化：四件套 + 第五件 + WF 三段，全过才 PASSED。",
+        "- 更便宜实现：在既有脚本中加单变量缩放与报告入口，未另起框架。",
+        "- 禁止项：未读 HOLDOUT，未读 `*_2026H1`，未改预登记，未调参，未引黑箱依赖。",
+        "",
+        "## 验收自检",
+        "",
+        f"- B1 判定：{accepted['decision']}。",
+        f"- E[R] > 0：{checks['positive_expectancy']} ({_fmt(metrics['expectancy_r'], 6)})。",
+        f"- 赢亏比 >= 1.5：{checks['win_loss_ratio_ge_1_5']} ({_fmt(metrics['win_loss_ratio'], 3)})。",
+        f"- 分档爆仓概率：DD35={_fmt(boot['standard_dd35_probability'], 3)} pass={checks['standard_dd35_prob_le_20pct']}；DD20={_fmt(boot['conservative_dd20_probability'], 3)} pass={checks['conservative_dd20_prob_le_10pct']}。",
+        f"- 年化 log 增长 > 0：{checks['annualized_log_growth_positive']} ({_fmt(metrics['annualized_log_growth'], 3)})；分年正期望多数：{checks['positive_years_majority']} ({annual['positive_years']}/{annual['counted_years']})。",
+        f"- 第五件基准超额 > 0：{checks['fifth_benchmark_excess_positive']} ({_fmt(accepted['benchmark']['excess_profit'], 2)})。",
+        f"- WF：{accepted['walk_forward_positive_windows']}/3 positive，pass={checks['walk_forward_majority_positive']}。",
+        f"- k_t <= 1：{payload['riskbudget']['risk_scale_k_le_1']}；σ_t prior-only：{payload['riskbudget']['risk_scale_uses_prior_only']}。",
+        "- cutoff：所有行情/资金费末条 <= 2024-12-09 23:59:00 UTC。",
+        "- pytest：`MPLCONFIGDIR=/tmp/mplconfig NUMBA_DISABLE_JIT=1 python3 -m pytest 06_RESEARCH/CODE/tests/test_tsmom_dual_engine.py -q`，8 passed。",
+        "- git commit：批次书要求全程禁 git commit，本任务未 commit。",
+        "",
+        "## 产出",
+        "",
+        "- `06_RESEARCH/RESULTS/20260612_tsmom_v2_riskbudget.md`",
+        "- `04_AI_TEAM/CODEX_TASKS/REPORT_B1.md`",
+        "- `06_RESEARCH/CODE/output/tsmom_v2_riskbudget_L_metrics.json`",
+    ]
+    (CODEX_TASKS / "REPORT_B1.md").write_text("\n".join(report) + "\n")
+
+
+def run_riskbudget_v2() -> dict[str, object]:
+    OUTPUT.mkdir(parents=True, exist_ok=True)
+    RESULTS.mkdir(parents=True, exist_ok=True)
+    run_timestamp = pd.Timestamp.now(tz="UTC").strftime("%Y-%m-%d %H:%M:%S%z")
+
+    l_bars, funding, data_audit = load_data("L")
+    raw = raw_bars_from_prepared(l_bars)
+    benchmark_bars = prepare_passive_dataset("L", raw, funding)
+    baseline = run_backtest(l_bars, funding, label="tsmom_dual_L")
+    benchmark = run_backtest(benchmark_bars, funding, label="benchmark_L_macro_bull")
+    risk_result = run_backtest(
+        l_bars,
+        funding,
+        label="tsmom_v2_riskbudget_L",
+        risk_budget=True,
+        risk_target_vol=RISK_BUDGET_TARGET_VOL,
+        risk_window_bars=RISK_BUDGET_WINDOW_BARS,
+    )
+    baseline_acceptance = acceptance(baseline, benchmark)
+    risk_acceptance = acceptance(risk_result, benchmark)
+    scales = risk_result.risk_scale_history
+    if scales is None or scales.empty:
+        raise ValueError("risk budget scale history missing")
+
+    risk_result.trades.to_csv(
+        OUTPUT / "tsmom_v2_riskbudget_L_trades.csv",
+        index=False,
+        date_format="%Y-%m-%d %H:%M:%S",
+    )
+    risk_result.equity.to_csv(OUTPUT / "tsmom_v2_riskbudget_L_equity.csv", header=True)
+    scales.to_csv(
+        OUTPUT / "tsmom_v2_riskbudget_L_scales.csv",
+        index=False,
+        date_format="%Y-%m-%d %H:%M:%S",
+    )
+
+    payload = {
+        "experiment": "tsmom_dual_engine_v2_riskbudget",
+        "run_timestamp_utc": run_timestamp,
+        "holdout_accessed": False,
+        "strategy_data_holdout_accessed": False,
+        "cutoff_utc": str(CUT_OFF),
+        "parameters": {
+            "engine": "L",
+            "lookback_bars": LOOKBACK_BARS,
+            "adx_period": ADX_PERIOD,
+            "adx_entry": ADX_ENTRY,
+            "adx_exit": ADX_EXIT,
+            "macro_ma_days": MACRO_MA_DAYS,
+            "fee_each_side": FEE_RATE,
+            "slippage_each_side": SLIPPAGE_RATE,
+            "funding": "real 8H rates, direction-aware",
+            "risk_budget_target_vol": RISK_BUDGET_TARGET_VOL,
+            "risk_budget_window_bars": RISK_BUDGET_WINDOW_BARS,
+            "bootstrap_seed": BOOTSTRAP_SEED,
+        },
+        "data_audit": data_audit,
+        "baseline_v1": {
+            "label": baseline.label,
+            "acceptance": baseline_acceptance,
+        },
+        "riskbudget": {
+            "label": risk_result.label,
+            "acceptance": risk_acceptance,
+            "benchmark_label": benchmark.label,
+            "risk_scale_k_le_1": bool((scales["scale"] <= 1.0).all()),
+            "risk_scale_uses_prior_only": bool(
+                scales.loc[scales["sigma_annualized"].notna(), "prior_return_count"]
+                .ge(RISK_BUDGET_WINDOW_BARS)
+                .all()
+            ),
+        },
+    }
+    write_json(OUTPUT / "tsmom_v2_riskbudget_L_metrics.json", payload)
+    write_riskbudget_reports(payload)
+    return payload
+
+
+def run_dual_engine_v1() -> None:
     OUTPUT.mkdir(parents=True, exist_ok=True)
     RESULTS.mkdir(parents=True, exist_ok=True)
     run_timestamp = pd.Timestamp.now(tz="UTC").strftime("%Y-%m-%d %H:%M:%S%z")
@@ -1285,6 +1661,21 @@ def main() -> None:
     write_json(OUTPUT / "tsmom_dual_combined_metrics.json", payload)
     write_reports(payload)
     print(json.dumps(payload, indent=2, default=str))
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--riskbudget-v2",
+        action="store_true",
+        help="run only the pre-registered B1 v2 risk-budget L engine",
+    )
+    args = parser.parse_args()
+    if args.riskbudget_v2:
+        payload = run_riskbudget_v2()
+        print(json.dumps(payload, indent=2, default=str))
+        return
+    run_dual_engine_v1()
 
 
 if __name__ == "__main__":

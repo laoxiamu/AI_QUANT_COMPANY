@@ -10,10 +10,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from tsmom_dual_engine import (
     LOOKBACK_BARS,
+    RISK_BUDGET_WINDOW_BARS,
     desired_position,
     funding_payment,
     prepare_bars,
     read_csv_until_cutoff,
+    risk_scale_from_equity_history,
     run_backtest,
 )
 
@@ -103,6 +105,47 @@ def test_cutoff_reader_does_not_parse_rows_after_expected_snapshot(
     assert len(frame) == 2
     assert frame["datetime"].max() == pd.Timestamp("2024-12-09 20:00:00")
     assert frame["open"].tolist() == [1, 2]
+
+
+def test_risk_scale_uses_only_prior_equity_history() -> None:
+    dates = pd.date_range(
+        "2024-01-01",
+        periods=RISK_BUDGET_WINDOW_BARS + 3,
+        freq="4h",
+    )
+    returns = [0.01 if index % 2 == 0 else -0.01 for index in range(len(dates))]
+    equity = pd.Series(100_000.0, index=dates)
+    for index, value in enumerate(returns[1:], start=1):
+        equity.iloc[index] = equity.iloc[index - 1] * (1 + value)
+    current_time = dates[-1]
+    baseline = risk_scale_from_equity_history(equity, current_time)
+    with_current_spike = equity.copy()
+    with_current_spike.loc[current_time] = equity.loc[current_time] * 50
+    stressed = risk_scale_from_equity_history(with_current_spike, current_time)
+    assert stressed["sigma_annualized"] == pytest.approx(
+        baseline["sigma_annualized"]
+    )
+    assert stressed["scale"] == pytest.approx(baseline["scale"])
+
+
+def test_risk_scale_is_capped_at_one() -> None:
+    dates = pd.date_range(
+        "2024-01-01",
+        periods=RISK_BUDGET_WINDOW_BARS + 2,
+        freq="4h",
+    )
+    equity = pd.Series(
+        [100_000.0 * (1.0001 ** index) for index in range(len(dates))],
+        index=dates,
+    )
+    low_vol = risk_scale_from_equity_history(equity, dates[-1])
+    assert low_vol["scale"] == pytest.approx(1.0)
+    volatile = pd.Series(
+        [100_000.0 * (1.05 if index % 2 else 0.95) ** index for index in range(len(dates))],
+        index=dates,
+    )
+    high_vol = risk_scale_from_equity_history(volatile, dates[-1])
+    assert 0 < high_vol["scale"] <= 1.0
 
 
 def test_backtest_short_receives_positive_funding_as_income() -> None:
