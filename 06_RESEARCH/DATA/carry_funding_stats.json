@@ -1,0 +1,107 @@
+{
+  "BTCUSDT": {
+    "n_periods": 5415,
+    "date_range": "2020-01-01 ~ 2024-12-09",
+    "mean_rate_per_period": 0.000132,
+    "median_rate_per_period": 0.0001,
+    "annualized_yield_pct": 14.4,
+    "pct_positive_periods": 87.4,
+    "pct_negative_periods": 12.6,
+    "max_neg_streak_periods": 24,
+    "max_neg_streak_days": 8.0,
+    "n_extreme_neg_periods": 3,
+    "yearly": {
+      "ann_yield": {
+        "2020": 0.1719,
+        "2021": 0.3061,
+        "2022": 0.0416,
+        "2023": 0.0787,
+        "2024": 0.1203
+      },
+      "count": {
+        "2020": 1098,
+        "2021": 1095,
+        "2022": 1095,
+        "2023": 1095,
+        "2024": 1032
+      },
+      "periods_sum": {
+        "2020": 0.1724,
+        "2021": 0.3061,
+        "2022": 0.0416,
+        "2023": 0.0787,
+        "2024": 0.1134
+      }
+    }
+  },
+  "ETHUSDT": {
+    "n_periods": 5415,
+    "date_range": "2020-01-01 ~ 2024-12-09",
+    "mean_rate_per_period": 0.00016,
+    "median_rate_per_period": 0.0001,
+    "annualized_yield_pct": 17.49,
+    "pct_positive_periods": 89.0,
+    "pct_negative_periods": 11.0,
+    "max_neg_streak_periods": 25,
+    "max_neg_streak_days": 8.3,
+    "n_extreme_neg_periods": 7,
+    "yearly": {
+      "ann_yield": {
+        "2020": 0.2741,
+        "2021": 0.3754,
+        "2022": 0.0079,
+        "2023": 0.0826,
+        "2024": 0.1317
+      },
+      "count": {
+        "2020": 1098,
+        "2021": 1095,
+        "2022": 1095,
+        "2023": 1095,
+        "2024": 1032
+      },
+      "periods_sum": {
+        "2020": 0.2749,
+        "2021": 0.3754,
+        "2022": 0.0079,
+        "2023": 0.0826,
+        "2024": 0.1242
+      }
+    }
+  },
+  "SOLUSDT": {
+    "n_periods": 4720,
+    "date_range": "2020-09-13 ~ 2024-12-09",
+    "mean_rate_per_period": 3e-06,
+    "median_rate_per_period": 0.0001,
+    "annualized_yield_pct": 0.37,
+    "pct_positive_periods": 77.3,
+    "pct_negative_periods": 22.7,
+    "max_neg_streak_periods": 53,
+    "max_neg_streak_days": 17.7,
+    "n_extreme_neg_periods": 117,
+    "yearly": {
+      "ann_yield": {
+        "2020": -0.1252,
+        "2021": 0.2859,
+        "2022": -0.3556,
+        "2023": 0.013,
+        "2024": 0.1425
+      },
+      "count": {
+        "2020": 328,
+        "2021": 1095,
+        "2022": 1170,
+        "2023": 1095,
+        "2024": 1032
+      },
+      "periods_sum": {
+        "2020": -0.0375,
+        "2021": 0.2859,
+        "2022": -0.38,
+        "2023": 0.013,
+        "2024": 0.1343
+      }
+    }
+  }
+}

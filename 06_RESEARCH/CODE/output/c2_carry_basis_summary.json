@@ -1,0 +1,13 @@
+{
+  "generated_at_utc": "2026-06-13T02:32:16Z",
+  "status": "FAILED",
+  "note": "指定代理 `http://127.0.0.1:7897` 下载失败。",
+  "downloads": [
+    {
+      "symbol": "BTCUSDT",
+      "ok": false,
+      "rows_before_failure": 0,
+      "error": "RuntimeError: URLError: <urlopen error [Errno 1] Operation not permitted>"
+    }
+  ]
+}

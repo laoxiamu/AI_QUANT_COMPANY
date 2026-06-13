@@ -1,0 +1,2784 @@
+{
+  "task_id": "DEC070_AUDIT",
+  "generated_at_utc": "2026-06-13T19:57:51.408600Z",
+  "analysis_date": "2026-06-14",
+  "status": "completed",
+  "scope": {
+    "asset_count": 35,
+    "data_directory": "06_RESEARCH/DATA/FUTURES_EXPANDED",
+    "cutoff_exclusive_utc": "2024-12-10T00:00:00+00:00",
+    "recent_window": "2024-06-13 through 2024-12-09",
+    "holdout_read": false,
+    "backtest_run": false,
+    "new_data_downloaded": false
+  },
+  "inputs": {
+    "manifest_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/DOWNLOAD_MANIFEST.json",
+    "manifest_sha256": "ebd02a5e7aaf978da709c5e3f11ee2f5fee77f2d5974d32a5d760f6fc7939f31",
+    "manifest_generated": "2026-06-13T18:15:24Z",
+    "manifest_cutoff": "2024-12-09 23:59:59+0000"
+  },
+  "thresholds": {
+    "adtv_recent_180d_pass_usdt": 10000000.0,
+    "adtv_recent_180d_edge_floor_usdt": 5000000.0,
+    "jump_primary_abs_log_return": 0.15,
+    "jump_pass_max_frequency": 0.002,
+    "jump_edge_max_frequency": 0.003,
+    "note": "Absolute audit recommendations, not DEC-070 preregistered numeric thresholds; no cross-sectional sample quantiles are used."
+  },
+  "formulae": {
+    "adtv_exact_requested": "median_d(sum_t_in_d(quote_volume_t))",
+    "adtv_local_proxy": "median_d(sum_t_in_d(volume_t * (high_t + low_t + close_t) / 3))",
+    "adtv_proxy_bounds": "sum(volume_t * low_t) <= true daily quote volume <= sum(volume_t * high_t)",
+    "jump_return": "r_t = ln(close_t / close_t-1), only when timestamps differ by 4H",
+    "jump_frequency": "count(abs(r_t) > threshold) / count(valid consecutive 4H returns)"
+  },
+  "filter_auditability": {
+    "adtv": {
+      "local_status": "proxy_calculable_exact_quote_volume_missing",
+      "exact_quote_volume_asset_count": 0,
+      "source_schema_issue": "All current CSVs contain base volume but omit the original Binance quote asset volume column.",
+      "original_archive_reference": "https://github.com/binance/binance-public-data"
+    },
+    "price_jump_frequency": {
+      "local_status": "calculable"
+    },
+    "float_market_cap_ratio": {
+      "local_status": "not_calculable",
+      "missing_fields": [
+        "asset identity mapping",
+        "historical circulating supply",
+        "historical total or max supply and/or fully diluted valuation",
+        "historical market capitalization"
+      ],
+      "definition_gap": "DEC-070 must freeze whether the ratio means market_cap/FDV, circulating_supply/total_supply, or circulating_supply/max_supply.",
+      "minimal_source": "https://docs.coingecko.com/reference/coins-id-history",
+      "estimated_acquisition_cost": "1-3 engineering days for 35-ID mapping, cutoff-aligned snapshots, missing-value reconciliation, and audit storage; a paid API tier may be required."
+    },
+    "oi_market_cap_ratio": {
+      "local_status": "not_calculable_historically",
+      "missing_fields": [
+        "cutoff-aligned historical open-interest notional",
+        "cutoff-aligned circulating market capitalization",
+        "venue aggregation rule"
+      ],
+      "constraint": "Binance openInterestHist exposes only the latest one month, so it cannot recover the 2020-2024 audit history in 2026.",
+      "minimal_source": "https://developers.binance.com/docs/derivatives/usds-margined-futures/market-data/rest-api/Open-Interest-Statistics",
+      "estimated_acquisition_cost": "2-5 engineering days plus any historical-data vendor cost for archived OI, symbol mapping, venue-scope decisions, and timestamp alignment.",
+      "non_equivalent_proxy": "Recent OI notional / recent ADTV can monitor near-term crowding, but it does not replace historical OI / market cap."
+    }
+  },
+  "summary": {
+    "tier_counts": {
+      "Tier 1-clean": 20,
+      "Tier 1-watch": 10,
+      "exclude": 5,
+      "N.A.": 0
+    },
+    "adtv_status_counts": {
+      "pass": 24,
+      "edge": 9,
+      "fail": 2,
+      "na": 0
+    },
+    "jump_status_counts": {
+      "pass": 27,
+      "edge": 4,
+      "fail": 4,
+      "na": 0
+    },
+    "exact_quote_volume_asset_count": 0,
+    "all_adtv_proxy_classes_robust_to_ohlc_bounds": true
+  },
+  "tiers": {
+    "Tier 1-clean": [
+      "AAVEUSDT",
+      "ALGOUSDT",
+      "ATOMUSDT",
+      "AVAXUSDT",
+      "COMPUSDT",
+      "DOTUSDT",
+      "EGLDUSDT",
+      "ETCUSDT",
+      "FILUSDT",
+      "LINKUSDT",
+      "MKRUSDT",
+      "NEARUSDT",
+      "RUNEUSDT",
+      "SNXUSDT",
+      "THETAUSDT",
+      "TRXUSDT",
+      "UNIUSDT",
+      "XLMUSDT",
+      "XMRUSDT",
+      "ZECUSDT"
+    ],
+    "Tier 1-watch": [
+      "CRVUSDT",
+      "DASHUSDT",
+      "ENJUSDT",
+      "KNCUSDT",
+      "KSMUSDT",
+      "LRCUSDT",
+      "SUSHIUSDT",
+      "XTZUSDT",
+      "YFIUSDT",
+      "ZRXUSDT"
+    ],
+    "exclude": [
+      "AXSUSDT",
+      "FTMUSDT",
+      "ICXUSDT",
+      "OMGUSDT",
+      "RENUSDT"
+    ],
+    "N.A.": []
+  },
+  "assets": [
+    {
+      "symbol": "AAVEUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/AAVEUSDT_4H.csv",
+      "source_sha256": "f817e3c82dba15500f30cb9ab1b7f9cba0bf9d45e664a2be6d8bdfba64823142",
+      "start_utc": "2020-10-16T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9095,
+        "usable_rows": 9095,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1516,
+        "complete_utc_dates": 1515,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 93681808.58433333,
+        "recent_180d_median_daily_usdt": 128308357.97633334,
+        "recent_180d_median_lower_bound_usdt": 126784171.228,
+        "recent_180d_median_upper_bound_usdt": 130217651.822,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9094,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 67,
+            "frequency": 0.007367495051682428
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 8,
+            "frequency": 0.0008797009016934242
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 2,
+            "frequency": 0.00021992522542335605
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "ALGOUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ALGOUSDT_4H.csv",
+      "source_sha256": "60f5152183244c975ddf3d66324c2ab12532c2021d6790b715a041d4864fe95d",
+      "start_utc": "2020-06-16T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9826,
+        "usable_rows": 9826,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1638,
+        "complete_utc_dates": 1637,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 43934774.98320667,
+        "recent_180d_median_daily_usdt": 14907207.945338333,
+        "recent_180d_median_lower_bound_usdt": 14720477.94839,
+        "recent_180d_median_upper_bound_usdt": 15054970.786415,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9825,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 68,
+            "frequency": 0.006921119592875318
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 8,
+            "frequency": 0.0008142493638676844
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 1,
+            "frequency": 0.00010178117048346055
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "ATOMUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ATOMUSDT_4H.csv",
+      "source_sha256": "5867f31cdf24cd86f4fc2cddc0d120aecdb8232d5aca32067d6d7b6aa32cea4e",
+      "start_utc": "2020-02-07T12:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 10605,
+        "usable_rows": 10605,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1768,
+        "complete_utc_dates": 1767,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 91844344.08261333,
+        "recent_180d_median_daily_usdt": 52953815.93960166,
+        "recent_180d_median_lower_bound_usdt": 52125575.325625,
+        "recent_180d_median_upper_bound_usdt": 53673492.889655,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 10604,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 66,
+            "frequency": 0.006224066390041493
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 12,
+            "frequency": 0.001131648434552999
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 3,
+            "frequency": 0.00028291210863824973
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "AVAXUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/AVAXUSDT_4H.csv",
+      "source_sha256": "8aac0bbf0fc788bbf85604da81cc5215add1bc059cbb6cd675160b53d10097e9",
+      "start_utc": "2020-09-23T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9233,
+        "usable_rows": 9233,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1539,
+        "complete_utc_dates": 1538,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 241515179.3868333,
+        "recent_180d_median_daily_usdt": 217960479.83233333,
+        "recent_180d_median_lower_bound_usdt": 213790289.0575,
+        "recent_180d_median_upper_bound_usdt": 221044296.9945,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9232,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 72,
+            "frequency": 0.00779896013864818
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 14,
+            "frequency": 0.0015164644714038128
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 5,
+            "frequency": 0.0005415944540727903
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "AXSUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/AXSUSDT_4H.csv",
+      "source_sha256": "d3783d3b3e86c281f4179e004b65074d2b53fca18ded3038fdbad98614f9a8dc",
+      "start_utc": "2020-11-20T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 8885,
+        "usable_rows": 8885,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1481,
+        "complete_utc_dates": 1480,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 81397312.07750002,
+        "recent_180d_median_daily_usdt": 22908974.226333335,
+        "recent_180d_median_lower_bound_usdt": 22632807.835,
+        "recent_180d_median_upper_bound_usdt": 23191355.003,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 8884,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 118,
+            "frequency": 0.013282305267897344
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 28,
+            "frequency": 0.0031517334533993696
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 8,
+            "frequency": 0.0009004952723998199
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "fail"
+      },
+      "partial_evidence_tier": "exclude"
+    },
+    {
+      "symbol": "COMPUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/COMPUSDT_4H.csv",
+      "source_sha256": "a26d2992172247675b5207a1ad02a351b760ceea80e84fa9029dfd04b206397c",
+      "start_utc": "2020-06-30T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9742,
+        "usable_rows": 9742,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1624,
+        "complete_utc_dates": 1623,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 32376078.24892667,
+        "recent_180d_median_daily_usdt": 12309429.146158334,
+        "recent_180d_median_lower_bound_usdt": 12115205.53641,
+        "recent_180d_median_upper_bound_usdt": 12519373.329155002,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9741,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 65,
+            "frequency": 0.006672826198542244
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 11,
+            "frequency": 0.0011292475105225336
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 2,
+            "frequency": 0.0002053177291859152
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "CRVUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/CRVUSDT_4H.csv",
+      "source_sha256": "6af23c3860dccd28288456eaf273fe786311cb6902521a72b373067464b8bbf9",
+      "start_utc": "2020-09-01T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9365,
+        "usable_rows": 9365,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1561,
+        "complete_utc_dates": 1560,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 99941960.94848333,
+        "recent_180d_median_daily_usdt": 114118492.56401667,
+        "recent_180d_median_lower_bound_usdt": 112155146.69335002,
+        "recent_180d_median_upper_bound_usdt": 115969932.04245001,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9364,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 133,
+            "frequency": 0.01420333190944041
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 24,
+            "frequency": 0.0025630072618539087
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 8,
+            "frequency": 0.0008543357539513029
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "edge"
+      },
+      "partial_evidence_tier": "Tier 1-watch"
+    },
+    {
+      "symbol": "DASHUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/DASHUSDT_4H.csv",
+      "source_sha256": "4ae6d324db2bf53d1c60097a1fa5dc8797ce22447ccc121c21606c2e909911ef",
+      "start_utc": "2020-02-04T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 10624,
+        "usable_rows": 10624,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1771,
+        "complete_utc_dates": 1770,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 18540051.789818335,
+        "recent_180d_median_daily_usdt": 5426891.444016666,
+        "recent_180d_median_lower_bound_usdt": 5365998.92358,
+        "recent_180d_median_upper_bound_usdt": 5482732.322995,
+        "status": "edge",
+        "bound_statuses": {
+          "lower": "edge",
+          "upper": "edge"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 10623,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 47,
+            "frequency": 0.004424362232890897
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 8,
+            "frequency": 0.0007530829332580251
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 3,
+            "frequency": 0.0002824060999717594
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-watch"
+    },
+    {
+      "symbol": "DOTUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/DOTUSDT_4H.csv",
+      "source_sha256": "962054f3759341a7564da56a1af6e7268cd4bd1155203d11b2dde725a281b2a1",
+      "start_utc": "2020-08-22T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9425,
+        "usable_rows": 9425,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1571,
+        "complete_utc_dates": 1570,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 214329512.3355,
+        "recent_180d_median_daily_usdt": 102634965.43965,
+        "recent_180d_median_lower_bound_usdt": 101567381.3023,
+        "recent_180d_median_upper_bound_usdt": 103846230.38015,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9424,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 46,
+            "frequency": 0.004881154499151104
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 11,
+            "frequency": 0.00116723259762309
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 2,
+            "frequency": 0.00021222410865874363
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "EGLDUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/EGLDUSDT_4H.csv",
+      "source_sha256": "f6f46dfd6d9bb4d714d38eb56ce5dfb24bb7612829c73261bda208fb3b1cb207",
+      "start_utc": "2020-09-14T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9287,
+        "usable_rows": 9287,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1548,
+        "complete_utc_dates": 1547,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 33220964.500666667,
+        "recent_180d_median_daily_usdt": 10142321.889983334,
+        "recent_180d_median_lower_bound_usdt": 10018965.9367,
+        "recent_180d_median_upper_bound_usdt": 10252470.683899999,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9286,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 50,
+            "frequency": 0.005384449709239716
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 12,
+            "frequency": 0.0012922679302175318
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 3,
+            "frequency": 0.00032306698255438296
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "ENJUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ENJUSDT_4H.csv",
+      "source_sha256": "1ba3ad0b25c16f2be8f76c930741d3e6a445a19d56aeb27d3c4d07dfcb068aba",
+      "start_utc": "2020-09-29T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9197,
+        "usable_rows": 9197,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1533,
+        "complete_utc_dates": 1532,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 28674196.390699998,
+        "recent_180d_median_daily_usdt": 6990555.720023333,
+        "recent_180d_median_lower_bound_usdt": 6909087.1405299995,
+        "recent_180d_median_upper_bound_usdt": 7097486.55623,
+        "status": "edge",
+        "bound_statuses": {
+          "lower": "edge",
+          "upper": "edge"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9196,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 98,
+            "frequency": 0.010656807307525011
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 18,
+            "frequency": 0.0019573727707699
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 3,
+            "frequency": 0.00032622879512831667
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-watch"
+    },
+    {
+      "symbol": "ETCUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ETCUSDT_4H.csv",
+      "source_sha256": "7a5ba87f39605190b498ac31c39f080c33c83a2c11ec6fc7a3e2337156511e7c",
+      "start_utc": "2020-01-16T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 10738,
+        "usable_rows": 10738,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1790,
+        "complete_utc_dates": 1789,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 138868128.26776668,
+        "recent_180d_median_daily_usdt": 65717588.74835166,
+        "recent_180d_median_lower_bound_usdt": 64973622.42331499,
+        "recent_180d_median_upper_bound_usdt": 66415428.273855,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 10737,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 75,
+            "frequency": 0.006985191394244202
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 14,
+            "frequency": 0.001303902393592251
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 4,
+            "frequency": 0.0003725435410263575
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "FILUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/FILUSDT_4H.csv",
+      "source_sha256": "ee06f4daa1a2609ee0fa8b3e55d48ededfdb45051381887efad627ac4d708d8f",
+      "start_utc": "2020-10-16T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9065,
+        "usable_rows": 9065,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 2,
+        "non_four_hour_gaps": [
+          {
+            "ending_at": "2022-03-01T00:00:00+00:00",
+            "duration_hours": 76.0
+          },
+          {
+            "ending_at": "2022-04-03T00:00:00+00:00",
+            "duration_hours": 52.0
+          }
+        ],
+        "missing_calendar_date_count": 5,
+        "missing_calendar_dates": [
+          "2022-02-26",
+          "2022-02-27",
+          "2022-02-28",
+          "2022-04-01",
+          "2022-04-02"
+        ],
+        "observed_utc_dates": 1511,
+        "complete_utc_dates": 1510,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 158044085.05425,
+        "recent_180d_median_daily_usdt": 126880087.63893333,
+        "recent_180d_median_lower_bound_usdt": 124930148.9816,
+        "recent_180d_median_upper_bound_usdt": 128504359.7877,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9062,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 68,
+            "frequency": 0.007503862282056941
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 16,
+            "frequency": 0.0017656146546016333
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 4,
+            "frequency": 0.0004414036636504083
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "FTMUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/FTMUSDT_4H.csv",
+      "source_sha256": "06bafac5d91233548bbae779685892e136cc2a6458799c19046e46818d057363",
+      "start_utc": "2020-09-24T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9197,
+        "usable_rows": 9197,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 2,
+        "non_four_hour_gaps": [
+          {
+            "ending_at": "2022-03-01T00:00:00+00:00",
+            "duration_hours": 76.0
+          },
+          {
+            "ending_at": "2022-04-03T00:00:00+00:00",
+            "duration_hours": 52.0
+          }
+        ],
+        "missing_calendar_date_count": 5,
+        "missing_calendar_dates": [
+          "2022-02-26",
+          "2022-02-27",
+          "2022-02-28",
+          "2022-04-01",
+          "2022-04-02"
+        ],
+        "observed_utc_dates": 1533,
+        "complete_utc_dates": 1532,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 152682848.3166,
+        "recent_180d_median_daily_usdt": 164926876.5576,
+        "recent_180d_median_lower_bound_usdt": 162254017.13255,
+        "recent_180d_median_upper_bound_usdt": 167954013.46934998,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9194,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 146,
+            "frequency": 0.01587992168805743
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 40,
+            "frequency": 0.004350663476180117
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 11,
+            "frequency": 0.0011964324559495323
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "fail"
+      },
+      "partial_evidence_tier": "exclude"
+    },
+    {
+      "symbol": "ICXUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ICXUSDT_4H.csv",
+      "source_sha256": "4986f7ec215c1d155364c9f4eb8d84cdc1b06e345a3ca83889b0482cdcca6acf",
+      "start_utc": "2020-09-15T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9281,
+        "usable_rows": 9281,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1547,
+        "complete_utc_dates": 1546,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 13543404.911866667,
+        "recent_180d_median_daily_usdt": 4179876.7069666665,
+        "recent_180d_median_lower_bound_usdt": 4105886.5189500004,
+        "recent_180d_median_upper_bound_usdt": 4235078.0582,
+        "status": "fail",
+        "bound_statuses": {
+          "lower": "fail",
+          "upper": "fail"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9280,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 78,
+            "frequency": 0.008405172413793103
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 15,
+            "frequency": 0.0016163793103448276
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 4,
+            "frequency": 0.0004310344827586207
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "exclude"
+    },
+    {
+      "symbol": "KNCUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/KNCUSDT_4H.csv",
+      "source_sha256": "e3f70537931eb11c6c61d71f5c03ccbeddf9fecd0165cb16ac1c98beaf87c2b8",
+      "start_utc": "2020-06-22T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9760,
+        "usable_rows": 9760,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 2,
+        "non_four_hour_gaps": [
+          {
+            "ending_at": "2022-03-01T00:00:00+00:00",
+            "duration_hours": 76.0
+          },
+          {
+            "ending_at": "2022-04-03T00:00:00+00:00",
+            "duration_hours": 52.0
+          }
+        ],
+        "missing_calendar_date_count": 5,
+        "missing_calendar_dates": [
+          "2022-02-26",
+          "2022-02-27",
+          "2022-02-28",
+          "2022-04-01",
+          "2022-04-02"
+        ],
+        "observed_utc_dates": 1627,
+        "complete_utc_dates": 1626,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 21967265.04568333,
+        "recent_180d_median_daily_usdt": 5168292.556033334,
+        "recent_180d_median_lower_bound_usdt": 5123778.30655,
+        "recent_180d_median_upper_bound_usdt": 5231271.9796,
+        "status": "edge",
+        "bound_statuses": {
+          "lower": "edge",
+          "upper": "edge"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9757,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 69,
+            "frequency": 0.007071845854258481
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 9,
+            "frequency": 0.0009224146766424106
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 1,
+            "frequency": 0.00010249051962693452
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-watch"
+    },
+    {
+      "symbol": "KSMUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/KSMUSDT_4H.csv",
+      "source_sha256": "64cd06cdfa5cc8b712e77fe87b31d246c68c45e486ea80d147e14ff5c1bb0cdb",
+      "start_utc": "2020-10-14T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9077,
+        "usable_rows": 9077,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 2,
+        "non_four_hour_gaps": [
+          {
+            "ending_at": "2022-03-01T00:00:00+00:00",
+            "duration_hours": 76.0
+          },
+          {
+            "ending_at": "2022-04-03T00:00:00+00:00",
+            "duration_hours": 52.0
+          }
+        ],
+        "missing_calendar_date_count": 5,
+        "missing_calendar_dates": [
+          "2022-02-26",
+          "2022-02-27",
+          "2022-02-28",
+          "2022-04-01",
+          "2022-04-02"
+        ],
+        "observed_utc_dates": 1513,
+        "complete_utc_dates": 1512,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 21693178.365166668,
+        "recent_180d_median_daily_usdt": 6891162.695499999,
+        "recent_180d_median_lower_bound_usdt": 6796914.8049,
+        "recent_180d_median_upper_bound_usdt": 6995161.54655,
+        "status": "edge",
+        "bound_statuses": {
+          "lower": "edge",
+          "upper": "edge"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9074,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 72,
+            "frequency": 0.00793475865109103
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 17,
+            "frequency": 0.0018734846815076042
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 4,
+            "frequency": 0.00044081992506061276
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-watch"
+    },
+    {
+      "symbol": "LINKUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/LINKUSDT_4H.csv",
+      "source_sha256": "c691093b6afdbabb84828cac1a310630b994125aaf363580c646c70d191e6c02",
+      "start_utc": "2020-01-17T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 10732,
+        "usable_rows": 10732,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1789,
+        "complete_utc_dates": 1788,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 259985085.12314832,
+        "recent_180d_median_daily_usdt": 146533228.57449335,
+        "recent_180d_median_lower_bound_usdt": 144568249.95850998,
+        "recent_180d_median_upper_bound_usdt": 148536420.826195,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 10731,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 47,
+            "frequency": 0.004379834125430995
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 9,
+            "frequency": 0.0008386916410399776
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 2,
+            "frequency": 0.00018637592023110615
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "LRCUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/LRCUSDT_4H.csv",
+      "source_sha256": "2495f787f8dfc18299fe80467bf5d146565c924e2a78b4ba05da9380e2154172",
+      "start_utc": "2020-10-19T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9047,
+        "usable_rows": 9047,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 2,
+        "non_four_hour_gaps": [
+          {
+            "ending_at": "2022-03-01T00:00:00+00:00",
+            "duration_hours": 76.0
+          },
+          {
+            "ending_at": "2022-04-03T00:00:00+00:00",
+            "duration_hours": 52.0
+          }
+        ],
+        "missing_calendar_date_count": 5,
+        "missing_calendar_dates": [
+          "2022-02-26",
+          "2022-02-27",
+          "2022-02-28",
+          "2022-04-01",
+          "2022-04-02"
+        ],
+        "observed_utc_dates": 1508,
+        "complete_utc_dates": 1507,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 19118901.118166666,
+        "recent_180d_median_daily_usdt": 5764678.534460001,
+        "recent_180d_median_lower_bound_usdt": 5695466.45524,
+        "recent_180d_median_upper_bound_usdt": 5839262.196655,
+        "status": "edge",
+        "bound_statuses": {
+          "lower": "edge",
+          "upper": "edge"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9044,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 116,
+            "frequency": 0.012826183104820876
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 27,
+            "frequency": 0.002985404688191066
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 8,
+            "frequency": 0.0008845643520566122
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "edge"
+      },
+      "partial_evidence_tier": "Tier 1-watch"
+    },
+    {
+      "symbol": "MKRUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/MKRUSDT_4H.csv",
+      "source_sha256": "32d63e92bbb74b1adea663d6187ffdd2b0aff2cd6e4d4a3a5fcee4ec6a1816a8",
+      "start_utc": "2020-08-13T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9449,
+        "usable_rows": 9449,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 2,
+        "non_four_hour_gaps": [
+          {
+            "ending_at": "2022-03-01T00:00:00+00:00",
+            "duration_hours": 76.0
+          },
+          {
+            "ending_at": "2022-04-03T00:00:00+00:00",
+            "duration_hours": 52.0
+          }
+        ],
+        "missing_calendar_date_count": 5,
+        "missing_calendar_dates": [
+          "2022-02-26",
+          "2022-02-27",
+          "2022-02-28",
+          "2022-04-01",
+          "2022-04-02"
+        ],
+        "observed_utc_dates": 1575,
+        "complete_utc_dates": 1574,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 37909416.91121667,
+        "recent_180d_median_daily_usdt": 52356847.925283335,
+        "recent_180d_median_lower_bound_usdt": 51664126.408649996,
+        "recent_180d_median_upper_bound_usdt": 53091927.5895,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9446,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 54,
+            "frequency": 0.005716705483802668
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 10,
+            "frequency": 0.0010586491636671606
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 3,
+            "frequency": 0.0003175947491001482
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "NEARUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/NEARUSDT_4H.csv",
+      "source_sha256": "3ee88433529f2df52f4a22c73c4eb4befecafb1f6038e8a4c5f1c13f234d36e2",
+      "start_utc": "2020-10-15T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9070,
+        "usable_rows": 9070,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 2,
+        "non_four_hour_gaps": [
+          {
+            "ending_at": "2022-03-01T00:00:00+00:00",
+            "duration_hours": 76.0
+          },
+          {
+            "ending_at": "2022-04-03T00:00:00+00:00",
+            "duration_hours": 52.0
+          }
+        ],
+        "missing_calendar_date_count": 5,
+        "missing_calendar_dates": [
+          "2022-02-26",
+          "2022-02-27",
+          "2022-02-28",
+          "2022-04-01",
+          "2022-04-02"
+        ],
+        "observed_utc_dates": 1512,
+        "complete_utc_dates": 1511,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 144941434.06433332,
+        "recent_180d_median_daily_usdt": 148183280.89666665,
+        "recent_180d_median_lower_bound_usdt": 145753809.26950002,
+        "recent_180d_median_upper_bound_usdt": 150751845.001,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9067,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 79,
+            "frequency": 0.008712914966361531
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 14,
+            "frequency": 0.0015440608801147017
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 5,
+            "frequency": 0.0005514503143266791
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "OMGUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/OMGUSDT_4H.csv",
+      "source_sha256": "cffe260c9b95b40d3bab881a92826d48a370e0ea70ed2356a495339d9add5ddc",
+      "start_utc": "2020-07-02T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9700,
+        "usable_rows": 9700,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 2,
+        "non_four_hour_gaps": [
+          {
+            "ending_at": "2022-03-01T00:00:00+00:00",
+            "duration_hours": 76.0
+          },
+          {
+            "ending_at": "2022-04-03T00:00:00+00:00",
+            "duration_hours": 52.0
+          }
+        ],
+        "missing_calendar_date_count": 5,
+        "missing_calendar_dates": [
+          "2022-02-26",
+          "2022-02-27",
+          "2022-02-28",
+          "2022-04-01",
+          "2022-04-02"
+        ],
+        "observed_utc_dates": 1617,
+        "complete_utc_dates": 1616,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 22108548.063065,
+        "recent_180d_median_daily_usdt": 5523502.096713333,
+        "recent_180d_median_lower_bound_usdt": 5435694.521605,
+        "recent_180d_median_upper_bound_usdt": 5607822.702285,
+        "status": "edge",
+        "bound_statuses": {
+          "lower": "edge",
+          "upper": "edge"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9697,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 96,
+            "frequency": 0.00989996906259668
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 30,
+            "frequency": 0.0030937403320614623
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 9,
+            "frequency": 0.0009281220996184387
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "fail"
+      },
+      "partial_evidence_tier": "exclude"
+    },
+    {
+      "symbol": "RENUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/RENUSDT_4H.csv",
+      "source_sha256": "5581b3f08d1268577cf6a30928ebb153768042db21169716f1b95d1c11ee1bc0",
+      "start_utc": "2020-10-13T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9113,
+        "usable_rows": 9113,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1519,
+        "complete_utc_dates": 1518,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 19613798.738066666,
+        "recent_180d_median_daily_usdt": 4807732.480523333,
+        "recent_180d_median_lower_bound_usdt": 4738146.37534,
+        "recent_180d_median_upper_bound_usdt": 4903828.062935,
+        "status": "fail",
+        "bound_statuses": {
+          "lower": "fail",
+          "upper": "fail"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9112,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 94,
+            "frequency": 0.010316066725197541
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 28,
+            "frequency": 0.0030728709394205445
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 7,
+            "frequency": 0.0007682177348551361
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "fail"
+      },
+      "partial_evidence_tier": "exclude"
+    },
+    {
+      "symbol": "RUNEUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/RUNEUSDT_4H.csv",
+      "source_sha256": "33b25637dfc32f8500a5b5923e6e3d168ed5d7c4f7e14baf6f846d1fa5fa7cab",
+      "start_utc": "2020-09-04T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9347,
+        "usable_rows": 9347,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1558,
+        "complete_utc_dates": 1557,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 67036679.611666664,
+        "recent_180d_median_daily_usdt": 55700437.1075,
+        "recent_180d_median_lower_bound_usdt": 54108194.94,
+        "recent_180d_median_upper_bound_usdt": 57099510.481,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9346,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 116,
+            "frequency": 0.012411726942007276
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 15,
+            "frequency": 0.001604964690776803
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 2,
+            "frequency": 0.00021399529210357372
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "SNXUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/SNXUSDT_4H.csv",
+      "source_sha256": "79bd09fc650812867bc6b85cff8b41d5ff3efdfeebf1476483e5c4222da0f70b",
+      "start_utc": "2020-08-14T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9473,
+        "usable_rows": 9473,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1579,
+        "complete_utc_dates": 1578,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 36192099.55938333,
+        "recent_180d_median_daily_usdt": 12726438.00655,
+        "recent_180d_median_lower_bound_usdt": 12504757.619350001,
+        "recent_180d_median_upper_bound_usdt": 12926330.36095,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9472,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 96,
+            "frequency": 0.010135135135135136
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 12,
+            "frequency": 0.001266891891891892
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 4,
+            "frequency": 0.0004222972972972973
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "SUSHIUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/SUSHIUSDT_4H.csv",
+      "source_sha256": "d3a79ba225e2f9b39790be20d682e2fa12da8b4095471ed5f583927cf6f210a1",
+      "start_utc": "2020-09-04T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9317,
+        "usable_rows": 9317,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 2,
+        "non_four_hour_gaps": [
+          {
+            "ending_at": "2022-03-01T00:00:00+00:00",
+            "duration_hours": 76.0
+          },
+          {
+            "ending_at": "2022-04-03T00:00:00+00:00",
+            "duration_hours": 52.0
+          }
+        ],
+        "missing_calendar_date_count": 5,
+        "missing_calendar_dates": [
+          "2022-02-26",
+          "2022-02-27",
+          "2022-02-28",
+          "2022-04-01",
+          "2022-04-02"
+        ],
+        "observed_utc_dates": 1553,
+        "complete_utc_dates": 1552,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 67536237.9285,
+        "recent_180d_median_daily_usdt": 14288023.84945,
+        "recent_180d_median_lower_bound_usdt": 14029168.2511,
+        "recent_180d_median_upper_bound_usdt": 14485813.360849999,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9314,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 122,
+            "frequency": 0.01309856130556152
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 23,
+            "frequency": 0.0024694009018681553
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 9,
+            "frequency": 0.0009662873094266695
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "edge"
+      },
+      "partial_evidence_tier": "Tier 1-watch"
+    },
+    {
+      "symbol": "THETAUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/THETAUSDT_4H.csv",
+      "source_sha256": "2543e2fd9cc1e86b3f87ed6180a1d87f5332ceb5876a6427ce565b34247cd913",
+      "start_utc": "2020-05-27T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9946,
+        "usable_rows": 9946,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1658,
+        "complete_utc_dates": 1657,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 45328209.11095333,
+        "recent_180d_median_daily_usdt": 23922793.060875,
+        "recent_180d_median_lower_bound_usdt": 23478647.274015002,
+        "recent_180d_median_upper_bound_usdt": 24307179.655585,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9945,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 67,
+            "frequency": 0.006737053795877326
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 11,
+            "frequency": 0.0011060834590246355
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 3,
+            "frequency": 0.00030165912518853697
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "TRXUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/TRXUSDT_4H.csv",
+      "source_sha256": "5fe7815a100898b7d0b663310fab71d8dd56ecc98bd7efd80c03da27800567b8",
+      "start_utc": "2020-01-15T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 10714,
+        "usable_rows": 10714,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 2,
+        "non_four_hour_gaps": [
+          {
+            "ending_at": "2022-03-01T00:00:00+00:00",
+            "duration_hours": 76.0
+          },
+          {
+            "ending_at": "2022-04-03T00:00:00+00:00",
+            "duration_hours": 52.0
+          }
+        ],
+        "missing_calendar_date_count": 5,
+        "missing_calendar_dates": [
+          "2022-02-26",
+          "2022-02-27",
+          "2022-02-28",
+          "2022-04-01",
+          "2022-04-02"
+        ],
+        "observed_utc_dates": 1786,
+        "complete_utc_dates": 1785,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 64312428.756683335,
+        "recent_180d_median_daily_usdt": 65527983.86829833,
+        "recent_180d_median_lower_bound_usdt": 65233534.220745,
+        "recent_180d_median_upper_bound_usdt": 65812931.751075,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 10711,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 49,
+            "frequency": 0.0045747362524507515
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 11,
+            "frequency": 0.0010269816076930258
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 3,
+            "frequency": 0.0002800858930071889
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "UNIUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/UNIUSDT_4H.csv",
+      "source_sha256": "f0adf2587c398b092513c4dae861195723b46b760184188a9bf4dd46fd596b48",
+      "start_utc": "2020-09-18T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9263,
+        "usable_rows": 9263,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1544,
+        "complete_utc_dates": 1543,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 87820035.022,
+        "recent_180d_median_daily_usdt": 84103519.9085,
+        "recent_180d_median_lower_bound_usdt": 82949775.54249999,
+        "recent_180d_median_upper_bound_usdt": 85395825.77950001,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9262,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 61,
+            "frequency": 0.006586050529043403
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 12,
+            "frequency": 0.0012956164975167351
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 4,
+            "frequency": 0.0004318721658389117
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "XLMUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/XLMUSDT_4H.csv",
+      "source_sha256": "f95659da2ceca5457e48feedf690e1c200efaae33fe73747d40e6c55020ccbe0",
+      "start_utc": "2020-01-20T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 10684,
+        "usable_rows": 10684,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 2,
+        "non_four_hour_gaps": [
+          {
+            "ending_at": "2022-03-01T00:00:00+00:00",
+            "duration_hours": 76.0
+          },
+          {
+            "ending_at": "2022-04-03T00:00:00+00:00",
+            "duration_hours": 52.0
+          }
+        ],
+        "missing_calendar_date_count": 5,
+        "missing_calendar_dates": [
+          "2022-02-26",
+          "2022-02-27",
+          "2022-02-28",
+          "2022-04-01",
+          "2022-04-02"
+        ],
+        "observed_utc_dates": 1781,
+        "complete_utc_dates": 1780,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 41463831.823585,
+        "recent_180d_median_daily_usdt": 23932355.733994998,
+        "recent_180d_median_lower_bound_usdt": 23760485.805075,
+        "recent_180d_median_upper_bound_usdt": 24141776.627195,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 10681,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 55,
+            "frequency": 0.005149330587023687
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 13,
+            "frequency": 0.0012171145023874169
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 6,
+            "frequency": 0.0005617451549480386
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "XMRUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/XMRUSDT_4H.csv",
+      "source_sha256": "45a6ca00fedf817c59c576ba5f091d86d81368c60e0ed0c65e273095923efa5d",
+      "start_utc": "2020-02-03T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 10630,
+        "usable_rows": 10630,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1772,
+        "complete_utc_dates": 1771,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 31069455.493003335,
+        "recent_180d_median_daily_usdt": 13415357.365246667,
+        "recent_180d_median_lower_bound_usdt": 13297250.508655,
+        "recent_180d_median_upper_bound_usdt": 13507279.933375001,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 10629,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 39,
+            "frequency": 0.00366920688681908
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 7,
+            "frequency": 0.0006585755950700913
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 2,
+            "frequency": 0.00018816445573431178
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "XTZUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/XTZUSDT_4H.csv",
+      "source_sha256": "8bb9145f57a7c8abac03db9fd4a28185a6676242bc4af3a5739b6f3fe8e6157b",
+      "start_utc": "2020-02-06T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 10612,
+        "usable_rows": 10612,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1769,
+        "complete_utc_dates": 1768,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 34970348.064566664,
+        "recent_180d_median_daily_usdt": 8320895.509933334,
+        "recent_180d_median_lower_bound_usdt": 8218911.882100001,
+        "recent_180d_median_upper_bound_usdt": 8401726.66125,
+        "status": "edge",
+        "bound_statuses": {
+          "lower": "edge",
+          "upper": "edge"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 10611,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 51,
+            "frequency": 0.004806333050607859
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 9,
+            "frequency": 0.0008481764206955047
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 4,
+            "frequency": 0.00037696729808689097
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-watch"
+    },
+    {
+      "symbol": "YFIUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/YFIUSDT_4H.csv",
+      "source_sha256": "1f5aab775cdb8d1dbf234a71c89a784574da61df2c820cd9f0520f146ac231c5",
+      "start_utc": "2020-08-31T04:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9341,
+        "usable_rows": 9341,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 2,
+        "non_four_hour_gaps": [
+          {
+            "ending_at": "2022-03-01T00:00:00+00:00",
+            "duration_hours": 76.0
+          },
+          {
+            "ending_at": "2022-04-03T00:00:00+00:00",
+            "duration_hours": 52.0
+          }
+        ],
+        "missing_calendar_date_count": 5,
+        "missing_calendar_dates": [
+          "2022-02-26",
+          "2022-02-27",
+          "2022-02-28",
+          "2022-04-01",
+          "2022-04-02"
+        ],
+        "observed_utc_dates": 1557,
+        "complete_utc_dates": 1556,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 34700948.51816667,
+        "recent_180d_median_daily_usdt": 6702568.5463333335,
+        "recent_180d_median_lower_bound_usdt": 6630289.83,
+        "recent_180d_median_upper_bound_usdt": 6771745.9085,
+        "status": "edge",
+        "bound_statuses": {
+          "lower": "edge",
+          "upper": "edge"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9338,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 74,
+            "frequency": 0.007924609124009423
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 14,
+            "frequency": 0.0014992503748125937
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 4,
+            "frequency": 0.00042835724994645533
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-watch"
+    },
+    {
+      "symbol": "ZECUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ZECUSDT_4H.csv",
+      "source_sha256": "db888ca23b2f8b39727e39cc5c202104cf00d4783250745f773f40ef190fad9f",
+      "start_utc": "2020-02-05T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 10588,
+        "usable_rows": 10588,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 2,
+        "non_four_hour_gaps": [
+          {
+            "ending_at": "2022-03-01T00:00:00+00:00",
+            "duration_hours": 76.0
+          },
+          {
+            "ending_at": "2022-04-03T00:00:00+00:00",
+            "duration_hours": 52.0
+          }
+        ],
+        "missing_calendar_date_count": 5,
+        "missing_calendar_dates": [
+          "2022-02-26",
+          "2022-02-27",
+          "2022-02-28",
+          "2022-04-01",
+          "2022-04-02"
+        ],
+        "observed_utc_dates": 1765,
+        "complete_utc_dates": 1764,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 32234729.459433336,
+        "recent_180d_median_daily_usdt": 27266379.638776667,
+        "recent_180d_median_lower_bound_usdt": 26848428.11977,
+        "recent_180d_median_upper_bound_usdt": 27741500.40092,
+        "status": "pass",
+        "bound_statuses": {
+          "lower": "pass",
+          "upper": "pass"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 10585,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 64,
+            "frequency": 0.006046291922531885
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 16,
+            "frequency": 0.0015115729806329712
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 3,
+            "frequency": 0.0002834199338686821
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "pass"
+      },
+      "partial_evidence_tier": "Tier 1-clean"
+    },
+    {
+      "symbol": "ZRXUSDT",
+      "source_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ZRXUSDT_4H.csv",
+      "source_sha256": "d30f20eec737691343d38849a51916739d5c09635000d436426e66c6d2f90876",
+      "start_utc": "2020-06-24T08:00:00+00:00",
+      "end_utc": "2024-12-09T20:00:00+00:00",
+      "data_quality": {
+        "source_columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "raw_rows": 9778,
+        "usable_rows": 9778,
+        "invalid_required_rows": 0,
+        "after_cutoff_rows_excluded": 0,
+        "duplicate_timestamp_rows": 0,
+        "nonpositive_price_rows": 0,
+        "negative_volume_rows": 0,
+        "invalid_ohlc_rows": 0,
+        "non_four_hour_gap_count": 0,
+        "non_four_hour_gaps": [],
+        "missing_calendar_date_count": 0,
+        "missing_calendar_dates": [],
+        "observed_utc_dates": 1630,
+        "complete_utc_dates": 1629,
+        "recent_180d_complete_dates": 180
+      },
+      "adtv": {
+        "measure": "hlc3_times_base_volume_proxy",
+        "exact_quote_volume_available": false,
+        "full_sample_median_daily_usdt": 17827814.4164,
+        "recent_180d_median_daily_usdt": 8954979.183984999,
+        "recent_180d_median_lower_bound_usdt": 8828036.611005,
+        "recent_180d_median_upper_bound_usdt": 9077780.459145,
+        "status": "edge",
+        "bound_statuses": {
+          "lower": "edge",
+          "upper": "edge"
+        },
+        "classification_robust_to_ohlc_price_bound": true
+      },
+      "price_jump_frequency": {
+        "return_definition": "ln(close_t / close_t-1), consecutive 4H bars only",
+        "valid_return_count": 9777,
+        "sensitivities": {
+          "10pct": {
+            "threshold_log_return": 0.1,
+            "count": 91,
+            "frequency": 0.009307558555794211
+          },
+          "15pct": {
+            "threshold_log_return": 0.15,
+            "count": 25,
+            "frequency": 0.0025570215812621457
+          },
+          "20pct": {
+            "threshold_log_return": 0.2,
+            "count": 7,
+            "frequency": 0.0007159660427534008
+          }
+        },
+        "primary_threshold": 0.15,
+        "status": "edge"
+      },
+      "partial_evidence_tier": "Tier 1-watch"
+    }
+  ]
+}

@@ -1,0 +1,274 @@
+{
+  "task_id": "D2",
+  "generated_at_utc": "2026-06-13T18:56:26.723522Z",
+  "holdout_accessed": false,
+  "cutoff_assert_passed": true,
+  "d1_manifest": {
+    "path": "06_RESEARCH/DATA/FUTURES_EXPANDED/DOWNLOAD_MANIFEST.json",
+    "success": 35,
+    "base_url": "https://data.binance.vision/data/futures/um/monthly/klines"
+  },
+  "parameters": {
+    "lookback_bars": 540,
+    "adx_period": 14,
+    "adx_entry": 25.0,
+    "adx_exit": 20.0,
+    "macro_ma_days": 200,
+    "fee_each_side": 0.001,
+    "slippage_each_side": 0.001,
+    "funding": "real 8H rates, direction-aware",
+    "bootstrap_seed": 20260612,
+    "bootstrap_iterations": 2000,
+    "bootstrap_block_bars": 42,
+    "wf_boundaries": [
+      "2020-01-01 00:00:00",
+      "2021-08-24 12:00:00",
+      "2023-04-18 04:00:00",
+      "2024-12-10 00:00:00"
+    ]
+  },
+  "variant_C_baseline": {
+    "status": "completed",
+    "universe_size": 8,
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT",
+      "BNBUSDT",
+      "XRPUSDT",
+      "DOGEUSDT",
+      "ADAUSDT",
+      "LTCUSDT"
+    ],
+    "e_r_per_trade": 0.06607270148934911,
+    "win_loss_ratio": 3.8284191193265364,
+    "positive_years": 4,
+    "counted_years": 4,
+    "positive_year_ratio": 1.0,
+    "p_dd_ge_20": 0.8165,
+    "benchmark_excess": 168664.43750670063,
+    "full_universe_weight_cap": 0.125,
+    "realized_max_initial_weight": 0.25,
+    "wf_3_sharpe": [
+      1.8553163547309879,
+      -0.2883197208790521,
+      1.8612355313779243
+    ],
+    "ending_equity": 1587259.3888053806,
+    "max_drawdown": -0.4121633722300242,
+    "annualized_log_growth": 0.5594683971148342,
+    "trade_count": 441,
+    "reproduction": {
+      "expected_e_r": 0.06607270148934911,
+      "expected_excess": 168664.4375067039,
+      "e_r_relative_error": 0.0,
+      "passed": true
+    }
+  },
+  "variant_C_data_audit": {
+    "data": {
+      "BTC": {
+        "bars_first_timestamp": "2020-01-01 00:00:00",
+        "bars_last_timestamp": "2024-12-09 20:00:00",
+        "bars_rows_used": 10782,
+        "funding_first_timestamp": "2020-01-01 00:00:00",
+        "funding_last_timestamp": "2024-12-09 16:00:00",
+        "funding_rows_used": 5415,
+        "onboard_date": "2019-09-08 00:00:00",
+        "pit_eligible_from": "2019-12-07 00:00:00"
+      },
+      "ETH": {
+        "bars_first_timestamp": "2020-01-01 00:00:00",
+        "bars_last_timestamp": "2024-12-09 20:00:00",
+        "bars_rows_used": 10818,
+        "funding_first_timestamp": "2020-01-01 00:00:00",
+        "funding_last_timestamp": "2024-12-09 16:00:00",
+        "funding_rows_used": 5415,
+        "onboard_date": "2019-11-27 00:00:00",
+        "pit_eligible_from": "2020-02-25 00:00:00"
+      },
+      "SOL": {
+        "bars_first_timestamp": "2020-09-13 08:00:00",
+        "bars_last_timestamp": "2024-12-09 20:00:00",
+        "bars_rows_used": 9250,
+        "funding_first_timestamp": "2020-09-13 16:00:00",
+        "funding_last_timestamp": "2024-12-09 16:00:00",
+        "funding_rows_used": 4720,
+        "onboard_date": "2020-09-14 00:00:00",
+        "pit_eligible_from": "2020-12-13 00:00:00"
+      },
+      "BNB": {
+        "bars_first_timestamp": "2020-02-01 00:00:00",
+        "bars_last_timestamp": "2024-12-09 20:00:00",
+        "bars_rows_used": 10596,
+        "funding_first_timestamp": "2020-02-10 08:00:00",
+        "funding_last_timestamp": "2024-12-09 16:00:00",
+        "funding_rows_used": 5294,
+        "onboard_date": "2020-02-10 00:00:00",
+        "pit_eligible_from": "2020-05-10 00:00:00"
+      },
+      "XRP": {
+        "bars_first_timestamp": "2020-01-06 00:00:00",
+        "bars_last_timestamp": "2024-12-09 20:00:00",
+        "bars_rows_used": 10758,
+        "funding_first_timestamp": "2020-01-06 08:00:00",
+        "funding_last_timestamp": "2024-12-09 16:00:00",
+        "funding_rows_used": 5399,
+        "onboard_date": "2020-01-06 00:00:00",
+        "pit_eligible_from": "2020-04-05 00:00:00"
+      },
+      "DOGE": {
+        "bars_first_timestamp": "2020-07-10 00:00:00",
+        "bars_last_timestamp": "2024-12-09 20:00:00",
+        "bars_rows_used": 9672,
+        "funding_first_timestamp": "2020-07-10 08:00:00",
+        "funding_last_timestamp": "2024-12-09 16:00:00",
+        "funding_rows_used": 4841,
+        "onboard_date": "2020-07-10 00:00:00",
+        "pit_eligible_from": "2020-10-08 00:00:00"
+      },
+      "ADA": {
+        "bars_first_timestamp": "2020-01-19 08:00:00",
+        "bars_last_timestamp": "2024-12-09 20:00:00",
+        "bars_rows_used": 10708,
+        "funding_first_timestamp": "2020-01-19 16:00:00",
+        "funding_last_timestamp": "2024-12-09 16:00:00",
+        "funding_rows_used": 5359,
+        "onboard_date": "2020-01-31 00:00:00",
+        "pit_eligible_from": "2020-04-30 00:00:00"
+      },
+      "LTC": {
+        "bars_first_timestamp": "2020-01-09 04:00:00",
+        "bars_last_timestamp": "2024-12-09 20:00:00",
+        "bars_rows_used": 10769,
+        "funding_first_timestamp": "2020-01-09 08:00:00",
+        "funding_last_timestamp": "2024-12-09 16:00:00",
+        "funding_rows_used": 5390,
+        "onboard_date": "2020-01-09 00:00:00",
+        "pit_eligible_from": "2020-04-08 00:00:00"
+      }
+    },
+    "bars_max": "2024-12-09 20:00:00",
+    "funding_max": "2024-12-09 16:00:00"
+  },
+  "status": "blocked",
+  "variant_A_20coins": {
+    "status": "blocked",
+    "universe_size": 28,
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT",
+      "BNBUSDT",
+      "XRPUSDT",
+      "DOGEUSDT",
+      "ADAUSDT",
+      "LTCUSDT",
+      "ETCUSDT",
+      "LINKUSDT",
+      "TRXUSDT",
+      "XLMUSDT",
+      "XMRUSDT",
+      "DASHUSDT",
+      "XTZUSDT",
+      "ATOMUSDT",
+      "ZECUSDT",
+      "THETAUSDT",
+      "ALGOUSDT",
+      "ZRXUSDT",
+      "KNCUSDT",
+      "COMPUSDT",
+      "OMGUSDT",
+      "SNXUSDT",
+      "MKRUSDT",
+      "DOTUSDT",
+      "CRVUSDT",
+      "RUNEUSDT"
+    ],
+    "e_r_per_trade": null,
+    "win_loss_ratio": null,
+    "positive_year_ratio": null,
+    "p_dd_ge_20": null,
+    "benchmark_excess": null,
+    "full_universe_weight_cap": 0.03571428571428571,
+    "realized_max_initial_weight": null,
+    "wf_3_sharpe": null,
+    "blockers": [
+      "PRICE_SOURCE_MISMATCH",
+      "MISSING_REAL_FUNDING",
+      "DEC_070_FILTERS_NOT_AUDITABLE"
+    ]
+  },
+  "variant_B_30coins": {
+    "status": "blocked",
+    "universe_size": 38,
+    "symbols": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT",
+      "BNBUSDT",
+      "XRPUSDT",
+      "DOGEUSDT",
+      "ADAUSDT",
+      "LTCUSDT",
+      "ETCUSDT",
+      "LINKUSDT",
+      "TRXUSDT",
+      "XLMUSDT",
+      "XMRUSDT",
+      "DASHUSDT",
+      "XTZUSDT",
+      "ATOMUSDT",
+      "ZECUSDT",
+      "THETAUSDT",
+      "ALGOUSDT",
+      "ZRXUSDT",
+      "KNCUSDT",
+      "COMPUSDT",
+      "OMGUSDT",
+      "SNXUSDT",
+      "MKRUSDT",
+      "DOTUSDT",
+      "CRVUSDT",
+      "RUNEUSDT",
+      "YFIUSDT",
+      "SUSHIUSDT",
+      "EGLDUSDT",
+      "ICXUSDT",
+      "UNIUSDT",
+      "AVAXUSDT",
+      "ENJUSDT",
+      "FTMUSDT",
+      "RENUSDT",
+      "AAVEUSDT"
+    ],
+    "e_r_per_trade": null,
+    "win_loss_ratio": null,
+    "positive_year_ratio": null,
+    "p_dd_ge_20": null,
+    "benchmark_excess": null,
+    "full_universe_weight_cap": 0.02631578947368421,
+    "realized_max_initial_weight": null,
+    "wf_3_sharpe": null,
+    "blockers": [
+      "PRICE_SOURCE_MISMATCH",
+      "MISSING_REAL_FUNDING",
+      "DEC_070_FILTERS_NOT_AUDITABLE"
+    ]
+  },
+  "blockers": [
+    {
+      "code": "PRICE_SOURCE_MISMATCH",
+      "detail": "D1 expanded files use contract klines, while the frozen 8-asset baseline uses mark-price klines. Mixing them is not a single-variable universe test."
+    },
+    {
+      "code": "MISSING_REAL_FUNDING",
+      "detail": "30/30 selected expanded assets lack pre-cutoff real 8H funding files: ETCUSDT, LINKUSDT, TRXUSDT, XLMUSDT, XMRUSDT, DASHUSDT, XTZUSDT, ATOMUSDT, ZECUSDT, THETAUSDT, ALGOUSDT, ZRXUSDT, KNCUSDT, COMPUSDT, OMGUSDT, SNXUSDT, MKRUSDT, DOTUSDT, CRVUSDT, RUNEUSDT, YFIUSDT, SUSHIUSDT, EGLDUSDT, ICXUSDT, UNIUSDT, AVAXUSDT, ENJUSDT, FTMUSDT, RENUSDT, AAVEUSDT"
+    },
+    {
+      "code": "DEC_070_FILTERS_NOT_AUDITABLE",
+      "detail": "DOWNLOAD_MANIFEST.json does not prove the DEC-070 hard filters: adtv, float_market_cap_ratio, oi_market_cap_ratio, price_jump_frequency"
+    }
+  ],
+  "conclusion": null
+}

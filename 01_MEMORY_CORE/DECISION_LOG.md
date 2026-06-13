@@ -93,6 +93,11 @@
 | DEC-067 | CLAUDE.md 升 v2.3：启动清单对齐文档权威层级 | ACTIVE |
 | DEC-068 | L3处置：不暂停+重评方向方法；公司OS正式冻结；剩2命A-1优先 | ACTIVE（②③被DEC-069修订）|
 | DEC-069 | 双审计裁决包：计数改革/冻结限原则层/机会地图重排+carry核算/围栏证据解锁 | ACTIVE |
+| DEC-070 | TSMOM universe 扩充方向确认（Option A）+ 小市值操盘风险过滤原则 | ACTIVE |
+| DEC-071 | §1b任务中断机制 + Claude↔Codex设计评审链路 + AI Pre-Execution Analyst 架构角色 | ACTIVE |
+| DEC-072 | Phase 2执行层风控参数基线（DRAFT，关闭E4审计断点）| ACTIVE |
+| DEC-073 | 项目全周期决策记录规范：对话级建议须当场写入§1c，不得仅存于对话 | ACTIVE |
+| DEC-074 | OPERATING_MODEL_DESIGN_v2.md 产研三循环框架（R/S/E）初步确认，待优化 | ACTIVE |
 | DEC-DEPRECATED-001 | 三方AI协作模式（OpenClaw + DeepSeek + | DEPRECATED |
 
 ## 本项目自身决策
@@ -1812,6 +1817,51 @@ L3 紧急审计：
 
 ---
 
+**[DEC-071]**
+```
+决策内容：三项流程/架构决策
+  1. §1b 任务中断机制：Founder 主动打断对话时，Claude 在 CURRENT_STATE §1b 记录已完成/剩余/恢复点。
+     所有新对话开局读 §1b，有内容即优先恢复，防止任务状态在对话切换时丢失。
+  2. Claude↔Codex 设计评审链路（DR机制）：重要架构决策前，Claude 创建 DR 任务规格，
+     Codex 从工程实现角度 critique，Claude 读反馈后定稿。文件格式：
+     04_AI_TEAM/DESIGN_REVIEWS/DR_[主题].md（Claude提案）+
+     04_AI_TEAM/DESIGN_REVIEWS/DR_[主题]_CODEX_CRITIQUE.md（Codex工程异议）
+  3. AI Pre-Execution Analyst 架构角色：在 Track A 执行层之外，设立 AI 分析角色：
+     - 触发：执行前/事件触发（A-1等）/Founder主动发起/定时周期
+     - 职责：分析信号质量、市场状态、风险容量，输出 approve/caution/no-trade/needs-human-review
+     - 硬边界：不下单、不改仓位、不绕过 Decision Gateway
+     - 实现：Claude API 调用，结构化数据输入（PostgreSQL快照），Track A 继续正常运行
+决策时间：2026-06-14
+来源：Founder 确认（本次对话系列讨论后明确方向）
+影响范围：项目工作流、Phase 2 系统架构（E2文档）、AGENTS.md
+状态：ACTIVE
+```
+
+---
+
+**[DEC-070]**
+```
+决策内容：TSMOM universe 扩充方向确认 + 小市值操盘风险过滤原则
+  1. TSMOM 路线选 Option A：扩充 universe 至 ≥15 个流动性 Tier 1 主流资产，另案预登记，不耗独立命数。
+     （Option B=重评验收门 / Option C=降为State工具 均未采纳）
+  2. Universe 筛选硬门槛须包含操盘风险过滤：
+     - 日均成交量（ADTV）门槛
+     - 市值/流通市值比（防低流通锁仓操控）
+     - OI/市值比（防合约拥挤猎杀）
+     - 历史价格异常跳动频率检测
+     小市值山寨因庄家/机构操盘风险高，排除于 TSMOM universe 之外；
+     留给未来独立机制研究（A-4 等）。
+  3. BTC/ETH 作 universe 锚，其余选 Tier 1 流动性主流（市值前 20 级别）。
+  4. 单做 BTC 或单做 ETH 不适合 TSMOM（无分散化=DD问题加剧）；
+     ETH 单资产的 edge 方向更可能在 carry/funding，属 Phase 2。
+决策时间：2026-06-13
+来源：Founder 确认（"同意""按你推荐的来"）
+影响范围：TSMOM 扩展版预登记 universe 构建规则、C1 候选筛选标准
+状态：ACTIVE
+```
+
+---
+
 **[DEC-069]**
 ```
 决策内容：双外部审计交叉裁决包（依据 AUDIT_CROSS_ADJUDICATION_2026-06-12，Founder"按裁决执行"）
@@ -1865,6 +1915,66 @@ L3 紧急审计：
 决策时间：2026-06-11
 来源：修宪提案 CLAUDE_MD_AMENDMENT_PROPOSAL_v2.3 + Founder 确认"同意"
 影响范围：所有新会话启动协议
+状态：ACTIVE
+```
+
+---
+
+**[DEC-072]**
+```
+决策内容：Phase 2 执行层风控参数基线（DRAFT，关闭E4审计断点）
+  背景：E4模块设计（Codex，2026-06-14）发现[专业异议]：Phase 2蓝图§五的执行风控参数
+        （单日-2%熔断、-20%总回撤、事件窗禁交易、极端波动熔断、OI骤降暂停）
+        在DEC-015/063/069中无完整来源，存在审计断点。
+
+  裁决（Claude主理人，接受异议）：
+  1. DEC-015已确认的部分（有来源）：
+     - 分档最大亏损上限：1k档≤30%、1w档≤10%、3w档≤5%
+     - 两层资本架构（DEC-063）：核心资本保护/围栏高风险子账户可归零
+  2. Phase 2蓝图§五补充参数（DRAFT状态，Phase 2实盘前须Founder确认冻结）：
+     - 单日-2%熔断（日内浮亏达账户NAV 2%停止当日新开仓）
+     - 总回撤-20%触发L3复评（配合DEC-069时间盒/成本盒联合主闸）
+     - 事件窗禁交易：重大宏观事件（FOMC/CPI等）前后1H禁开仓
+     - 极端波动熔断：1H涨跌幅>15%时暂停自动执行，等待Claude人工确认
+     - OI骤降暂停：触发A-1事件检测时，暂停同品种当前信号执行直至事件处理完成
+  3. 上述DRAFT参数在系统代码化前不得直接引用为已决策数值；
+     实施时须另立DEC（DEC-073起）正式冻结参数数值。
+
+决策时间：2026-06-14
+来源：Claude(CTO)接受E4 Codex专业异议后主动裁决；Codex审计驱动
+影响范围：Phase 2 Decision Gateway风控规则；E2/E4模块设计文档；实盘上线审计链
+状态：ACTIVE（DRAFT参数部分，Phase 2实施时须单独冻结DEC）
+```
+
+---
+
+**[DEC-074]**
+```
+决策内容：OPERATING_MODEL_DESIGN_v2.md 产研三循环框架初步确认
+  - Cycle R（研究验证）/ Cycle S（策略规格）/ Cycle E（工程落地）三循环结构：CONFIRMED
+  - 阶段门禁退出标准、版本标准（v{MAJOR}.{MINOR}）、CHANGELOG格式：CONFIRMED
+  - 状态：初步确认（及格），后续可优化；优化不需要新 DEC，直接更新文档版本号
+决策时间：2026-06-14
+来源：Founder 初步审阅确认（初步/待优化）
+影响范围：项目全周期产研工作流；Codex任务书格式（须含阶段门禁）；Claude规划标准
+状态：ACTIVE（v2.x 文档可持续迭代，无需另立 DEC）
+```
+
+---
+
+**[DEC-073]**
+```
+决策内容：项目全周期决策记录规范——所有决策/建议/行动项须当场文件化，不得仅存于对话
+  1. 对话中 Claude 提出的任何建议/方案/行动项，无论是否获 Founder 确认，须当场写入 CURRENT_STATE §1c（对话级建议暂存区）；
+  2. §1c 条目生命周期：Founder 确认 → 升入 DECISION_LOG 或 §4 下一步；Founder 否决 → 从 §1c 清除；未响应 = 下次开局必提；
+  3. Founder 确认的决策 → 追加 DECISION_LOG（DEC 编号续接）；
+  4. CLAUDE.md 关键行为规则 5 扩展：显式包含 §1c 义务（§1c 即为对话级建议的制度容器）；
+  5. STATE_SYNC_CHECKLIST 增加步骤 0：对话级建议立即归档 §1c，优先于其他同步步骤。
+  根因：Founder 发现多条当次对话建议（fswatch/PlanToDelivery/obra等）未落文件，仅存于对话记录。
+
+决策时间：2026-06-14
+来源：Founder明确指令："当前项目的所有决策都需要记录这是需要规范到整个项目的规则"
+影响范围：STATE_SYNC_CHECKLIST（已更新步骤0）；CURRENT_STATE（新增§1c槽位）；CLAUDE.md关键行为规则5；全项目治理流程
 状态：ACTIVE
 ```
 

@@ -1,0 +1,8 @@
+{
+  "task_id": "A1_RR",
+  "completed_at": "2026-06-13T18:51:57Z",
+  "status": "completed",
+  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v1.md",
+  "review_conclusion": "需修改后通过",
+  "notes": "当前 NOT APPROVED：须修正强平卖压方向识别、相关事件稳健推断与多重检验、A-2 极端 funding overlap、完整成本及事件研究/策略门分层后重新盲审。git commit 已尝试，但环境禁止创建 .git/index.lock。"
+}

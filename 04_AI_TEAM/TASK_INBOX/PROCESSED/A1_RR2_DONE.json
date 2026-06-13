@@ -1,0 +1,9 @@
+{
+  "task_id": "A1_RR2",
+  "completed_at": "2026-06-13T19:51:05Z",
+  "status": "completed",
+  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v2.md",
+  "review_conclusion": "NOT APPROVED",
+  "conditions_closed": "2/10",
+  "notes": "同 UTC 日 cluster 无法吸收跨日重叠，功效停机依赖事件后 CAR，A-2 overlap 改写冻结特征，Holdout 仍无权限型物理隔离。"
+}

@@ -1,0 +1,1420 @@
+{
+  "generated_at_utc": "2026-06-13T02:28:36Z",
+  "archive_path": "https://data.binance.vision/data/futures/um/monthly/klines",
+  "interval": "4h",
+  "candidate_count": 88,
+  "first_month_available": null,
+  "recent_month_available": null,
+  "buildable_count": null,
+  "indeterminate_symbol_count": 88,
+  "head_audit": [
+    {
+      "symbol": "BCHUSDT",
+      "probe": "first_month",
+      "month": "2019-12",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BCHUSDT/4h/BCHUSDT-4h-2019-12.zip"
+    },
+    {
+      "symbol": "BCHUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BCHUSDT/4h/BCHUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "TRXUSDT",
+      "probe": "first_month",
+      "month": "2020-01",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/TRXUSDT/4h/TRXUSDT-4h-2020-01.zip"
+    },
+    {
+      "symbol": "TRXUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/TRXUSDT/4h/TRXUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "ETCUSDT",
+      "probe": "first_month",
+      "month": "2020-01",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ETCUSDT/4h/ETCUSDT-4h-2020-01.zip"
+    },
+    {
+      "symbol": "ETCUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ETCUSDT/4h/ETCUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "LINKUSDT",
+      "probe": "first_month",
+      "month": "2020-01",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/LINKUSDT/4h/LINKUSDT-4h-2020-01.zip"
+    },
+    {
+      "symbol": "LINKUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/LINKUSDT/4h/LINKUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "XLMUSDT",
+      "probe": "first_month",
+      "month": "2020-01",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/XLMUSDT/4h/XLMUSDT-4h-2020-01.zip"
+    },
+    {
+      "symbol": "XLMUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/XLMUSDT/4h/XLMUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "XMRUSDT",
+      "probe": "first_month",
+      "month": "2020-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/XMRUSDT/4h/XMRUSDT-4h-2020-02.zip"
+    },
+    {
+      "symbol": "XMRUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/XMRUSDT/4h/XMRUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "DASHUSDT",
+      "probe": "first_month",
+      "month": "2020-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/DASHUSDT/4h/DASHUSDT-4h-2020-02.zip"
+    },
+    {
+      "symbol": "DASHUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/DASHUSDT/4h/DASHUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "ZECUSDT",
+      "probe": "first_month",
+      "month": "2020-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ZECUSDT/4h/ZECUSDT-4h-2020-02.zip"
+    },
+    {
+      "symbol": "ZECUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ZECUSDT/4h/ZECUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "XTZUSDT",
+      "probe": "first_month",
+      "month": "2020-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/XTZUSDT/4h/XTZUSDT-4h-2020-02.zip"
+    },
+    {
+      "symbol": "XTZUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/XTZUSDT/4h/XTZUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "ATOMUSDT",
+      "probe": "first_month",
+      "month": "2020-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ATOMUSDT/4h/ATOMUSDT-4h-2020-02.zip"
+    },
+    {
+      "symbol": "ATOMUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ATOMUSDT/4h/ATOMUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "ONTUSDT",
+      "probe": "first_month",
+      "month": "2020-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ONTUSDT/4h/ONTUSDT-4h-2020-02.zip"
+    },
+    {
+      "symbol": "ONTUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ONTUSDT/4h/ONTUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "IOTAUSDT",
+      "probe": "first_month",
+      "month": "2020-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/IOTAUSDT/4h/IOTAUSDT-4h-2020-02.zip"
+    },
+    {
+      "symbol": "IOTAUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/IOTAUSDT/4h/IOTAUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "BATUSDT",
+      "probe": "first_month",
+      "month": "2020-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BATUSDT/4h/BATUSDT-4h-2020-02.zip"
+    },
+    {
+      "symbol": "BATUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BATUSDT/4h/BATUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "VETUSDT",
+      "probe": "first_month",
+      "month": "2020-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/VETUSDT/4h/VETUSDT-4h-2020-02.zip"
+    },
+    {
+      "symbol": "VETUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/VETUSDT/4h/VETUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "NEOUSDT",
+      "probe": "first_month",
+      "month": "2020-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/NEOUSDT/4h/NEOUSDT-4h-2020-02.zip"
+    },
+    {
+      "symbol": "NEOUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/NEOUSDT/4h/NEOUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "QTUMUSDT",
+      "probe": "first_month",
+      "month": "2020-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/QTUMUSDT/4h/QTUMUSDT-4h-2020-02.zip"
+    },
+    {
+      "symbol": "QTUMUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/QTUMUSDT/4h/QTUMUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "IOSTUSDT",
+      "probe": "first_month",
+      "month": "2020-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/IOSTUSDT/4h/IOSTUSDT-4h-2020-02.zip"
+    },
+    {
+      "symbol": "IOSTUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/IOSTUSDT/4h/IOSTUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "THETAUSDT",
+      "probe": "first_month",
+      "month": "2020-05",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/THETAUSDT/4h/THETAUSDT-4h-2020-05.zip"
+    },
+    {
+      "symbol": "THETAUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/THETAUSDT/4h/THETAUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "ALGOUSDT",
+      "probe": "first_month",
+      "month": "2020-06",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ALGOUSDT/4h/ALGOUSDT-4h-2020-06.zip"
+    },
+    {
+      "symbol": "ALGOUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ALGOUSDT/4h/ALGOUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "ZILUSDT",
+      "probe": "first_month",
+      "month": "2020-06",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ZILUSDT/4h/ZILUSDT-4h-2020-06.zip"
+    },
+    {
+      "symbol": "ZILUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ZILUSDT/4h/ZILUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "KNCUSDT",
+      "probe": "first_month",
+      "month": "2020-06",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/KNCUSDT/4h/KNCUSDT-4h-2020-06.zip"
+    },
+    {
+      "symbol": "KNCUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/KNCUSDT/4h/KNCUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "ZRXUSDT",
+      "probe": "first_month",
+      "month": "2020-06",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ZRXUSDT/4h/ZRXUSDT-4h-2020-06.zip"
+    },
+    {
+      "symbol": "ZRXUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ZRXUSDT/4h/ZRXUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "COMPUSDT",
+      "probe": "first_month",
+      "month": "2020-06",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/COMPUSDT/4h/COMPUSDT-4h-2020-06.zip"
+    },
+    {
+      "symbol": "COMPUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/COMPUSDT/4h/COMPUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "OMGUSDT",
+      "probe": "first_month",
+      "month": "2020-07",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/OMGUSDT/4h/OMGUSDT-4h-2020-07.zip"
+    },
+    {
+      "symbol": "OMGUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/OMGUSDT/4h/OMGUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "KAVAUSDT",
+      "probe": "first_month",
+      "month": "2020-07",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/KAVAUSDT/4h/KAVAUSDT-4h-2020-07.zip"
+    },
+    {
+      "symbol": "KAVAUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/KAVAUSDT/4h/KAVAUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "BANDUSDT",
+      "probe": "first_month",
+      "month": "2020-07",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BANDUSDT/4h/BANDUSDT-4h-2020-07.zip"
+    },
+    {
+      "symbol": "BANDUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BANDUSDT/4h/BANDUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "RLCUSDT",
+      "probe": "first_month",
+      "month": "2020-07",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/RLCUSDT/4h/RLCUSDT-4h-2020-07.zip"
+    },
+    {
+      "symbol": "RLCUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/RLCUSDT/4h/RLCUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "WAVESUSDT",
+      "probe": "first_month",
+      "month": "2020-08",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/WAVESUSDT/4h/WAVESUSDT-4h-2020-08.zip"
+    },
+    {
+      "symbol": "WAVESUSDT",
+      "probe": "recent_month",
+      "month": "2024-05",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/WAVESUSDT/4h/WAVESUSDT-4h-2024-05.zip"
+    },
+    {
+      "symbol": "MKRUSDT",
+      "probe": "first_month",
+      "month": "2020-08",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/MKRUSDT/4h/MKRUSDT-4h-2020-08.zip"
+    },
+    {
+      "symbol": "MKRUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/MKRUSDT/4h/MKRUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "SNXUSDT",
+      "probe": "first_month",
+      "month": "2020-08",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/SNXUSDT/4h/SNXUSDT-4h-2020-08.zip"
+    },
+    {
+      "symbol": "SNXUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/SNXUSDT/4h/SNXUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "DOTUSDT",
+      "probe": "first_month",
+      "month": "2020-08",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/DOTUSDT/4h/DOTUSDT-4h-2020-08.zip"
+    },
+    {
+      "symbol": "DOTUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/DOTUSDT/4h/DOTUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "SKLUSDT",
+      "probe": "first_month",
+      "month": "2020-08",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/SKLUSDT/4h/SKLUSDT-4h-2020-08.zip"
+    },
+    {
+      "symbol": "SKLUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/SKLUSDT/4h/SKLUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "DEFIUSDT",
+      "probe": "first_month",
+      "month": "2020-08",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/DEFIUSDT/4h/DEFIUSDT-4h-2020-08.zip"
+    },
+    {
+      "symbol": "DEFIUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/DEFIUSDT/4h/DEFIUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "YFIUSDT",
+      "probe": "first_month",
+      "month": "2020-08",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/YFIUSDT/4h/YFIUSDT-4h-2020-08.zip"
+    },
+    {
+      "symbol": "YFIUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/YFIUSDT/4h/YFIUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "BALUSDT",
+      "probe": "first_month",
+      "month": "2020-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BALUSDT/4h/BALUSDT-4h-2020-09.zip"
+    },
+    {
+      "symbol": "BALUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BALUSDT/4h/BALUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "CRVUSDT",
+      "probe": "first_month",
+      "month": "2020-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/CRVUSDT/4h/CRVUSDT-4h-2020-09.zip"
+    },
+    {
+      "symbol": "CRVUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/CRVUSDT/4h/CRVUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "TRBUSDT",
+      "probe": "first_month",
+      "month": "2020-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/TRBUSDT/4h/TRBUSDT-4h-2020-09.zip"
+    },
+    {
+      "symbol": "TRBUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/TRBUSDT/4h/TRBUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "RUNEUSDT",
+      "probe": "first_month",
+      "month": "2020-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/RUNEUSDT/4h/RUNEUSDT-4h-2020-09.zip"
+    },
+    {
+      "symbol": "RUNEUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/RUNEUSDT/4h/RUNEUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "SUSHIUSDT",
+      "probe": "first_month",
+      "month": "2020-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/SUSHIUSDT/4h/SUSHIUSDT-4h-2020-09.zip"
+    },
+    {
+      "symbol": "SUSHIUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/SUSHIUSDT/4h/SUSHIUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "EGLDUSDT",
+      "probe": "first_month",
+      "month": "2020-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/EGLDUSDT/4h/EGLDUSDT-4h-2020-09.zip"
+    },
+    {
+      "symbol": "EGLDUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/EGLDUSDT/4h/EGLDUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "ICXUSDT",
+      "probe": "first_month",
+      "month": "2020-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ICXUSDT/4h/ICXUSDT-4h-2020-09.zip"
+    },
+    {
+      "symbol": "ICXUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ICXUSDT/4h/ICXUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "STORJUSDT",
+      "probe": "first_month",
+      "month": "2020-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/STORJUSDT/4h/STORJUSDT-4h-2020-09.zip"
+    },
+    {
+      "symbol": "STORJUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/STORJUSDT/4h/STORJUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "BLZUSDT",
+      "probe": "first_month",
+      "month": "2020-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BLZUSDT/4h/BLZUSDT-4h-2020-09.zip"
+    },
+    {
+      "symbol": "BLZUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BLZUSDT/4h/BLZUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "UNIUSDT",
+      "probe": "first_month",
+      "month": "2020-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/UNIUSDT/4h/UNIUSDT-4h-2020-09.zip"
+    },
+    {
+      "symbol": "UNIUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/UNIUSDT/4h/UNIUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "AVAXUSDT",
+      "probe": "first_month",
+      "month": "2020-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/AVAXUSDT/4h/AVAXUSDT-4h-2020-09.zip"
+    },
+    {
+      "symbol": "AVAXUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/AVAXUSDT/4h/AVAXUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "FTMUSDT",
+      "probe": "first_month",
+      "month": "2020-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/FTMUSDT/4h/FTMUSDT-4h-2020-09.zip"
+    },
+    {
+      "symbol": "FTMUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/FTMUSDT/4h/FTMUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "ENJUSDT",
+      "probe": "first_month",
+      "month": "2020-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ENJUSDT/4h/ENJUSDT-4h-2020-09.zip"
+    },
+    {
+      "symbol": "ENJUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ENJUSDT/4h/ENJUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "FLMUSDT",
+      "probe": "first_month",
+      "month": "2020-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/FLMUSDT/4h/FLMUSDT-4h-2020-09.zip"
+    },
+    {
+      "symbol": "FLMUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/FLMUSDT/4h/FLMUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "RENUSDT",
+      "probe": "first_month",
+      "month": "2020-10",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/RENUSDT/4h/RENUSDT-4h-2020-10.zip"
+    },
+    {
+      "symbol": "RENUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/RENUSDT/4h/RENUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "KSMUSDT",
+      "probe": "first_month",
+      "month": "2020-10",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/KSMUSDT/4h/KSMUSDT-4h-2020-10.zip"
+    },
+    {
+      "symbol": "KSMUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/KSMUSDT/4h/KSMUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "NEARUSDT",
+      "probe": "first_month",
+      "month": "2020-10",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/NEARUSDT/4h/NEARUSDT-4h-2020-10.zip"
+    },
+    {
+      "symbol": "NEARUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/NEARUSDT/4h/NEARUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "AAVEUSDT",
+      "probe": "first_month",
+      "month": "2020-10",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/AAVEUSDT/4h/AAVEUSDT-4h-2020-10.zip"
+    },
+    {
+      "symbol": "AAVEUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/AAVEUSDT/4h/AAVEUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "FILUSDT",
+      "probe": "first_month",
+      "month": "2020-10",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/FILUSDT/4h/FILUSDT-4h-2020-10.zip"
+    },
+    {
+      "symbol": "FILUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/FILUSDT/4h/FILUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "LRCUSDT",
+      "probe": "first_month",
+      "month": "2020-10",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/LRCUSDT/4h/LRCUSDT-4h-2020-10.zip"
+    },
+    {
+      "symbol": "LRCUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/LRCUSDT/4h/LRCUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "RSRUSDT",
+      "probe": "first_month",
+      "month": "2020-10",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/RSRUSDT/4h/RSRUSDT-4h-2020-10.zip"
+    },
+    {
+      "symbol": "RSRUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/RSRUSDT/4h/RSRUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "OCEANUSDT",
+      "probe": "first_month",
+      "month": "2020-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/OCEANUSDT/4h/OCEANUSDT-4h-2020-11.zip"
+    },
+    {
+      "symbol": "OCEANUSDT",
+      "probe": "recent_month",
+      "month": "2024-05",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/OCEANUSDT/4h/OCEANUSDT-4h-2024-05.zip"
+    },
+    {
+      "symbol": "BELUSDT",
+      "probe": "first_month",
+      "month": "2020-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BELUSDT/4h/BELUSDT-4h-2020-11.zip"
+    },
+    {
+      "symbol": "BELUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BELUSDT/4h/BELUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "AXSUSDT",
+      "probe": "first_month",
+      "month": "2020-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/AXSUSDT/4h/AXSUSDT-4h-2020-11.zip"
+    },
+    {
+      "symbol": "AXSUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/AXSUSDT/4h/AXSUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "ALPHAUSDT",
+      "probe": "first_month",
+      "month": "2020-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ALPHAUSDT/4h/ALPHAUSDT-4h-2020-11.zip"
+    },
+    {
+      "symbol": "ALPHAUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ALPHAUSDT/4h/ALPHAUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "ZENUSDT",
+      "probe": "first_month",
+      "month": "2020-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ZENUSDT/4h/ZENUSDT-4h-2020-11.zip"
+    },
+    {
+      "symbol": "ZENUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ZENUSDT/4h/ZENUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "GRTUSDT",
+      "probe": "first_month",
+      "month": "2020-12",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/GRTUSDT/4h/GRTUSDT-4h-2020-12.zip"
+    },
+    {
+      "symbol": "GRTUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/GRTUSDT/4h/GRTUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "1INCHUSDT",
+      "probe": "first_month",
+      "month": "2020-12",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/1INCHUSDT/4h/1INCHUSDT-4h-2020-12.zip"
+    },
+    {
+      "symbol": "1INCHUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/1INCHUSDT/4h/1INCHUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "SANDUSDT",
+      "probe": "first_month",
+      "month": "2021-01",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/SANDUSDT/4h/SANDUSDT-4h-2021-01.zip"
+    },
+    {
+      "symbol": "SANDUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/SANDUSDT/4h/SANDUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "CHZUSDT",
+      "probe": "first_month",
+      "month": "2021-01",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/CHZUSDT/4h/CHZUSDT-4h-2021-01.zip"
+    },
+    {
+      "symbol": "CHZUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/CHZUSDT/4h/CHZUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "ANKRUSDT",
+      "probe": "first_month",
+      "month": "2021-01",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ANKRUSDT/4h/ANKRUSDT-4h-2021-01.zip"
+    },
+    {
+      "symbol": "ANKRUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ANKRUSDT/4h/ANKRUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "REEFUSDT",
+      "probe": "first_month",
+      "month": "2021-01",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/REEFUSDT/4h/REEFUSDT-4h-2021-01.zip"
+    },
+    {
+      "symbol": "REEFUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/REEFUSDT/4h/REEFUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "UNFIUSDT",
+      "probe": "first_month",
+      "month": "2021-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/UNFIUSDT/4h/UNFIUSDT-4h-2021-02.zip"
+    },
+    {
+      "symbol": "UNFIUSDT",
+      "probe": "recent_month",
+      "month": "2024-09",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/UNFIUSDT/4h/UNFIUSDT-4h-2024-09.zip"
+    },
+    {
+      "symbol": "RVNUSDT",
+      "probe": "first_month",
+      "month": "2021-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/RVNUSDT/4h/RVNUSDT-4h-2021-02.zip"
+    },
+    {
+      "symbol": "RVNUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/RVNUSDT/4h/RVNUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "SFPUSDT",
+      "probe": "first_month",
+      "month": "2021-02",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/SFPUSDT/4h/SFPUSDT-4h-2021-02.zip"
+    },
+    {
+      "symbol": "SFPUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/SFPUSDT/4h/SFPUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "XEMUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/XEMUSDT/4h/XEMUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "XEMUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/XEMUSDT/4h/XEMUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "COTIUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/COTIUSDT/4h/COTIUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "COTIUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/COTIUSDT/4h/COTIUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "CHRUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/CHRUSDT/4h/CHRUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "CHRUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/CHRUSDT/4h/CHRUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "MANAUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/MANAUSDT/4h/MANAUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "MANAUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/MANAUSDT/4h/MANAUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "ALICEUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ALICEUSDT/4h/ALICEUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "ALICEUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ALICEUSDT/4h/ALICEUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "GTCUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/GTCUSDT/4h/GTCUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "GTCUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/GTCUSDT/4h/GTCUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "HBARUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/HBARUSDT/4h/HBARUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "HBARUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/HBARUSDT/4h/HBARUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "LINAUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/LINAUSDT/4h/LINAUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "LINAUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/LINAUSDT/4h/LINAUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "ONEUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ONEUSDT/4h/ONEUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "ONEUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/ONEUSDT/4h/ONEUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "STMXUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/STMXUSDT/4h/STMXUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "STMXUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/STMXUSDT/4h/STMXUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "DENTUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/DENTUSDT/4h/DENTUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "DENTUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/DENTUSDT/4h/DENTUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "CELRUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/CELRUSDT/4h/CELRUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "CELRUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/CELRUSDT/4h/CELRUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "HOTUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/HOTUSDT/4h/HOTUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "HOTUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/HOTUSDT/4h/HOTUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "MTLUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/MTLUSDT/4h/MTLUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "MTLUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/MTLUSDT/4h/MTLUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "OGNUSDT",
+      "probe": "first_month",
+      "month": "2021-03",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/OGNUSDT/4h/OGNUSDT-4h-2021-03.zip"
+    },
+    {
+      "symbol": "OGNUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/OGNUSDT/4h/OGNUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "NKNUSDT",
+      "probe": "first_month",
+      "month": "2021-04",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/NKNUSDT/4h/NKNUSDT-4h-2021-04.zip"
+    },
+    {
+      "symbol": "NKNUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/NKNUSDT/4h/NKNUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "1000SHIBUSDT",
+      "probe": "first_month",
+      "month": "2021-05",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/1000SHIBUSDT/4h/1000SHIBUSDT-4h-2021-05.zip"
+    },
+    {
+      "symbol": "1000SHIBUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/1000SHIBUSDT/4h/1000SHIBUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "BAKEUSDT",
+      "probe": "first_month",
+      "month": "2021-05",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BAKEUSDT/4h/BAKEUSDT-4h-2021-05.zip"
+    },
+    {
+      "symbol": "BAKEUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BAKEUSDT/4h/BAKEUSDT-4h-2024-11.zip"
+    },
+    {
+      "symbol": "BTCDOMUSDT",
+      "probe": "first_month",
+      "month": "2021-06",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCDOMUSDT/4h/BTCDOMUSDT-4h-2021-06.zip"
+    },
+    {
+      "symbol": "BTCDOMUSDT",
+      "probe": "recent_month",
+      "month": "2024-11",
+      "ok": null,
+      "status": "URLError",
+      "url": "https://data.binance.vision/data/futures/um/monthly/klines/BTCDOMUSDT/4h/BTCDOMUSDT-4h-2024-11.zip"
+    }
+  ]
+}

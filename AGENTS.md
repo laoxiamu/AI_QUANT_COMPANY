@@ -25,5 +25,37 @@
 ## 禁止项
 碰 Holdout｜改预登记文档｜简化成本模型｜全样本分位｜引入不可审计黑箱依赖｜把失败结果写成"部分成功"｜超任务书范围"顺手优化"。
 
+## 历史文件处理原则（2026-06-14，与 CLAUDE.md 保持一致）
+历史文件（03_RAW_INBOX/、旧版项目方案、ChatGPT/DeepSeek 导出文件）**只做参考，禁止不分析直接继承或作为设计依据**。唯一可以直接采用历史内容的情况：综合判断它真的优于任务书指定的独立设计。任务书已经过 Claude 独立分析，Codex 按任务书规格执行，不擅自从历史文件引入未经 Claude 评估的设计。
+
+## 任务中断状态记录（§1b 机制，2026-06-14）
+如果 Codex 任务被 Founder 主动打断（或 Codex 自行判断需要暂停等待 Claude 确认），在停止前必须在任务报告文件里注明：已完成哪些步骤、剩余哪些步骤、恢复需要什么前提。Claude 会同步更新 `01_MEMORY_CORE/CURRENT_STATE.md §1b`，下一个会话可以从 §1b 找到恢复点。
+
+## 专业异议升级路径（补充，2026-06-14）
+发现任务书研究方向/实现方式有问题时：
+1. 在报告文件开头写明"**[专业异议]**"标记，说明发现的问题和替代建议
+2. 暂停执行有疑问的部分（其余可继续）
+3. 不需要等 Founder，Claude 看到后处理——这就是 Claude↔Codex 讨论链路的使用方式
+
+## 任务完成通知（TASK_INBOX 协议，2026-06-14）
+每个任务完成的**最后一步**，必须写入完成事件记录（让 Claude 调度器知道你完成了）：
+
+```python
+import json, datetime, pathlib
+inbox = pathlib.Path("04_AI_TEAM/TASK_INBOX")
+inbox.mkdir(exist_ok=True)
+done = {
+    "task_id": "TASK_ID",      # 填实际任务号，如 D1/D2/E1 等
+    "completed_at": datetime.datetime.utcnow().isoformat() + "Z",
+    "status": "completed",     # completed / blocked / failed
+    "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_TASK_ID.md",
+    "next_task": "D2",         # 任务书中指定的下一步（如无则写 null）
+    "notes": "简要说明完成情况或阻塞原因"
+}
+(inbox / f"{done['task_id']}_DONE.json").write_text(json.dumps(done, ensure_ascii=False, indent=2))
+```
+
+若任务书没有明确 next_task，写 `"next_task": null`，由 Claude 在验收时判断。
+
 ## 交接
-完成后报告写入 04_AI_TEAM/CODEX_TASKS/REPORT_[任务号].md，等 Claude 验收；验收不过按退回意见修，不抗辩成本与工期以外的验收标准。
+完成后报告写入 04_AI_TEAM/CODEX_TASKS/REPORT_[任务号].md，并写入 TASK_INBOX（见上方协议）；等 Claude 验收；验收不过按退回意见修，不抗辩成本与工期以外的验收标准。
