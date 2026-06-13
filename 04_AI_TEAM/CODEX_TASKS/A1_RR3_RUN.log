@@ -1141,3 +1141,3375 @@ exec
    323	
    324	*本协议由 Claude（CTO）独立设计，非 D31 直接修改版本。D31 作为 V4 历史参考，本协议根据 V5 的纯历史回测语境和 DEC-018/019 要求全新设计。*
 
+codex
+逐行比对已发现三处需要重点裁决，而不只是措辞问题：`§0` 写 `m=3` 与正式 family 的 `m=4` 冲突；96h 块没有覆盖 CAR 的完整 `72h基准+48h事后` 数据足迹，且变长块的“≈n”停止规则未定义；Spearman 沿用“减均值”重心化无法构造零相关原假设。现在补做沙箱语义与旧版差异核查。
+exec
+/bin/bash -lc "printf 'outside_workspace_readable='; if test -r /etc/hosts; then printf 'yes\\n'; head -n 1 /etc/hosts; else printf 'no\\n'; fi
+printf 'workspace=%s\\n' \""'$PWD"' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+outside_workspace_readable=yes
+##
+workspace=/Users/yaomingyu/Documents/AI_QUANT_COMPANY
+
+exec
+/bin/bash -lc "nl -ba 06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v2.md | sed -n '1,247p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+     1	# A-1 强制去杠杆卖压后条件回弹 预登记 v2
+     2	
+     3	**任务号：** D3-R（A-1 预登记修订，应对 A1_RISK_REVIEW_v1）
+     4	**状态：** PREREGISTERED DRAFT v2 — 供 Risk Reviewer 第二轮物理盲审
+     5	**起草：** Claude（主理人/CTO，thesis owner）｜**起草日期：** 2026-06-14
+     6	**前序：** v1（`A1_CASCADE_REBOUND_PREREG_v1.md`）经 `A1_RISK_REVIEW_v1.md` 盲审结论 **NOT APPROVED（需修改后通过）**。v1 从未放行，本 v2 为对失败盲审稿的正常修订，非 §10 锁后改题。
+     7	**禁止动作：** 本 v2 通过 Risk Reviewer 第二轮盲审 + Founder 知会 + Claude 主会话人工派发之前，不得运行任何 A-1 事件后收益计算，不得读取任何 HOLDOUT 目录/文件，不得据结果反改触发/分层/成本/验收口径。
+     8	
+     9	---
+    10	
+    11	## §0 审查整改对照表（v2 对 A1_RISK_REVIEW_v1 十项最低条件的逐条响应）
+    12	
+    13	| # | Reviewer 必改项 | v2 处置 | 落点 |
+    14	|---|---|---|---|
+    15	| 1 | 封闭强制卖压方向识别，或降低因果主张 | 加入**冻结价格方向代理过滤**（OI 骤降窗内并发负价格冲击）；命题改为"proxy 识别的强制去杠杆卖压后条件回弹"；无历史真实强平名义额（采集器 2026-06-13 起前向，历史不可得），明确标注为 proxy 非 proof | §1, §2 |
+    16	| 2 | 自包含冻结 OI/分位/episode/event_time/缺失/价格对齐 | §2 给出 `d6h` 公式、OI 来源字段口径、5M→1H 重采样、滚动窗口与 midrank、180d 有效观测门、**24h refractory window 取代 single-linkage 链接**、event_time=首触发、价格对齐严格不等号 | §2 |
+    17	| 3 | 唯一主 horizon 或多重校正；依赖稳健主推断 | **主 horizon 唯一=48h**；24h 为预登记次要（Holm 校正）；72h 仅探索不支持通过；**global-event-cluster 块 bootstrap 为主推断**（seed/块/次数冻结），t-test 仅描述 | §4, §5 |
+    18	| 4 | 80% power + n_eff + 保守方差重做 MDE；补效应区间依据 | §6 用 `(z_{1-α}+z_{1-β})σ/√n_eff`、power=80%、保守方差、各 horizon 实际 n_eff；B4 降为乐观预检；**撤销 1.5–3.0% 作硬功效上限**（降为启发先验，不作门） | §6 |
+    19	| 5 | 用 A-2 冻结极端阈值定义 overlap + 不可区分判决 | §7 `a2_overlap` := 事前 funding 滚动分位 **≥0.95**（A-2 冻结正极端 P95，非另选）；预登记 overlap 率/交互项；高重叠或非重叠欠功效→**"机制不可区分"** | §7 |
+    20	| 6 | 分离事件研究门与策略门；完整成本/每边滑点/真实 funding | §8 **两级门**：Tier A 机制事件研究门（本 v2）/ Tier B 交易策略门（另案预登记）；完整成本公式每边口径冻结 | §8, §9 |
+    21	| 7 | 事件类现金零基准为硬门，或先正式解决协议冲突 | §10 **以 Protocol v1.4 现金零基准为硬门**（主理人裁决：上位协议优先）；同 regime 被动 buy-and-hold 降为诊断 | §10 |
+    22	| 8 | 唯一闭合 decision table + 确认检验预算 | §11 唯一二元 decision table；§4 确认性检验总预算上限=**3**（48h 主 + 24h 次 + 单调性 1）；消除所有 OR 选择 | §4, §11 |
+    23	| 9 | （含于 3/6/8） | 同上 | — |
+    24	| 10 | Holdout 升级为有保管人/哈希/访问边界的物理封存 | §12 一次性保管方切分：work/sealed 分别落盘 + 行数/schema/代码版本/SHA-256 清单 + 保管人/解封条件/一次性使用记录 + 路径拒绝 | §12 |
+    25	
+    26	**Protocol v1.4 AI 证据三行：**
+    27	1. 本假设非 LLM 作为 alpha 信号生成；来自机会地图与人工机制归纳，Claude 起草，Codex 仅独立盲审。
+    28	2. 最可能错处：OI 骤降+并发负价代理仍可能由"持续单边去杠杆中段"而非"清算结束 overshoot"产生，导致事件后无正回弹。
+    29	3. 不以多 agent 共识为证据；A-2 碰撞门仅作机制隔离材料。
+    30	
+    31	---
+    32	
+    33	## §1 机制假设（命题边界已收窄）
+    34	
+    35	A-1 检验**已发生的机械性强制去杠杆事件之后**是否存在短周期价格回归；不预测强制事件何时发生。
+    36	
+    37	冻结因果链（条件化表述）：
+    38	
+    39	```text
+    40	多头强平 / 止损链 已经发生（机械、非自愿卖出）
+    41	    -> 6h OI 极端骤降 且 并发负价格冲击（卖压方向代理）
+    42	    -> 机械平仓订单短时冲击 -> 临时超额供给 -> 价格相对短期均衡 overshooting
+    43	    -> 主动买方回归 / 被动卖压消失
+    44	    -> 事件后均值回归，表现为正向 CAR
+    45	```
+    46	
+    47	**核心可证伪命题（收窄版）：** 在"OI 6h 极端骤降 **且** 同窗负价格冲击"代理识别的强制去杠杆卖压事件后，事件后 **48h** 平均 CAR 显著大于 0，且该超额不能仅由同 regime 被动 beta 或 A-2 极端正 funding 拥挤状态解释。
+    48	
+    49	**方向识别诚实声明（Reviewer 条件 1）：** 6h OI 下降本身无法区分多头强平卖出 / 空头回补买入 / 主动双边减仓 / 移仓 / 宏观去杠杆。v2 用"同窗负价格冲击"作为**强制卖压方向代理**（多头强平伴随价格下行；空头回补伴随价格上行，被此过滤排除）。该代理在 §2 看任何事件后收益前冻结。本研究**不声称**已直接观测到强平名义额；结论措辞限定为"proxy 识别的强制去杠杆卖压后条件回弹"，不得写"强制卖压已证实发生""因果回归已验证"。真实强平名义额仅 2026-06-13 起前向采集，历史工作集不可得；若未来前向数据足量，另案以真实名义额重做方向识别。
+    50	
+    51	**效应区间（Reviewer 条件 1/4）：** 撤销 v1 的 1.5%–3.0% 作为功效门机制上限。该区间无可核查来源，降级为**启发先验**，仅供事后讨论参照，**不作为任何通过/功效硬门**。功效门改由 §6 保守方差 + 80% power 决定。
+    52	
+    53	---
+    54	
+    55	## §2 触发定义（冻结，自包含，不可修改）
+    56	
+    57	**数据源（冻结）：** Binance USDT 本位永续（UM）。OI 字段=交易所 `sumOpenInterest`（合约张数口径）经 `sumOpenInterestValue`（名义 USDT）二者均落盘；主信号用**名义 USDT OI**（`oi_notional`）以消除张数面值变更影响。价格用 MARK price K 线（与 8 币基线同源，避免 v1 的 contract/mark 混用）。品种：`BTCUSDT, ETHUSDT, SOLUSDT`，池化。截止：`ts < 2024-12-10T00:00:00Z`。
+    58	
+    59	**OI 重采样（冻结）：** 原始 5M `oi_notional` → 1H，取每小时**最后一个**观测值，**缺口不前向填充**；某 1H 桶无观测则该桶 OI 缺失，相关触发判定剔除（不补值）。
+    60	
+    61	**6h OI 变化（冻结公式）：**
+    62	```text
+    63	d6h_pct(t) = oi_notional(t) / oi_notional(t-6h) - 1
+    64	```
+    65	要求 `t` 与 `t-6h` 两端 1H 桶 OI 均非缺失，否则该 t 不参与。
+    66	
+    67	**滚动分位（冻结）：** 对每个 `d6h_pct(t)`，相对**严格事件前**窗口 `[t-365d, t)`（不含 t 自身）的历史 `d6h_pct` 分布求分位；窗口内**有效观测数 ≥ 180×24×(1/6)** 实际等价为"≥180 日历日且该窗口有效 d6h 样本数 ≥ 720"（每日约 4 个非重叠 6h 步长的保守下限），不足则该 t 不产生信号。ties 用 **midrank**（平均秩）：`pctl = (rank_avg - 0.5)/N_window`。禁止全样本分位。
+    68	
+    69	**信号触发（冻结）：**
+    70	```text
+    71	触发(t) 当且仅当：
+    72	  (a) OI 条件： d6h_rolling_pctl(t) <= 0.01           （6h OI 极端骤降，下 1% 尾）
+    73	  且
+    74	  (b) 方向代理： r6h_mark(t) <= DIR_THRESHOLD          （同窗负价格冲击，强制卖压代理）
+    75	        其中 r6h_mark(t) = log( mark_close(t) / mark_close(t-6h) )
+    76	        DIR_THRESHOLD = -0.02   （冻结：6h 内 MARK 对数收益 ≤ -2%）
+    77	```
+    78	`DIR_THRESHOLD=-2%` 在看任何事件后收益前冻结，理由：排除 OI 骤降伴随价格上行（空头回补型）的事件，保留价格下行（多头强平型）。该值为结构参数，失败后禁改。
+    79	
+    80	**Episode 定义（冻结，取代 v1 single-linkage）：** 同品种触发按时间排序。采用 **24h refractory window**：首个触发开启 episode，`event_time` = 该首触发的 1H 时点；其后 24h 内的所有触发**忽略**（不延长、不链接）；24h 之后的下一个触发开启新 episode。该规则消除 v1 "每 23h 触发无限链式延长"的弹性。
+    81	
+    82	**Episode 严重度 / funding / regime 取值（冻结）：** 一律取 **event_time（首触发）时点**的值，不取极值、不取末值。
+    83	
+    84	**价格对齐（冻结）：** 事件入场对齐点 = 第一个满足 `mark_close_timestamp > signal_available_timestamp` 的 1H MARK close bar；其中 `signal_available_timestamp` = event_time 所在 1H 桶**收盘后**（即不使用尚未完成的 OI 小时信息入场）。全部品种/ horizon 一致。
+    85	
+    86	**工作集生成（冻结）：** 池化全部 episodes（BTC/ETH/SOL），按 §12 物理保管方一次性切分为 work / sealed-holdout；正式工作集 n 由 work 文件唯一确定（不再在文档中硬编码 163，因加入方向代理过滤后池化总数将变化，实际 n 以保管方落盘行数为准并记入 §12 清单）。
+    87	
+    88	---
+    89	
+    90	## §3 Regime Gate（继承 P1-06，仅分层不作触发过滤）
+    91	
+    92	冻结 regime（与 P1-06 验收口径一致）：
+    93	- **bull：** 该品种前一完整 UTC 日收盘 `>` 日线 SMA200。
+    94	- **bear：** 前一完整 UTC 日收盘 `<=` 日线 SMA200。
+    95	- **unknown：** SMA200 预热不足；不强归 bear，单独标注。
+    96	- **无前视：** 仅用已完成 UTC 日数据。
+    97	
+    98	bull/bear/unknown 子样本仅作辅助解释与风险识别；**正式通过条件不允许通过事后剔除某一 regime 达成**。
+    99	
+   100	---
+   101	
+   102	## §4 检验设计（唯一主 horizon + 依赖稳健主推断）
+   103	
+   104	**观测单位：** 每个 work episode 一条；BTC/ETH/SOL 池化。
+   105	
+   106	**指标 CAR（冻结）：** 用 1H MARK close 对数收益，事件前基准期 `[event_time-72h, event_time-1h]`：
+   107	```text
+   108	baseline_mu_i = mean( log(close_tau / close_{tau-1h}) )   over hourly returns ending in [event_time-72h, event_time-1h]
+   109	raw_return_i,h = log( close_{align+h} / close_{align} )      （align = §2 入场对齐 bar）
+   110	CAR_i,h = raw_return_i,h - h * baseline_mu_i
+   111	```
+   112	
+   113	**Horizon 角色（冻结，Reviewer 条件 3/8）：**
+   114	- **主 horizon = 48h（唯一确认性主检验）。**
+   115	- **次要 horizon = 24h**：预登记次要确认性检验，与主检验组成 family，用 **Holm 校正**（m=2）控制 FWER@0.05。
+   116	- **72h = 仅探索**：报告点估计与形态，**任何 p 值不得改变 PASS/FAIL 结论**。
+   117	
+   118	**确认性检验总预算 = 3：** {48h 主 CAR、24h 次 CAR（Holm）、§5 单调性 1 个方向检验}。A-2 碰撞为隔离诊断（§7），不计入确认预算但有冻结判决。除此之外不得新增确认性检验。
+   119	
+   120	**主推断（依赖稳健，冻结）：**
+   121	- `H0: mean(CAR_48h) <= 0`，`H1: mean(CAR_48h) > 0`，单侧。
+   122	- **Global-event cluster 块 bootstrap 为主推断**：同一**日历日（UTC）**内跨品种的 episodes 归为同一 cluster；以 cluster 为重采样单位做 block bootstrap，`B = 10000`，**seed = 20260614**，单侧 p 由 bootstrap 分布给出。
+   123	- 普通单样本 t-test **仅作描述性对照**，不作通过依据（消除 v1 把 163 当独立观测的问题）。
+   124	- 48h/72h 事件后窗口跨 episode 可重叠的依赖，由 cluster 块重采样吸收。
+   125	
+   126	**24h 次检验：** 同一 cluster bootstrap 方法，Holm 校正后阈值。
+   127	
+   128	---
+   129	
+   130	## §5 辅检验：OI 骤降幅度单调性（冻结方向）
+   131	
+   132	按 `d6h_rolling_pctl` 固定区间三档（禁止用工作集全样本重切）：
+   133	- Severe：`0 <= pctl <= 0.0033`
+   134	- Medium：`0.0033 < pctl <= 0.0067`
+   135	- Mild：`0.0067 < pctl <= 0.0100`
+   136	
+   137	**单一冻结统计量：** 对 **48h** CAR，检验 `CAR_Severe >= CAR_Medium >= CAR_Mild` 的单调性，用一个方向性统计量（Spearman 秩相关 between severity 序与 CAR，单侧），cluster 块 bootstrap 同 seed。仅此一个方向检验计入确认预算。报告按 severity 方向呈现避免符号误读。
+   138	
+   139	---
+   140	
+   141	## §6 功效段（80% power + n_eff + 保守方差）
+   142	
+   143	**撤销 v1 alpha-only 口径。** 正式功效：
+   144	```text
+   145	MDE_h = (z_{1-α} + z_{1-β}) * sigma_eff_h / sqrt(n_eff_h)
+   146	α=0.05 单侧, z_{0.95}=1.6448536269514715
+   147	power=80%, z_{0.80}=0.8416212335729143
+   148	```
+   149	- `n_eff_h` = 各 horizon 在 work 集上的**有效样本量**，用 cluster 设计效应折算：`n_eff = n_episodes / (1 + (m_bar-1)*ICC_proxy)`，其中 `m_bar`=平均每 cluster episode 数，`ICC_proxy` 由 cluster 内 CAR 相关的保守上界估计（事前用 0.3 保守值，实际执行用 work 集估计但不读事件后均值方向——仅用方差结构）。
+   150	- `sigma_eff_h` = 保守方差：取 max( 无条件 1H MARK 收益方差外推, 事件条件方差 )，并对依赖加设计效应膨胀。
+   151	- B4 表（v1 §5）**降级为乐观预检**，不作功效门。
+   152	- **停机条件：** 若 48h 的保守 MDE 高于任何有依据的合理效应估计，实验前停止，不跑事件后收益。
+   153	
+   154	报告：48h、24h 的 80%-power MDE 与 n_eff；72h 仅附参考。
+   155	
+   156	---
+   157	
+   158	## §7 A-2 碰撞门（用 A-2 冻结极端阈值）
+   159	
+   160	**a2_overlap 定义（冻结，取自 A-2 v1）：** A-2 极端正 funding（多头拥挤）= 事前 funding 读数滚动分位 **≥ 0.95**（P95），滚动口径与 A-2 一致：每读数对**此前 365 天**（首年扩张窗，最少 180 天）分布比较，midrank，仅用事件前数据。对每个 A-1 episode，计算 event_time 前 `[-24h,-1h]` 平均 funding 的滚动分位；`>=0.95` 标记 `a2_overlap=1`，否则 0。**禁止为 A-1 另选更有利阈值。**
+   161	
+   162	**预登记报告与判决（冻结）：**
+   163	1. 报告 overlap 比例 `p_overlap`。
+   164	2. 报告 overlap / non-overlap 子样本 48h CAR（cluster bootstrap）。
+   165	3. 预登记**交互检验**：CAR_48h ~ a2_overlap，单一交互项，检验回弹效应是否仅由 overlap 驱动。
+   166	4. **机制独立性最低要求：** non-overlap 子样本 48h CAR 仍为正、依赖稳健、Holm 后显著；或交互项不显示效应仅由 overlap 驱动。
+   167	5. **"机制不可区分"判决：** 若 `p_overlap` 过高（≥0.60）使 non-overlap n_eff 低于 §6 功效门，或 non-overlap 子样本不显著，则判 A-1 与 A-2 极端拥挤**机制不可区分**，碰撞门 **FAIL**（不得写成通过）。
+   168	6. **"不显著为负"不单独构成通过证据**（消除 v1 把 absence of evidence 当 independence）。
+   169	
+   170	---
+   171	
+   172	## §8 成本（完整公式，每边口径冻结）
+   173	
+   174	事件研究本体不含交易成本；但事件→策略需完整成本，且 v2 在 Tier A 即报告净额敏感性以防 Tier A 通过后 Tier B 不可行。
+   175	
+   176	**完整往返成本（冻结，每边口径）：**
+   177	```text
+   178	round_trip_cost = 2*fee_per_side + 2*slippage_per_side + holding_funding
+   179	fee_per_side = 0.10%       （手续费，每边）
+   180	slippage_per_side_base = 0.10%   （基准滑点，每边）
+   181	holding_funding = 事件持有期真实 8H funding 现金流（按 align→align+h 实际结算笔数）
+   182	```
+   183	**事件类滑点压力档（每边，追加）：** `0.30% / 0.50% / 1.00%`（替换 v1 的 0.05/0.10/0.20 表，后者不满足协议）。
+   184	
+   185	Tier A 报告：48h 在 base、0.30% 两档下的 net CAR（仅诊断，不构成 Tier A 通过门）。**完整四件套/爆仓/几何增长/1.00% 硬档归 Tier B。**
+   186	
+   187	---
+   188	
+   189	## §9 验收：两级门（Reviewer 条件 6）
+   190	
+   191	**Tier A — 机制事件研究门（本 v2 判定对象）。** 通过=机制成立（探索级），**不等于策略晋级**。
+   192	**Tier B — 交易策略门（另案预登记）。** 仅在 Tier A 通过后立项，冻结入场成交时刻/持仓名义/杠杆/funding 结算/退出成交/同品种重叠持仓/资本占用后，才检验完整成本四件套、爆仓概率、几何增长、1.00% 压力。**v2 不对 Tier B 下任何结论。**
+   193	
+   194	---
+   195	
+   196	## §10 第五件：现金零基准（硬门，Protocol v1.4）
+   197	
+   198	**主理人裁决（Reviewer 条件 7）：** v1 用"同 regime 全部起点 buy-and-hold"与 Protocol v1.4 事件类**现金零基准**硬门冲突。依文档权威层级（Protocol > 本预登记），**以现金零基准为硬门**：A-1 48h mean CAR 必须显著 > 0（即跑赢"事件后不持仓=0 收益"的现金基准，已由 §4 主检验 `mean(CAR)>0` 表达）。同 regime 同品种被动 buy-and-hold mean CAR **降为诊断**（报告 A-1 是否亦跑赢被动 beta，但不作硬门，避免被动基准定义争议阻断机制判定）。
+   199	
+   200	---
+   201	
+   202	## §11 唯一闭合 Decision Table（Reviewer 条件 8）
+   203	
+   204	**全部为 Tier A 判定。所有"CAR > 0"指 cluster bootstrap 单侧 p < 校正后阈值（点估计为正且依赖稳健显著），不是裸点估计。**
+   205	
+   206	PASS 须全部满足：
+   207	- [ ] 主：48h CAR cluster-bootstrap 单侧 `p < 0.05`（Holm family 中 48h 为更强项时阈值 0.025；以 Holm 程序实际给出的拒绝为准），点估计 > 0。
+   208	- [ ] 现金零基准硬门：48h mean CAR > 0 且上条显著（§10）。
+   209	- [ ] A-2 碰撞门：non-overlap 子样本 48h CAR 依赖稳健显著为正，且未判"机制不可区分"（§7）。
+   210	- [ ] 单调性：48h CAR 随 severity 单调性方向检验显著（§5）。
+   211	- [ ] WF 稳定性：按 work episode 时间序切 3 段，**同一主 horizon 48h** 至少 2 段 mean CAR > 0（仅稳定性，不调参；同一 global cluster 不跨段）。
+   212	
+   213	FAIL（任一即 FAILED）：
+   214	- 48h CAR Holm 后不显著（无论 24h/72h 如何）。
+   215	- 现金零基准门不满足。
+   216	- A-2 碰撞门 FAIL 或判"机制不可区分"。
+   217	- 单调性方向检验不显著。
+   218	- 发现任何 Holdout 读取 / 全样本分位 / 触发或 episode 规则重设 / cutoff 后行情补齐。
+   219	
+   220	**判读纪律：**
+   221	- 唯一主 horizon=48h；**禁止事后在 24h/48h 间择优**。24h 仅作 Holm family 次项与稳健性参考，不能单独支撑通过。72h 仅探索，不入判定。
+   222	- 任一必要项因样本不足为 N.A. → **整体 FAIL**（不自动放行）。
+   223	- 不显著正点估计只能写"未拒绝 H0 / 未验证"，不得写"方向正确/部分成功/有一定效果"。
+   224	- 24h 与 48h 方向不一致、或 funding 分组负但不显著 → 不得解释为"方向一致"。
+   225	
+   226	---
+   227	
+   228	## §12 Holdout 物理封存（Reviewer 条件 10）
+   229	
+   230	**升级为保管方一次性切分（取代 v1 逻辑切分）：**
+   231	1. 由**独立保管脚本**（非研究执行脚本）一次性生成全部 pooled episodes，按 `(event_time_utc, symbol)` 排序后 deterministic 每第 5 个预留为 sealed-holdout，其余为 work。
+   232	2. 分别落盘：`work_episodes.csv` / `sealed_holdout_episodes.csv`，二者**不在同一分析进程加载**。
+   233	3. 产出冻结清单 `A1_HOLDOUT_MANIFEST.json`：work/sealed 各自行数、schema、生成代码 git commit hash、两文件 **SHA-256**、生成时间、保管人=Claude 主会话、解封条件（Tier A 通过且 Founder 批准）、一次性使用记录字段。
+   234	4. 研究执行入口对任何含 `HOLDOUT`/`sealed` 路径的读取**硬 assert 拒绝**。
+   235	5. 任一 horizon 的有效 n 仅由 work 文件计算；持有原始特征者虽理论可重建，但封存清单 + 一次性使用记录 + 路径拒绝构成审计边界，违反即记纪律违规、研究作废。
+   236	
+   237	**禁止：** Risk Reviewer 通过、Founder 知会、Claude 主会话派发**之前**，任何步骤不得读取 work 之外数据，不得读取 A-2 holdout（`a2_events_holdout.csv` 218 条，完全独立）。
+   238	
+   239	---
+   240	
+   241	## §13 失败后禁止行为（预登记锁死，承袭 v1 §10 并强化）
+   242	
+   243	若 Tier A FAILED，禁止：改 OI 阈值/方向阈值/episode 规则/分位窗口后重测；排除特定年份/品种/regime/funding 后重测；把 72h 或 24h 单独显著改写为机制通过；用全样本分位重算；用 cutoff 后行情补 horizon；读 Holdout"确认"失败是否噪音。
+   244	
+   245	允许：若失败为**功效不足**而非方向反证，等前向真实强平采集 3–6 个月以更大 n 且**真实强平名义额方向识别**另写新预登记重新盲审，明确与本次区别。
+   246	
+   247	本 v2 锁定后，对触发/方向代理/成本/分层/horizon/验收门/Holdout 切分的任何修改均视为新假设，不得在 A-1 v2 名义下继续。
+
+exec
+/bin/bash -lc "nl -ba 06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v1.md | sed -n '1,258p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+     1	# A-1 强制流两相位 / 清算级联后回弹预登记 v1
+     2	
+     3	**任务号：** D3  
+     4	**状态：** PREREGISTERED DRAFT - 供 Risk Reviewer 物理盲审  
+     5	**起草日期：** 2026-06-14  
+     6	**研究对象：** A-1 cascade rebound conditional alpha candidate  
+     7	**禁止动作：** 本预登记完成前不得运行 A-1 事件研究，不得读取任何 HOLDOUT 目录或文件，不得据结果修改触发、分层、成本或验收口径。
+     8	
+     9	**依据文件：**
+    10	- `06_RESEARCH/RESULTS/20260612_a1_mde_precheck.md`
+    11	- `06_RESEARCH/RESULTS/20260613_a1_vs_a2_mechanism_diff.md`
+    12	- `06_RESEARCH/RESULTS/20260613_a1_framework_report.md`
+    13	- `06_RESEARCH/CODE/a1_event_study_framework.py`
+    14	- `01_MEMORY_CORE/CURRENT_STATE.md`
+    15	- `06_RESEARCH/RESEARCH_PROTOCOL_v1.3_ADDENDUM.md`
+    16	
+    17	**Protocol v1.4 AI 证据三行：**
+    18	1. 本假设不是由 LLM 作为 alpha 信号生成；它来自项目当前机会地图与 Claude 对强制流机制的人工归纳，Codex 本次只起草预登记。
+    19	2. 最可能错处：OI 骤降可能不是清算结束后的过度卖出，而是持续去杠杆或宏观熊市下跌的中段信号，导致事件后没有正 CAR。
+    20	3. 本预登记不以多 agent 共识作为证据；A-2 碰撞门仅作为机制隔离与风险审查材料。
+    21	
+    22	---
+    23	
+    24	## §1 机制假设
+    25	
+    26	A-1 检验的是已经发生的机械性强制事件之后是否存在短周期价格回归，而不是预测强制事件何时发生。
+    27	
+    28	冻结因果链如下：
+    29	
+    30	```text
+    31	强制平仓 / 清算级联已经发生
+    32	    -> 6h OI 极端骤降
+    33	    -> 机械平仓订单在短时间内冲击市场
+    34	    -> 临时超额供给形成
+    35	    -> 价格相对短期均衡 overshooting
+    36	    -> 主动买方回归或被动卖压消失
+    37	    -> 24h / 48h / 72h 均值回归，表现为正向 CAR
+    38	```
+    39	
+    40	核心可证伪命题：在清算级联代理事件发生后，事件后 24h 或 48h 的平均 CAR 显著大于 0，且该超额不能仅由同 regime 的被动 beta 暴露解释。
+    41	
+    42	本研究不检验、也不声称可以预测清算级联何时发生；触发只在 OI 骤降已经被观测到后生效。
+    43	
+    44	## §2 触发定义（冻结，不可修改）
+    45	
+    46	触发条件冻结如下，正式检验不得修改：
+    47	
+    48	- **信号：** 6h OI 骤降，`d6h_rolling_pctl <= 0.01`。
+    49	- **滚动分位口径：** 365 天滚动窗口，最少 180 天，midrank；只使用事件时点之前历史样本，禁止全样本分位。
+    50	- **品种：** `BTCUSDT`, `ETHUSDT`, `SOLUSDT`，池化检验。
+    51	- **截止：** `ts < 2024-12-10T00:00:00Z`。
+    52	- **Episode 合并：** 同品种触发按时间排序，距上一触发 `<= 24h` 归为同一 episode。
+    53	- **工作集：** 池化 203 个 episodes；按第 5 个 episode 预留 Holdout `floor(203 / 5) = 40` 个；正式工作集 `n = 163`。
+    54	
+    55	价格与 funding 对齐约束：
+    56	
+    57	- 任何 baseline、事件后 horizon、funding 分层或被动基准计算均不得读取 `2024-12-10T00:00:00Z` 及之后数据。
+    58	- 若某 episode 在某 horizon 上没有完整的事件前 baseline 或事件后 endpoint，则该 episode 仅在该 horizon 的检验中剔除，不得替换 horizon 或补读 cutoff 后行情。
+    59	
+    60	## §3 Regime Gate
+    61	
+    62	A-1 继承 P1-06 验收口径中的高周期牛熊状态定义，用于分层与第五件基准对照，不作为新增触发过滤器。
+    63	
+    64	冻结 regime 定义：
+    65	
+    66	- **宏观牛市（bull）：** 该品种前一完整 UTC 日收盘价 `>` 该品种日线 SMA200。
+    67	- **宏观熊市（bear）：** 该品种前一完整 UTC 日收盘价 `<=` 该品种日线 SMA200。
+    68	- **unknown：** SMA200 预热不足或日线数据不足；unknown 不强行归为 bear，主检验可保留但 regime 子样本与 regime 基准需单独标注。
+    69	- **无前视：** regime 在事件时点只使用已完成 UTC 日数据。
+    70	
+    71	A-1 在熊市 regime 下可能表现为持续去杠杆而非回弹，效应方向和幅度可能与牛市不同。因此，bull / bear / unknown 的子样本结果只作为辅助解释和风险识别；正式通过条件不允许通过事后剔除某一 regime 达成。
+    72	
+    73	## §4 检验设计（主检验 + 辅检验）
+    74	
+    75	### 主检验
+    76	
+    77	**观测单位：** 每个 work-sample episode 一条观测；BTC/ETH/SOL 池化。
+    78	
+    79	**指标：** Cumulative Abnormal Return（CAR），使用 1H MARK close 的对数收益，事件前基准期为 `-72h ~ -1h`。
+    80	
+    81	对 episode `i` 与 horizon `h`：
+    82	
+    83	```text
+    84	baseline_mu_i = mean(log(close_tau / close_{tau-1h})) for hourly returns ending in [event_time-72h, event_time-1h]
+    85	raw_return_i,h = log(close_{event_time+h} / close_{event_time})
+    86	CAR_i,h = raw_return_i,h - h * baseline_mu_i
+    87	```
+    88	
+    89	若事件时点无法精确落在 1H bar 上，使用事件时点后第一个可用 1H close 作为 `event_time` 对齐点；该规则必须在全部品种和 horizon 上一致。
+    90	
+    91	**Horizons：** 24h, 48h, 72h。
+    92	
+    93	**统计检验：**
+    94	
+    95	- `H0: mean(CAR_h) <= 0`
+    96	- `H1: mean(CAR_h) > 0`
+    97	- 单侧 t-test，`alpha = 0.05`
+    98	- 24h 与 48h 是主通过 horizon；72h 为延展 horizon 与机制形态观察。
+    99	
+   100	### 辅检验 1：OI 骤降幅度单调性
+   101	
+   102	按 `d6h_rolling_pctl` 固定区间分三档，禁止用工作集全样本重新切分分位数：
+   103	
+   104	- **Severe：** `0 <= d6h_rolling_pctl <= 0.0033`
+   105	- **Medium：** `0.0033 < d6h_rolling_pctl <= 0.0067`
+   106	- **Mild：** `0.0067 < d6h_rolling_pctl <= 0.0100`
+   107	
+   108	预期方向：OI 骤降越剧烈，回弹幅度越大，即 `CAR_Severe >= CAR_Medium >= CAR_Mild`。若直接用 `d6h_rolling_pctl` 排序，则预期是 CAR 随 percentile 上升而下降；报告必须按 severity 方向呈现，避免符号误读。
+   109	
+   110	### 辅检验 2：A-2 碰撞门分层
+   111	
+   112	将 episode 按事件前 24h funding 状态分为高 funding / 低 funding 两组。
+   113	
+   114	分层口径冻结如下：
+   115	
+   116	- 对每个 episode，计算事件前 `-24h ~ -1h` 的平均 funding rate 或累计 funding cash-flow proxy。
+   117	- 将该值相对同品种事件前历史 funding 分布转为滚动历史分位；窗口 365 天、最少 180 天、midrank，只使用事件前数据。
+   118	- **High funding：** funding rolling percentile `>= 0.50`。
+   119	- **Low funding：** funding rolling percentile `< 0.50`。
+   120	
+   121	分别计算两组 24h / 48h / 72h CAR。预期：无论 funding 高低，CAR 方向均为正，或至少不存在高 funding 子样本显著为负。该检验是本预登记对 A-2 尸检碰撞门的操作化响应。
+   122	
+   123	### 辅检验 3：成本压力档
+   124	
+   125	任务书指定成本网格：
+   126	
+   127	- 0.05%
+   128	- 0.10%
+   129	- 0.20%
+   130	
+   131	对每个 horizon 报告：
+   132	
+   133	```text
+   134	net_CAR_h,cost = CAR_h - round_trip_cost
+   135	```
+   136	
+   137	主成本验收：`0.10%` 档下 24h 或 48h 的 mean net CAR 仍为正，且对应 horizon 的单侧 t-test 仍满足 `p < 0.05`。
+   138	
+   139	Protocol v1.3 对事件类策略另有更严格压力档，必须追加报告：
+   140	
+   141	- 基准滑点外，报告 `0.30% / 0.50% / 1.00%` 三档敏感性。
+   142	- 事件类通过线：`0.30%` 档四件套仍成立。
+   143	- A-1 额外硬约束：`1.00%` 档 `E[R] > 0`。
+   144	
+   145	正式判定以任务书成本门与 Research Protocol v1.3 中更严格者为准；不得只报告 0.05% / 0.10% / 0.20% 后跳过 v1.3 压力档。
+   146	
+   147	## §5 功效段（MDE）
+   148	
+   149	B4 MDE 预检结果作为正式功效段输入，不构成事件研究结果。
+   150	
+   151	功效口径：
+   152	
+   153	- 公式：`MDE_h = z_(1-alpha) * sigma_h / sqrt(n)`
+   154	- `alpha = 0.05` 单侧，`z_(0.95) = 1.6448536269514715`
+   155	- 正式检验采用 alpha-only 口径，不加入 power 项。
+   156	- `n = 163`
+   157	- 方差来自 BTC/ETH/SOL 1H MARK close 的无条件 `log(close[t+h] / close[t])`，不按事件条件筛选。
+   158	
+   159	| Horizon | n | MDE alpha-only | 功效门 |
+   160	|---:|---:|---:|---|
+   161	| 24h | 163 | 0.625% | 通过 |
+   162	| 48h | 163 | 0.872% | 通过 |
+   163	| 72h | 163 | 1.073% | 通过 |
+   164	
+   165	机制合理效应区间下沿为 1.5%。alpha-only 口径下，24h / 48h / 72h 均低于 1.5%，功效门预判通过。
+   166	
+   167	补充说明：若采用 alpha+beta（80% power）口径，72h MDE 为 `1.622%`，高于 1.5% 下沿；24h 与 48h 仍通过。因此正式通过条件以 24h 或 48h 为主，不把 72h 单独作为必要通过 horizon。
+   168	
+   169	## §6 第五件：被动基准对照
+   170	
+   171	第五件用于防止 A-1 的 CAR 只是同 regime 市场 beta 暴露。
+   172	
+   173	**基准定义：** 在同一品种、同一 P1-06 macro regime 条件下，不使用 OI 信号的被动 buy-and-hold。
+   174	
+   175	计算方式冻结如下：
+   176	
+   177	1. 对每个 A-1 work-sample episode 标注其品种与事件时点的 P1-06 macro regime（bull / bear / unknown）。
+   178	2. 在该品种、该 regime、cutoff 前的所有可用 1H 起点中，构造与 A-1 相同 horizon 的被动持有收益。
+   179	3. 对被动起点使用与主检验一致的 event-before baseline CAR 公式；起点没有完整 baseline 或 horizon endpoint 时剔除。
+   180	4. 分 horizon 报告 A-1 mean CAR 与 matched passive mean CAR。
+   181	
+   182	验收要求：A-1 24h 或 48h 的 mean CAR 必须大于同 horizon、同 regime 条件下的被动基准 mean CAR。若 A-1 CAR 不高于被动基准，则第五件失败，即使主检验 p 值显著也不得判定通过。
+   183	
+   184	## §7 A-2 碰撞门声明
+   185	
+   186	A-2 已失败机制：funding rate 极端高值代表多头拥挤，假设未来会发生多头解仓并导致价格反转下行。失败根因不是单纯 n=91 功效不足，而是 timing 问题：拥挤状态可以持续数天到数周，模型不能给出可交易的解仓时间窗口。
+   187	
+   188	A-1 机制：OI 在 6h 内已经发生极端骤降，代表机械性强制事件已经发生；研究对象是事件后 24h / 48h / 72h 是否存在价格均值回归。这是 magnitude / post-event reversion 问题，不是预测主动多头何时解仓的问题。
+   189	
+   190	两者核心差异：
+   191	
+   192	| 维度 | A-2（已失败） | A-1（本预登记） |
+   193	|---|---|---|
+   194	| 触发变量 | funding rate level | OI 6h 极端骤降 |
+   195	| 时间性质 | 持续状态 | 已发生点事件 |
+   196	| 行为来源 | 主动多头是否解仓 | 被动机械强平 / 去杠杆 |
+   197	| 主要失败模式 | timing 不可定位 | 级联后继续单边下跌 |
+   198	| 本研究响应 | 不复活 A-2 | 用 funding 分层验证机制独立性 |
+   199	
+   200	碰撞门处理方案：§4 辅检验 2 的 funding 分层是本预登记对 A-2 碰撞门的操作化响应。若 high funding 与 low funding 子样本 CAR 方向一致，则 A-2 失败不直接否定 A-1。若 high funding 子样本 CAR 显著为负，则说明 A-1 可能只是 A-2 拥挤状态的延迟失效表现，碰撞门失败。
+   201	
+   202	## §8 Holdout 声明
+   203	
+   204	本研究必须遵守物理盲审与 Holdout 隔离。
+   205	
+   206	- **A-2 Holdout：** `a2_events_holdout.csv`，218 条；与本研究完全独立，本研究不得读取、引用或派生使用。
+   207	- **A-1 Holdout：** 从 203 个 A-1 pooled episodes 中按每第 5 个 episode 预留，`floor(203 / 5) = 40` 个。
+   208	- **A-1 work sample：** 203 - 40 = 163 个 episodes。
+   209	- **隔离方法：** 先按冻结规则生成 episode，再按 pooled episodes 的 deterministic index 每第 5 个预留；pooled index 按 `(event_time_utc, symbol)` 排序后生成。该方法不是按时间前后切分，避免 regime 偏差。
+   210	- **禁止动作：** 在 Risk Reviewer 审核通过、Founder 知会、Claude 主会话人工派发之前，任何分析步骤不得读取 A-1 或 A-2 Holdout。
+   211	
+   212	若代码、脚本、notebook 或人工操作中出现 `HOLDOUT` 路径读取，本预登记下的研究作废，必须记录为纪律违规，不得继续解释结果。
+   213	
+   214	## §9 验收标准（明确量化）
+   215	
+   216	本 §9 判定的是 A-1 事件研究是否通过预登记验证，并不等同于完整交易策略晋级。若事件研究通过，后续交易化仍须另行满足 Research Protocol v1.3 四件套、成本、爆仓、几何增长、相关性门槛与第五件。
+   217	
+   218	通过条件（全部满足）：
+   219	
+   220	- [ ] 主检验：24h 或 48h CAR `> 0`，且单侧 t-test `p < 0.05`。
+   221	- [ ] 任务书成本门：0.10% 成本档下 24h 或 48h net CAR `> 0`，且对应单侧 t-test `p < 0.05`。
+   222	- [ ] Protocol v1.3 事件压力门：0.30% 滑点档下事件策略四件套仍成立；A-1 额外要求 1.00% 档 `E[R] > 0`。
+   223	- [ ] 第五件：A-1 24h 或 48h CAR `>` 同品种、同 regime 的被动基准 CAR。
+   224	- [ ] A-2 碰撞门：high funding / low funding 子样本 CAR 方向一致，定义为均正，或均不显著为负。
+   225	- [ ] WF 稳定性：按 work-sample episode 时间顺序切为 3 段，至少 2 段 24h 或 48h mean CAR `> 0`。该 WF 只作稳定性检验，不用于调参。
+   226	
+   227	失败条件（任一满足即 FAILED）：
+   228	
+   229	- 主检验 24h 与 48h CAR 均不显著：两者单侧 `p >= 0.05`。
+   230	- 第五件失败：A-1 24h 与 48h CAR 均 `<=` matched passive benchmark CAR。
+   231	- A-2 碰撞门失败：high funding 子样本 24h 或 48h CAR 显著为负。
+   232	- Protocol v1.3 成本压力失败：0.30% 档四件套不成立，或 A-1 1.00% 档 `E[R] <= 0`。
+   233	- 发现任何 Holdout 读取、全样本分位、触发阈值重设、episode 合并规则重设或 cutoff 后行情读取。
+   234	
+   235	报告要求：
+   236	
+   237	- 必须逐项给出上述 checkbox 的 PASS / FAIL / N.A. 判定。
+   238	- 不显著结果不得写成"有一定效果"、"方向正确"或"部分成功"。
+   239	- 若只有 72h 显著而 24h / 48h 不显著，本预登记判定为 FAILED，不得改称通过。
+   240	
+   241	## §10 失败后禁止行为（预登记锁死）
+   242	
+   243	若本预登记 FAILED，以下行为禁止：
+   244	
+   245	- 禁止修改 OI 骤降阈值后重测，例如从 P1 改为 P2 或 P5。
+   246	- 禁止更换 episode 合并规则后重测，例如把 `<=24h` 改成 12h、48h 或按价格波动合并。
+   247	- 禁止排除特定年份、特定品种、特定 regime 或特定 funding 状态后重测。
+   248	- 禁止把 72h 单独显著改写为 24h / 48h 机制通过。
+   249	- 禁止用全样本分位重算触发、severity 桶或 funding 桶。
+   250	- 禁止用 cutoff 后行情补齐 horizon。
+   251	- 禁止读取 Holdout 来"确认"失败是否只是样本噪音。
+   252	
+   253	允许行为：
+   254	
+   255	- 若失败原因是功效不足而非方向反证，可等待前向强平采集数据 3-6 个月，以更大 n 重新立项。
+   256	- 重新立项必须新写预登记、重新过 Risk Reviewer 物理盲审门，并明确说明与本次 FAILED 的区别。
+   257	
+   258	本预登记锁定后，任何对触发、成本、分层、horizon、验收门或 Holdout 切分的修改均视为新假设，不得在 A-1 v1 名义下继续。
+
+exec
+/bin/bash -lc 'codex exec --help' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+exec
+/bin/bash -lc 'codex --version && codex --help' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)
+Run Codex non-interactively
+
+Usage: codex exec [OPTIONS] [PROMPT]
+       codex exec [OPTIONS] <COMMAND> [ARGS]
+
+Commands:
+  resume  Resume a previous session by id or pick the most recent with --last
+  review  Run a code review against the current repository
+  help    Print this message or the help of the given subcommand(s)
+
+Arguments:
+  [PROMPT]
+          Initial instructions for the agent. If not provided as an argument (or if `-` is used),
+          instructions are read from stdin. If stdin is piped and a prompt is also provided, stdin
+          is appended as a `<stdin>` block
+
+Options:
+  -c, --config <key=value>
+          Override a configuration value that would otherwise be loaded from `~/.codex/config.toml`.
+          Use a dotted path (`foo.bar.baz`) to override nested values. The `value` portion is parsed
+          as TOML. If it fails to parse as TOML, the raw string is used as a literal.
+          
+          Examples: - `-c model="o3"` - `-c 'sandbox_permissions=["disk-full-read-access"]'` - `-c
+          shell_environment_policy.inherit=all`
+
+      --enable <FEATURE>
+          Enable a feature (repeatable). Equivalent to `-c features.<name>=true`
+
+      --disable <FEATURE>
+          Disable a feature (repeatable). Equivalent to `-c features.<name>=false`
+
+      --strict-config
+          Error out when config.toml contains fields that are not recognized by this version of
+          Codex
+
+  -i, --image <FILE>...
+          Optional image(s) to attach to the initial prompt
+
+  -m, --model <MODEL>
+          Model the agent should use
+
+      --oss
+          Use open-source provider
+
+      --local-provider <OSS_PROVIDER>
+          Specify which local provider to use (lmstudio or ollama). If not specified with --oss,
+          will use config default or show selection
+
+  -p, --profile <CONFIG_PROFILE_V2>
+          Layer $CODEX_HOME/<name>.config.toml on top of the base user config
+
+  -s, --sandbox <SANDBOX_MODE>
+          Select the sandbox policy to use when executing model-generated shell commands
+          
+          [possible values: read-only, workspace-write, danger-full-access]
+
+      --dangerously-bypass-approvals-and-sandbox
+          Skip all confirmation prompts and execute commands without sandboxing. EXTREMELY
+          DANGEROUS. Intended solely for running in environments that are externally sandboxed
+
+      --dangerously-bypass-hook-trust
+          Run enabled hooks without requiring persisted hook trust for this invocation. DANGEROUS.
+          Intended only for automation that already vets hook sources
+
+  -C, --cd <DIR>
+          Tell the agent to use the specified directory as its working root
+
+      --add-dir <DIR>
+          Additional directories that should be writable alongside the primary workspace
+
+      --skip-git-repo-check
+          Allow running Codex outside a Git repository
+
+      --ephemeral
+          Run without persisting session files to disk
+
+      --ignore-user-config
+          Do not load `$CODEX_HOME/config.toml`; auth still uses `CODEX_HOME`
+
+      --ignore-rules
+          Do not load user or project execpolicy `.rules` files
+
+      --output-schema <FILE>
+          Path to a JSON Schema file describing the model's final response shape
+
+      --color <COLOR>
+          Specifies color settings for use in the output
+          
+          [default: auto]
+          [possible values: always, never, auto]
+
+      --json
+          Print events to stdout as JSONL
+
+  -o, --output-last-message <FILE>
+          Specifies file where the last message from the agent should be written
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
+
+ succeeded in 135ms:
+WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)
+Codex CLI
+
+If no subcommand is specified, options will be forwarded to the interactive CLI.
+
+Usage: codex [OPTIONS] [PROMPT]
+       codex [OPTIONS] <COMMAND> [ARGS]
+
+Commands:
+  exec            Run Codex non-interactively [aliases: e]
+  review          Run a code review non-interactively
+  login           Manage login
+  logout          Remove stored authentication credentials
+  mcp             Manage external MCP servers for Codex
+  plugin          Manage Codex plugins
+  mcp-server      Start Codex as an MCP server (stdio)
+  app-server      [experimental] Run the app server or related tooling
+  remote-control  [experimental] Manage the app-server daemon with remote control enabled
+  app             Launch the Codex desktop app (opens the app installer if missing)
+  completion      Generate shell completion scripts
+  update          Update Codex to the latest version
+  doctor          Diagnose local Codex installation, config, auth, and runtime health
+  sandbox         Run commands within a Codex-provided sandbox
+  debug           Debugging tools
+  apply           Apply the latest diff produced by Codex agent as a `git apply` to your local
+                  working tree [aliases: a]
+  resume          Resume a previous interactive session (picker by default; use --last to continue
+                  the most recent)
+  archive         Archive a saved session by id or session name
+  unarchive       Unarchive a saved session by id or session name
+  fork            Fork a previous interactive session (picker by default; use --last to fork the
+                  most recent)
+  cloud           [EXPERIMENTAL] Browse tasks from Codex Cloud and apply changes locally
+  exec-server     [EXPERIMENTAL] Run the standalone exec-server service
+  features        Inspect feature flags
+  help            Print this message or the help of the given subcommand(s)
+
+Arguments:
+  [PROMPT]
+          Optional user prompt to start the session
+
+Options:
+  -c, --config <key=value>
+          Override a configuration value that would otherwise be loaded from `~/.codex/config.toml`.
+          Use a dotted path (`foo.bar.baz`) to override nested values. The `value` portion is parsed
+          as TOML. If it fails to parse as TOML, the raw string is used as a literal.
+          
+          Examples: - `-c model="o3"` - `-c 'sandbox_permissions=["disk-full-read-access"]'` - `-c
+          shell_environment_policy.inherit=all`
+
+      --enable <FEATURE>
+          Enable a feature (repeatable). Equivalent to `-c features.<name>=true`
+
+      --disable <FEATURE>
+          Disable a feature (repeatable). Equivalent to `-c features.<name>=false`
+
+      --remote <ADDR>
+          Connect the TUI to a remote app server endpoint.
+          
+          Accepted forms: `ws://host:port`, `wss://host:port`, `unix://`, or `unix://PATH`.
+
+      --remote-auth-token-env <ENV_VAR>
+          Name of the environment variable containing the bearer token to send to a remote app
+          server websocket
+
+      --strict-config
+          Error out when config.toml contains fields that are not recognized by this version of
+          Codex
+
+  -i, --image <FILE>...
+          Optional image(s) to attach to the initial prompt
+
+  -m, --model <MODEL>
+          Model the agent should use
+
+      --oss
+          Use open-source provider
+
+      --local-provider <OSS_PROVIDER>
+          Specify which local provider to use (lmstudio or ollama). If not specified with --oss,
+          will use config default or show selection
+
+  -p, --profile <CONFIG_PROFILE_V2>
+          Layer $CODEX_HOME/<name>.config.toml on top of the base user config
+
+  -s, --sandbox <SANDBOX_MODE>
+          Select the sandbox policy to use when executing model-generated shell commands
+          
+          [possible values: read-only, workspace-write, danger-full-access]
+
+      --dangerously-bypass-approvals-and-sandbox
+          Skip all confirmation prompts and execute commands without sandboxing. EXTREMELY
+          DANGEROUS. Intended solely for running in environments that are externally sandboxed
+
+      --dangerously-bypass-hook-trust
+          Run enabled hooks without requiring persisted hook trust for this invocation. DANGEROUS.
+          Intended only for automation that already vets hook sources
+
+  -C, --cd <DIR>
+          Tell the agent to use the specified directory as its working root
+
+      --add-dir <DIR>
+          Additional directories that should be writable alongside the primary workspace
+
+  -a, --ask-for-approval <APPROVAL_POLICY>
+          Configure when the model requires human approval before executing a command
+
+          Possible values:
+          - untrusted:  Only run "trusted" commands (e.g. ls, cat, sed) without asking for user
+            approval. Will escalate to the user if the model proposes a command that is not in the
+            "trusted" set
+          - on-failure: DEPRECATED: Run all commands without asking for user approval. Only asks for
+            approval if a command fails to execute, in which case it will escalate to the user to
+            ask for un-sandboxed execution. Prefer `on-request` for interactive runs or `never` for
+            non-interactive runs
+          - on-request: The model decides when to ask the user for approval
+          - never:      Never ask for user approval Execution failures are immediately returned to
+            the model
+
+      --search
+          Enable live web search. When enabled, the native Responses `web_search` tool is available
+          to the model (no per‑call approval)
+
+      --no-alt-screen
+          Disable alternate screen mode
+          
+          Runs the TUI in inline mode, preserving terminal scrollback history.
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+  -V, --version
+          Print version
+
+codex
+沙箱核查结论已确定：Codex CLI 的 `-C` 只设置工作根，`-s workspace-write` 是独立选项；当前同类环境可以读取工作区外的 `/etc/hosts`。因此“放到 `~/.aiquant_sealed/` 即无读权限”不成立，我没有访问或枚举该封存目录。下一步会按最小阻塞项写审查结论，并把不可约的历史因果识别与可修复的统计/权限缺陷分开。
+允许材料与沙箱语义已核查完毕。五项中命题和A-2口径有实质进步，但仍有内部残留/冲突；bootstrap、功效协议和权限边界仍阻塞。
+  ✓ 读取允许的审查材料并固定行号证据
+  ✓ 逐项裁决五项闭合及新结构风险
+  ✓ 验证 workspace-write 读权限语义且不触碰封存目录
+  → 写入 RR3 报告与任务完成事件
+  • 复核输出、提交任务号 commit
+exec
+/bin/bash -lc "test -e 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md; printf 'review_exists=%s\\n' \""'$?"' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+exec
+/bin/bash -lc "test -e 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md; printf 'task_report_exists=%s\\n' \""'$?"' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+review_exists=1
+
+ succeeded in 0ms:
+task_report_exists=1
+
+exec
+/bin/bash -lc "test -e 04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json; printf 'done_event_exists=%s\\n' \""'$?"' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+done_event_exists=1
+
+codex
+我将写入两份文件：正式盲审报告包含逐项裁决、最小必改和不可约判断；`CODEX_TASKS` 执行报告只记录本轮允许读取范围、未运行研究和验收自检。不会修改 v3 预登记本体。
+apply patch
+patch: completed
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..95dd1fcb65b3c76747f4c29f068063083a926f7a
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+@@ -0,0 +1,28 @@
++# A1-RR3 执行报告
++
++**任务：** A-1 预登记 v3 第三轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
++
++## 执行范围
++
++- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
++- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
++- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
++- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
++
++## 验收自检
++
++| 要求 | 结果 |
++|---|---|
++| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
++| moving-block、family、功效、封存新缺陷 | 完成 |
++| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
++| 最小第三轮必改 | 完成，共 5 项 |
++| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
++| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
++
++## 核心裁决
++
++完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f4180ab68ce9c964b18698029fce2f379bb1476
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+@@ -0,0 +1,110 @@
++> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
++
++# A-1 预登记 v3 独立风险审查报告（第三轮）
++
++**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
++**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
++**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
++
++## 执行摘要
++
++v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
++96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
++功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
++
++## 五项闭合裁决表
++
++| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
++| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
++| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
++| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
++| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
++
++## 高风险专项
++
++### 1. 命题、方向与因果边界
++
++`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
++
++剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
++
++### 2. Moving-block 主推断
++
++**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
++
++**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
++
++**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
++
++### 3. 功效
++
++把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
++
++但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
++
++即使只保留诊断，也应定义：
++
++- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
++- `m_bar` 的 cluster 定义和计算方法；
++- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
++
++### 4. A-2 碰撞与 family
++
++§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
++
++唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
++
++### 5. Decision table、Tier 与 Holdout
++
++Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
++
++WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
++
++**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
++
++- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
++- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
++- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
++
++真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
++
++## v3 新结构缺陷
++
++| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
++|---|---|---|
++| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
++| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
++| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
++| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
++| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
++| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
++
++## 最终结论与最小第三轮必改
++
++**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
++
++第三轮只要求以下最小修订，不追加无关门槛：
++
++1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
++2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
++3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
++4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
++5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
++
++## 历史样本不可约判断
++
++**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
++
++| 问题 | 是否历史样本不可约 | 判断 |
++|---|---|---|
++| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
++| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
++| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
++| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
++| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
++
++**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..95dd1fcb65b3c76747f4c29f068063083a926f7a
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+@@ -0,0 +1,28 @@
++# A1-RR3 执行报告
++
++**任务：** A-1 预登记 v3 第三轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
++
++## 执行范围
++
++- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
++- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
++- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
++- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
++
++## 验收自检
++
++| 要求 | 结果 |
++|---|---|
++| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
++| moving-block、family、功效、封存新缺陷 | 完成 |
++| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
++| 最小第三轮必改 | 完成，共 5 项 |
++| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
++| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
++
++## 核心裁决
++
++完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f4180ab68ce9c964b18698029fce2f379bb1476
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+@@ -0,0 +1,110 @@
++> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
++
++# A-1 预登记 v3 独立风险审查报告（第三轮）
++
++**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
++**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
++**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
++
++## 执行摘要
++
++v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
++96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
++功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
++
++## 五项闭合裁决表
++
++| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
++| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
++| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
++| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
++| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
++
++## 高风险专项
++
++### 1. 命题、方向与因果边界
++
++`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
++
++剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
++
++### 2. Moving-block 主推断
++
++**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
++
++**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
++
++**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
++
++### 3. 功效
++
++把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
++
++但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
++
++即使只保留诊断，也应定义：
++
++- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
++- `m_bar` 的 cluster 定义和计算方法；
++- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
++
++### 4. A-2 碰撞与 family
++
++§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
++
++唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
++
++### 5. Decision table、Tier 与 Holdout
++
++Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
++
++WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
++
++**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
++
++- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
++- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
++- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
++
++真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
++
++## v3 新结构缺陷
++
++| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
++|---|---|---|
++| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
++| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
++| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
++| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
++| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
++| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
++
++## 最终结论与最小第三轮必改
++
++**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
++
++第三轮只要求以下最小修订，不追加无关门槛：
++
++1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
++2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
++3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
++4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
++5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
++
++## 历史样本不可约判断
++
++**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
++
++| 问题 | 是否历史样本不可约 | 判断 |
++|---|---|---|
++| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
++| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
++| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
++| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
++| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
++
++**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+codex
+正式报告已写入，结论为 `NOT APPROVED`、完全闭合 `0/5`。我现在做最后一致性复核，重点检查裁决表与最小必改是否一一对应、是否误写成读取封存内容，以及只暂存本任务新增文件后提交。
+exec
+/bin/bash -lc 'nl -ba 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+     1	# A1-RR3 执行报告
+     2	
+     3	**任务：** A-1 预登记 v3 第三轮独立盲审  
+     4	**日期：** 2026-06-14  
+     5	**状态：** completed  
+     6	**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
+     7	
+     8	## 执行范围
+     9	
+    10	- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
+    11	- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
+    12	- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
+    13	- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
+    14	
+    15	## 验收自检
+    16	
+    17	| 要求 | 结果 |
+    18	|---|---|
+    19	| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
+    20	| moving-block、family、功效、封存新缺陷 | 完成 |
+    21	| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
+    22	| 最小第三轮必改 | 完成，共 5 项 |
+    23	| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
+    24	| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
+    25	
+    26	## 核心裁决
+    27	
+    28	完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
+
+exec
+/bin/bash -lc "nl -ba 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md | sed -n '1,260p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+     1	> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
+     2	
+     3	# A-1 预登记 v3 独立风险审查报告（第三轮）
+     4	
+     5	**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
+     6	**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
+     7	**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
+     8	
+     9	## 执行摘要
+    10	
+    11	v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
+    12	96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
+    13	功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
+    14	
+    15	## 五项闭合裁决表
+    16	
+    17	| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
+    18	|---:|---|---|---|---|
+    19	| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
+    20	| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
+    21	| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
+    22	| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
+    23	| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
+    24	
+    25	## 高风险专项
+    26	
+    27	### 1. 命题、方向与因果边界
+    28	
+    29	`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
+    30	
+    31	剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
+    32	
+    33	### 2. Moving-block 主推断
+    34	
+    35	**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
+    36	
+    37	**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
+    38	
+    39	**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
+    40	
+    41	### 3. 功效
+    42	
+    43	把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
+    44	
+    45	但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
+    46	
+    47	即使只保留诊断，也应定义：
+    48	
+    49	- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
+    50	- `m_bar` 的 cluster 定义和计算方法；
+    51	- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
+    52	
+    53	### 4. A-2 碰撞与 family
+    54	
+    55	§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
+    56	
+    57	唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
+    58	
+    59	### 5. Decision table、Tier 与 Holdout
+    60	
+    61	Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
+    62	
+    63	WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
+    64	
+    65	**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
+    66	
+    67	- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
+    68	- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
+    69	- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
+    70	
+    71	真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
+    72	
+    73	## v3 新结构缺陷
+    74	
+    75	| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
+    76	|---|---|---|
+    77	| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
+    78	| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
+    79	| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
+    80	| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
+    81	| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
+    82	| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
+    83	
+    84	## 最终结论与最小第三轮必改
+    85	
+    86	**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
+    87	
+    88	第三轮只要求以下最小修订，不追加无关门槛：
+    89	
+    90	1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
+    91	2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
+    92	3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
+    93	4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
+    94	5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
+    95	
+    96	## 历史样本不可约判断
+    97	
+    98	**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
+    99	
+   100	| 问题 | 是否历史样本不可约 | 判断 |
+   101	|---|---|---|
+   102	| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
+   103	| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
+   104	| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
+   105	| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
+   106	| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
+   107	
+   108	**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
+   109	
+   110	**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+exec
+/bin/bash -lc "rg -n '"'^## (执行摘要|五项闭合裁决表|高风险专项|v3 新结构缺陷|最终结论与最小第三轮必改|历史样本不可约判断)|'"\\*\\*(CLOSED|PARTIAL|NOT_CLOSED)\\*\\*|NOT APPROVED|0/5|irreducible' 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:7:**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:9:## 执行摘要
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:15:## 五项闭合裁决表
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:19:| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:20:| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:21:| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:22:| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:23:| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:25:## 高风险专项
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:73:## v3 新结构缺陷
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:84:## 最终结论与最小第三轮必改
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:86:**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:96:## 历史样本不可约判断
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:98:**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md:21:| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md:28:完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
+
+exec
+/bin/bash -lc 'git diff --check -- 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md && git status --short -- 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+?? 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+?? 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..95dd1fcb65b3c76747f4c29f068063083a926f7a
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+@@ -0,0 +1,28 @@
++# A1-RR3 执行报告
++
++**任务：** A-1 预登记 v3 第三轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
++
++## 执行范围
++
++- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
++- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
++- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
++- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
++
++## 验收自检
++
++| 要求 | 结果 |
++|---|---|
++| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
++| moving-block、family、功效、封存新缺陷 | 完成 |
++| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
++| 最小第三轮必改 | 完成，共 5 项 |
++| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
++| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
++
++## 核心裁决
++
++完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f4180ab68ce9c964b18698029fce2f379bb1476
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+@@ -0,0 +1,110 @@
++> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
++
++# A-1 预登记 v3 独立风险审查报告（第三轮）
++
++**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
++**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
++**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
++
++## 执行摘要
++
++v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
++96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
++功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
++
++## 五项闭合裁决表
++
++| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
++| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
++| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
++| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
++| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
++
++## 高风险专项
++
++### 1. 命题、方向与因果边界
++
++`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
++
++剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
++
++### 2. Moving-block 主推断
++
++**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
++
++**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
++
++**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
++
++### 3. 功效
++
++把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
++
++但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
++
++即使只保留诊断，也应定义：
++
++- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
++- `m_bar` 的 cluster 定义和计算方法；
++- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
++
++### 4. A-2 碰撞与 family
++
++§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
++
++唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
++
++### 5. Decision table、Tier 与 Holdout
++
++Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
++
++WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
++
++**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
++
++- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
++- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
++- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
++
++真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
++
++## v3 新结构缺陷
++
++| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
++|---|---|---|
++| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
++| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
++| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
++| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
++| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
++| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
++
++## 最终结论与最小第三轮必改
++
++**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
++
++第三轮只要求以下最小修订，不追加无关门槛：
++
++1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
++2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
++3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
++4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
++5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
++
++## 历史样本不可约判断
++
++**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
++
++| 问题 | 是否历史样本不可约 | 判断 |
++|---|---|---|
++| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
++| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
++| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
++| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
++| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
++
++**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+codex
+复核通过：报告包含指定六个部分，五项裁决与证据一致，且明确区分“强平方向不可约”与统计/权限问题可修复。现在只提交这两份本任务文件，提交后再写 `TASK_INBOX` 完成事件作为最后写入。
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..95dd1fcb65b3c76747f4c29f068063083a926f7a
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+@@ -0,0 +1,28 @@
++# A1-RR3 执行报告
++
++**任务：** A-1 预登记 v3 第三轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
++
++## 执行范围
++
++- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
++- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
++- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
++- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
++
++## 验收自检
++
++| 要求 | 结果 |
++|---|---|
++| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
++| moving-block、family、功效、封存新缺陷 | 完成 |
++| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
++| 最小第三轮必改 | 完成，共 5 项 |
++| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
++| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
++
++## 核心裁决
++
++完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f4180ab68ce9c964b18698029fce2f379bb1476
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+@@ -0,0 +1,110 @@
++> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
++
++# A-1 预登记 v3 独立风险审查报告（第三轮）
++
++**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
++**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
++**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
++
++## 执行摘要
++
++v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
++96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
++功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
++
++## 五项闭合裁决表
++
++| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
++| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
++| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
++| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
++| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
++
++## 高风险专项
++
++### 1. 命题、方向与因果边界
++
++`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
++
++剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
++
++### 2. Moving-block 主推断
++
++**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
++
++**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
++
++**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
++
++### 3. 功效
++
++把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
++
++但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
++
++即使只保留诊断，也应定义：
++
++- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
++- `m_bar` 的 cluster 定义和计算方法；
++- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
++
++### 4. A-2 碰撞与 family
++
++§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
++
++唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
++
++### 5. Decision table、Tier 与 Holdout
++
++Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
++
++WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
++
++**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
++
++- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
++- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
++- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
++
++真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
++
++## v3 新结构缺陷
++
++| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
++|---|---|---|
++| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
++| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
++| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
++| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
++| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
++| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
++
++## 最终结论与最小第三轮必改
++
++**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
++
++第三轮只要求以下最小修订，不追加无关门槛：
++
++1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
++2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
++3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
++4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
++5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
++
++## 历史样本不可约判断
++
++**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
++
++| 问题 | 是否历史样本不可约 | 判断 |
++|---|---|---|
++| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
++| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
++| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
++| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
++| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
++
++**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+codex
+代码内容已完成，但提交被环境权限阻止：本会话对 `.git` 只有读权限，无法创建 `index.lock`，因此不能完成任务号 commit。我会把这一限制记入执行报告；随后按协议写完成事件，其他工作区改动保持不变。
+exec
+/bin/bash -lc "date -u '+%Y-%m-%dT%H:%M:%SZ'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+exec
+/bin/bash -lc 'cat 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR2_DONE.json' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+2026-06-13T20:02:10Z
+
+ succeeded in 0ms:
+{
+  "task_id": "A1_RR2",
+  "completed_at": "2026-06-13T19:51:05Z",
+  "status": "completed",
+  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v2.md",
+  "review_conclusion": "NOT APPROVED",
+  "conditions_closed": "2/10",
+  "notes": "同 UTC 日 cluster 无法吸收跨日重叠，功效停机依赖事件后 CAR，A-2 overlap 改写冻结特征，Holdout 仍无权限型物理隔离。"
+}
+
+exec
+/bin/bash -lc 'git status --short -- 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md 04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+?? 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+?? 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..95dd1fcb65b3c76747f4c29f068063083a926f7a
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+@@ -0,0 +1,28 @@
++# A1-RR3 执行报告
++
++**任务：** A-1 预登记 v3 第三轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
++
++## 执行范围
++
++- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
++- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
++- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
++- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
++
++## 验收自检
++
++| 要求 | 结果 |
++|---|---|
++| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
++| moving-block、family、功效、封存新缺陷 | 完成 |
++| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
++| 最小第三轮必改 | 完成，共 5 项 |
++| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
++| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
++
++## 核心裁决
++
++完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f4180ab68ce9c964b18698029fce2f379bb1476
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+@@ -0,0 +1,110 @@
++> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
++
++# A-1 预登记 v3 独立风险审查报告（第三轮）
++
++**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
++**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
++**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
++
++## 执行摘要
++
++v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
++96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
++功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
++
++## 五项闭合裁决表
++
++| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
++| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
++| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
++| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
++| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
++
++## 高风险专项
++
++### 1. 命题、方向与因果边界
++
++`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
++
++剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
++
++### 2. Moving-block 主推断
++
++**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
++
++**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
++
++**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
++
++### 3. 功效
++
++把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
++
++但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
++
++即使只保留诊断，也应定义：
++
++- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
++- `m_bar` 的 cluster 定义和计算方法；
++- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
++
++### 4. A-2 碰撞与 family
++
++§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
++
++唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
++
++### 5. Decision table、Tier 与 Holdout
++
++Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
++
++WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
++
++**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
++
++- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
++- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
++- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
++
++真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
++
++## v3 新结构缺陷
++
++| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
++|---|---|---|
++| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
++| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
++| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
++| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
++| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
++| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
++
++## 最终结论与最小第三轮必改
++
++**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
++
++第三轮只要求以下最小修订，不追加无关门槛：
++
++1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
++2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
++3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
++4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
++5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
++
++## 历史样本不可约判断
++
++**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
++
++| 问题 | 是否历史样本不可约 | 判断 |
++|---|---|---|
++| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
++| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
++| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
++| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
++| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
++
++**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+apply patch
+patch: completed
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7b6867f23949bb5f6f2aafade2aaeb9cb54cf819
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+@@ -0,0 +1,32 @@
++# A1-RR3 执行报告
++
++**任务：** A-1 预登记 v3 第三轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
++
++## 执行范围
++
++- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
++- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
++- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
++- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
++
++## 验收自检
++
++| 要求 | 结果 |
++|---|---|
++| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
++| moving-block、family、功效、封存新缺陷 | 完成 |
++| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
++| 最小第三轮必改 | 完成，共 5 项 |
++| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
++| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
++
++## 核心裁决
++
++完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
++
++## Git 交付
++
++已尝试仅提交本任务两份新增文件，提交信息为 `A1_RR3 independent preregistration review`。当前执行环境对 `.git` 仅有读权限，无法创建 `.git/index.lock`，故未能提交；未改动或回退工作区内任何既有变更。
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f4180ab68ce9c964b18698029fce2f379bb1476
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+@@ -0,0 +1,110 @@
++> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
++
++# A-1 预登记 v3 独立风险审查报告（第三轮）
++
++**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
++**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
++**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
++
++## 执行摘要
++
++v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
++96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
++功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
++
++## 五项闭合裁决表
++
++| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
++| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
++| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
++| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
++| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
++
++## 高风险专项
++
++### 1. 命题、方向与因果边界
++
++`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
++
++剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
++
++### 2. Moving-block 主推断
++
++**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
++
++**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
++
++**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
++
++### 3. 功效
++
++把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
++
++但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
++
++即使只保留诊断，也应定义：
++
++- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
++- `m_bar` 的 cluster 定义和计算方法；
++- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
++
++### 4. A-2 碰撞与 family
++
++§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
++
++唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
++
++### 5. Decision table、Tier 与 Holdout
++
++Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
++
++WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
++
++**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
++
++- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
++- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
++- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
++
++真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
++
++## v3 新结构缺陷
++
++| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
++|---|---|---|
++| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
++| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
++| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
++| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
++| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
++| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
++
++## 最终结论与最小第三轮必改
++
++**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
++
++第三轮只要求以下最小修订，不追加无关门槛：
++
++1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
++2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
++3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
++4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
++5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
++
++## 历史样本不可约判断
++
++**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
++
++| 问题 | 是否历史样本不可约 | 判断 |
++|---|---|---|
++| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
++| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
++| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
++| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
++| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
++
++**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7b6867f23949bb5f6f2aafade2aaeb9cb54cf819
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+@@ -0,0 +1,32 @@
++# A1-RR3 执行报告
++
++**任务：** A-1 预登记 v3 第三轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
++
++## 执行范围
++
++- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
++- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
++- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
++- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
++
++## 验收自检
++
++| 要求 | 结果 |
++|---|---|
++| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
++| moving-block、family、功效、封存新缺陷 | 完成 |
++| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
++| 最小第三轮必改 | 完成，共 5 项 |
++| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
++| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
++
++## 核心裁决
++
++完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
++
++## Git 交付
++
++已尝试仅提交本任务两份新增文件，提交信息为 `A1_RR3 independent preregistration review`。当前执行环境对 `.git` 仅有读权限，无法创建 `.git/index.lock`，故未能提交；未改动或回退工作区内任何既有变更。
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f4180ab68ce9c964b18698029fce2f379bb1476
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+@@ -0,0 +1,110 @@
++> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
++
++# A-1 预登记 v3 独立风险审查报告（第三轮）
++
++**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
++**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
++**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
++
++## 执行摘要
++
++v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
++96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
++功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
++
++## 五项闭合裁决表
++
++| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
++| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
++| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
++| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
++| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
++
++## 高风险专项
++
++### 1. 命题、方向与因果边界
++
++`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
++
++剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
++
++### 2. Moving-block 主推断
++
++**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
++
++**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
++
++**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
++
++### 3. 功效
++
++把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
++
++但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
++
++即使只保留诊断，也应定义：
++
++- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
++- `m_bar` 的 cluster 定义和计算方法；
++- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
++
++### 4. A-2 碰撞与 family
++
++§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
++
++唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
++
++### 5. Decision table、Tier 与 Holdout
++
++Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
++
++WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
++
++**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
++
++- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
++- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
++- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
++
++真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
++
++## v3 新结构缺陷
++
++| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
++|---|---|---|
++| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
++| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
++| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
++| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
++| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
++| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
++
++## 最终结论与最小第三轮必改
++
++**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
++
++第三轮只要求以下最小修订，不追加无关门槛：
++
++1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
++2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
++3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
++4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
++5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
++
++## 历史样本不可约判断
++
++**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
++
++| 问题 | 是否历史样本不可约 | 判断 |
++|---|---|---|
++| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
++| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
++| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
++| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
++| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
++
++**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+codex
+完成事件将按用户指定字段写入，`conditions_closed=0/5`、`irreducible=yes`，并在 notes 中限定“不可约”只指历史强平方向/因果归因，避免被误读为所有阻塞都不可修复。
+apply patch
+patch: completed
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7b6867f23949bb5f6f2aafade2aaeb9cb54cf819
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+@@ -0,0 +1,32 @@
++# A1-RR3 执行报告
++
++**任务：** A-1 预登记 v3 第三轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
++
++## 执行范围
++
++- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
++- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
++- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
++- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
++
++## 验收自检
++
++| 要求 | 结果 |
++|---|---|
++| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
++| moving-block、family、功效、封存新缺陷 | 完成 |
++| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
++| 最小第三轮必改 | 完成，共 5 项 |
++| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
++| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
++
++## 核心裁决
++
++完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
++
++## Git 交付
++
++已尝试仅提交本任务两份新增文件，提交信息为 `A1_RR3 independent preregistration review`。当前执行环境对 `.git` 仅有读权限，无法创建 `.git/index.lock`，故未能提交；未改动或回退工作区内任何既有变更。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a865b3dbdf628ab6b00db7d46a91aed4f950ccfc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+@@ -0,0 +1,11 @@
++{
++  "task_id": "A1_RR3",
++  "completed_at": "2026-06-13T20:02:10Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md",
++  "review_conclusion": "NOT APPROVED",
++  "conditions_closed": "0/5",
++  "irreducible": "yes",
++  "next_task": null,
++  "notes": "仅历史强平方向/因果归因属不可约；bootstrap、Protocol功效门、m=3/m=4冲突、WF与Holdout读权限边界均可修复。git提交因本会话无.git写权限未完成。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f4180ab68ce9c964b18698029fce2f379bb1476
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+@@ -0,0 +1,110 @@
++> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
++
++# A-1 预登记 v3 独立风险审查报告（第三轮）
++
++**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
++**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
++**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
++
++## 执行摘要
++
++v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
++96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
++功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
++
++## 五项闭合裁决表
++
++| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
++| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
++| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
++| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
++| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
++
++## 高风险专项
++
++### 1. 命题、方向与因果边界
++
++`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
++
++剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
++
++### 2. Moving-block 主推断
++
++**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
++
++**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
++
++**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
++
++### 3. 功效
++
++把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
++
++但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
++
++即使只保留诊断，也应定义：
++
++- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
++- `m_bar` 的 cluster 定义和计算方法；
++- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
++
++### 4. A-2 碰撞与 family
++
++§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
++
++唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
++
++### 5. Decision table、Tier 与 Holdout
++
++Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
++
++WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
++
++**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
++
++- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
++- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
++- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
++
++真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
++
++## v3 新结构缺陷
++
++| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
++|---|---|---|
++| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
++| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
++| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
++| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
++| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
++| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
++
++## 最终结论与最小第三轮必改
++
++**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
++
++第三轮只要求以下最小修订，不追加无关门槛：
++
++1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
++2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
++3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
++4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
++5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
++
++## 历史样本不可约判断
++
++**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
++
++| 问题 | 是否历史样本不可约 | 判断 |
++|---|---|---|
++| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
++| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
++| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
++| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
++| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
++
++**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7b6867f23949bb5f6f2aafade2aaeb9cb54cf819
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+@@ -0,0 +1,32 @@
++# A1-RR3 执行报告
++
++**任务：** A-1 预登记 v3 第三轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
++
++## 执行范围
++
++- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
++- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
++- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
++- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
++
++## 验收自检
++
++| 要求 | 结果 |
++|---|---|
++| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
++| moving-block、family、功效、封存新缺陷 | 完成 |
++| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
++| 最小第三轮必改 | 完成，共 5 项 |
++| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
++| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
++
++## 核心裁决
++
++完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
++
++## Git 交付
++
++已尝试仅提交本任务两份新增文件，提交信息为 `A1_RR3 independent preregistration review`。当前执行环境对 `.git` 仅有读权限，无法创建 `.git/index.lock`，故未能提交；未改动或回退工作区内任何既有变更。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a865b3dbdf628ab6b00db7d46a91aed4f950ccfc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+@@ -0,0 +1,11 @@
++{
++  "task_id": "A1_RR3",
++  "completed_at": "2026-06-13T20:02:10Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md",
++  "review_conclusion": "NOT APPROVED",
++  "conditions_closed": "0/5",
++  "irreducible": "yes",
++  "next_task": null,
++  "notes": "仅历史强平方向/因果归因属不可约；bootstrap、Protocol功效门、m=3/m=4冲突、WF与Holdout读权限边界均可修复。git提交因本会话无.git写权限未完成。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f4180ab68ce9c964b18698029fce2f379bb1476
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+@@ -0,0 +1,110 @@
++> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
++
++# A-1 预登记 v3 独立风险审查报告（第三轮）
++
++**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
++**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
++**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
++
++## 执行摘要
++
++v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
++96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
++功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
++
++## 五项闭合裁决表
++
++| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
++| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
++| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
++| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
++| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
++
++## 高风险专项
++
++### 1. 命题、方向与因果边界
++
++`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
++
++剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
++
++### 2. Moving-block 主推断
++
++**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
++
++**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
++
++**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
++
++### 3. 功效
++
++把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
++
++但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
++
++即使只保留诊断，也应定义：
++
++- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
++- `m_bar` 的 cluster 定义和计算方法；
++- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
++
++### 4. A-2 碰撞与 family
++
++§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
++
++唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
++
++### 5. Decision table、Tier 与 Holdout
++
++Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
++
++WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
++
++**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
++
++- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
++- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
++- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
++
++真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
++
++## v3 新结构缺陷
++
++| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
++|---|---|---|
++| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
++| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
++| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
++| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
++| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
++| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
++
++## 最终结论与最小第三轮必改
++
++**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
++
++第三轮只要求以下最小修订，不追加无关门槛：
++
++1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
++2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
++3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
++4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
++5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
++
++## 历史样本不可约判断
++
++**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
++
++| 问题 | 是否历史样本不可约 | 判断 |
++|---|---|---|
++| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
++| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
++| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
++| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
++| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
++
++**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+exec
+/bin/bash -lc 'jq . 04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ exited 2 in 0ms:
+jq: error: Could not open file 04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json: No such file or directory
+
+exec
+/bin/bash -lc 'wc -l 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md 04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ exited 1 in 0ms:
+wc: 04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json: open: No such file or directory
+     110 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+      32 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+     142 total
+
+exec
+/bin/bash -lc 'git diff --check -- 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md 04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json && git status --short -- 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md 04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+?? 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+?? 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7b6867f23949bb5f6f2aafade2aaeb9cb54cf819
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+@@ -0,0 +1,32 @@
++# A1-RR3 执行报告
++
++**任务：** A-1 预登记 v3 第三轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
++
++## 执行范围
++
++- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
++- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
++- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
++- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
++
++## 验收自检
++
++| 要求 | 结果 |
++|---|---|
++| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
++| moving-block、family、功效、封存新缺陷 | 完成 |
++| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
++| 最小第三轮必改 | 完成，共 5 项 |
++| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
++| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
++
++## 核心裁决
++
++完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
++
++## Git 交付
++
++已尝试仅提交本任务两份新增文件，提交信息为 `A1_RR3 independent preregistration review`。当前执行环境对 `.git` 仅有读权限，无法创建 `.git/index.lock`，故未能提交；未改动或回退工作区内任何既有变更。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a865b3dbdf628ab6b00db7d46a91aed4f950ccfc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+@@ -0,0 +1,11 @@
++{
++  "task_id": "A1_RR3",
++  "completed_at": "2026-06-13T20:02:10Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md",
++  "review_conclusion": "NOT APPROVED",
++  "conditions_closed": "0/5",
++  "irreducible": "yes",
++  "next_task": null,
++  "notes": "仅历史强平方向/因果归因属不可约；bootstrap、Protocol功效门、m=3/m=4冲突、WF与Holdout读权限边界均可修复。git提交因本会话无.git写权限未完成。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f4180ab68ce9c964b18698029fce2f379bb1476
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+@@ -0,0 +1,110 @@
++> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
++
++# A-1 预登记 v3 独立风险审查报告（第三轮）
++
++**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
++**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
++**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
++
++## 执行摘要
++
++v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
++96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
++功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
++
++## 五项闭合裁决表
++
++| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
++| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
++| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
++| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
++| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
++
++## 高风险专项
++
++### 1. 命题、方向与因果边界
++
++`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
++
++剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
++
++### 2. Moving-block 主推断
++
++**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
++
++**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
++
++**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
++
++### 3. 功效
++
++把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
++
++但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
++
++即使只保留诊断，也应定义：
++
++- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
++- `m_bar` 的 cluster 定义和计算方法；
++- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
++
++### 4. A-2 碰撞与 family
++
++§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
++
++唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
++
++### 5. Decision table、Tier 与 Holdout
++
++Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
++
++WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
++
++**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
++
++- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
++- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
++- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
++
++真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
++
++## v3 新结构缺陷
++
++| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
++|---|---|---|
++| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
++| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
++| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
++| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
++| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
++| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
++
++## 最终结论与最小第三轮必改
++
++**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
++
++第三轮只要求以下最小修订，不追加无关门槛：
++
++1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
++2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
++3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
++4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
++5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
++
++## 历史样本不可约判断
++
++**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
++
++| 问题 | 是否历史样本不可约 | 判断 |
++|---|---|---|
++| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
++| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
++| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
++| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
++| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
++
++**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+codex
+完成事件写入后被调度器立即消费，因此原路径已不存在；这符合 `TASK_INBOX` 监听行为。我要确认它是否已移动到 `PROCESSED/`，并核对内容未被改写。
+exec
+/bin/bash -lc "rg --files 04_AI_TEAM/TASK_INBOX | rg 'A1_RR3_DONE\\.json"'$'"'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR3_DONE.json
+
+exec
+/bin/bash -lc "find 04_AI_TEAM/TASK_INBOX -maxdepth 2 -name 'A1_RR3_DONE.json' -print" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR3_DONE.json
+
+exec
+/bin/bash -lc "git status --short --untracked-files=all | rg 'A1_RR3|A1_RISK_REVIEW_v3'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ M 04_AI_TEAM/CODEX_TASKS/A1_RR3_RUN.log
+?? 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+?? 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR3_DONE.json
+?? 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7b6867f23949bb5f6f2aafade2aaeb9cb54cf819
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+@@ -0,0 +1,32 @@
++# A1-RR3 执行报告
++
++**任务：** A-1 预登记 v3 第三轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
++
++## 执行范围
++
++- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
++- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
++- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
++- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
++
++## 验收自检
++
++| 要求 | 结果 |
++|---|---|
++| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
++| moving-block、family、功效、封存新缺陷 | 完成 |
++| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
++| 最小第三轮必改 | 完成，共 5 项 |
++| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
++| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
++
++## 核心裁决
++
++完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
++
++## Git 交付
++
++已尝试仅提交本任务两份新增文件，提交信息为 `A1_RR3 independent preregistration review`。当前执行环境对 `.git` 仅有读权限，无法创建 `.git/index.lock`，故未能提交；未改动或回退工作区内任何既有变更。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a865b3dbdf628ab6b00db7d46a91aed4f950ccfc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+@@ -0,0 +1,11 @@
++{
++  "task_id": "A1_RR3",
++  "completed_at": "2026-06-13T20:02:10Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md",
++  "review_conclusion": "NOT APPROVED",
++  "conditions_closed": "0/5",
++  "irreducible": "yes",
++  "next_task": null,
++  "notes": "仅历史强平方向/因果归因属不可约；bootstrap、Protocol功效门、m=3/m=4冲突、WF与Holdout读权限边界均可修复。git提交因本会话无.git写权限未完成。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f4180ab68ce9c964b18698029fce2f379bb1476
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+@@ -0,0 +1,110 @@
++> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
++
++# A-1 预登记 v3 独立风险审查报告（第三轮）
++
++**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
++**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
++**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
++
++## 执行摘要
++
++v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
++96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
++功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
++
++## 五项闭合裁决表
++
++| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
++| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
++| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
++| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
++| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
++
++## 高风险专项
++
++### 1. 命题、方向与因果边界
++
++`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
++
++剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
++
++### 2. Moving-block 主推断
++
++**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
++
++**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
++
++**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
++
++### 3. 功效
++
++把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
++
++但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
++
++即使只保留诊断，也应定义：
++
++- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
++- `m_bar` 的 cluster 定义和计算方法；
++- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
++
++### 4. A-2 碰撞与 family
++
++§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
++
++唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
++
++### 5. Decision table、Tier 与 Holdout
++
++Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
++
++WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
++
++**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
++
++- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
++- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
++- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
++
++真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
++
++## v3 新结构缺陷
++
++| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
++|---|---|---|
++| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
++| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
++| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
++| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
++| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
++| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
++
++## 最终结论与最小第三轮必改
++
++**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
++
++第三轮只要求以下最小修订，不追加无关门槛：
++
++1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
++2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
++3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
++4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
++5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
++
++## 历史样本不可约判断
++
++**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
++
++| 问题 | 是否历史样本不可约 | 判断 |
++|---|---|---|
++| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
++| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
++| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
++| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
++| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
++
++**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+exec
+/bin/bash -lc 'jq . 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR3_DONE.json' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+{
+  "task_id": "A1_RR3",
+  "completed_at": "2026-06-13T20:02:10Z",
+  "status": "completed",
+  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md",
+  "review_conclusion": "NOT APPROVED",
+  "conditions_closed": "0/5",
+  "irreducible": "yes",
+  "next_task": null,
+  "notes": "仅历史强平方向/因果归因属不可约；bootstrap、Protocol功效门、m=3/m=4冲突、WF与Holdout读权限边界均可修复。git提交因本会话无.git写权限未完成。"
+}
+
+exec
+/bin/bash -lc 'git diff --stat -- 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR3_DONE.json' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+exec
+/bin/bash -lc 'git diff --check -- 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR3_DONE.json' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7b6867f23949bb5f6f2aafade2aaeb9cb54cf819
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+@@ -0,0 +1,32 @@
++# A1-RR3 执行报告
++
++**任务：** A-1 预登记 v3 第三轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
++
++## 执行范围
++
++- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
++- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
++- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
++- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
++
++## 验收自检
++
++| 要求 | 结果 |
++|---|---|
++| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
++| moving-block、family、功效、封存新缺陷 | 完成 |
++| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
++| 最小第三轮必改 | 完成，共 5 项 |
++| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
++| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
++
++## 核心裁决
++
++完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
++
++## Git 交付
++
++已尝试仅提交本任务两份新增文件，提交信息为 `A1_RR3 independent preregistration review`。当前执行环境对 `.git` 仅有读权限，无法创建 `.git/index.lock`，故未能提交；未改动或回退工作区内任何既有变更。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a865b3dbdf628ab6b00db7d46a91aed4f950ccfc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+@@ -0,0 +1,11 @@
++{
++  "task_id": "A1_RR3",
++  "completed_at": "2026-06-13T20:02:10Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md",
++  "review_conclusion": "NOT APPROVED",
++  "conditions_closed": "0/5",
++  "irreducible": "yes",
++  "next_task": null,
++  "notes": "仅历史强平方向/因果归因属不可约；bootstrap、Protocol功效门、m=3/m=4冲突、WF与Holdout读权限边界均可修复。git提交因本会话无.git写权限未完成。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f4180ab68ce9c964b18698029fce2f379bb1476
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+@@ -0,0 +1,110 @@
++> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
++
++# A-1 预登记 v3 独立风险审查报告（第三轮）
++
++**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
++**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
++**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
++
++## 执行摘要
++
++v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
++96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
++功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
++
++## 五项闭合裁决表
++
++| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
++| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
++| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
++| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
++| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
++
++## 高风险专项
++
++### 1. 命题、方向与因果边界
++
++`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
++
++剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
++
++### 2. Moving-block 主推断
++
++**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
++
++**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
++
++**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
++
++### 3. 功效
++
++把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
++
++但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
++
++即使只保留诊断，也应定义：
++
++- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
++- `m_bar` 的 cluster 定义和计算方法；
++- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
++
++### 4. A-2 碰撞与 family
++
++§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
++
++唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
++
++### 5. Decision table、Tier 与 Holdout
++
++Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
++
++WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
++
++**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
++
++- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
++- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
++- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
++
++真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
++
++## v3 新结构缺陷
++
++| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
++|---|---|---|
++| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
++| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
++| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
++| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
++| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
++| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
++
++## 最终结论与最小第三轮必改
++
++**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
++
++第三轮只要求以下最小修订，不追加无关门槛：
++
++1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
++2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
++3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
++4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
++5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
++
++## 历史样本不可约判断
++
++**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
++
++| 问题 | 是否历史样本不可约 | 判断 |
++|---|---|---|
++| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
++| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
++| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
++| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
++| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
++
++**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+正式审查、执行报告和完成事件均已写入并复核；TASK_INBOX 事件已被监听器移动至 PROCESSED。Git commit 已尝试，但因当前沙箱对 .git 无写权限而无法创建 index.lock，已在执行报告和事件 notes 中留痕。
+  ✓ 读取允许的审查材料并固定行号证据
+  ✓ 逐项裁决五项闭合及新结构风险
+  ✓ 验证 workspace-write 读权限语义且不触碰封存目录
+  ✓ 写入 RR3 报告与任务完成事件
+  ✓ 复核输出、提交任务号 commit
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7b6867f23949bb5f6f2aafade2aaeb9cb54cf819
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+@@ -0,0 +1,32 @@
++# A1-RR3 执行报告
++
++**任务：** A-1 预登记 v3 第三轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
++
++## 执行范围
++
++- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
++- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
++- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
++- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
++
++## 验收自检
++
++| 要求 | 结果 |
++|---|---|
++| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
++| moving-block、family、功效、封存新缺陷 | 完成 |
++| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
++| 最小第三轮必改 | 完成，共 5 项 |
++| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
++| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
++
++## 核心裁决
++
++完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
++
++## Git 交付
++
++已尝试仅提交本任务两份新增文件，提交信息为 `A1_RR3 independent preregistration review`。当前执行环境对 `.git` 仅有读权限，无法创建 `.git/index.lock`，故未能提交；未改动或回退工作区内任何既有变更。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a865b3dbdf628ab6b00db7d46a91aed4f950ccfc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+@@ -0,0 +1,11 @@
++{
++  "task_id": "A1_RR3",
++  "completed_at": "2026-06-13T20:02:10Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md",
++  "review_conclusion": "NOT APPROVED",
++  "conditions_closed": "0/5",
++  "irreducible": "yes",
++  "next_task": null,
++  "notes": "仅历史强平方向/因果归因属不可约；bootstrap、Protocol功效门、m=3/m=4冲突、WF与Holdout读权限边界均可修复。git提交因本会话无.git写权限未完成。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f4180ab68ce9c964b18698029fce2f379bb1476
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+@@ -0,0 +1,110 @@
++> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
++
++# A-1 预登记 v3 独立风险审查报告（第三轮）
++
++**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
++**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
++**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
++
++## 执行摘要
++
++v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
++96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
++功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
++
++## 五项闭合裁决表
++
++| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
++| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
++| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
++| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
++| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
++
++## 高风险专项
++
++### 1. 命题、方向与因果边界
++
++`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
++
++剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
++
++### 2. Moving-block 主推断
++
++**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
++
++**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
++
++**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
++
++### 3. 功效
++
++把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
++
++但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
++
++即使只保留诊断，也应定义：
++
++- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
++- `m_bar` 的 cluster 定义和计算方法；
++- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
++
++### 4. A-2 碰撞与 family
++
++§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
++
++唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
++
++### 5. Decision table、Tier 与 Holdout
++
++Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
++
++WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
++
++**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
++
++- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
++- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
++- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
++
++真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
++
++## v3 新结构缺陷
++
++| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
++|---|---|---|
++| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
++| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
++| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
++| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
++| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
++| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
++
++## 最终结论与最小第三轮必改
++
++**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
++
++第三轮只要求以下最小修订，不追加无关门槛：
++
++1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
++2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
++3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
++4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
++5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
++
++## 历史样本不可约判断
++
++**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
++
++| 问题 | 是否历史样本不可约 | 判断 |
++|---|---|---|
++| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
++| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
++| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
++| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
++| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
++
++**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+codex
+已完成 A1-RR3 独立盲审。
+
+结论：**NOT APPROVED，闭合 0/5**。主要阻塞为 96h bootstrap 块及算法未闭合、功效设计违反现行 Protocol、Holdout 不具备真实读权限隔离。
+
+- [正式审查报告](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md)
+- [执行报告](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md)
+- 完成事件已被调度器移至 `TASK_INBOX/PROCESSED/`。
+
+未读取 HOLDOUT、`01_MEMORY_CORE/`，未运行事件研究。Git 提交因 `.git` 无写权限失败，已留痕。
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7b6867f23949bb5f6f2aafade2aaeb9cb54cf819
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+@@ -0,0 +1,32 @@
++# A1-RR3 执行报告
++
++**任务：** A-1 预登记 v3 第三轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**正式输出：** `06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md`
++
++## 执行范围
++
++- 已读取：A-1 v1/v2/v3 预登记、A1 RR2、Research Protocol v1.2 + v1.3/v1.4 增补、A-2 公开假设。
++- 未读取：任何 HOLDOUT 内容、`01_MEMORY_CORE/`、事件研究结果。
++- 未执行：A-1 episode 生成、事件后 CAR、显著性检验或任何回测。
++- 未修改：`A1_CASCADE_REBOUND_PREREG_v3.md`。
++
++## 验收自检
++
++| 要求 | 结果 |
++|---|---|
++| 五项逐条 `CLOSED/PARTIAL/NOT_CLOSED` + 行号证据 | 完成 |
++| moving-block、family、功效、封存新缺陷 | 完成 |
++| `APPROVED/NOT APPROVED` 明确结论 | `NOT APPROVED` |
++| 最小第三轮必改 | 完成，共 5 项 |
++| 历史样本不可约判断 | `yes`，仅强平方向/因果归因不可约；其余可修复 |
++| 禁读 Holdout / Memory / 禁跑事件研究 | 遵守 |
++
++## 核心裁决
++
++完全闭合 `0/5`。命题收窄和 A-2 口径均有实质改善，但分别残留“机制成立”因果 overclaim 与 `m=3/m=4` 冲突；依赖推断、Protocol 功效门、WF 和 Holdout 读权限边界仍阻塞放行。
++
++## Git 交付
++
++已尝试仅提交本任务两份新增文件，提交信息为 `A1_RR3 independent preregistration review`。当前执行环境对 `.git` 仅有读权限，无法创建 `.git/index.lock`，故未能提交；未改动或回退工作区内任何既有变更。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..a865b3dbdf628ab6b00db7d46a91aed4f950ccfc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR3_DONE.json
+@@ -0,0 +1,11 @@
++{
++  "task_id": "A1_RR3",
++  "completed_at": "2026-06-13T20:02:10Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md",
++  "review_conclusion": "NOT APPROVED",
++  "conditions_closed": "0/5",
++  "irreducible": "yes",
++  "next_task": null,
++  "notes": "仅历史强平方向/因果归因属不可约；bootstrap、Protocol功效门、m=3/m=4冲突、WF与Holdout读权限边界均可修复。git提交因本会话无.git写权限未完成。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..3f4180ab68ce9c964b18698029fce2f379bb1476
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md
+@@ -0,0 +1,110 @@
++> **[专业异议]** v3 尚未达到物理盲审放行条件。历史样本中的强平方向识别确有不可约上限，但当前阻塞不只来自该上限：依赖稳健主推断、Protocol v1.4 功效门、WF 切分和 Holdout 读权限边界仍有可修复缺陷。因此继续暂停 Tier A 事件后收益计算。
++
++# A-1 预登记 v3 独立风险审查报告（第三轮）
++
++**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v3.md`  
++**对照：** `A1_RISK_REVIEW_v2.md` 第二轮最小必改清单  
++**结论：** **NOT APPROVED**（五项中完全闭合 `0/5`）
++
++## 执行摘要
++
++v3 已实质完成命题收窄、纯方向过滤、A-2 单次 8H funding 口径、Tier A/B 分离和大部分 decision table 整理，但仍有残留 overclaim 与 `m=3/m=4` 内部冲突。  
++96h 变长时间块既未覆盖 48h CAR 的完整 `72h baseline + 48h outcome` 数据足迹，也未定义非等距 episode 下的精确重采样与 Spearman 零假设算法。  
++功效改成诊断消除了读取事件后 CAR 的循环，却直接撤销了有效 Protocol v1.4 硬门；`-C`/`workspace-write` 也不提供工作区外的读隔离，故 Holdout 仍非真权限边界。
++
++## 五项闭合裁决表
++
++| # | v2 最小必改 | 裁决 | 证据（v3 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | 命题收窄 + 方向阈值 | **PARTIAL** | §0 L15-L17；§1 L31-L35；§2 L49-L54；§9 L134-L137 | 可证伪命题已降为可观测条件 CAR，`r6h<0` 消除了无依据的幅度阈值，强平与 beta 排除也已从命题删除。但 §9 L136 仍写“过=机制成立”，超出 §1 自承只能识别条件关联的边界。应改为“可观测条件回弹关联成立（探索级）”，不得把 Tier A PASS 写成强平/overshooting 机制成立。 |
++| 2 | 依赖稳健主推断 | **NOT_CLOSED** | §4 L70-L90；§5 L94-L97 | 96h 未覆盖主统计量约 120h 的完整数据足迹；非等距变长块的起点抽样、空块、circular 时间跨度、超出 n 后截断及精确样本量均未定义。“约等于 n”不能复现。更关键的是，§4 的“减全样本均值”只适用于均值统计量；对 Spearman，CAR 减常数不改变秩与相关系数，无法构造 `H0: rho=0`。 |
++| 3 | 功效前置可执行 | **NOT_CLOSED** | §6 L101-L107；Protocol v1.4 §六 L19-L20 | v3 确实不再读取事件后 CAR，旧循环已消除；但它不是“闭合功效门”，而是撤销功效硬门和合理效应上限。有效 Protocol 仍要求 MDE 高于合理效应上限时禁止立项，预登记无权以人工裁量替代。诊断本身也未定义 `sigma_pre_h` 的精确方差到标准差外推公式，`m_bar` 所属 cluster 未定义。 |
++| 4 | A-2 同口径碰撞 + multiplicity | **PARTIAL** | §0 L24；§4 L90；§7 L111-L119；§11 L147-L165；A-2 v1 L17-L21 | §7 已正确使用“事件前最近一个已结算的单次 8H funding 读数相对历史 P95”，删除 24h 均值、0.60 和 OR 句；non-overlap 也已进入确认 family。可是 §0 L24 仍冻结为 Holm `m=3`，而 §4/§11 冻结为 `m=4`，同一预登记存在冲突。 |
++| 5 | decision table / Protocol / 物理封存 | **NOT_CLOSED** | §9 L134-L137；§10 L141-L143；§11 L147-L165；§12 L169-L176 | Tier A gross 与 Tier B net 第五件已正确分离，WF 失败也进入 FAIL 清单。但“同一 moving-block cluster 不跨段”没有可识别的固定 cluster，三段如何等分及边界 episode 如何处置未冻结。更严重的是，§12 L172 把“沙箱根外”误当成“无读权限”：`-C` 只设置工作根，`workspace-write` 限制写入而非一般读取，不能形成 Holdout 读隔离。 |
++
++## 高风险专项
++
++### 1. 命题、方向与因果边界
++
++`r6h_mark<0` 是比 `-2%` 更干净的方向规则：它只排除价格上涨型事件，不再让无依据幅度同时控制事件严重度和样本量。§0 L15-L17、§1 L33-L35 也明确把强平、overshooting、卖压消失和被动 beta 排除降为未证实解释。
++
++剩余问题集中在结论标签。§9 L136 的“机制成立”仍会把“可观测条件关联显著”升级成“强平机制得到验证”。历史 OI 与价格代理无法区分多头强平、主动减仓、宏观普跌中段和普通大跌后反转；该因果识别上限不能靠继续改预登记消除。
++
++### 2. Moving-block 主推断
++
++**块宽不足。** 单个 48h CAR 使用 `[event_time-72h,event_time-1h]` baseline，并使用对齐点后 48h 收益。两个相隔 96h 至 120h 左右的 episode 仍可能让前一事件 outcome 与后一事件 baseline 共享小时收益；考虑入场对齐还可能多 1h。故 96h 不能宣称覆盖完整共享数据窗，至少应覆盖 `72h + alignment lag + 48h`，并冻结保守宽度。
++
++**非等距块算法未闭合。** §4 L83 的块含 episode 数可变，但未说明随机起点是从 episode 还是连续 UTC 网格均匀抽取、无 episode 的时间块如何处理、循环总时间跨度如何定义、拼接超过 n 时是否截断及截断是否拆块。不同合理实现会给出不同权重和 p 值。
++
++**零假设只定义了均值。** 对 48h/24h/non-overlap 均值，按观测值先减样本均值再重抽可在边界 `H0: mean=0` 下工作；建议同时冻结有限 B 的 `+1` 校正和 CI quantile 规则。对 Spearman，减 CAR 均值完全不改变秩，必须另行冻结 `H0: rho=0` 的中心化统计量或依赖保持置换算法。
++
++### 3. 功效
++
++把功效降为报告诊断后，确实不再出现“先读事件后 CAR 方差/ICC，才能决定是否允许读事件后 CAR”的逻辑循环。这一改动本身是正确的。
++
++但当前 Protocol v1.4 §六仍是硬规则：耗独立计数实验必须预先比较 MDE 与有依据的合理效应上限。v3 不能仅用 §6 L107 的 Founder/CTO 人工裁量默示废止该规则。可接受路径只有两种：在 v3 中给出完全前置、可复现的门；或在 v3 放行前由上位 Protocol 正式修订/豁免，并留下版本依据。
++
++即使只保留诊断，也应定义：
++
++- `sigma_pre_h` 究竟是 `sqrt(h * median(s_i^2))`，还是包含事件前自相关的 h 小时聚合波动；
++- `m_bar` 的 cluster 定义和计算方法；
++- non-overlap 诊断使用该子样本自身的 n、方差代理还是全 work 代理。
++
++### 4. A-2 碰撞与 family
++
++§7 L113 与 A-2 v1 L17-L21 同口径：单次 8H funding 读数、此前 365 天/最少 180 天滚动分布、正极端 P95。它不再把 24h 均值伪称为 A-2 原变量。§4 L90 也把四个确认检验完整列入 Holm family，non-overlap 是第 4 项硬门，没有“不显著即可替代”的旁路。
++
++唯一阻塞是文内自相矛盾：§0 L24 写 `m=3`，§4 L90 与 §11 L149 写 `m=4`。虽然后两处更完整，预登记不能让执行者自行判断哪处是笔误。
++
++### 5. Decision table、Tier 与 Holdout
++
++Tier A/B 分离已闭合：§9 L136-L137 和 §10 L141-L143 没有再把 gross CAR 冒称为 Protocol 的 net 第五件。PASS/FAIL 对 48h、单调性、non-overlap、WF 和纪律违规也基本对称。
++
++WF 仍不可唯一复现。“按时间序切 3 段”未说明按 episode 数等分还是按日历时间等分；§11 L155 的“同一 moving-block cluster 不跨段”又引用了并不存在的固定 cluster。应冻结切点算法及切点附近共享 120h 数据足迹的 purge/归属规则。
++
++**沙箱核查：不构成真权限边界。** 本轮在不访问、不枚举 `~/.aiquant_sealed/` 的前提下核查：
++
++- Codex CLI `0.139.0` 帮助把 `-C/--cd` 定义为设置 working root，把 `-s/--sandbox workspace-write` 定义为独立沙箱选项；
++- 当前 workspace-write 执行环境可实际读取工作区外的无关系统文件 `/etc/hosts`；
++- 因此“路径在工作区外”最多建立写边界，不能证明执行身份无读权限。
++
++真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
++
++## v3 新结构缺陷
++
++| 新结构 | 正面作用 | 新缺陷 / 判决风险 |
++|---|---|---|
++| 纯方向 `r6h<0` | 删除无依据幅度自由度，排除上涨型事件 | 不能识别强平方向；§9 仍把条件关联称为“机制成立”。 |
++| 96h 时间宽度 circular block | 认识到 episode 非等距，尝试覆盖跨日依赖 | 小于主 CAR 的完整约 120h 数据足迹；变长块抽样和停止规则不完整。 |
++| 均值零假设重心化 | 比 v2 的未定义 p 值明显改进 | 不能直接用于 Spearman；有限 B p 值细节仍可分叉。 |
++| Holm family `m=4` | 将所有 PASS/FAIL 硬检验纳入 FWER | §0 仍写 `m=3`；同一冻结文档冲突。 |
++| 诊断型功效 | 消除读取事件后 CAR 才能停机的循环 | 与有效 Protocol 硬门冲突；`sigma_pre_h`、`m_bar` 仍未完全定义。 |
++| 沙箱外 sealed 路径 | 尝试把 work 与 sealed 分开 | `-C`/workspace-write 不保证工作区外不可读，同一 OS 用户路径不是保管分离。 |
++
++## 最终结论与最小第三轮必改
++
++**最终结论：NOT APPROVED。当前不得放行 Tier A，不得计算任何 A-1 事件后收益。**
++
++第三轮只要求以下最小修订，不追加无关门槛：
++
++1. **消除残留因果 overclaim。** 把 §9 “过=机制成立”改为“可观测条件回弹关联成立（探索级）”；全文 Tier A 结论不得升级为强平/overshooting 因果成立。
++2. **一次性闭合依赖推断。** 块宽至少覆盖 `72h baseline + alignment lag + 48h outcome`；精确定义非等距时间块的起点分布、循环跨度、空块、拼接、超额截断、episode 权重、有限 B p 值和 CI；为 Spearman 单独冻结 `H0: rho=0` 的有效算法。
++3. **正式解决功效治理。** 要么按 Protocol v1.4 恢复完全前置的 MDE/合理效应上限硬门并定义 `sigma_pre_h/m_bar`，要么先由上位 Protocol 留痕修订/豁免；不得由预登记自行降级。
++4. **统一 family。** 将 §0 L24 的 `m=3` 改为与 §4/§11 一致的 `m=4`，不改动其他 A-2 口径。
++5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
++
++## 历史样本不可约判断
++
++**总体标记：`irreducible=yes`，但仅限强平方向/因果归因；其余当前阻塞均可修复。**
++
++| 问题 | 是否历史样本不可约 | 判断 |
++|---|---|---|
++| 用历史 OI↓ + 负收益干净识别多头强平卖压 | **是** | 无真实方向化清算名义额，任何价格代理都混入主动减仓、宏观下跌和普通反转。若研究目标必须是“强平机制”，应转 2026-06-13 起的前向真实清算数据路径。 |
++| 验证“可观测 OI 极端收缩 + 同窗负收益后的条件 CAR” | **否** | 历史样本可以回答，但结论必须停留在条件关联层，且先修复推断设计。 |
++| 做真正前置功效门 | **否** | 可用事件前/外部方差代理、冻结依赖情景和有依据效应上限，或正式修订 Protocol；不是历史数据物理限制。 |
++| 做真 Holdout 保管分离 | **否** | 是 OS 权限、密钥与保管流程问题，不是历史样本限制。 |
++| 修复 block、Holm、WF | **否** | 均为预登记与统计实现问题。 |
++
++**给 CTO 的路径判断：** 若 A-1 的不可替代科学命题是“强平卖压消失导致回弹”，应停止在历史代理上继续加码，转前向真实强平数据。若当前目标仅是检验可观测条件 CAR，则不必因因果识别上限放弃历史研究，但必须先完成上述五项最小修订，并把 Tier A 名称和结论严格限定为关联。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+tokens used
+100,158
+已完成 A1-RR3 独立盲审。
+
+结论：**NOT APPROVED，闭合 0/5**。主要阻塞为 96h bootstrap 块及算法未闭合、功效设计违反现行 Protocol、Holdout 不具备真实读权限隔离。
+
+- [正式审查报告](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md)
+- [执行报告](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md)
+- 完成事件已被调度器移至 `TASK_INBOX/PROCESSED/`。
+
+未读取 HOLDOUT、`01_MEMORY_CORE/`，未运行事件研究。Git 提交因 `.git` 无写权限失败，已留痕。

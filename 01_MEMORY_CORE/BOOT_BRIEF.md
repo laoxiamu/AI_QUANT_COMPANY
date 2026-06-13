@@ -29,7 +29,7 @@ Phase 1。公司 OS **原则层已冻结**。A-2 已死（新范式第1败）。
 - **✅ 已完成（Founder出门期间）**：D3预登记｜E1公司组织｜E3执行工作流｜E4模块设计（含[专业异议]→DEC-072已落）｜DR-E2设计评审（结论：需修改后可行，E2已整合）。
 - **✅E2验收通过**（02_SYSTEM_ARCHITECTURE，五层+TrackA/B）；git index.lock已清。
 - **D2/A1-RR完成但均"需返工"（正确返工，独立审查抓出问题）**：D2 BLOCKED——根因 **D1"35/35完成"实为数据不达用途**（下的contract klines非mark-price、缺真实funding、DEC-070四过滤无证据）→过程教训：完成计数≠达用途。A1-RR=NOT APPROVED（10项）。
-- **A-1预登记CTO亲自三轮闭环**：v2（闭2/10）→**v3**（逐条闭五项必改：纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单读数P95/沙箱外真权限Holdout）。**A1-RR3第三轮盲审运行中（Codex gpt-5.5 PID 8335）**。RR3特别要求判定"剩余阻塞是否=历史样本不可约识别上限"。
+- **A-1预登记CTO亲自三轮闭环**：v2（闭2/10）→**v3**（逐条闭五项必改：纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单读数P95/沙箱外真权限Holdout）。**A1-RR3第三轮盲审已完成**（`A1_RISK_REVIEW_v3.md`，仍NOT APPROVED）。**关键裁定=不可约性**：仅"历史OI骤降+负收益干净识别强平方向/因果"是历史样本不可约,其余5项可修复→**逼出真D级岔路**(路径A历史关联快筛 vs 路径B前向真实强平数据),CTO推荐两段式,**等Founder拍方向再做v4**(见CURRENT_STATE §1c⑥)。
 - **议程（rule8）**：A-1历史无真实强平名义额→若历史不可约则转**前向强平采集器数据路径**（采集器首个明确alpha用途）。
 - **[D级·CTO推荐暂缓] TSMOM universe扩展**：今晚未执行（风险D局部修补：D级未批+只解决DD+2过滤需外部数据）；DEC070部分审计（Codex算ADTV+跳动频率2项，35币约20达标）喂决策包。推荐优先A-1。
 - **跨对话回收**：扫23会话无孤儿决策；Sweep形态线（外部调研session）已在他处封账（v4多头无可部署/v5做空已失败）。工作区沙箱故障=claude-code-vm 2.1.170下载循环失败，用Desktop Commander。
