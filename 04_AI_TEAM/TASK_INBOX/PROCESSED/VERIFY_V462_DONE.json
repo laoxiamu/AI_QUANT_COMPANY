@@ -1,0 +1,13 @@
+{
+  "task_id": "VERIFY_V462",
+  "completed_at": "2026-06-14T13:49:34Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_VERIFY_V462.md",
+  "next_task": null,
+  "v462_path": "/opt/v4",
+  "binance_source": "REST+futures+https://fapi.binance.com/fapi/v1 (ticker/24hr, klines, ticker/price, depth, trades); SG direct, unauthenticated, no proxy",
+  "currently_active": "no",
+  "verdict": "v4.6.2方法可用",
+  "fix_path": "Change liquidation collector WS_URL to wss://fstream.binance.com/market/ws/!forceOrder@arr; no API key or proxy required. Use /fapi/v1/openInterest, /futures/data/openInterestHist, and /fapi/v1/fundingRate for OI/funding REST data.",
+  "notes": "v4.6.2 historically fetched Binance futures REST through 2026-06-13T08:46:06Z but is currently stopped. Same-host differential probe: legacy unrouted aggTrade/forceOrder opened with 0 frames; routed /market endpoints returned 3 frames immediately. Root cause is Binance's 2026-04-23 WS route migration, not an IP ban. Production was not modified."
+}
