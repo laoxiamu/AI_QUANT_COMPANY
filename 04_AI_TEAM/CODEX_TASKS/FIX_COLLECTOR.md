@@ -2,7 +2,8 @@
 
 **问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
 **最可能根因：** `run_forever` 缺 ping 保活（`ping_interval/ping_timeout`）→ Binance 端 ~10min 静默断开但客户端未触发 on_close/重连 → 连接半开假死；或缺自动重连循环。
-**SSH：** `sshpass -p "$(cat ~/.aiquant_sealed/sg_pass)" ssh -o StrictHostKeyChecking=no root@43.160.200.224`（密码在项目外文件，**禁止写入任何会被 git 提交的文件、禁止 echo 进日志**）。
+**SSH（唯一方式）：** `sshpass -p "$(cat ~/.aiquant_sealed/sg_pass)" ssh -o StrictHostKeyChecking=no root@43.160.200.224 "<远程命令>"`（密码在项目外文件 `~/.aiquant_sealed/sg_pass`，**禁止写入任何会被 git 提交的文件、禁止 echo 进日志**）。`sshpass` 与 `scp` 在本机可用。
+**硬约束（务必遵守）：** ❌**禁止打开浏览器 / 禁止 computer-use / 禁止 Chrome / 禁止腾讯云 WebShell**。**只用上面的 sshpass SSH 命令行。** 若 sshpass SSH 不通，先自查（`which sshpass`、密码文件是否可读、`echo $HTTPS_PROXY`、`ssh -v` 看握手），把失败原因写进报告，**绝不切换到浏览器/WebShell 方案**。代理 env 已由调用方注入（HTTPS_PROXY=http://127.0.0.1:7897），但 SSH 到 43.160.200.224 走直连无需代理。
 
 ## 服务器红线（勿动）
 - **danted.service / v4-proxy.service 绝对不能停**（全局翻墙出口+链式代理跳板，停了 Mac 侧全断）。

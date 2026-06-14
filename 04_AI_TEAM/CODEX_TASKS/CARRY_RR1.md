@@ -1,0 +1,21 @@
+# CARRY-RR1：Delta 中性 Carry 预登记 v1 独立盲审
+
+**角色：** 独立 Risk Reviewer（与 thesis owner 分离），不知回测结果，只审设计是否满足放行条件。
+**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v1.md`
+**输出：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v1.md`，结论 APPROVED / NOT APPROVED（+最小必改清单）。
+
+## 必审维度（逐项 A/B/C/D + 必改）
+1. **机制可信度：** "杠杆做多需求→正 funding→空头收取"因果链是否成立、可证伪？是否与已死的 A-2（极端 funding 反转）划清界限（carry 是收 funding 稳态，不是赌反转）？是否存在"funding 长期转负"使机制失效的未处理情形？
+2. **构造可复现性：** §2 腿/再平衡(5%漂移/日)/杠杆≤2x/保证金缓冲是否完全参数化、无模糊量？delta 中性的现货价源（现货 vs mark 近似）是否会引入偏差？basis 不对冲（p95=+0.11%）是否论证充分？
+3. **A-1×Carry 触发器（§3）：** OI 骤降暂停规则是否冻结清楚？"有/无触发器两版对比"是否真能区分"风控件"vs"噪声件"？辅助条件 ≤1 是否守住？
+4. **成本完整性（§4）：** 现货+永续双边 fee、滑点、再平衡换手、保证金融资、basis 进出场是否齐全？有无低估？delta 中性 long-spot 的现货持有成本/资金占用是否该计入？
+5. **验收闭合（§5）：** 四件套+现金零基准+MDD≤15%+WF 是否唯一二元、无 OR 择优、N.A.→FAIL？cluster/块 bootstrap 单位是否指定（funding 8h 自相关 + BTC/ETH 相关）？
+6. **事件风险（§6）：** ETH Merge 类事件清单冻结、禁剔除是否够；short 永续腿急涨强平风险是否在验收中体现（不只口头）？
+7. **Holdout/计数（§7/§8）：** Holdout 切分规格、cutoff、计数定性（sleeve 上线=D级）是否清楚？
+8. **整体 HARKing：** 是否还有事后选择路径（权重/阈值/再平衡/事件窗）未冻结？
+
+## 特别审查（吸取 A-1 教训）
+- carry 不是事件研究而是连续策略，**依赖结构与 A-1 不同**：funding 8h 序列强自相关 + 2020-2024 只有 ~4 个独立年→**有效样本/功效**是否够支撑"显著>0"？请评估 n_eff 与最小可检测年化。
+- 警惕把"BTC 历史 funding 恰好为正"过拟合成机制——若未来 funding 制度变化（如更多做空工具/现货 ETF 改变杠杆结构），edge 是否仍在？要求预登记声明该 regime 依赖。
+
+## 铁律：禁读 HOLDOUT/`01_MEMORY_CORE/`/禁改预登记/禁提前跑回测。完成写 `04_AI_TEAM/TASK_INBOX/CARRY_RR1_DONE.json`(task_id=CARRY_RR1,review_conclusion,conditions,notes)。
