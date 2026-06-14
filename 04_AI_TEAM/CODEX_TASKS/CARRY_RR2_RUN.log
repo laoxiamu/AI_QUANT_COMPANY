@@ -1,0 +1,1174 @@
+Reading additional input from stdin...
+2026-06-14T13:02:15.435416Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+OpenAI Codex v0.139.0
+--------
+workdir: /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ec639-c58f-7361-ad33-0547fb2341e9
+--------
+user
+# CARRY-RR2：Delta 中性 Carry 预登记 v2 第二轮独立盲审
+
+**角色：** 独立 Risk Reviewer，只审设计。**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v2.md`
+**对照：** `CARRY_RISK_REVIEW_v1.md` 八项最小必改。**输出：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v2.md`，结论 APPROVED / NOT APPROVED + 最小必改。
+
+## 逐条裁决 RR1 八项必改是否闭合（CLOSED/PARTIAL/NOT_CLOSED + 证据§/行 + 仍缺）
+1. **研究身份/独立性**：v2 §0 把历史段降为"可行性复核(feasibility-lock)、不耗计数、不上线"，真确认交前向 shadow，上线走 DEC-069 证据等级——这个重构是否真正消除了"用已探索工作集做确认"的 HARKing？feasibility-lock 的定性是否自洽、是否仍有把历史 PASS 当确认的残留措辞？
+2. **构造唯一化**：§2 venue=Binance/现货用现货1H close非mark/N=初始分配名义/再平衡现货腿次根open/杠杆1.0全仓/缓冲=维持×3/补款延迟/强平公式/basis路径账本——是否还有不唯一处？
+3. **OI触发器**：§3 变量(d6h下尾分位)/状态机/配对非劣检验(δ=0.5%)/唯一尾部硬门(事件期liquidation次数严格减少)——是否闭合？基础carry先独立过门、禁有无触发器择优 是否守住？
+4. **成本逐腿逐成交**：§4 是否每笔成交单独计fee+slippage、financing冻结为0、事件压力0.3/0.5/1.0、basis/ADL/脱锚入账？
+5. **验收四件套闭合**：§5 赢亏比≥1.5/分档爆仓概率(标准35%@20%+保守20%@10%,路径级短腿强平)/年化log growth/现金零/MDD≤15%/唯一WF/N.A.→FAIL/观测单位=8h interval/多变量同步块bootstrap+seed——是否齐全唯一？
+6. **功效门**：§8 n_eff/4-5独立年/合理净edge上限(事前经济5-12%非工作集反推)/MDE——v2 是否诚实承认历史段功效弱、并据此不以历史耗计数？该逻辑是否成立？
+7. **事件+Holdout权限**：§6 冻结事件清单(Merge/LUNA/FTX/3AC/脱锚规则)+路径级强平硬门；§7 全输入同cutoff+SHA+执行身份永久不可读——是否闭合？
+8. **审计元数据**：日期改回2026-06-14、AI证据三行是否补齐？
+
+## 第二部分：v2 新结构(feasibility-lock+前向shadow确认+证据等级上线)是否引入新缺陷或新自由度。
+## 结论：APPROVED(可放行历史可行性复核,明确不耗计数不上线)/NOT APPROVED(最小必改)。按"可行性复核"标尺，不要求达独立确认级严格度，但复核结论须无偏可复现。
+
+## 铁律：禁读HOLDOUT/`01_MEMORY_CORE/`/禁改预登记/禁跑回测。完成写`04_AI_TEAM/TASK_INBOX/CARRY_RR2_DONE.json`(task_id=CARRY_RR2,review_conclusion,conditions_closed=x/8,notes)。
+2026-06-14T13:02:17.970502Z ERROR rmcp::transport::worker: worker quit with fatal: Client error: HTTP request failed: http/request failed: error sending request for url (https://chatgpt.com/backend-api/wham/apps), when send initialized notification
+2026-06-14T13:02:24.937357Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+codex
+我将按独立风险审查执行，只读取 v2 预登记、RR1 审查及必要的项目规范；不读取 `HOLDOUT`、`01_MEMORY_CORE/`，不运行任何回测。先加载会话与审查所需技能说明，再核对文件和行号。
+exec
+/bin/bash -lc "sed -n '1,240p' /Users/yaomingyu/.codex/skills/using-superpowers/SKILL.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+---
+name: using-superpowers
+description: Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions
+---
+
+<SUBAGENT-STOP>
+If you were dispatched as a subagent to execute a specific task, skip this skill.
+</SUBAGENT-STOP>
+
+<EXTREMELY-IMPORTANT>
+If you think there is even a 1% chance a skill might apply to what you are doing, you ABSOLUTELY MUST invoke the skill.
+
+IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
+
+This is not negotiable. This is not optional. You cannot rationalize your way out of this.
+</EXTREMELY-IMPORTANT>
+
+## Instruction Priority
+
+Superpowers skills override default system prompt behavior, but **user instructions always take precedence**:
+
+1. **User's explicit instructions** (CLAUDE.md, GEMINI.md, AGENTS.md, direct requests) — highest priority
+2. **Superpowers skills** — override default system behavior where they conflict
+3. **Default system prompt** — lowest priority
+
+If CLAUDE.md, GEMINI.md, or AGENTS.md says "don't use TDD" and a skill says "always use TDD," follow the user's instructions. The user is in control.
+
+## How to Access Skills
+
+**In Claude Code:** Use the `Skill` tool. When you invoke a skill, its content is loaded and presented to you—follow it directly. Never use the Read tool on skill files.
+
+**In Copilot CLI:** Use the `skill` tool. Skills are auto-discovered from installed plugins. The `skill` tool works the same as Claude Code's `Skill` tool.
+
+**In Gemini CLI:** Skills activate via the `activate_skill` tool. Gemini loads skill metadata at session start and activates the full content on demand.
+
+**In other environments:** Check your platform's documentation for how skills are loaded.
+
+## Platform Adaptation
+
+Skills use Claude Code tool names. Non-CC platforms: see `references/copilot-tools.md` (Copilot CLI), `references/codex-tools.md` (Codex) for tool equivalents. Gemini CLI users get the tool mapping loaded automatically via GEMINI.md.
+
+# Using Skills
+
+## The Rule
+
+**Invoke relevant or requested skills BEFORE any response or action.** Even a 1% chance a skill might apply means that you should invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use it.
+
+```dot
+digraph skill_flow {
+    "User message received" [shape=doublecircle];
+    "About to EnterPlanMode?" [shape=doublecircle];
+    "Already brainstormed?" [shape=diamond];
+    "Invoke brainstorming skill" [shape=box];
+    "Might any skill apply?" [shape=diamond];
+    "Invoke Skill tool" [shape=box];
+    "Announce: 'Using [skill] to [purpose]'" [shape=box];
+    "Has checklist?" [shape=diamond];
+    "Create TodoWrite todo per item" [shape=box];
+    "Follow skill exactly" [shape=box];
+    "Respond (including clarifications)" [shape=doublecircle];
+
+    "About to EnterPlanMode?" -> "Already brainstormed?";
+    "Already brainstormed?" -> "Invoke brainstorming skill" [label="no"];
+    "Already brainstormed?" -> "Might any skill apply?" [label="yes"];
+    "Invoke brainstorming skill" -> "Might any skill apply?";
+
+    "User message received" -> "Might any skill apply?";
+    "Might any skill apply?" -> "Invoke Skill tool" [label="yes, even 1%"];
+    "Might any skill apply?" -> "Respond (including clarifications)" [label="definitely not"];
+    "Invoke Skill tool" -> "Announce: 'Using [skill] to [purpose]'";
+    "Announce: 'Using [skill] to [purpose]'" -> "Has checklist?";
+    "Has checklist?" -> "Create TodoWrite todo per item" [label="yes"];
+    "Has checklist?" -> "Follow skill exactly" [label="no"];
+    "Create TodoWrite todo per item" -> "Follow skill exactly";
+}
+```
+
+## Red Flags
+
+These thoughts mean STOP—you're rationalizing:
+
+| Thought | Reality |
+|---------|---------|
+| "This is just a simple question" | Questions are tasks. Check for skills. |
+| "I need more context first" | Skill check comes BEFORE clarifying questions. |
+| "Let me explore the codebase first" | Skills tell you HOW to explore. Check first. |
+| "I can check git/files quickly" | Files lack conversation context. Check for skills. |
+| "Let me gather information first" | Skills tell you HOW to gather information. |
+| "This doesn't need a formal skill" | If a skill exists, use it. |
+| "I remember this skill" | Skills evolve. Read current version. |
+| "This doesn't count as a task" | Action = task. Check for skills. |
+| "The skill is overkill" | Simple things become complex. Use it. |
+| "I'll just do this one thing first" | Check BEFORE doing anything. |
+| "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
+| "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
+
+## Skill Priority
+
+When multiple skills could apply, use this order:
+
+1. **Process skills first** (brainstorming, debugging) - these determine HOW to approach the task
+2. **Implementation skills second** (frontend-design, mcp-builder) - these guide execution
+
+"Let's build X" → brainstorming first, then implementation skills.
+"Fix this bug" → debugging first, then domain-specific skills.
+
+## Skill Types
+
+**Rigid** (TDD, debugging): Follow exactly. Don't adapt away discipline.
+
+**Flexible** (patterns): Adapt principles to context.
+
+The skill itself tells you which.
+
+## User Instructions
+
+Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
+
+codex
+使用 `using-superpowers` 约束技能路由，并在交付前使用 `verification-before-completion` 做证据核验。该任务是设计审查，不涉及功能创作或代码实现，因此不启用 brainstorming/TDD。
+exec
+/bin/bash -lc "sed -n '1,260p' /Users/yaomingyu/.codex/skills/verification-before-completion/SKILL.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+---
+name: verification-before-completion
+description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always
+---
+
+# Verification Before Completion
+
+## Overview
+
+Claiming work is complete without verification is dishonesty, not efficiency.
+
+**Core principle:** Evidence before claims, always.
+
+**Violating the letter of this rule is violating the spirit of this rule.**
+
+## The Iron Law
+
+```
+NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
+```
+
+If you haven't run the verification command in this message, you cannot claim it passes.
+
+## The Gate Function
+
+```
+BEFORE claiming any status or expressing satisfaction:
+
+1. IDENTIFY: What command proves this claim?
+2. RUN: Execute the FULL command (fresh, complete)
+3. READ: Full output, check exit code, count failures
+4. VERIFY: Does output confirm the claim?
+   - If NO: State actual status with evidence
+   - If YES: State claim WITH evidence
+5. ONLY THEN: Make the claim
+
+Skip any step = lying, not verifying
+```
+
+## Common Failures
+
+| Claim | Requires | Not Sufficient |
+|-------|----------|----------------|
+| Tests pass | Test command output: 0 failures | Previous run, "should pass" |
+| Linter clean | Linter output: 0 errors | Partial check, extrapolation |
+| Build succeeds | Build command: exit 0 | Linter passing, logs look good |
+| Bug fixed | Test original symptom: passes | Code changed, assumed fixed |
+| Regression test works | Red-green cycle verified | Test passes once |
+| Agent completed | VCS diff shows changes | Agent reports "success" |
+| Requirements met | Line-by-line checklist | Tests passing |
+
+## Red Flags - STOP
+
+- Using "should", "probably", "seems to"
+- Expressing satisfaction before verification ("Great!", "Perfect!", "Done!", etc.)
+- About to commit/push/PR without verification
+- Trusting agent success reports
+- Relying on partial verification
+- Thinking "just this once"
+- Tired and wanting work over
+- **ANY wording implying success without having run verification**
+
+## Rationalization Prevention
+
+| Excuse | Reality |
+|--------|---------|
+| "Should work now" | RUN the verification |
+| "I'm confident" | Confidence ≠ evidence |
+| "Just this once" | No exceptions |
+| "Linter passed" | Linter ≠ compiler |
+| "Agent said success" | Verify independently |
+| "I'm tired" | Exhaustion ≠ excuse |
+| "Partial check is enough" | Partial proves nothing |
+| "Different words so rule doesn't apply" | Spirit over letter |
+
+## Key Patterns
+
+**Tests:**
+```
+✅ [Run test command] [See: 34/34 pass] "All tests pass"
+❌ "Should pass now" / "Looks correct"
+```
+
+**Regression tests (TDD Red-Green):**
+```
+✅ Write → Run (pass) → Revert fix → Run (MUST FAIL) → Restore → Run (pass)
+❌ "I've written a regression test" (without red-green verification)
+```
+
+**Build:**
+```
+✅ [Run build] [See: exit 0] "Build passes"
+❌ "Linter passed" (linter doesn't check compilation)
+```
+
+**Requirements:**
+```
+✅ Re-read plan → Create checklist → Verify each → Report gaps or completion
+❌ "Tests pass, phase complete"
+```
+
+**Agent delegation:**
+```
+✅ Agent reports success → Check VCS diff → Verify changes → Report actual state
+❌ Trust agent report
+```
+
+## Why This Matters
+
+From 24 failure memories:
+- your human partner said "I don't believe you" - trust broken
+- Undefined functions shipped - would crash
+- Missing requirements shipped - incomplete features
+- Time wasted on false completion → redirect → rework
+- Violates: "Honesty is a core value. If you lie, you'll be replaced."
+
+## When To Apply
+
+**ALWAYS before:**
+- ANY variation of success/completion claims
+- ANY expression of satisfaction
+- ANY positive statement about work state
+- Committing, PR creation, task completion
+- Moving to next task
+- Delegating to agents
+
+**Rule applies to:**
+- Exact phrases
+- Paraphrases and synonyms
+- Implications of success
+- ANY communication suggesting completion/correctness
+
+## The Bottom Line
+
+**No shortcuts for verification.**
+
+Run the command. Read the output. THEN claim the result.
+
+This is non-negotiable.
+
+  → 定位并读取 RR1 与 v2 预登记，建立八项闭合证据表
+  • 审查 feasibility-lock 新结构的新增缺陷与自由度，形成结论
+  • 写入风险审查、执行报告和 TASK_INBOX 完成事件
+  • 逐项验证文件内容、禁区合规与 git diff，并提交任务 commit
+exec
+/bin/bash -lc "rg --files 06_RESEARCH/PREREGISTRATIONS 04_AI_TEAM/CODEX_TASKS | rg 'CARRY(_DELTA_NEUTRAL_PREREG_v2|_RISK_REVIEW_v1|_RISK_REVIEW_v2|CARRY_RR2|CARRY)'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v1.md
+06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v2.md
+
+exec
+/bin/bash -lc 'pwd && git status --short' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ M 04_AI_TEAM/CODEX_TASKS/CARRY_RR2_RUN.log
+
+exec
+/bin/bash -lc "ls -la 04_AI_TEAM/TASK_INBOX | sed -n '1,120p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+total 8
+drwxr-xr-x   4 yaomingyu  staff   128 Jun 14 18:47 .
+drwxr-xr-x  14 yaomingyu  staff   448 Jun 14 02:48 ..
+drwxr-xr-x  15 yaomingyu  staff   480 Jun 14 18:47 PROCESSED
+-rw-r--r--   1 yaomingyu  staff  2059 Jun 14 01:47 README.md
+
+codex
+工作区已有一项与本任务同名的未提交修改：`04_AI_TEAM/CODEX_TASKS/CARRY_RR2_RUN.log`。我会将其视为外部/用户状态，不修改、不回退；本次只新增指定审查产物、任务报告和完成事件。
+exec
+/bin/bash -lc "nl -ba 06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v2.md | sed -n '1,260p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+     1	# Delta 中性 Carry 预登记 v2
+     2	
+     3	**状态：** PREREGISTERED DRAFT v2 — 供 Risk Reviewer 第二轮盲审
+     4	**起草：** Claude（主理人/CTO）｜**日期：** 2026-06-14（修正 v1 误标 2026-06-15；时区 Asia/Singapore）
+     5	**前序：** v1 经 `CARRY_RISK_REVIEW_v1.md` 判 NOT APPROVED（8 项必改，核心=v1 用已探索工作集结果倒推设计=HARKing）。
+     6	**Protocol v1.4 AI 证据三行：** ①本策略非 LLM 作 alpha 信号，机制=人工经济归纳（杠杆多头需求→正 funding）；知识截止 2025-05，carry 经济链为公开市场常识。②最可能错处：funding 长期转负 / 制度变化（现货 ETF、更多做空工具）使风险溢价消失；短永续腿急涨强平致 delta 暴露。③不以多 agent 共识为证据；本预登记仅作设计冻结。
+     7	
+     8	---
+     9	
+    10	## §0 研究身份与独立性（RR1 #1/#8 核心修正）
+    11	
+    12	**v1 致命缺陷：** 品种/SOL排除/70-30/不对冲basis 全部由已观察的 2020-2024 工作集实证（`20260613_carry_empirical_analysis.md`）倒推 → 同一数据不能再做确认。**本 v2 据此分三段，互不冒充：**
+    13	
+    14	1. **历史工作集（<2024-12-10）= 锁定可行性复核（FEASIBILITY-LOCK）。** 用途：检验"按 v2 完全冻结口径、含全成本与路径级强平账本，历史上 carry 是否仍可行"。**明确定性：不是独立机制确认、不耗独立 Alpha 计数、不授权核心资本上线。** 设计参数已被探索数据污染，工作集 PASS 最多="历史可行性复核通过"。
+    15	2. **真确认 = 前向 SHADOW（paper-trade，未来数据）。** carry 天然可纸面实盘：v2 冻结后，按完全相同口径跑前向 shadow（不动真金），累积独立月度数据。**独立确认门**（前向）：前向 net E[R] 显著>0 + 无超阈强平事件 + 现金零基准跑赢，达到后才计入证据等级。
+    16	3. **核心资本上线 = D 级（Founder），按 DEC-069 证据等级解锁**：纸面=0 → 历史复核过=观察级 → 前向 shadow 过=小额真金 → 实盘过=升额。本预登记不自动上线。
+    17	
+    18	盲审副本不得再披露待确认的具体收益数值。
+    19	
+    20	---
+    21	
+    22	## §1 机制 vs 策略命题（RR1 #1 分离 + 归因表）
+    23	
+    24	- **机制命题（可证伪）：** carry 净收益**主要来自 funding 收取**，而非 basis 波动/价格漂移/再平衡运气。**须冻结归因表**：net_pnl = funding_received + basis_pnl + rebalance_pnl − fees − slippage − financing − event_loss；**声称 carry 机制成立的必要条件 = funding 贡献为正且为净收益主导项**。
+    25	- **策略命题：** 上述净收益扣全成本后 > 0 且过 §5 全门。
+    26	- **非 alpha 声明（冻结）：** 本策略**不以 funding 极端、价格反转、funding 均值回归为 alpha**；所有正/负 funding 时段一律按冻结持仓规则计入，不择时进出。OI 信号（§3）**只能减仓，不能加仓**。
+    27	- **regime/制度依赖声明（冻结）：** edge 是状态依赖非永恒风险溢价。失效监控口径冻结：逐年 + 滚动 12 个月净 funding；funding 公式/交易所制度变更须分段标注；不得结果后挑窗口。
+    28	
+    29	---
+    30	
+    31	## §2 构造（唯一化，RR1 #2）
+    32	
+    33	- **场所/合约：** Binance；永续 = USDT 本位永续（USDT-M perp）；现货 = Binance 现货同 symbol（BTCUSDT/ETHUSDT 现货）。**现货成交价用 Binance 现货 1H close（非 mark）**；mark 仅用于永续保证金/强平账本，不充当现货成交价或 basis 测量价。若现货历史数据缺失则该段标 N.A.→FAIL，不得用 mark 代替。
+    34	- **品种与权重：** 注明为**探索数据所选**（非本数据确认）：BTC、ETH；权重 70/30。SOL 排除同样标注为探索结论。前向 shadow 沿用同一冻结权重，不再在工作集上重选。
+    35	- **腿与名义 N：** `N` = 每品种**初始分配名义**（组合总 sleeve 资本 × 品种权重），冻结为常数；long 现货名义 N + short 永续名义 N。
+    36	- **再平衡（冻结）：** 每日 00:00 UTC 用当根 1H close 计 `delta_drift = |spot_notional − perp_notional| / N`；>5% → 用**现货腿**成交回中性（perp 腿保持），成交价=次一根 1H open；≤5% 不动。
+    37	- **杠杆/保证金（冻结公式）：** 永续初始杠杆 = 1.0（短腿名义 = 保证金，全仓现金保证金）；**保证金缓冲**：维持现金保证金 ≥ 交易所最低维持保证金 × 3；当 mark 上涨致短腿浮亏使现金保证金 < 缓冲线 → 记 `buffer_breach` 并从闲置 sleeve 现金补保证金（补款延迟=次一根 1H）；若补款后仍 < 交易所最低维持保证金 或 无闲置现金 → 记 `liquidation`（短腿强平、delta 暴露、按 mark 平仓损益入账）。
+    38	- **basis 路径账本（冻结）：** 每根 1H 记 spot−perp basis 的 mark-to-market；进出场 basis 损益、事件期 basis 扩张全部入账（非仅 p95 滑点）。
+    39	- **资本分母（冻结）：** sleeve 资本 = 现货本金 + 永续初始保证金 + 闲置缓冲现金 + 事件备用现金，全部计入收益率分母。
+    40	
+    41	---
+    42	
+    43	## §3 A-1×Carry 风控触发器（完整状态机，RR1 #3）
+    44	
+    45	- **变量（冻结）：** `oi_6h_pctl(t)` = 名义 OI（`sumOpenInterestValue`）的 6h 变化 `d6h = oi(t)/oi(t-6h)−1` 相对**严格过去** `[t-365d, t)` 扩张窗（最少 180 日历日、≥720 有效样本）的 midrank 滚动分位（不含当前值）。数据源=Binance USDT-M perp metrics 5M→1H 取末值不前填。**检验的是"6h 骤降"（d6h 下尾），非低 OI 水平。**
+    46	- **状态机（冻结）：** `oi_6h_pctl ≤ 0.01` 触发 → 该品种目标仓位降至 50%（用现货腿，次一根 1H open 成交）+ 启动 24h refractory；refractory 内再触发**不延长**（首触发计时）；24h 到期若当根不再触发 → 次一根 1H 一次性恢复 100%；仍触发 → 续 24h。BTC/ETH 独立各自状态机。减/恢复换手均计 §4 成本。
+    47	- **非劣检验（冻结，替代 v1 模糊表述）：** 配对 = 同一历史路径"有触发器"vs"无触发器"两套净值；检验 `H0: ΔnetER ≤ −δ`（净收益恶化超过非劣界 δ），`δ=年化0.5%`，单侧 alpha=0.05，同步 UTC 双资产块 bootstrap、块长=1 周等效、seed=20260614。
+    48	- **唯一尾部指标硬门（冻结）：** 触发器须使**事件期短腿 `liquidation` 次数**相对无触发器版**严格减少**（≥1 次或归零）。
+    49	- **基础 carry 必须先独立过 §5 全部硬门**；触发器版仅判"是否保留触发器"，**禁止有/无触发器版择优包装 edge**。
+    50	
+    51	---
+    52	
+    53	## §4 成本（逐腿逐成交账本，RR1 #4）
+    54	
+    55	```text
+    56	每次成交单独计：cost = notional_filled * (fee_per_side + slippage_per_side)
+    57	fee_per_side = 0.10%（现货腿、永续腿各自每次成交都算）
+    58	slippage_per_side = 0.10% 基准；事件压力档 0.30% / 0.50% / 1.00%（§6 事件窗内用压力档分别报告）
+    59	换手来源：开仓、平仓、每日再平衡、触发器减仓/恢复、强平 —— 全部逐笔计 fee+slippage
+    60	funding_received = Σ_8h (perp_short_notional_at_settle * funding_rate)   # 实际结算名义，交易所 funding 上下限按其公式
+    61	financing = 0（全仓自有现金保证金，无借贷；冻结为确定值，不留事后选择）
+    62	其它入账：basis MTM 路径损益、强平损益、ADL/破产损失（事件期）、脱锚退出、保证金资产折价
+    63	```
+    64	
+    65	---
+    66	
+    67	## §5 验收（Protocol 四件套闭合 + 唯一二元，RR1 #5）
+    68	
+    69	**观测单位（冻结）：** 8h funding interval 的组合净收益序列（含成本归属到 interval）。
+    70	**主推断：** 同步 UTC 双资产（BTC/ETH 向量）**多变量块 bootstrap**，块长=1 周等效 interval 数（21），复制=2000，seed=20260614，单侧 alpha=0.05，报告点估计 + 95% CI。
+    71	
+    72	**FEASIBILITY-LOCK PASS（历史，全满足；仅"历史可行性复核通过"，不耗计数、不上线）：**
+    73	- [ ] 净 E[R]（年化）> 0 且块 bootstrap 单侧显著。
+    74	- [ ] **赢亏比 ≥ 1.5**（赢均/亏均，按 8h interval 净收益）。
+    75	- [ ] 正年比例 ≥ 多数（Protocol 口径；注明 4-5 独立年下符号检验功效弱，见 §8）。
+    76	- [ ] **年化 log growth > 0**（唯一公式 `mean(ln(1+r_interval))*interval/年`）。
+    77	- [ ] **现金零基准硬门**：组合净收益显著 > 0（现金=0 收益）。
+    78	- [ ] **分档爆仓概率**（同步块 bootstrap、2000 条 1 年路径、seed）：标准档 `P(年DD≥35%)≤20%` 且保守档 `P(年DD≥20%)≤10%`；**路径内逐 1H 检查短永续腿维持保证金/强平**，非仅组合收盘 MDD。
+    79	- [ ] **组合 MDD ≤ 15%**（含 §6 事件情景）。
+    80	- [ ] **WF**：按时间等分 3 段（边界=工作集 interval 数三等分，余数给前段；切点 purge 跨界持仓；段内不重估参数），≥2 段净 E[R]>0。
+    81	- [ ] 触发器非劣（§3）+ 尾部硬门（§3）。
+    82	
+    83	**FAIL（任一）：** 上述任一不满足；或任一必要项 `N.A. ⇒ FAIL`（数据缺失/事件无法建模/强平概率无法计算均不得跳过）。
+    84	**判读纪律：** 不显著点估计写"未验证"；负 funding 段/事件期亏损不得剔除。
+    85	
+    86	---
+    87	
+    88	## §6 事件风险（冻结清单 + 路径级强平硬门，RR1 #6）
+    89	
+    90	- **冻结事件清单（工作集内，UTC 窗口，名称/venue/asset/起止/选窗规则预登记）：** ETH Merge（2022-09-15 前后 ±7d，ETH）；Terra/LUNA 崩盘（2022-05-09~05-13）；FTX 暴雷（2022-11-06~11-14）；3AC/借贷连环（2022-06）；以及任何工作集内交易所对 BTC/ETH 的提现暂停/永续脱锚（>1h，按"mark 偏离指数 >2%持续1h"规则纳入）。新发现事件只能按此规则纳入，禁结果后调窗。
+    91	- ETH Merge 单月已在 v1 披露，**不作独立确认样本**，仅作事件期压力诊断。
+    92	- **事件窗硬门（进 §5）：** 事件窗内短腿 `liquidation` 概率 + 事件窗 MDD 须进入分档爆仓硬门；用 1H mark 路径级保证金账本（维持保证金、补款延迟、ADL/暂停、basis 扩张）。
+    93	
+    94	---
+    95	
+    96	## §7 Holdout 与权限（RR1 #7）
+    97	
+    98	- **全部输入同一 cutoff `<2024-12-10`**：funding、现货价、mark、OI、事件标签、费率/保证金阶梯，统一封存清单 + SHA。
+    99	- 切分/封存规格 = `A1_CASCADE_REBOUND_PREREG_v5.md §12`（AES-256-GCM、密钥项目外、执行身份 chmod-000 期间不可读、负向权限测试留痕）；**Holdout 对研究执行身份永久不可读**，仅独立评估身份在 Founder 批准后可解封。
+   100	- 注：carry 历史段=feasibility-lock（§0），Holdout 在此用于"锁定后不可再偷看的二次复核"；真正独立确认是前向 shadow。
+   101	
+   102	---
+   103	
+   104	## §8 功效门（先过，RR1 #5/#6）
+   105	
+   106	- 序列 `n_eff = n/(1+2Σρ_k)`，ACF 截断 lag=预登记 30 个 8h（=10 天），估计样本=工作集全段；该数仅描述样本内序列精度。
+   107	- **独立制度周期 ≈ 4-5 年**。单侧 alpha=0.05、power=80% 的年度 MDE（来自 RR1 表）：n_eff=4 → 1.65σ；n_eff=5 → 1.36σ。
+   108	- **合理净 edge 上限（事前经济约束，非工作集反推）：** carry 风险溢价学术与跨市场先验 ≈ 年化 5-12%；保守取上限 12%、年度 SD 假设 10% → MDE@n_eff=5 ≈ 13.6%。**即历史段功效本就偏弱**——这正是 §0 把历史降为"可行性复核、不耗计数"、把确认交给前向 shadow（可累积更多独立月）的根本理由。
+   109	- **若坚持以历史段耗独立计数确认 → 禁止**（MDE≈合理上限，功效不足，Protocol v1.4）。
+   110	
+   111	## §9 失败后禁止行为
+   112	FEASIBILITY-LOCK FAILED 后禁止：改 funding 阈值/权重/再平衡/触发器/事件窗后在同工作集重测；剔除负 funding 段或事件；把不显著写成"弱 edge"；把历史可行性复核冒称独立确认或据以上线核心资本。重立项须新预登记 + 重新盲审 + 用前向/独立数据。
+
+exec
+/bin/bash -lc 'wc -l 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v1.md 06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v2.md && nl -ba 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v1.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+     152 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v1.md
+     112 06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v2.md
+     264 total
+     1	> **[专业异议]** 当前文档不是可放行的独立确认性预登记：预登记正文已经披露同一工作集的 BTC/ETH/SOL、年度收益、负 funding 段和 basis 结果，并据此选择品种、权重及不对冲 basis。若继续在该工作集上以 §5 判定“机制确证 + 可行性”，会把探索结果重复用于确认，形成不可忽略的 HARKing/选择偏差。以下审查继续完成，但在独立确认数据、统计功效、成本、强平和二元验收闭合前，不得运行回测或放行核心资本 sleeve。
+     2	
+     3	# Delta 中性 Carry 预登记 v1 独立风险审查
+     4	
+     5	**任务号：** CARRY-RR1  
+     6	**审查者：** Codex（独立 Risk Reviewer，与 thesis owner 分离）  
+     7	**审查日期：** 2026-06-14（Asia/Singapore）  
+     8	**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v1.md`  
+     9	**结论：** **NOT APPROVED**
+    10	
+    11	## 审查边界
+    12	
+    13	- 仅审设计，不运行回测，不计算策略历史收益。
+    14	- 未打开正文引用的 carry 实证报告；但预登记自身第 6、25、27、75 行已披露结果，因此本轮只能称“独立设计审查”，不能称“不知结果的完全盲审”。
+    15	- 未读取 HOLDOUT、`01_MEMORY_CORE/`，未修改预登记。
+    16	- 当前日期为 2026-06-14，而预登记第 4-5 行标注/引用 2026-06-15。锁定前必须按真实签署时间和时区纠正审计时间线。
+    17	
+    18	## 评级定义
+    19	
+    20	- **A：** 完全闭合，可按文档唯一复现并二元裁决。
+    21	- **B：** 主体成立，但有必须冻结的有限缺口。
+    22	- **C：** 有重大歧义或验证不足，不能据此放行。
+    23	- **D：** 存在致命方法学、风控或审计缺口。
+    24	
+    25	## 八维裁决总表
+    26	
+    27	| 维度 | 评级 | 裁决摘要 |
+    28	|---|---:|---|
+    29	| 1. 机制可信度 | **B** | 稳态收 funding 的经济链条合理，且不是价格反转交易；但策略盈利命题不能单独证实因果机制，长期负 funding 与制度变化没有预先冻结的失效定义。 |
+    30	| 2. 构造可复现性 | **D** | 交易场所、合约、现货价源、名义 `N`、再平衡成交腿、杠杆/保证金口径和 basis 尾部均未唯一化。 |
+    31	| 3. A-1×Carry 触发器 | **D** | “6h 名义 OI 滚动分位”缺公式/窗口/时点；24h 冻结、重触发、恢复和成本不唯一；“不显著恶化 + 尾部改善”不是闭合的非劣检验。 |
+    32	| 4. 成本完整性 | **D** | 现货/永续逐腿费用与滑点公式不闭合，事件档不足，basis 仅用无条件 p95 论证，融资与总资本占用口径未冻结。 |
+    33	| 5. 验收闭合 | **D** | 四件套写错/缺项：赢亏比 `>=1.5` 和分档爆仓概率缺失；bootstrap、seed、WF、N.A. 和触发器判据均不唯一。 |
+    34	| 6. 事件风险 | **D** | 事件“类别”不是冻结清单/窗口；短永续腿的路径级强平、ADL/脱锚和事件交易冲击未进入硬验收。 |
+    35	| 7. Holdout/计数 | **C** | cutoff 与 D 级定性清楚；但外部引用未锁版本，OI/事件数据边界遗漏，且“确认前不读”没有形成执行身份永久不可读边界。 |
+    36	| 8. 整体 HARKing | **D** | 品种、SOL 排除、70/30、basis 决策均由已披露工作集结果驱动；仍有统计、执行、事件窗和比较口径的事后选择路径。 |
+    37	
+    38	## 1. 机制可信度：B
+    39	
+    40	### 成立部分
+    41	
+    42	1. §1 描述的“杠杆多头需求 -> 正 funding -> short perp 收款”在现行永续制度下有明确付款方、收款方和价格锚定机制。
+    43	2. §2 是持续持有 long spot/short perp，而非在极端 funding 后押注价格或 funding 反转；方向上已与 A-2 极端 funding 反转划开。
+    44	3. §1 明示 funding 可转负、协议/交易所事件和短腿强平，允许被证伪。
+    45	
+    46	### 必改
+    47	
+    48	1. 明文写出本策略**不以 funding 极端、价格反转或 funding 均值回归为 alpha**，所有正负 funding 时段均按冻结持仓规则计入；OI 只能是风险缩减件。
+    49	2. 将机制命题与策略命题分开。总净收益大于零不能证明收益来自 funding；必须冻结 funding、basis、再平衡、费用和事件损失的归因表，并要求“净 funding 贡献为正”才可声称 carry 机制成立。
+    50	3. 声明 edge 是**制度/状态依赖**而非永恒风险溢价：现货 ETF、更多做空工具、参与者结构和交易所 funding 公式变化均可能使长期均值转负。冻结机制失效报告口径（至少逐年及滚动 12 个月净 funding、公式变更分段），不得在结果后挑窗口。
+    51	
+    52	## 2. 构造可复现性：D
+    53	
+    54	1. “现货或 mark 近似”不是一个价格规则。mark 是永续风险/结算价格，不能同时充当现货成交价、delta 名义和 basis 测量价。必须指定现货数据源、venue、symbol、bar 对齐、缺失值和成交价；若缺现货数据，本研究不能用 mark 近似后仍声称测得 cash-and-carry basis。
+    55	2. 未冻结现货与永续是否同一交易所、USDT/币本位、保证金模式（逐仓/全仓）、保证金币种、maker/taker、资金划转及交易所最低维持保证金阶梯。
+    56	3. `N` 未定义为初始、当前目标还是组合分配名义；`|spot-perp|/N` 因此不可复现。再平衡由哪条腿完成、检查价/成交价、下单时点、恢复 100% 时的成交顺序也未冻结。
+    57	4. “保证金率 <=2x”混淆保证金率与杠杆。必须冻结初始杠杆、最大杠杆、保证金缓冲的计算式、补保证金来源、补仓时点和无法划转时的清算规则。
+    58	5. basis 的相关风险是路径内 mark-to-market、保证金挤压与最终收敛/退出损益，不只是进出场“滑点”。单个 `p95=+0.11%` 没有方向、负尾、最大值、事件条件或价源，不能支持“不对冲/可忽略”。
+    59	
+    60	## 3. A-1×Carry 触发器：D
+    61	
+    62	1. “6h 名义 OI 滚动分位 <=0.01”未说明变量是 OI 水平、6h 变化还是 6h 收益，也未冻结滚动/扩张窗口长度、最小历史、是否排除当前值、并列值、数据源和 bar 对齐。称为“骤降”却可能实际检验低 OI 水平。
+    63	2. 触发后是立即成交还是等每日 00:00 UTC，未说明；连续触发是否重置 24h、到期仍触发是否延长、恢复时是否一次性加回、BTC/ETH 同时触发时如何处理均不唯一。
+    64	3. “不显著恶化”不能用未拒绝差异来证明风控件无害。必须预登记**配对非劣检验**：同一路径有/无触发器、净收益差、非劣界值、单侧 alpha、同步块 bootstrap 与 seed。
+    65	4. “尾部改善”必须指定唯一指标和门槛，例如事件窗最大短腿保证金缺口、分档爆仓概率或组合 MDD 的预定改善幅度；不得结果后在 DD、ES、最差月等指标间择优。
+    66	5. 有/无触发器版只用于判定触发器是否保留；基础 carry 必须先独立通过全部硬门，禁止触发器版与无触发器版择优包装 edge。
+    67	
+    68	## 4. 成本完整性：D
+    69	
+    70	1. 应按每次成交分别计算 `spot_turnover` 与 `perp_turnover` 的 fee 和 slippage；当前 `2*fee_per_side*(开仓+平仓+再平衡换手)` 无法判断“2”代表两腿还是开/平，易重算或漏算。
+    71	2. 基准 `0.10%/边` 滑点只出现在参数行，没有进入公式；`basis_slippage` 不能替代逐腿交易滑点。
+    72	3. 事件触发减仓、24h 后恢复和强制退出都产生双腿换手。既然验收包含事件窗与事件驱动交易，须报告 `0.3%/0.5%/1.0%` 事件滑点压力档，而非只有 0.30%。
+    73	4. `perp_margin_financing(若有)` 不是冻结参数。必须写明保证金来源、借贷利率数据源/缺失处理；若完全自有资金，则固定为零，不保留事后选择。
+    74	5. 自有现货无需虚构借款利息，但必须把现货本金、永续初始保证金、闲置缓冲和事件备用现金全部计入 sleeve 资本分母。若现金基准冻结为 0，则不得再事后加入或删除无风险利率；若要计机会成本，须在预登记中统一替换基准。
+    75	6. 还需冻结资金费实际结算名义、交易所 funding 上限/下限与公式变更、手续费等级、ADL/破产损失、脱锚退出以及现货/保证金资产折价。
+    76	
+    77	## 5. 验收闭合与统计功效：D
+    78	
+    79	### 四件套未闭合
+    80	
+    81	1. Protocol v1.3 要求“赢均/亏均 `>=1.5`”，§5 却只写无阈值的 `profit factor`；两者不是同一指标。
+    82	2. 分档爆仓概率整项缺失。核心 sleeve 至少必须按同步块 bootstrap 报：
+    83	   - 标准档 `P(年DD >=35%) <=20%`；
+    84	   - 保守档 `P(年DD >=20%) <=10%`；
+    85	   - 块长 1 周等效 bar 数、2000 条 1 年路径、固定 seed；
+    86	   - 路径内逐时检查短永续腿维持保证金/强平，而非只看组合收盘 MDD。
+    87	3. `E[R]` 的观察单位未定义。连续策略应冻结 8h funding interval、日或完整持仓 episode 中的一种，并据此定义赢/亏、名义分母和成本归属。
+    88	4. “几何增长 >0”须改为年化 log growth 的唯一公式；正年比例按 Protocol 的“多数”及有效年份口径执行，不能把当前 `>=3/4` 与别的标准并存。
+    89	
+    90	### 依赖结构与 n_eff
+    91	
+    92	1. 8h funding 强自相关，BTC/ETH 又同步相关。BTC、ETH 分开 bootstrap 后再组合会破坏共振尾部；必须对同步 UTC 的双资产向量做配对/多变量块重采样。
+    93	2. 序列层有效样本可报告
+    94	   `n_eff = n / (1 + 2 * sum(rho_k))`，
+    95	   但 ACF 截断规则、估计样本和最大 lag 必须预登记。该数字只能描述样本内序列精度，不能制造更多独立制度周期。
+    96	3. 2020-2024 约只有 4-5 个独立年度/制度阶段。以单侧 `alpha=0.05`、80% power 的一年一观测 t 检验计：
+    97	
+    98	| 独立年度 `n_eff` | 最小可检测均值（相对年度收益 SD） | 年度 SD=5% | 年度 SD=10% | 年度 SD=15% |
+    99	|---:|---:|---:|---:|---:|
+   100	| 4 | `1.65 sigma` | 8.2% | 16.5% | 24.7% |
+   101	| 5 | `1.36 sigma` | 6.8% | 13.6% | 20.4% |
+   102	
+   103	这些是未读取策略结果的功效计算。若合理净 edge 上限低于对应 MDE，按 Protocol v1.4 不得以该设计消耗独立计数。合理效应上限必须来自事前经济约束，不能用同一工作集已经观察到的 gross funding 反推。
+   104	
+   105	4. 仅有 4 个独立年份时，即使 4/4 正年，精确单侧符号检验也只有 `p=0.0625`；`>=3/4` 为 `p=0.3125`。因此 8h block bootstrap 可以处理样本内自相关，却不能单独支持“跨制度长期显著为正”。
+   106	
+   107	### 其他二元门缺口
+   108	
+   109	1. `cluster/块 bootstrap` 没有 alpha、置信区间、块类型/长度、复制数、seed 和 cluster 单位。
+   110	2. WF“三段”没有边界、训练/验证职责、purge、余数和参数是否重估；`>=2 段正` 也不足以替代硬门的完整净验收。
+   111	3. 触发器的“显著恶化/尾部改善”无门槛，使 Decision Table 并不唯一。
+   112	4. 必须明文 `N.A. => FAIL`，并规定任一数据缺失、事件无法建模、强平概率无法计算时不得跳过。
+   113	
+   114	## 6. 事件风险：D
+   115	
+   116	1. “硬分叉/升级、提现暂停/暴雷、长时间脱锚”只是类别，不是冻结事件清单。必须列出工作集内每个事件的名称、venue/asset、UTC 起止、选窗规则；新发现事件只能按预先规则纳入，禁止结果后调窗。
+   117	2. ETH Merge 的单月结果已在预登记披露，不能再作为独立确认样本；其窗口选择也未冻结。
+   118	3. 组合 MDD 不能代表短腿不强平。long spot 的未实现盈利若不能即时、无摩擦转入 perp 保证金，短腿仍可能在急涨中先被清算。必须用 1h mark 或更细数据进行路径级保证金账本、维持保证金、补款延迟、ADL/交易暂停和 basis 扩张压力测试。
+   119	4. 事件压力下的强平概率和事件窗 MDD 必须进入 §5 硬门，不得只作附表或口头讨论。
+   120	
+   121	## 7. Holdout 与计数：C
+   122	
+   123	1. `<2024-12-10` / `>=2024-12-10` 的时间切分和“sleeve 上线属于 D 级”清楚。
+   124	2. 边界只点名 funding/价格，遗漏 OI、事件标签、费率/保证金阶梯等会影响策略的输入；所有输入必须使用同一 cutoff 和封存清单。
+   125	3. “同 A-1 v5 §12”必须锁定准确文件路径、版本/SHA 和负向权限测试，不能依赖可变外部段落。
+   126	4. “盲审 + Founder 确认前不读”暗示之后可读，不符合执行身份不得接触 Holdout 的永久边界。应冻结 custodian、加密/ACL、执行身份负向测试、何种独立评估身份可在何种决策后解封；研究执行者任何情况下不可读。
+   127	5. 由于设计参数已经从工作集结果产生，工作集 PASS 最多支持“锁定历史可行性复核”，不能直接计作独立机制确证并上线。核心资本放行至少需要未参与设计的数据或前瞻 shadow/live 确证，并另行预登记。
+   128	
+   129	## 8. HARKing 与剩余自由度：D
+   130	
+   131	已观察工作集结果直接决定 SOL 排除、BTC/ETH 选择、70/30 权重、basis 不对冲，并被用来描述熊市稳定性和事件风险。这些可以作为探索性设计依据，但不能在同一数据上再次获得确认性 p 值。
+   132	
+   133	仍未冻结的选择路径包括：venue/合约、现货价源、手续费档、资本分母、`N`、触发变量和窗口、恢复规则、basis 指标/事件窗、bootstrap 方法/块长/seed、WF 边界、非劣界值、尾部指标以及事件清单。当前“冻结”标签不能消除这些实现分叉。
+   134	
+   135	此外，Protocol v1.4 的 AI 证据三行未出现。文档由 Claude 起草且把相关判断用于研究依据时，应补充模型/知识截止、最可能错误及多 agent 共识是否被用作证据。
+   136	
+   137	## 最小必改清单
+   138	
+   139	1. **纠正研究身份与独立性。** 将已披露工作集明确标为探索数据；不得以其重复检验结果直接声称机制确证或放行 D 级资金。冻结独立确认数据/前瞻 shadow 阶段及其唯一晋级门；盲审副本不再披露待确认结果。
+   140	2. **唯一化组合与执行账本。** 冻结 venue、合约、现货价源、`N`、资本分母、再平衡成交腿/时点、杠杆/保证金/补款/强平公式及 basis 处理，禁止 mark 代替现货成交价。
+   141	3. **闭合 OI 风控件。** 给出 OI 变量、仅用过去数据的滚动/扩张分位、窗口和完整状态机；用同步配对块 bootstrap 做预设非劣检验，并为唯一尾部指标设硬门。基础 carry 不得与触发器版 OR 择优。
+   142	4. **重写完整成本。** 逐腿逐成交计 fee/slippage/换手，冻结融资为确定值，计入全部资本占用与事件恢复交易，并报告 0.3%/0.5%/1.0% 事件压力；将 basis、ADL、脱锚和保证金资产折价纳入路径账本。
+   143	5. **按 Protocol 闭合唯一验收。** 补赢亏比 `>=1.5`、分档爆仓概率、年化 log growth、现金零基准、MDD `<=15%`、唯一 WF、`N.A.=>FAIL`；冻结 E[R] 单位、alpha、CI、同步多变量块、复制数和 seed。
+   144	6. **先过功效门。** 预登记序列 `n_eff`、制度周期限制、合理净 edge 上限与 MDE；若 MDE 高于合理上限，禁止立项耗独立计数，只能延长独立样本或改为不晋级的可行性研究。
+   145	7. **冻结事件与 Holdout 权限。** 列出事件和 UTC 窗口，做路径级短腿强平硬验收；把所有输入纳入 cutoff/SHA 清单，并建立执行身份永久不可读的 Holdout 负向权限测试。
+   146	8. **修复审计元数据。** 校正 2026-06-15 的未来日期，补 Protocol v1.4 AI 证据三行及所有结果驱动设计选择的来源留痕。
+   147	
+   148	## 最终结论
+   149	
+   150	**NOT APPROVED。** 当前不得运行 carry 回测、不得读取 Holdout、不得把工作集结果计作独立机制确证、不得放行核心资本 sleeve。以上 8 项全部闭合后，提交 v2 重新独立盲审。
+   151	
+   152	**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+exec
+/bin/bash -lc "nl -ba 06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v2.md | sed -n '261,560p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+codex
+初步核对显示，v2 已正确降级历史工作集身份，但若按“无偏、可复现的可行性复核”标尺，仍有实质性未闭合点：资本分母与 `N` 定义形成资金量矛盾，OI 减仓仅写现货腿会制造净空头，事件清单和前向 shadow 晋级门也未唯一化。我正在把这些问题区分为 RR1 未闭合项与 v2 新增自由度，避免把确认级要求误加到历史复核上。
+exec
+/bin/bash -lc "find 04_AI_TEAM/CODEX_TASKS -maxdepth 1 -type f -name 'REPORT_*RR*.md' -print | sed -n '1,80p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR1.md
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR4.md
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_SCAFFOLD.md
+04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_FEASIBILITY.md
+
+exec
+/bin/bash -lc "rg --files . -g '"'!01_MEMORY_CORE/**'"' -g '"'!**/*HOLDOUT*'"' | rg 'DEC-069|A1_CASCADE_REBOUND_PREREG_v5|RISK_REVIEW_v2|RR2_DONE|REPORT_.*RR' | sed -n '1,160p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+./04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR2_DONE.json
+./06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v2.md
+./06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md
+./04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_FEASIBILITY.md
+./04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_SCAFFOLD.md
+./04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+./04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR4.md
+./04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+./04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR1.md
+
+exec
+/bin/bash -lc "find 04_AI_TEAM/TASK_INBOX/PROCESSED -maxdepth 1 -type f -name '*DONE.json' | tail -n 8 | xargs -I{} sh -c 'printf \"%s\\n\" \"--- {}\"; sed -n \"1,120p\" \"{}\"'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+--- 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR3_DONE.json
+{
+  "task_id": "A1_RR3",
+  "completed_at": "2026-06-13T20:02:10Z",
+  "status": "completed",
+  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md",
+  "review_conclusion": "NOT APPROVED",
+  "conditions_closed": "0/5",
+  "irreducible": "yes",
+  "next_task": null,
+  "notes": "仅历史强平方向/因果归因属不可约；bootstrap、Protocol功效门、m=3/m=4冲突、WF与Holdout读权限边界均可修复。git提交因本会话无.git写权限未完成。"
+}
+--- 04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_DONE.json
+{
+  "task_id": "FIX_COLLECTOR",
+  "completed_at": "2026-06-14T09:24:32Z",
+  "status": "blocked",
+  "fixed": "no",
+  "frames_after_restart": 0,
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR.md",
+  "next_task": null,
+  "notes": "本地执行沙箱在 TCP connect(43.160.200.224:22) 阶段返回 Operation not permitted，未进入 SSH 握手，故未能取证、修复或重启验证；服务器及红线服务均未触达。"
+}
+--- 04_AI_TEAM/TASK_INBOX/PROCESSED/DEC070_AUDIT_DONE.json
+{
+  "task_id": "DEC070_AUDIT",
+  "completed_at": "2026-06-13T19:59:57Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_DEC070_AUDIT.md",
+  "next_task": null,
+  "notes": "20/35 clean、10/35 watch、5/35 exclude（仅基于跳动+HLC3成交额代理）；35/35缺精确quote_volume，float/OI两项需外部历史数据，不能证明四过滤器全部通过。"
+}
+--- 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR_DONE.json
+{
+  "task_id": "A1_RR",
+  "completed_at": "2026-06-13T18:51:57Z",
+  "status": "completed",
+  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v1.md",
+  "review_conclusion": "需修改后通过",
+  "notes": "当前 NOT APPROVED：须修正强平卖压方向识别、相关事件稳健推断与多重检验、A-2 极端 funding overlap、完整成本及事件研究/策略门分层后重新盲审。git commit 已尝试，但环境禁止创建 .git/index.lock。"
+}
+--- 04_AI_TEAM/TASK_INBOX/PROCESSED/D2_DONE.json
+{
+  "task_id": "D2",
+  "completed_at": "2026-06-13T18:57:00.327954Z",
+  "status": "blocked",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_D2.md",
+  "next_task": null,
+  "notes": "变体C精确复现；A/B因价格源不一致、缺真实funding、DEC-070四项过滤无可审计证据而失败关闭。"
+}
+--- 04_AI_TEAM/TASK_INBOX/PROCESSED/CARRY_RR1_DONE.json
+{
+  "task_id": "CARRY_RR1",
+  "completed_at": "2026-06-14T09:32:31Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR1.md",
+  "review_file": "06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v1.md",
+  "review_conclusion": "NOT APPROVED",
+  "conditions": [
+    "将已披露工作集降为探索数据，并冻结独立确认或前瞻 shadow 晋级门",
+    "唯一化 venue、价源、名义、资本分母、再平衡与保证金强平账本",
+    "闭合 OI 触发状态机、配对非劣检验和唯一尾部硬门",
+    "逐腿计完整成本并加入 0.3%/0.5%/1.0% 事件压力与 basis/ADL/脱锚",
+    "补齐赢亏比、分档爆仓概率、log growth、同步块 bootstrap、WF 与 N.A.=>FAIL",
+    "预登记 n_eff、合理净 edge 上限与 MDE，功效不足则不得耗独立计数",
+    "冻结事件 UTC 窗口、路径级短腿强平和永久不可读 Holdout 权限边界",
+    "校正未来日期并补 Protocol v1.4 AI 证据及结果驱动选择留痕"
+  ],
+  "next_task": null,
+  "notes": "八维评级为 B/D/D/D/D/D/C/D。未读取 Holdout、01_MEMORY_CORE 或引用的实证报告，未修改预登记，未运行回测。git commit 因无法创建 .git/index.lock（Operation not permitted）未完成。"
+}
+--- 04_AI_TEAM/TASK_INBOX/PROCESSED/CARRY_SCAFFOLD_DONE.json
+{
+  "task_id": "CARRY_SCAFFOLD",
+  "completed_at": "2026-06-14T10:47:20Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_SCAFFOLD.md",
+  "output_files": [
+    "06_RESEARCH/CODE/carry/",
+    "06_RESEARCH/RESULTS/20260615_carry_scaffold_selftest.md",
+    "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_SCAFFOLD.md"
+  ],
+  "tests_passed": true,
+  "test_command": "PYTHONDONTWRITEBYTECODE=1 python3 -m pytest 06_RESEARCH/CODE/carry/tests -q",
+  "next_task": null,
+  "notes": "25 synthetic tests passed. No Holdout or 01_MEMORY_CORE access; no real-data acceptance values or edge conclusion produced."
+}
+--- 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_TIERA_EXEC_DONE.json
+{
+  "task_id": "A1_TIERA_EXEC",
+  "completed_at": "2026-06-14T09:08:17.668833Z",
+  "status": "completed",
+  "verdict": "FAILED",
+  "output_file": "06_RESEARCH/RESULTS/20260615_a1_tierA_screen.md",
+  "next_task": null,
+  "notes": "48h mean=0.013224768795590402; Holm p=0.31556844315568444; 判断=不支持继续投路径B前向确证。"
+}
+
+exec
+/bin/bash -lc "nl -ba 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v2.md | sed -n '1,240p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+     1	> **[专业异议]** v2 仍未满足物理盲审放行条件。依赖稳健推断、实验前功效停机、A-2 同口径碰撞隔离和 Holdout 权限隔离均未闭合，故必须继续暂停 Tier A 事件后收益计算。
+     2	
+     3	# A-1 预登记 v2 独立风险审查报告（第二轮）
+     4	**审查者：** Codex（独立 Risk Reviewer）｜**日期：** 2026-06-14｜**对象：** `A1_CASCADE_REBOUND_PREREG_v2.md`
+     5	**结论：** NOT APPROVED
+     6	
+     7	## 执行摘要（3 行）
+     8	
+     9	v2 已实质改善触发复现性、唯一主 horizon、两级门和成本口径，但十项最低条件仅 2/10 完全闭合。  
+    10	同 UTC 日 cluster 不能吸收跨日重叠窗口；功效门又需先读取事件后 CAR 方差/ICC，无法在实验前执行。  
+    11	A-2 overlap 改写了冻结特征，确认性预算遗漏必过检验，Holdout 仍无权限隔离；当前不得放行 Tier A。
+    12	
+    13	## 十项条件闭合裁决表
+    14	
+    15	| # | 条件 | 裁决 | 证据（v2 §/行） | 仍缺 |
+    16	|---:|---|---|---|---|
+    17	| 1 | 封闭强制卖压方向识别，或降低因果主张 | PARTIALLY_CLOSED | §1 L35-L49；§2 L69-L78 | 代理在结果前冻结且排除了价格上涨型空头回补，但不能排除宏观普跌中段、主动卖出/双边减仓或普通短期反转；“已发生机械性强制去杠杆”“强制卖压事件”仍超出可观测量。`-2%` 也只有冻结声明，没有选择依据。 |
+    18	| 2 | 自包含冻结 OI、分位、episode、event_time、缺失和价格对齐 | CLOSED | §2 L55-L86 | 主要实现要素已经给出。执行稿仍应把 L67 的“180 日历日”写成明确可测试谓词，避免把 720 个重叠小时观测误当成天然等价于 180 日覆盖。 |
+    19	| 3 | 唯一主 horizon 或多重校正；72h 仅探索 | PARTIALLY_CLOSED | §4 L113-L118；§11 L206-L224 | 48h/24h Holm 与 72h 探索已冻结，但 §7 的 non-overlap 显著性和所谓交互项都是 PASS/FAIL 检验，却被排除在确认预算外；因此整体多重检验仍未闭合。 |
+    20	| 4 | global-event cluster/time-block 依赖稳健主推断并固定 seed | NOT_CLOSED | §4 L120-L126 | 同 UTC 日聚类只合并同日跨品种事件，不能保留跨午夜市场冲击，也不能吸收相邻日期 episode 的 48h/72h 重叠；L124 的“由 cluster 吸收”不成立。单侧 bootstrap p 值的零假设重心化/统计量算法也未定义。 |
+    21	| 5 | 80% power、n_eff、保守方差和合理效应上限 | NOT_CLOSED | §6 L141-L154；Protocol §六 L19-L20 | 公式改为 80% power，但 `ICC_proxy=0.3` 无依据；“实际执行用 work 集 CAR 相关”和“事件条件方差”都需要先计算事件后收益，与“实验前停止、不跑事件后收益”冲突。合理效应上限及依据被撤销后没有替代值，故 Protocol 的前置停机门不可执行；设计效应还在 n_eff 与 sigma 两处重复膨胀，口径不唯一。 |
+    22	| 6 | 用 A-2 冻结极端阈值定义 overlap，并闭合不可区分判决 | NOT_CLOSED | §7 L158-L168；§11 L209-L216 | P95 数值相同，但 A-2 冻结的是“每个 8H funding 读数”的滚动分位；v2 改为 `[-24h,-1h]` 平均 funding 再求分位，是新特征而非原冻结定义。L166 的“non-overlap 显著或交互不显示”与 L167/L209 的 non-overlap 必须显著冲突；`CAR ~ a2_overlap` 是组别主效应，不是交互项；`0.60` 无独立依据。 |
+    23	| 7 | 分离事件研究门与策略门；完整成本口径 | CLOSED | §8 L172-L185；§9 L189-L192 | Tier A/Tier B 已分离，手续费、每边滑点、真实 funding 与事件压力档均明确。Tier A 的净额仅诊断，不冒充策略晋级。 |
+    24	| 8 | 事件类现金零基准为硬门并与 Protocol 一致 | PARTIALLY_CLOSED | §10 L196-L198；Protocol §五 L17-L18 | “事件类=现金零基准”的基准类别正确；但 Protocol 要求的是策略**净收益**超过现金零，v2 用未扣成本的 gross CAR 宣称已表达第五件。Tier A 可另设 gross 机制门，但不能称其已满足 Protocol 第五件；Tier B 仍须以净收益验收。 |
+    25	| 9 | 确认检验预算和唯一二元 decision table | NOT_CLOSED | §4 L118；§7 L162-L168；§11 L202-L224 | 预算写 3，但 A-2 必过检验未计入；§7 仍有 OR 口径冲突。L204 把“所有 CAR>0”定义成显著，而 L211 的 WF 又称只看分段均值；FAIL 清单没有列 WF 失败，形成未归类状态。 |
+    26	| 10 | 有保管人、哈希和访问边界的物理 Holdout 封存 | NOT_CLOSED | §12 L228-L237 | 分文件、哈希、清单和路径 assert 增强了审计性，但保管人仍是 thesis owner/派发方 Claude，封存文件仍由同一可访问工作区生成，且原始特征可重建。脚本 assert 不是文件系统权限边界，故仍是可绕过的逻辑隔离。 |
+    27	
+    28	## 高风险点专项
+    29	
+    30	### 1. 方向代理
+    31	
+    32	**(a) 冻结时点：通过。** §2 L69-L78 明确在任何事件后收益前冻结，失败后禁改；这消除了本轮实验内按结果挑方向阈值的 HARKing。
+    33	
+    34	**(b) 识别能力：不足。** `OI↓ + r6h<=-2%` 能排除典型的价格上涨型空头回补，但仍把以下事件混在一起：宏观普跌中段、主动多头减仓、双边同步平仓、交易所迁移，以及仅由大幅负收益触发的普通短期反转。若 48h CAR 为正，现设计不能把效应归因于“机械强平卖压消失”，也不能区分 OI 信息与 `-2%` 价格冲击本身。
+    35	
+    36	**(c) 命题措辞：仍有 overclaim。** §1 L49 的限制声明诚实，但 L35、L40-L47 仍把潜变量写成“已发生”的机械强制事件，并称不能由被动 beta 解释；§10 又把被动对照降为不影响结论的诊断。可确认的命题只能是“极端 OI 收缩且同窗大幅负收益后的条件 CAR”，强平/overshooting 解释最多为未证实机制解释。
+    37	
+    38	**(d) `DIR_THRESHOLD=-2%`：新增自由度。** 冻结使它不是事后 HARKing，但“为了排除上涨事件”只能推出阈值应小于 0，不能推出 `-2%`。该值同时改变事件严重度、样本量和普通反转暴露。必须采用纯方向阈值，或给出不使用事件后收益的外部依据及纯计数/功效后果；失败后不得在 -1%/-2%/-3% 间重测。
+    39	
+    40	### 2. 多重检验与依赖
+    41	
+    42	48h 唯一主检验、24h Holm、72h 探索是实质进步，但整体确认预算不是 3。non-overlap 48h 显著性是硬门，A-2 组别差异也被用于机制判决，因此无论称“诊断”与否都属于确认性使用，必须进入冻结 family 或预先规定层级检验。
+    43	
+    44	同 UTC 日 cluster 仅解决“同日三币同时触发”的一部分相关性。24h refractory 允许次日再次开 episode，48h 窗口会重叠；UTC 午夜也会把同一市场级联拆成两个 cluster。主推断应冻结连续时间块/移动块规则，块长至少覆盖共享收益窗口，并明确 cluster 加权、零假设重心化、p 值和置信区间算法。
+    45	
+    46	§5 的单调性虽然只声明一个统计量，但仍需冻结 severity 数值编码、Spearman 预期符号、ties 处理和 bootstrap 检验算法；否则“一项检验”仍有实现分叉。
+    47	
+    48	### 3. 功效
+    49	
+    50	`n_eff=n/[1+(m_bar-1)ICC]` 只有在 cluster 定义正确、近似等簇和共同 ICC 假设可接受时才可用。当前 cluster 本身不足，`ICC=0.3` 也没有外部或保守上界依据，可能明显乐观。
+    51	
+    52	更关键的是，v2 要用 work 集 CAR 估计实际 ICC，并把事件条件方差放入 `sigma_eff`。这已经读取了实验结果变量，故不可能先据此执行“实验前停机”。应在任何事件后收益计算前冻结外部/前事件方差代理、ICC 保守场景及合理效应上限；正式结果中的实现方差只能作为事后功效/不确定性报告，不能回头决定是否立项。
+    53	
+    54	Protocol §六要求预登记写明合理效应上限及依据。撤销无依据的 1.5%-3.0% 是正确的，但撤销后没有替代上限，意味着当前停机句没有可比较对象。
+    55	
+    56	### 4. A-2 碰撞
+    57	
+    58	A-2 公开假设 L18/L21 及特征代码 L23-L24、L120-L125 冻结的是单个 8H funding 读数相对其历史的 P95。v2 §7 L160 对 24h 平均 funding 再求分位，虽然沿用数字 `0.95`，但改变了变量、分布和事件含义，不能称为“取自 A-2 v1”。
+    59	
+    60	`p_overlap>=0.60` 是另一个无依据阈值。冻结后它不是事后自由度，但没有必要：真正需要的是按预先冻结的方差/ICC/效应上限判断 non-overlap 是否有功效。若保留 0.60，必须给出与机制或功效的事前对应关系，不能只称“过高”。
+    61	
+    62	此外，`CAR_48h ~ a2_overlap` 只有一个组别指标，不是交互模型；L166 允许“交互不显示”替代 non-overlap 显著，重新引入以不显著作独立性证据的路径，并与 L167、§11 冲突。
+    63	
+    64	### 5. 验收闭合
+    65	
+    66	§11 已消除 24h/48h 直接择优，且 N.A. 明确转 FAIL；但仍不是唯一二元表：
+    67	
+    68	- §7 的 OR 条件与 §11 的强制 non-overlap 显著条件冲突。
+    69	- A-2 硬门没有对应的多重校正 family；“Holm 后”未说明与哪些检验组成 family。
+    70	- §11 L204 与 L211 对 WF 的“>0”分别暗示显著与裸均值两种口径。
+    71	- PASS 要求 WF，FAIL 清单却没有 WF 失败。
+    72	- bootstrap 单侧 p 的算法未冻结，无法保证不同实现给出同一判决。
+    73	
+    74	### 6. 现金零基准
+    75	
+    76	Protocol v1.4 §五 L17-L18 确实规定空头/中性/事件类使用现金零基准，因此把同 regime buy-and-hold 降为诊断不违反协议。问题在于协议原文要求“净收益”超过基准；§10 用 gross CAR 直接声称已经表达第五件并不精确。
+    77	
+    78	可闭合的分层是：Tier A 用 gross CAR>0 作为机制研究门，但不得称为完整 Protocol 第五件；Tier B 用扣除手续费、滑点和真实 funding 后的净收益>0 正式满足第五件。
+    79	
+    80	### 7. Holdout 物理封存
+    81	
+    82	SHA-256 证明文件未变，不能阻止读取；路径 assert 防误操作，不能防绕过。§12 L235 还明确承认持有原始特征者可以重建全部事件。
+    83	
+    84	物理封存至少需要：封存文件位于研究执行身份无读取权限的位置；保管身份与 thesis owner/执行者分离；执行环境只获得 work 文件；manifest 可见但封存内容不可见；解封操作有独立授权和一次性审计记录。当前方案未达到这些权限条件。
+    85	
+    86	## v2 新引入结构的缺陷评估
+    87	
+    88	| 新结构 | 正面作用 | 新缺陷 / HARKing 路径 |
+    89	|---|---|---|
+    90	| `r6h<=-2%` 方向过滤 | 排除价格上涨型空头回补，且参数已冻结 | 无法证明强平；混入普通大跌后反转；-2% 无依据并同时控制严重度与样本量。 |
+    91	| 24h refractory window | 消除了 v1 single-linkage 无限延长，event_time 唯一 | 24h 后可立即开启新 episode，仍与 48h/72h 收益窗重叠；必须由正确时间块推断处理。 |
+    92	| 同 UTC 日 cluster bootstrap | 能合并一部分同日跨品种共同冲击 | 跨日相关被切断；“block”实际只是日标签 cluster；p 值算法未定义。 |
+    93	| Tier A / Tier B 两级门 | 正确分离机制研究与可交易策略验收 | Tier A gross CAR 被误称为已满足要求净收益的 Protocol 第五件；核心命题又保留了未作为硬门的被动 beta 排除声明。 |
+    94	| n_eff + ICC 折算 | 承认 episode 非独立 | ICC=0.3 无依据；实际 ICC/条件方差依赖事件后 CAR，破坏前置功效门；设计效应可能重复计入。 |
+    95	| A-2 overlap + 0.60 门 | 试图把机制不可区分写成失败 | 使用了新 funding 聚合变量；0.60 无依据；必过子样本检验未纳入确认预算，且 OR 口径冲突。 |
+    96	
+    97	## 最终结论 + 最小第二轮必改清单
+    98	
+    99	**最终结论：NOT APPROVED。当前不得放行执行 Tier A 事件研究，不得计算任何 A-1 事件后收益。**
+   100	
+   101	第二轮最小必改清单：
+   102	
+   103	1. **收窄可证伪命题并处理方向阈值。** 主命题改为可观测的“OI 极端收缩 + 同窗负收益后的条件 CAR”；强平/overshooting 仅作未证实解释。为 -2% 提供独立依据，或改成纯方向规则；同步删除“已排除被动 beta”等未设硬门的主张。
+   104	2. **重写依赖稳健主推断。** 用冻结的连续时间块/移动块覆盖跨日与重叠窗口，明确 cluster/块构造、加权、零假设重心化、p 值/CI、seed 和单调性编码。
+   105	3. **使功效门真正前置可执行。** 在不读取任何事件后 CAR 的条件下冻结方差代理、ICC 保守场景、合理效应上限及其依据；消除 n_eff/sigma 的重复设计效应，并给出唯一停机算法。
+   106	4. **按 A-2 原冻结变量重做碰撞门并统一 multiplicity。** 使用单次 8H funding 读数 P95 的同口径状态定义；删除或论证 0.60；把所有影响 PASS/FAIL 的 non-overlap/组别检验纳入明确 family 或层级检验，删除“不显著即可替代”的 OR。
+   107	5. **闭合 decision table、Protocol 与物理封存。** 统一 WF 的裸均值/显著性口径并补入 FAIL；区分 Tier A gross 机制门与 Tier B net 第五件；把封存内容移到研究执行身份无读取权限、由独立保管身份控制的位置。
+   108	
+   109	上述修改均须发生在首次 A-1 事件后收益计算前，并形成新版本再次盲审。  
+   110	**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+exec
+/bin/bash -lc "nl -ba 04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR1.md | sed -n '1,240p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+     1	# CARRY-RR1 执行报告
+     2	
+     3	**任务：** Delta 中性 Carry 预登记 v1 独立风险盲审  
+     4	**日期：** 2026-06-14  
+     5	**状态：** completed  
+     6	**审查结论：** NOT APPROVED
+     7	
+     8	## 交付
+     9	
+    10	- 正式审查：`06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v1.md`
+    11	- 完成事件：`04_AI_TEAM/TASK_INBOX/CARRY_RR1_DONE.json`
+    12	
+    13	## 七问自检
+    14	
+    15	1. **验证机制：** 杠杆多头需求是否形成可持续正 funding，使 long spot/short perp 在全成本、尾部和制度变化后仍有正净 edge。
+    16	2. **量化验收：** 任务要求 A/B/C/D、二元结论、最小必改；审查发现原 §5 本身尚未量化闭合。
+    17	3. **更便宜等效实现：** 先做文本盲审和解析功效计算即可识别阻塞，无需运行回测或读取任何结果数据。
+    18	4. **禁止项：** 未读取 Holdout/`01_MEMORY_CORE/`，未改预登记，未运行回测，未简化成本或引入黑箱依赖。
+    19	
+    20	## 主要裁决
+    21	
+    22	- 机制可信度 B；构造 D；触发器 D；成本 D；验收 D；事件风险 D；Holdout/计数 C；HARKing D。
+    23	- 预登记正文已披露并使用同一工作集结果选择品种、权重和 basis 处理，不能把随后同工作集检验作为独立机制确证。
+    24	- 四件套缺赢亏比 `>=1.5` 与分档爆仓概率；统计检验、同步块、seed、WF 和 `N.A.=>FAIL` 未冻结。
+    25	- 约 4 个独立年度时，单侧 5%、80% power 的最小可检测均值约为年度收益标准差的 1.65 倍；当前未通过 Protocol v1.4 MDE 前置门。
+    26	- 短永续腿路径级强平、basis 尾部、事件清单和 Holdout 永久权限边界未进入硬验收。
+    27	
+    28	## 边界与审计
+    29	
+    30	- 未打开预登记引用的 carry 实证报告；结果暴露来自预登记正文自身。
+    31	- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
+    32	- 未修改 `CARRY_DELTA_NEUTRAL_PREREG_v1.md`。
+    33	- 未运行策略回测、事件研究或收益统计。
+    34	- 注意到预登记日期为 2026-06-15，晚于本次审查日 2026-06-14，已列为必改审计元数据。
+    35	
+    36	## 验收标准逐条自检
+    37	
+    38	- [x] 8 个必审维度逐项 A/B/C/D。
+    39	- [x] 每维给出具体必改。
+    40	- [x] 明确 APPROVED / NOT APPROVED。
+    41	- [x] 评估 funding 8h 自相关、跨资产相关、制度周期 `n_eff` 与 MDE。
+    42	- [x] 审查 A-2 边界、长期负 funding 与制度变化。
+    43	- [x] 审查完整成本、资本占用、basis 与事件压力。
+    44	- [x] 审查四件套、现金零基准、MDD、WF、bootstrap 和 N.A.。
+    45	- [x] 审查 Holdout、计数定性与 HARKing。
+    46	
+    47	## Git 状态
+    48	
+    49	已尝试仅暂存正式审查与本报告并创建
+    50	`CARRY_RR1: delta neutral carry prereg risk review` 提交。环境拒绝创建
+    51	`.git/index.lock`，返回 `Operation not permitted`，因此未能创建任务 commit。
+    52	未改动、暂存或回退工作区已有的其他日志变更。
+
+exec
+/bin/bash -lc "rg -n '"'^## §12|''^## 12|Holdout|AES-256|chmod-000|负向权限'"' 06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md | sed -n '1,180p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+8:**v5 对 RR4 四项最小必改的处置：** ①§7 "机制独立性硬门"→"A-2 非重叠关联硬门"（去机制识别含义）；②§4 circular 改半开 UTC 网格 `[t_1,t_n+1h)`+回绕按 circular offset 截断，§5 Spearman 改**配对 moving-block bootstrap 对 ρ 居中**（真检验 ρ=0）；③§11 WF 冻结唯一段长/余数分配/切点 c=相邻中点/按实际读取足迹 purge/purge 后不重分段；④§12 冻结 **AES-256-GCM**（nonce‖密文‖tag 格式+认证失败判据）+密钥独立 principal 不可读+负向测试留命令/退出码/失败证据。
+26:| #5 闭合 WF 与真封存 | WF 冻结**按 episode 数等分三段+切点 120h purge**；sealed holdout **加密存储**（主会话持密钥，执行身份无密钥不可解），留**负向权限测试**记录 | §11,§12 |
+161:- [ ] 未发现任何 Holdout 读取/全样本分位/触发或 episode 规则重设/cutoff 后行情补齐。
+163:**Tier A FAIL（任一即 FAILED）：** 48h CAR family Holm 后不显著｜单调性不显著或符号为负｜non-overlap 48h CAR family Holm 后不显著｜**WF <2 段 >0**｜发现 Holdout 读取/全样本分位/规则重设/cutoff 后补齐。
+169:## §12 Holdout 物理封存（加密真权限边界，RR3 #5）
+172:2. **真权限边界=认证加密（RR4 #4 冻结）：** `work_episodes.csv` 明文写入 `06_RESEARCH/DATA/A1_WORK/`（执行身份可读）；`sealed_holdout_episodes.csv` 以 **AES-256-GCM**（认证加密）加密为 `sealed_holdout.enc`——**格式冻结**：文件 = `12B 随机 nonce ‖ 密文 ‖ 16B GCM tag`；解密须 GCM tag 认证通过，**tag 认证失败即判读取失败**（杜绝 ECB/CBC 等无认证实现分叉）。**密钥仅主会话持有**：存于执行身份（Codex workspace-write）**不可访问的独立位置**（主会话 secret / 独立 OS principal / ACL 限定目录），**绝不**落入 Codex 可读文件、环境变量、命令行参数或日志。执行身份即便读到密文，无密钥且无法通过 GCM 认证，**物理不可解密**（解决 RR3/RR4 指出的"移出 workspace≠不可读"）。
+174:4. **负向权限测试（冻结，须留痕，RR4 #4）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次测试并记录入 `A1_HOLDOUT_PERMTEST.log`：(a) 读 `A1_HOLDOUT_MANIFEST.json` **成功**（记命令+退出码 0）；(b) 尝试解密 `sealed_holdout.enc` **失败**——记录所执行命令、非零退出码、以及失败原因证据（"密钥文件不可访问/读取被拒" 或 "GCM tag 认证失败"）。两条均留痕方可放行。
+181:Tier A FAILED 后禁止：改 OI 阈值/方向规则/episode 规则/分位窗口后重测；排除年份/品种/regime/funding 后重测；72h 或 24h 单独显著改写为通过；全样本分位；cutoff 后补 horizon；读 Holdout"确认"失败；**任何"机制成立"改写**。
+185:本 v4 锁定后，对触发/方向规则/成本/分层/horizon/验收/Holdout 的任何修改均视为新假设，不得在 v4 名义下继续。
+
+exec
+/bin/bash -lc "rg -n --glob '"'!01_MEMORY_CORE/**'"' --glob '"'!**/*HOLDOUT*'"' 'DEC-069|证据等级|chmod-000|AES-256-GCM|负向权限' 00_GOVERNANCE 02_DECISIONS 04_AI_TEAM 06_RESEARCH 2>/dev/null | sed -n '1,240p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+06_RESEARCH/RESEARCH_PROTOCOL_v1.4_A1SCREEN_ADDENDUM.md:23:   - (b) **不耗独立 Alpha 计数**（失败不计入 DEC-069 独立计数纪律）；
+04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR5_DONE.json:9:  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+04_AI_TEAM/AGENT_REGISTRY.md:1:# AGENT_REGISTRY（DEC-069 / 双审计 P1，一页表）
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:71:真封存至少需要独立 OS principal/ACL、执行身份拿不到密钥的加密对象，或外部保管存储；并在正式执行身份下做“manifest 可读、sealed 内容读取失败”的负向权限测试。只有路径 assert、SHA-256 和纪律声明仍是逻辑/审计控制，不是物理读隔离。
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v3.md:94:5. **闭合 WF 与真封存。** 冻结三段切点和边界数据足迹处理；sealed 使用执行身份确实不可读的独立权限/密钥边界，并在同一正式执行身份下留下负向权限测试记录。仅移出 workspace 不够。
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:22:| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:72:§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:90:| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:108:4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v4.md:66:“密文可读但执行身份无密钥”在密码学上可以形成 RR3 所要求的真读边界，负向权限测试也比路径 assert 更强。因此方向成立。
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v4.md:70:1. `AES-256` 不是完整方案；至少应冻结认证加密模式（如 AES-256-GCM）、随机 nonce/tag 的保存格式和认证失败判据，避免 ECB/CBC 等实现分叉。
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v4.md:97:4. 冻结 AES-256-GCM 等完整认证加密格式、执行身份不可访问的密钥保管方式，以及可审计的负向测试成功/失败判据。
+06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md:52:- **耗独立 Alpha 计数**：路径B 是机制确证实验，失败计入 DEC-069 独立计数纪律。
+06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v1.md:125:3. “同 A-1 v5 §12”必须锁定准确文件路径、版本/SHA 和负向权限测试，不能依赖可变外部段落。
+06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v1.md:145:7. **冻结事件与 Holdout 权限。** 列出事件和 UTC 窗口，做路径级短腿强平硬验收；把所有输入纳入 cutoff/SHA 清单，并建立执行身份永久不可读的 Holdout 负向权限测试。
+06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md:8:**v5 对 RR4 四项最小必改的处置：** ①§7 "机制独立性硬门"→"A-2 非重叠关联硬门"（去机制识别含义）；②§4 circular 改半开 UTC 网格 `[t_1,t_n+1h)`+回绕按 circular offset 截断，§5 Spearman 改**配对 moving-block bootstrap 对 ρ 居中**（真检验 ρ=0）；③§11 WF 冻结唯一段长/余数分配/切点 c=相邻中点/按实际读取足迹 purge/purge 后不重分段；④§12 冻结 **AES-256-GCM**（nonce‖密文‖tag 格式+认证失败判据）+密钥独立 principal 不可读+负向测试留命令/退出码/失败证据。
+06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md:26:| #5 闭合 WF 与真封存 | WF 冻结**按 episode 数等分三段+切点 120h purge**；sealed holdout **加密存储**（主会话持密钥，执行身份无密钥不可解），留**负向权限测试**记录 | §11,§12 |
+06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md:172:2. **真权限边界=认证加密（RR4 #4 冻结）：** `work_episodes.csv` 明文写入 `06_RESEARCH/DATA/A1_WORK/`（执行身份可读）；`sealed_holdout_episodes.csv` 以 **AES-256-GCM**（认证加密）加密为 `sealed_holdout.enc`——**格式冻结**：文件 = `12B 随机 nonce ‖ 密文 ‖ 16B GCM tag`；解密须 GCM tag 认证通过，**tag 认证失败即判读取失败**（杜绝 ECB/CBC 等无认证实现分叉）。**密钥仅主会话持有**：存于执行身份（Codex workspace-write）**不可访问的独立位置**（主会话 secret / 独立 OS principal / ACL 限定目录），**绝不**落入 Codex 可读文件、环境变量、命令行参数或日志。执行身份即便读到密文，无密钥且无法通过 GCM 认证，**物理不可解密**（解决 RR3/RR4 指出的"移出 workspace≠不可读"）。
+06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md:174:4. **负向权限测试（冻结，须留痕，RR4 #4）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次测试并记录入 `A1_HOLDOUT_PERMTEST.log`：(a) 读 `A1_HOLDOUT_MANIFEST.json` **成功**（记命令+退出码 0）；(b) 尝试解密 `sealed_holdout.enc` **失败**——记录所执行命令、非零退出码、以及失败原因证据（"密钥文件不可访问/读取被拒" 或 "GCM tag 认证失败"）。两条均留痕方可放行。
+06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v2.md:15:2. **真确认 = 前向 SHADOW（paper-trade，未来数据）。** carry 天然可纸面实盘：v2 冻结后，按完全相同口径跑前向 shadow（不动真金），累积独立月度数据。**独立确认门**（前向）：前向 net E[R] 显著>0 + 无超阈强平事件 + 现金零基准跑赢，达到后才计入证据等级。
+06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v2.md:16:3. **核心资本上线 = D 级（Founder），按 DEC-069 证据等级解锁**：纸面=0 → 历史复核过=观察级 → 前向 shadow 过=小额真金 → 实盘过=升额。本预登记不自动上线。
+06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v2.md:99:- 切分/封存规格 = `A1_CASCADE_REBOUND_PREREG_v5.md §12`（AES-256-GCM、密钥项目外、执行身份 chmod-000 期间不可读、负向权限测试留痕）；**Holdout 对研究执行身份永久不可读**，仅独立评估身份在 Founder 批准后可解封。
+06_RESEARCH/RESULTS/20260615_a1_tierA_screen.md:59:- 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。
+06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v4.md:25:| #5 闭合 WF 与真封存 | WF 冻结**按 episode 数等分三段+切点 120h purge**；sealed holdout **加密存储**（主会话持密钥，执行身份无密钥不可解），留**负向权限测试**记录 | §11,§12 |
+06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v4.md:173:4. **负向权限测试（冻结，须留痕）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次"读 manifest 成功 + 解密 sealed 失败（无密钥）"测试，记录入 `A1_HOLDOUT_PERMTEST.log`。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXECUTOR.md:3:**前置已完成（主会话 custodian）：** `06_RESEARCH/DATA/A1_WORK/work_episodes.csv`(156条) + `sealed_holdout.enc`(38条,AES-256-GCM) + `A1_HOLDOUT_MANIFEST.json` 已生成；密钥在 `~/.aiquant_sealed/a1/a1_key.bin`（**你无权读、也不要尝试读/解密**）。池化194=work156+sealed38。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXECUTOR.md:9:0. **先运行负向权限测试** `python3 a1_tiera_permtest.py`（在 `06_RESEARCH/CODE/`）。主会话已把密钥 `~/.aiquant_sealed/a1/a1_key.bin` 临时改为 `chmod 000`（执行身份打不开），故本测试应得 `overall=PASS`（manifest 可读 + 密钥不可访问→未尝试解密），生成 `06_RESEARCH/DATA/A1_WORK/A1_HOLDOUT_PERMTEST.log`。若得 `overall=FAIL`（密钥可被打开），**停下报告，不要继续**（边界未生效）。
+06_RESEARCH/RESULTS/20260613_carry_empirical_analysis.md:64:**可行性粗筛（DEC-069③，2026-06-12）估算 11-14%** → 实证结果 **BTC 11.5%、ETH 14.6%**（月度滚动净），**完全吻合**。
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_TIERA_EXEC.md:9:按唯一规格 `06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md` 完成独立 executor 执行。负向权限测试退出码为 0，正式 executor 退出码为 0；固定参数为 `B=10000`、`seed=20260615`、`W=144h`、Holm family `m=4`。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_REVIEW.md:16:4. **§12 Holdout（RR4 #4）**：是否冻结 AES-256-GCM + 格式（nonce‖密文‖tag）+ 认证失败判据？密钥是否明确存于执行身份不可访问的独立 principal/ACL、绝不落入 Codex 可读文件/env/命令行/日志？负向测试是否记命令+退出码+失败证据？这是否构成真读权限边界？
+04_AI_TEAM/CODEX_TASKS/A1_RR5_REVIEW.md:22:- 若 APPROVED，明确放行边界：仅关联结论、不耗独立计数、不晋级策略、须先过 §12 加密 Holdout 封存+负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:17:**前置已完成（主会话 custodian）：** `06_RESEARCH/DATA/A1_WORK/work_episodes.csv`(156条) + `sealed_holdout.enc`(38条,AES-256-GCM) + `A1_HOLDOUT_MANIFEST.json` 已生成；密钥在 `~/.aiquant_sealed/a1/a1_key.bin`（**你无权读、也不要尝试读/解密**）。池化194=work156+sealed38。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:23:0. **先运行负向权限测试** `python3 a1_tiera_permtest.py`（在 `06_RESEARCH/CODE/`）。主会话已把密钥 `~/.aiquant_sealed/a1/a1_key.bin` 临时改为 `chmod 000`（执行身份打不开），故本测试应得 `overall=PASS`（manifest 可读 + 密钥不可访问→未尝试解密），生成 `06_RESEARCH/DATA/A1_WORK/A1_HOLDOUT_PERMTEST.log`。若得 `overall=FAIL`（密钥可被打开），**停下报告，不要继续**（边界未生效）。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:34:我先按 `using-superpowers` 与 `verification-before-completion` 的流程核对执行边界、唯一预登记规格和现有脚本；确认无任何 sealed/key/HOLDOUT 访问路径后，才运行负向权限测试。七问目前可量化：验证 work 样本的关联快筛，验收由 v5 和脚本输出定义，禁止项重点是 Holdout、密钥与预登记变更。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:377:06_RESEARCH/CODE/a1_tiera_executor.py:557:            "- 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。",
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:411:**v5 对 RR4 四项最小必改的处置：** ①§7 "机制独立性硬门"→"A-2 非重叠关联硬门"（去机制识别含义）；②§4 circular 改半开 UTC 网格 `[t_1,t_n+1h)`+回绕按 circular offset 截断，§5 Spearman 改**配对 moving-block bootstrap 对 ρ 居中**（真检验 ρ=0）；③§11 WF 冻结唯一段长/余数分配/切点 c=相邻中点/按实际读取足迹 purge/purge 后不重分段；④§12 冻结 **AES-256-GCM**（nonce‖密文‖tag 格式+认证失败判据）+密钥独立 principal 不可读+负向测试留命令/退出码/失败证据。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:429:| #5 闭合 WF 与真封存 | WF 冻结**按 episode 数等分三段+切点 120h purge**；sealed holdout **加密存储**（主会话持密钥，执行身份无密钥不可解），留**负向权限测试**记录 | §11,§12 |
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:575:2. **真权限边界=认证加密（RR4 #4 冻结）：** `work_episodes.csv` 明文写入 `06_RESEARCH/DATA/A1_WORK/`（执行身份可读）；`sealed_holdout_episodes.csv` 以 **AES-256-GCM**（认证加密）加密为 `sealed_holdout.enc`——**格式冻结**：文件 = `12B 随机 nonce ‖ 密文 ‖ 16B GCM tag`；解密须 GCM tag 认证通过，**tag 认证失败即判读取失败**（杜绝 ECB/CBC 等无认证实现分叉）。**密钥仅主会话持有**：存于执行身份（Codex workspace-write）**不可访问的独立位置**（主会话 secret / 独立 OS principal / ACL 限定目录），**绝不**落入 Codex 可读文件、环境变量、命令行参数或日志。执行身份即便读到密文，无密钥且无法通过 GCM 认证，**物理不可解密**（解决 RR3/RR4 指出的"移出 workspace≠不可读"）。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:577:4. **负向权限测试（冻结，须留痕，RR4 #4）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次测试并记录入 `A1_HOLDOUT_PERMTEST.log`：(a) 读 `A1_HOLDOUT_MANIFEST.json` **成功**（记命令+退出码 0）；(b) 尝试解密 `sealed_holdout.enc` **失败**——记录所执行命令、非零退出码、以及失败原因证据（"密钥文件不可访问/读取被拒" 或 "GCM tag 认证失败"）。两条均留痕方可放行。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:1126:        raise ValueError("AES-256-GCM requires a 32-byte key")
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:1390:  • 运行负向权限测试并核验日志
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:2207:   557	            "- 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。",
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:2345:  "cipher": "AES-256-GCM",
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:2394:预登记 v5 §12 要求负向权限测试日志存在且包含 `overall=PASS`；该硬门未满足。未补造日志、未绕过校验、未读取或解密 sealed 数据、未访问密钥路径。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:2405:| 权限/口径完整性（硬门） | FAIL | 负向权限测试日志缺失 | N.A. | N.A. | N.A. |
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:2439:程序在 `verify_release_boundary()` 读取负向权限测试日志时退出：
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:2477:边界审计已完成：正式 executor 不含 `sealed_holdout.enc`、密钥或 `~/.aiquant_sealed` 路径，也不导入加解密函数；它只读取任务明确要求的 manifest 与权限日志元数据。现在按顺序运行负向权限测试；若不是 `overall=PASS`，我会立即停止统计执行。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:2480:  → 运行负向权限测试并核验日志
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:2924:负向权限测试已 PASS，输出合规修正通过定向测试；进入正式统计执行。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:2926:  ✓ 运行负向权限测试并核验日志
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:7849:  ✓ 运行负向权限测试并核验日志
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:8049:- 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:8586:   574	            "- 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。",
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:8982:+按唯一规格 `06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md` 完成独立 executor 执行。负向权限测试退出码为 0，正式 executor 退出码为 0；固定参数为 `B=10000`、`seed=20260615`、`W=144h`、Holm family `m=4`。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:8990:-程序在 `verify_release_boundary()` 读取负向权限测试日志时退出：
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9156:             "- 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。",
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9199: - 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9222:+按唯一规格 `06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md` 完成独立 executor 执行。负向权限测试退出码为 0，正式 executor 退出码为 0；固定参数为 `B=10000`、`seed=20260615`、`W=144h`、Holm family `m=4`。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9230:-程序在 `verify_release_boundary()` 读取负向权限测试日志时退出：
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9396:             "- 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。",
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9439: - 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9464:按唯一规格 `06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md` 完成独立 executor 执行。负向权限测试退出码为 0，正式 executor 退出码为 0；固定参数为 `B=10000`、`seed=20260615`、`W=144h`、Holm family `m=4`。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9555:+按唯一规格 `06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md` 完成独立 executor 执行。负向权限测试退出码为 0，正式 executor 退出码为 0；固定参数为 `B=10000`、`seed=20260615`、`W=144h`、Holm family `m=4`。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9563:-程序在 `verify_release_boundary()` 读取负向权限测试日志时退出：
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9729:             "- 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。",
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9772: - 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9787:  ✓ 运行负向权限测试并核验日志
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9807:+按唯一规格 `06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md` 完成独立 executor 执行。负向权限测试退出码为 0，正式 executor 退出码为 0；固定参数为 `B=10000`、`seed=20260615`、`W=144h`、Holm family `m=4`。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9815:-程序在 `verify_release_boundary()` 读取负向权限测试日志时退出：
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:9981:             "- 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。",
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:10024: - 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:10047:+按唯一规格 `06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md` 完成独立 executor 执行。负向权限测试退出码为 0，正式 executor 退出码为 0；固定参数为 `B=10000`、`seed=20260615`、`W=144h`、Holm family `m=4`。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:10055:-程序在 `verify_release_boundary()` 读取负向权限测试日志时退出：
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:10221:             "- 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。",
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:10264: - 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:10273:  ✓ 运行负向权限测试并核验日志
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:10293:+按唯一规格 `06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md` 完成独立 executor 执行。负向权限测试退出码为 0，正式 executor 退出码为 0；固定参数为 `B=10000`、`seed=20260615`、`W=144h`、Holm family `m=4`。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:10301:-程序在 `verify_release_boundary()` 读取负向权限测试日志时退出：
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:10467:             "- 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。",
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:10510: - 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:10542:+按唯一规格 `06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md` 完成独立 executor 执行。负向权限测试退出码为 0，正式 executor 退出码为 0；固定参数为 `B=10000`、`seed=20260615`、`W=144h`、Holm family `m=4`。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:10550:-程序在 `verify_release_boundary()` 读取负向权限测试日志时退出：
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:10716:             "- 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。",
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC_RUN.log:10759: - 负向权限测试：PASS（manifest 可读；执行身份无法打开密钥，解密未发生）。
+06_RESEARCH/CODE/a1_tiera_custodian.py:318:        "cipher": "AES-256-GCM",
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC.md:24:3. 加密封存（§12 冻结）：`sealed_holdout_episodes.csv` 用 **AES-256-GCM** 加密为 `06_RESEARCH/DATA/A1_WORK/sealed_holdout.enc`（格式 `12B nonce‖密文‖16B tag`）；**密钥写入 `~/.aiquant_sealed/a1/a1_key.bin`（项目目录之外）**；`work_episodes.csv` 明文写 `06_RESEARCH/DATA/A1_WORK/`；写 `A1_HOLDOUT_MANIFEST.json`（work/sealed 行数、schema、git hash、两文件 SHA-256、解封条件、一次性使用记录字段）。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_EXEC.md:25:4. 负向权限测试留痕 `A1_HOLDOUT_PERMTEST.log`：记录"读 manifest 成功(退出码0)"+"解密 sealed 在不提供密钥时失败(非零码+原因)"。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:29:4. **§12 Holdout（RR4 #4）**：是否冻结 AES-256-GCM + 格式（nonce‖密文‖tag）+ 认证失败判据？密钥是否明确存于执行身份不可访问的独立 principal/ACL、绝不落入 Codex 可读文件/env/命令行/日志？负向测试是否记命令+退出码+失败证据？这是否构成真读权限边界？
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:35:- 若 APPROVED，明确放行边界：仅关联结论、不耗独立计数、不晋级策略、须先过 §12 加密 Holdout 封存+负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:331:    66	“密文可读但执行身份无密钥”在密码学上可以形成 RR3 所要求的真读边界，负向权限测试也比路径 assert 更强。因此方向成立。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:335:    70	1. `AES-256` 不是完整方案；至少应冻结认证加密模式（如 AES-256-GCM）、随机 nonce/tag 的保存格式和认证失败判据，避免 ECB/CBC 等实现分叉。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:362:    97	4. 冻结 AES-256-GCM 等完整认证加密格式、执行身份不可访问的密钥保管方式，以及可审计的负向测试成功/失败判据。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:378:     8	**v5 对 RR4 四项最小必改的处置：** ①§7 "机制独立性硬门"→"A-2 非重叠关联硬门"（去机制识别含义）；②§4 circular 改半开 UTC 网格 `[t_1,t_n+1h)`+回绕按 circular offset 截断，§5 Spearman 改**配对 moving-block bootstrap 对 ρ 居中**（真检验 ρ=0）；③§11 WF 冻结唯一段长/余数分配/切点 c=相邻中点/按实际读取足迹 purge/purge 后不重分段；④§12 冻结 **AES-256-GCM**（nonce‖密文‖tag 格式+认证失败判据）+密钥独立 principal 不可读+负向测试留命令/退出码/失败证据。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:396:    26	| #5 闭合 WF 与真封存 | WF 冻结**按 episode 数等分三段+切点 120h purge**；sealed holdout **加密存储**（主会话持密钥，执行身份无密钥不可解），留**负向权限测试**记录 | §11,§12 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:542:   172	2. **真权限边界=认证加密（RR4 #4 冻结）：** `work_episodes.csv` 明文写入 `06_RESEARCH/DATA/A1_WORK/`（执行身份可读）；`sealed_holdout_episodes.csv` 以 **AES-256-GCM**（认证加密）加密为 `sealed_holdout.enc`——**格式冻结**：文件 = `12B 随机 nonce ‖ 密文 ‖ 16B GCM tag`；解密须 GCM tag 认证通过，**tag 认证失败即判读取失败**（杜绝 ECB/CBC 等无认证实现分叉）。**密钥仅主会话持有**：存于执行身份（Codex workspace-write）**不可访问的独立位置**（主会话 secret / 独立 OS principal / ACL 限定目录），**绝不**落入 Codex 可读文件、环境变量、命令行参数或日志。执行身份即便读到密文，无密钥且无法通过 GCM 认证，**物理不可解密**（解决 RR3/RR4 指出的"移出 workspace≠不可读"）。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:544:   174	4. **负向权限测试（冻结，须留痕，RR4 #4）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次测试并记录入 `A1_HOLDOUT_PERMTEST.log`：(a) 读 `A1_HOLDOUT_MANIFEST.json` **成功**（记命令+退出码 0）；(b) 尝试解密 `sealed_holdout.enc` **失败**——记录所执行命令、非零退出码、以及失败原因证据（"密钥文件不可访问/读取被拒" 或 "GCM tag 认证失败"）。两条均留痕方可放行。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:586:    23	   - (b) **不耗独立 Alpha 计数**（失败不计入 DEC-069 独立计数纪律）；
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:602:     1	# Research Protocol v1.3/v1.4 增补件（v1.3=2026-06-10 DEC-066③；v1.4=2026-06-12 DEC-069）
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:617:    16	# ——以下为 v1.4 增补（2026-06-12，DEC-069）——
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:624:    23	## 八、叙事纪律（DEC-069⑤）
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:632:8:**v5 对 RR4 四项最小必改的处置：** ①§7 "机制独立性硬门"→"A-2 非重叠关联硬门"（去机制识别含义）；②§4 circular 改半开 UTC 网格 `[t_1,t_n+1h)`+回绕按 circular offset 截断，§5 Spearman 改**配对 moving-block bootstrap 对 ρ 居中**（真检验 ρ=0）；③§11 WF 冻结唯一段长/余数分配/切点 c=相邻中点/按实际读取足迹 purge/purge 后不重分段；④§12 冻结 **AES-256-GCM**（nonce‖密文‖tag 格式+认证失败判据）+密钥独立 principal 不可读+负向测试留命令/退出码/失败证据。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:634:26:| #5 闭合 WF 与真封存 | WF 冻结**按 episode 数等分三段+切点 120h purge**；sealed holdout **加密存储**（主会话持密钥，执行身份无密钥不可解），留**负向权限测试**记录 | §11,§12 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:650:172:2. **真权限边界=认证加密（RR4 #4 冻结）：** `work_episodes.csv` 明文写入 `06_RESEARCH/DATA/A1_WORK/`（执行身份可读）；`sealed_holdout_episodes.csv` 以 **AES-256-GCM**（认证加密）加密为 `sealed_holdout.enc`——**格式冻结**：文件 = `12B 随机 nonce ‖ 密文 ‖ 16B GCM tag`；解密须 GCM tag 认证通过，**tag 认证失败即判读取失败**（杜绝 ECB/CBC 等无认证实现分叉）。**密钥仅主会话持有**：存于执行身份（Codex workspace-write）**不可访问的独立位置**（主会话 secret / 独立 OS principal / ACL 限定目录），**绝不**落入 Codex 可读文件、环境变量、命令行参数或日志。执行身份即便读到密文，无密钥且无法通过 GCM 认证，**物理不可解密**（解决 RR3/RR4 指出的"移出 workspace≠不可读"）。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:651:174:4. **负向权限测试（冻结，须留痕，RR4 #4）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次测试并记录入 `A1_HOLDOUT_PERMTEST.log`：(a) 读 `A1_HOLDOUT_MANIFEST.json` **成功**（记命令+退出码 0）；(b) 尝试解密 `sealed_holdout.enc` **失败**——记录所执行命令、非零退出码、以及失败原因证据（"密钥文件不可访问/读取被拒" 或 "GCM tag 认证失败"）。两条均留痕方可放行。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:664:5acf2a8 A-1 v5: 闭RR4四项(§7改名/circular半开网格+Spearman配对bootstrap/WF唯一切点purge/AES-256-GCM密钥边界)+派RR5盲审
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:782:   173	4. **负向权限测试（冻结，须留痕）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次"读 manifest 成功 + 解密 sealed 失败（无密钥）"测试，记录入 `A1_HOLDOUT_PERMTEST.log`。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:810:+**v5 对 RR4 四项最小必改的处置：** ①§7 "机制独立性硬门"→"A-2 非重叠关联硬门"（去机制识别含义）；②§4 circular 改半开 UTC 网格 `[t_1,t_n+1h)`+回绕按 circular offset 截断，§5 Spearman 改**配对 moving-block bootstrap 对 ρ 居中**（真检验 ρ=0）；③§11 WF 冻结唯一段长/余数分配/切点 c=相邻中点/按实际读取足迹 purge/purge 后不重分段；④§12 冻结 **AES-256-GCM**（nonce‖密文‖tag 格式+认证失败判据）+密钥独立 principal 不可读+负向测试留命令/退出码/失败证据。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:823: | #5 闭合 WF 与真封存 | WF 冻结**按 episode 数等分三段+切点 120h purge**；sealed holdout **加密存储**（主会话持密钥，执行身份无密钥不可解），留**负向权限测试**记录 | §11,§12 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:876:+2. **真权限边界=认证加密（RR4 #4 冻结）：** `work_episodes.csv` 明文写入 `06_RESEARCH/DATA/A1_WORK/`（执行身份可读）；`sealed_holdout_episodes.csv` 以 **AES-256-GCM**（认证加密）加密为 `sealed_holdout.enc`——**格式冻结**：文件 = `12B 随机 nonce ‖ 密文 ‖ 16B GCM tag`；解密须 GCM tag 认证通过，**tag 认证失败即判读取失败**（杜绝 ECB/CBC 等无认证实现分叉）。**密钥仅主会话持有**：存于执行身份（Codex workspace-write）**不可访问的独立位置**（主会话 secret / 独立 OS principal / ACL 限定目录），**绝不**落入 Codex 可读文件、环境变量、命令行参数或日志。执行身份即便读到密文，无密钥且无法通过 GCM 认证，**物理不可解密**（解决 RR3/RR4 指出的"移出 workspace≠不可读"）。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:878:-4. **负向权限测试（冻结，须留痕）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次"读 manifest 成功 + 解密 sealed 失败（无密钥）"测试，记录入 `A1_HOLDOUT_PERMTEST.log`。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:879:+4. **负向权限测试（冻结，须留痕，RR4 #4）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次测试并记录入 `A1_HOLDOUT_PERMTEST.log`：(a) 读 `A1_HOLDOUT_MANIFEST.json` **成功**（记命令+退出码 0）；(b) 尝试解密 `sealed_holdout.enc` **失败**——记录所执行命令、非零退出码、以及失败原因证据（"密钥文件不可访问/读取被拒" 或 "GCM tag 认证失败"）。两条均留痕方可放行。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:979:+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:983:+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1011:+| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1061:+§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1079:+| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1097:+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1132:+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1136:+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1164:+| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1214:+§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1232:+| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1250:+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1284:- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1288:仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1312:    22	| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1362:    72	§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1380:    90	| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1398:   108	4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1448:+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1452:+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1480:+| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1530:+§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1548:+| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1566:+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1606:+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1610:+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1625:+  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1654:+| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1704:+§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1722:+| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1740:+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1775:+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1779:+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1794:+  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1823:+| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1873:+§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1891:+| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1909:+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1949:+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1953:+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1968:+  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:1997:+| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2047:+§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2065:+| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2083:+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2088:/bin/bash -lc "rg -n 'APPROVED|CLOSED|4/4|AES-256-GCM|负向权限测试|不耗独立|不晋级策略' 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md 04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2096:04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:26:- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2097:04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:30:仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2102:06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:22:| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2103:06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:72:§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2104:06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:90:| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2107:06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:108:4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2164:+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2168:+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2183:+  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2212:+| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2262:+§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2280:+| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2298:+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2326:    "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2340:  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2374:+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2378:+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2393:+  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2422:+| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2472:+§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2490:+| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2508:+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2543:+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2547:+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2562:+  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2591:+| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2641:+§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2659:+| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2677:+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2721:+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2725:+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2740:+  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2769:+| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2819:+§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2837:+| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2855:+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2894:+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2898:+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2913:+  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2942:+| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:2992:+§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3010:+| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3028:+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3075:- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3079:仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3093:4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3132:+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3136:+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3151:+  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3180:+| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3230:+§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3248:+| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3266:+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3310:+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3314:+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3329:+  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3358:+| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3408:+§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3426:+| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3444:+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3455:放行仅限 Tier A 历史关联快筛，执行前须完成 §12 加密封存和负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3493:+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3497:+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3512:+  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3541:+| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3591:+§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3609:+| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3627:+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log:3639:放行仅限 Tier A 历史关联快筛，执行前须完成 §12 加密封存和负向权限测试。
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:30:- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:34:仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+04_AI_TEAM/CODEX_TASKS/TASK_CARRY_FEASIBILITY.md:1:# TASK_CARRY_FEASIBILITY —— delta 中性 carry 可行性核算（DEC-069③，不交易、不耗命、不改范围）
+04_AI_TEAM/CODEX_TASKS/CARRY_RR2.md:7:1. **研究身份/独立性**：v2 §0 把历史段降为"可行性复核(feasibility-lock)、不耗计数、不上线"，真确认交前向 shadow，上线走 DEC-069 证据等级——这个重构是否真正消除了"用已探索工作集做确认"的 HARKing？feasibility-lock 的定性是否自洽、是否仍有把历史 PASS 当确认的残留措辞？
+04_AI_TEAM/CODEX_TASKS/CARRY_RR2.md:16:## 第二部分：v2 新结构(feasibility-lock+前向shadow确认+证据等级上线)是否引入新缺陷或新自由度。
+04_AI_TEAM/CODEX_TASKS/A1_RR4_REVIEW.md:15:5. **WF + 真封存**：WF 三段切分(等episode数三等分+切点120h purge)是否唯一可复现？§12 sealed holdout **AES加密+密钥仅主会话持有+负向权限测试** 是否构成 RR3 要求的"执行身份确实不可读"的真权限边界(不再是仅移出workspace)？
+04_AI_TEAM/CODEX_TASKS/TASK_EXT_AUDIT_CODEX.md:17:≥5处指名道姓挑战现有共识（哪个DEC/哪份蓝图哪个论断）并给替代方案；P0/P1/P2分级且每条给可执行改法；禁"总体良好"式开头；引用外部知识标注证据等级。
+04_AI_TEAM/CODEX_TASKS/REPORT_E4.md:8:- DEC-069 明确的是成本盒/时间盒/L3治理、围栏解锁原则与机会地图重排。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_RUN.log:37:3. 加密封存（§12 冻结）：`sealed_holdout_episodes.csv` 用 **AES-256-GCM** 加密为 `06_RESEARCH/DATA/A1_WORK/sealed_holdout.enc`（格式 `12B nonce‖密文‖16B tag`）；**密钥写入 `~/.aiquant_sealed/a1/a1_key.bin`（项目目录之外）**；`work_episodes.csv` 明文写 `06_RESEARCH/DATA/A1_WORK/`；写 `A1_HOLDOUT_MANIFEST.json`（work/sealed 行数、schema、git hash、两文件 SHA-256、解封条件、一次性使用记录字段）。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_RUN.log:38:4. 负向权限测试留痕 `A1_HOLDOUT_PERMTEST.log`：记录"读 manifest 成功(退出码0)"+"解密 sealed 在不提供密钥时失败(非零码+原因)"。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_RUN.log:445:**v5 对 RR4 四项最小必改的处置：** ①§7 "机制独立性硬门"→"A-2 非重叠关联硬门"（去机制识别含义）；②§4 circular 改半开 UTC 网格 `[t_1,t_n+1h)`+回绕按 circular offset 截断，§5 Spearman 改**配对 moving-block bootstrap 对 ρ 居中**（真检验 ρ=0）；③§11 WF 冻结唯一段长/余数分配/切点 c=相邻中点/按实际读取足迹 purge/purge 后不重分段；④§12 冻结 **AES-256-GCM**（nonce‖密文‖tag 格式+认证失败判据）+密钥独立 principal 不可读+负向测试留命令/退出码/失败证据。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_RUN.log:463:| #5 闭合 WF 与真封存 | WF 冻结**按 episode 数等分三段+切点 120h purge**；sealed holdout **加密存储**（主会话持密钥，执行身份无密钥不可解），留**负向权限测试**记录 | §11,§12 |
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_RUN.log:609:2. **真权限边界=认证加密（RR4 #4 冻结）：** `work_episodes.csv` 明文写入 `06_RESEARCH/DATA/A1_WORK/`（执行身份可读）；`sealed_holdout_episodes.csv` 以 **AES-256-GCM**（认证加密）加密为 `sealed_holdout.enc`——**格式冻结**：文件 = `12B 随机 nonce ‖ 密文 ‖ 16B GCM tag`；解密须 GCM tag 认证通过，**tag 认证失败即判读取失败**（杜绝 ECB/CBC 等无认证实现分叉）。**密钥仅主会话持有**：存于执行身份（Codex workspace-write）**不可访问的独立位置**（主会话 secret / 独立 OS principal / ACL 限定目录），**绝不**落入 Codex 可读文件、环境变量、命令行参数或日志。执行身份即便读到密文，无密钥且无法通过 GCM 认证，**物理不可解密**（解决 RR3/RR4 指出的"移出 workspace≠不可读"）。
+04_AI_TEAM/CODEX_TASKS/A1_TIERA_RUN.log:611:4. **负向权限测试（冻结，须留痕，RR4 #4）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次测试并记录入 `A1_HOLDOUT_PERMTEST.log`：(a) 读 `A1_HOLDOUT_MANIFEST.json` **成功**（记命令+退出码 0）；(b) 尝试解密 `sealed_holdout.enc` **失败**——记录所执行命令、非零退出码、以及失败原因证据（"密钥文件不可访问/读取被拒" 或 "GCM tag 认证失败"）。两条均留痕方可放行。
+
+已完成 RR1 与 v2 的逐行证据核对。初步裁决为 2/8 完全闭合；历史身份降级和审计元数据闭合，其余存在资本/腿执行、统计路径、事件与前向确认门缺口。
+  ✓ 定位并读取 RR1 与 v2 预登记，建立八项闭合证据表
+  → 审查 feasibility-lock 新结构的新增缺陷与自由度，形成结论
+  • 写入风险审查、执行报告和 TASK_INBOX 完成事件
+  • 逐项验证文件内容、禁区合规与 git diff，并提交任务 commit
+codex
+裁决已经收敛为 **NOT APPROVED，2/8 CLOSED**。我将写入三项产物：正式 v2 风险审查、`REPORT_CARRY_RR2.md` 执行审计、`CARRY_RR2_DONE.json`；不会改动预登记或现有运行日志。
+exec
+/bin/bash -lc "date -u '+%Y-%m-%dT%H:%M:%SZ'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+2026-06-14T13:05:12Z
+

@@ -32,7 +32,7 @@
 | 低模型执行层 | ✅ 两次任务包验收通过；边界收紧（DEC-069 后只做逐字/格式/索引，禁触权威语义）|
 | Python 3.13 量化环境 / VectorBT / pytest | ✅ |
 | git + GitHub 私库 | ✅ `laoxiamu/AI_QUANT_COMPANY`（deploy key，验收后推送制）|
-| 强平采集器 | ✅ **VM 直跑，生产运行中（2026-06-13）**：`aiquant-liq-collector.service` active，MainPID=2550847，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/`；直连 Binance WS 已验证真实数据帧（btcusdt@trade 0.247s 3帧）；双审计 P0-1 **已销项** |
+| 强平采集器 | ⚠️ **实为零采集（2026-06-14 查实，纠正旧"生产运行中"假状态）**：service active 但 22h `process_messages=0`。根因=**Binance 对腾讯云SG服务器IP的WS行情流限制**（REST fapi HTTP200正常，但 aggTrade/forceOrder WS 握手OPEN后0帧——云IP被限推送）。**非代码bug**（ping+重连正常）。教训=信了"service active"未验真实数据流（风险E/A）。**修复=路径B重启时把采集器WS走住宅代理(商家代理)或换允许IP**；当前路径B休眠→**暂不修**。双审计P0-1销项前提（"已验真实数据帧"）实为一瞬窗口，不成立 |
 | 定时任务 | ⚠️ 周监控/月审 v2 已更新口径；夜间定时不可靠（两次事故），跑批优先 Codex nohup |
 | 腾讯云轻量（SG） | ✅ 活跃——采集器已部署 `/opt/ai_quant_liq_collector/`，现有服务（danted/v4-proxy/v4-strategy-runner/docker/nginx）未受影响；审计 P2-4 **已销项** |
 
