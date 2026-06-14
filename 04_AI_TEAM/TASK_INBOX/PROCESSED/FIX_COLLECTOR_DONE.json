@@ -1,10 +1,11 @@
 {
   "task_id": "FIX_COLLECTOR",
-  "completed_at": "2026-06-14T09:24:32Z",
-  "status": "blocked",
+  "completed_at": "2026-06-14T13:20:23Z",
+  "status": "completed",
   "fixed": "no",
-  "frames_after_restart": 0,
+  "route": "未解决",
+  "frames_after": 0,
   "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR.md",
   "next_task": null,
-  "notes": "本地执行沙箱在 TCP connect(43.160.200.224:22) 阶段返回 Operation not permitted，未进入 SSH 握手，故未能取证、修复或重启验证；服务器及红线服务均未触达。"
+  "notes": "SG直连与独立住宅出口的Binance futures WS均握手后0帧；住宅出口可正常接收Coinbase WS帧，确认非客户端或SOCKS数据面故障。按任务书未强改生产采集器。"
 }

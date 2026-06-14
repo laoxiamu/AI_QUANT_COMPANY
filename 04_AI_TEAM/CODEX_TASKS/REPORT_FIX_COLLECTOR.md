@@ -1,57 +1,57 @@
 # REPORT_FIX_COLLECTOR
 
-## 当前状态
+## 结论
 
-- 状态：`blocked`
-- `fixed`：`no`
-- `frames_after_restart`：`0`
-- 记录时间：2026-06-14T09:24:32Z
-- 服务器变更：无；所有 SSH 尝试均未进入 TCP 握手，未执行任何远端命令。
-- 红线服务：未能读取状态，但本次未触达服务器，因此未停止或修改 `danted.service`、`v4-proxy.service`。
-- 敏感信息：密码仅由 `~/.aiquant_sealed/sg_pass` 传给 `sshpass`，未打印、未写入项目文件。
+- 任务状态：`completed`
+- 修复状态：`fixed=no`
+- 路由：`未解决`
+- 修复后 Binance 帧数：`0`
+- 记录时间：`2026-06-14T13:20:23Z`
+
+**专业判断：** 零采集不是采集器代码、`websocket-client` 或 SOCKS 数据面故障。住宅代理使用独立出口，且同一路径能正常接收 Coinbase WebSocket 帧，但 Binance futures 流仍只完成握手、不下发数据帧。现有两个出口均被 Binance 限制，不能通过配置修改恢复采集。
+
+按任务书“都不通则不强改”分支，未修改或重启生产采集器。
 
 ## 执行前自查
 
-1. 验证机制：区分采集器连接保活/重连缺陷与 Binance 流或 SG 网络异常，并以重启后收帧和 JSONL 增长验收。
-2. 验收标准：2 分钟内 `process_messages > 0`、当日 JSONL 出现且行数增长，标准可量化。
-3. 最小实现：远端 30 秒同库自测后，仅补 ping、外层重连和前三帧日志，不改变原始消息与 `recv_ts` 写盘结构。
-4. 禁止项：未触碰 Holdout、研究数据、成本模型或其他服务器服务；未使用浏览器、Computer Use、Chrome、WebShell。
+1. 验证机制：更换 WS 出口后，Binance 是否恢复真实数据帧。
+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+3. 最小实现：仅在出口探针有帧后才注入环境变量和代理参数；探针失败则不改生产。
+4. 禁止项：未触碰 Holdout、研究数据、成本模型或其他业务服务；未使用浏览器/WebShell；未记录或提交代理凭据。
 
-## SSH 取证
+## 证据
 
-- `sshpass`：`/opt/homebrew/bin/sshpass`
-- 密码文件：可读，权限 `0600`
-- `HTTPS_PROXY`：`http://127.0.0.1:7897`
-- 普通 SSH、`ssh -vvv`、清空代理环境并使用 `ssh -F /dev/null` 三种调用均失败。
-- 共同失败点：OpenSSH 已创建 socket，但连接 `43.160.200.224:22` 时本地 `connect()` 立即返回 `Operation not permitted`。
-- `ssh -vvv` 未显示远端 banner、密钥交换或认证步骤，证明失败发生在本地执行沙箱网络策略层，不是密码错误或远端 SSH 拒绝。
-- 本地 `route -n get 43.160.200.224` 也在创建路由 socket 时返回 `Operation not permitted`，与网络沙箱限制一致。
+| 路径 | 目标 | 结果 |
+|---|---|---|
+| SG 直连 | `btcusdt@aggTrade`，20 秒 | 握手成功，`0` 帧 |
+| 住宅 SOCKS5H | Binance REST | SOCKS reply `4`，代理端 DNS 无法完成 Binance 连接 |
+| 住宅 SOCKS5 | Binance REST | HTTP `200` |
+| 住宅 SOCKS5 | `btcusdt@aggTrade`，20 秒 | 握手成功，`0` 帧 |
+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+| 住宅 SOCKS5 | Coinbase ticker WS | 2.5 秒收到 `3` 帧 |
 
-## 待验证假设
+额外核验：
 
-1. 缺少 ping 保活和可靠外层重连导致连接半开；预测是补齐后服务持续收帧。
-2. SG 到 Binance force-order 流或网络异常；预测是 30 秒独立同库客户端同样收不到帧。
-3. 远端实际源码或 `websocket-client` 版本与任务描述不一致；预测是完整源码和版本检查会发现差异。
-4. 回调处理或写盘路径异常；预测是独立客户端能收帧，但服务仍不增加消息或文件行数。
+- 住宅代理出口与 SG 直连出口不同，排除“实际未走代理”。
+- `danted.service` 是该 SG 跳板的入站 SOCKS，出口仍是已验证零帧的 SG 公网路径，不构成第三个独立出口。
+- 本机密封目录只有 `sg_pass` 与 `resi_proxy`，无其他出口凭据。
 
-以上假设均因 SSH 被本地沙箱阻断而未执行验证，不能将任一项报告为已确认根因。
+## 服务器状态
 
-## 已完成
+- `danted.service`：`active`，本任务未操作。
+- `v4-proxy.service`：任务开始前已是 `inactive/disabled`；本任务未启动、停止或修改。
+- `aiquant-liq-collector.service`：`active/running`，PID 未变，`NRestarts=0`。
+- 远端采集器源码时间与大小未变：`2026-06-13 17:42:21 +0800`，2899 bytes。
+- 最终数据行数：`0`；最新 heartbeat 仍为 `process_messages=0`。
 
-1. 读取项目约束、任务书和已有报告。
-2. 完成本地 SSH 前置检查和三次连接复核。
-3. 确认阻断发生在本地 TCP 建连前，服务器未被修改。
-4. 写入 `TASK_INBOX/FIX_COLLECTOR_DONE.json`；后台调度器已将事件消费至 `TASK_INBOX/PROCESSED/FIX_COLLECTOR_DONE.json`。
+探针期间仅在 `/opt/ai_quant_liq_collector/.deps` 临时 vendoring `python-socks 2.8.1`，用于验证 SOCKS WebSocket；结束后已删除。未创建 `.bak`，因为没有进入生产修改分支。
 
-## 尚未完成
+## 建议
 
-1. 确认 `danted.service` 与 `v4-proxy.service` 正在运行。
-2. 读取远端 `liquidation_collector.py` 完整代码和 `run_forever` 调用。
-3. 执行约 30 秒同库 WebSocket 收帧自测。
-4. 创建 `liquidation_collector.py.bak` 并实施最小修复。
-5. 重启 `aiquant-liq-collector.service`。
-6. 在 2 分钟窗口验证消息数、当日 JSONL 和行数增长并采集日志证据。
+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+2. 若无法获得可用出口，改用能提供原始强平方向、价格、数量和事件时间的第三方数据源。
+3. 不应把“REST 200”或“WS OPEN”作为数据面健康标准；监控必须继续以消息计数和 JSONL 增量为准。
 
-## 恢复前提
+## 敏感信息检查
 
-在允许本地命令出站连接 `43.160.200.224:22` 的执行环境中，继续使用任务书指定的 `sshpass` SSH 命令。不得改用浏览器、Computer Use、Chrome、腾讯云 WebShell或其他远端入口。
+SSH 密码由 `sshpass -f ~/.aiquant_sealed/sg_pass` 读取；住宅凭据只经 SSH 标准输入传入临时文件并立即删除。报告、项目文件和命令输出均未写入代理主机、用户名或密码。
