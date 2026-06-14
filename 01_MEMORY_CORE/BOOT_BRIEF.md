@@ -29,7 +29,7 @@ Phase 1。公司 OS **原则层已冻结**。A-2 已死（新范式第1败）。
 - **✅ 已完成（Founder出门期间）**：D3预登记｜E1公司组织｜E3执行工作流｜E4模块设计（含[专业异议]→DEC-072已落）｜DR-E2设计评审（结论：需修改后可行，E2已整合）。
 - **✅E2验收通过**（02_SYSTEM_ARCHITECTURE，五层+TrackA/B）；git index.lock已清。
 - **D2/A1-RR完成但均"需返工"（正确返工，独立审查抓出问题）**：D2 BLOCKED——根因 **D1"35/35完成"实为数据不达用途**（下的contract klines非mark-price、缺真实funding、DEC-070四过滤无证据）→过程教训：完成计数≠达用途。A1-RR=NOT APPROVED（10项）。
-- **A-1预登记CTO亲自三轮闭环**：v2（闭2/10）→**v3**（逐条闭五项必改：纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单读数P95/沙箱外真权限Holdout）。**A-1两段式路径已由Founder"按推荐继续"确认→DEC-075**（A-1两段式+universe暂缓优先A-1）。**路径A**(历史关联快筛)=预登记**v4已落**(逐条闭RR3五项;Tier A严格=关联门不声称机制不耗计数;功效门以`PROTOCOL_v1.4_A1SCREEN_ADDENDUM`留痕豁免;AES加密Holdout)→**A1-RR4第四轮盲审运行中**。**路径B**(前向真实强平数据机制确证)=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器forceOrder含side方向字段=首个alpha用途,待就绪门,低成本并行)。**DECISION_LOG最新=DEC-075**。
+- **A-1预登记CTO亲自三轮闭环**：v2（闭2/10）→**v3**（逐条闭五项必改：纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单读数P95/沙箱外真权限Holdout）。**A-1两段式路径已由Founder"按推荐继续"确认→DEC-075**（A-1两段式+universe暂缓优先A-1）。**路径A**(历史关联快筛)=预登记经**五轮盲审v1→v5,RR5=✅APPROVED(4/4)**!Tier A严格=关联门(不声称机制/不耗独立计数/不晋级);功效门`PROTOCOL_v1.4_A1SCREEN_ADDENDUM`留痕豁免;AES-256-GCM加密Holdout。**放行待Founder一句"跑"→主会话派发**(先Holdout封存+负向权限测试,再Codex只读work跑事件研究出A-1关联生死判决)。**路径B**(前向真实强平数据机制确证)=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器forceOrder含side方向字段=首个alpha用途,待就绪门,低成本并行)。**DECISION_LOG最新=DEC-075**。
 - **议程（rule8）**：A-1历史无真实强平名义额→若历史不可约则转**前向强平采集器数据路径**（采集器首个明确alpha用途）。
 - **[D级·CTO推荐暂缓] TSMOM universe扩展**：今晚未执行（风险D局部修补：D级未批+只解决DD+2过滤需外部数据）；DEC070部分审计（Codex算ADTV+跳动频率2项，35币约20达标）喂决策包。推荐优先A-1。
 - **跨对话回收**：扫23会话无孤儿决策；Sweep形态线（外部调研session）已在他处封账（v4多头无可部署/v5做空已失败）。工作区沙箱故障=claude-code-vm 2.1.170下载循环失败，用Desktop Commander。

@@ -1,0 +1,10 @@
+{
+  "task_id": "A1_RR5",
+  "completed_at": "2026-06-14T03:31:50Z",
+  "status": "completed",
+  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md",
+  "review_conclusion": "APPROVED",
+  "conditions_closed": "4/4",
+  "next_task": null,
+  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+}

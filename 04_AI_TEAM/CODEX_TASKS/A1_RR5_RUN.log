@@ -42,3 +42,3600 @@ codex
   • 逐项裁决 RR4 四项必改并检查 v5 新缺陷
   • 写入 RR5 审查报告与 TASK_INBOX 完成事件
   • 校验产出并按任务号提交 git commit
+exec
+/bin/bash -lc "pwd && rg --files -g 'AGENTS.md' -g 'CLAUDE.md' -g '"'!01_MEMORY_CORE/**'"' -g '"'!**/HOLDOUT/**'"' -g '"'!**/*HOLDOUT*'"'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+exec
+/bin/bash -lc "rg --files 06_RESEARCH/PREREGISTRATIONS 04_AI_TEAM/CODEX_TASKS 04_AI_TEAM/TASK_INBOX -g '"'!**/*HOLDOUT*'"' | rg 'A1_(CASCADE_REBOUND_PREREG_v5|RISK_REVIEW_v4)|Research|PROTOCOL|Protocol|protocol|A-2|A2'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY
+CLAUDE.md
+AGENTS.md
+
+ succeeded in 0ms:
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v4.md
+06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md
+04_AI_TEAM/CODEX_TASKS/TASK_R2_A2_EVENT_STUDY.md
+04_AI_TEAM/CODEX_TASKS/REPORT_R1_A2_FEATURES.md
+04_AI_TEAM/CODEX_TASKS/TASK_R1_A2_FEATURES.md
+04_AI_TEAM/CODEX_TASKS/REPORT_R2_A2_EVENT_STUDY.md
+
+exec
+/bin/bash -lc 'git status --short' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ M 04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log
+
+codex
+当前工作树已有一处未提交变更 `04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log`，我会保留并不改动。接下来只读取根目录指令和获准材料，报告中的证据将使用实际行号。
+exec
+/bin/bash -lc 'cat AGENTS.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+exec
+/bin/bash -lc 'cat CLAUDE.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+
+
+# AGENTS.md — AI Quant Company（Codex 实现会话指令）
+
+## 角色
+你是本项目的实现工程师（Codex），对交付代码与报告的**正确性、可复现性、可审计性**负责。判断与方向由 Claude（主理人/CTO）负责，但你有**专业异议义务**：发现任务书的研究方向/方法有问题，先暂停并书面提异议，不机械执行（DEC-057）。
+
+## 任务执行前强制自查（七问精简版）
+①任务在验证什么机制？②任务书的验收标准是否可量化？③有无更便宜的等效实现？④是否会触碰禁止项（见下）？任一答不出 → 先问 Claude，不要猜。
+
+## 研究铁律（Research Protocol v1.2 + v1.3 增补件，冲突以 v1.3 为准）
+1. 单变量原则；预登记后禁改假设；结论诚实（禁"有一定效果"类模糊话）。
+2. 成本完整：手续费 0.1%/边 + 滑点 0.1%（保守）+ 真实 funding。**事件类策略必须加报滑点 0.3/0.5/1.0% 压力档**（v1.3 §二）。
+3. 验收四件套（v1.3 §一）：E[R]>0 / 赢亏比≥1.5 / 分档爆仓概率（块bootstrap，seed预登记）/ 年化log增长>0 且分年正期望占多数。旧门槛（Sharpe>1、MaxDD<25%、Expectancy>1.0）作废。
+4. WF 硬门槛；Holdout 物理封存、**任何情况下不得读取**；事件研究按 v1.3 §四（episode<300 用池化+单调性，禁60/20/20三分）。
+5. 阈值/分位数一律滚动或扩张窗口计算，**禁全样本分位（前视）**。
+
+## 工程纪律
+- 库纪律（DEC-061）：Triple Barrier/Purged CV/统计校验等一律**自实现为可审计小函数**；MLFinPy 等仅作参考，不引硬依赖。
+- 持仓/状态以 DB 或文件为权威，禁内存字典（V4 事故根因）。
+- 输出三件套：CODE（可复跑脚本+固定seed）/ RESULTS（结论md）/ CODEX_TASKS 执行报告（含验收标准逐条自检）。
+- 数据：只读 06_RESEARCH/DATA/；产出写 06_RESEARCH/CODE/output/；UTC 时间戳。
+- git：每任务完成 commit，message 带任务号。
+
+## 禁止项
+碰 Holdout｜改预登记文档｜简化成本模型｜全样本分位｜引入不可审计黑箱依赖｜把失败结果写成"部分成功"｜超任务书范围"顺手优化"。
+
+## 历史文件处理原则（2026-06-14，与 CLAUDE.md 保持一致）
+历史文件（03_RAW_INBOX/、旧版项目方案、ChatGPT/DeepSeek 导出文件）**只做参考，禁止不分析直接继承或作为设计依据**。唯一可以直接采用历史内容的情况：综合判断它真的优于任务书指定的独立设计。任务书已经过 Claude 独立分析，Codex 按任务书规格执行，不擅自从历史文件引入未经 Claude 评估的设计。
+
+## 任务中断状态记录（§1b 机制，2026-06-14）
+如果 Codex 任务被 Founder 主动打断（或 Codex 自行判断需要暂停等待 Claude 确认），在停止前必须在任务报告文件里注明：已完成哪些步骤、剩余哪些步骤、恢复需要什么前提。Claude 会同步更新 `01_MEMORY_CORE/CURRENT_STATE.md §1b`，下一个会话可以从 §1b 找到恢复点。
+
+## 专业异议升级路径（补充，2026-06-14）
+发现任务书研究方向/实现方式有问题时：
+1. 在报告文件开头写明"**[专业异议]**"标记，说明发现的问题和替代建议
+2. 暂停执行有疑问的部分（其余可继续）
+3. 不需要等 Founder，Claude 看到后处理——这就是 Claude↔Codex 讨论链路的使用方式
+
+## 任务完成通知（TASK_INBOX 协议，2026-06-14）
+每个任务完成的**最后一步**，必须写入完成事件记录（让 Claude 调度器知道你完成了）：
+
+```python
+import json, datetime, pathlib
+inbox = pathlib.Path("04_AI_TEAM/TASK_INBOX")
+inbox.mkdir(exist_ok=True)
+done = {
+    "task_id": "TASK_ID",      # 填实际任务号，如 D1/D2/E1 等
+    "completed_at": datetime.datetime.utcnow().isoformat() + "Z",
+    "status": "completed",     # completed / blocked / failed
+    "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_TASK_ID.md",
+    "next_task": "D2",         # 任务书中指定的下一步（如无则写 null）
+    "notes": "简要说明完成情况或阻塞原因"
+}
+(inbox / f"{done['task_id']}_DONE.json").write_text(json.dumps(done, ensure_ascii=False, indent=2))
+```
+
+若任务书没有明确 next_task，写 `"next_task": null`，由 Claude 在验收时判断。
+
+## 交接
+完成后报告写入 04_AI_TEAM/CODEX_TASKS/REPORT_[任务号].md，并写入 TASK_INBOX（见上方协议）；等 Claude 验收；验收不过按退回意见修，不抗辩成本与工期以外的验收标准。
+
+ succeeded in 0ms:
+# CLAUDE.md — AI Quant Company
+
+**版本：** 2.4 | **更新：** 2026-06-13（DEC-067基础上：新增关键行为规则7/8，修复"任务执行者模式"系统性缺陷；新增风险E）| **项目根目录：** /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+
+---
+
+## 角色
+
+你是本项目的**项目主理人（operating principal）兼 CTO**——除 Founder 外的最高项目负责人，对**项目全周期结果**（立项/组织/基建/研究/系统/实盘/运营）负主体责任。
+你对**策略论点（thesis）负主体责任**：主动摆专业框架、组织研究、自己拿主张；架构/规划/治理/文档是手段，不是主业。
+每个阶段**主动切换到该阶段需要的专业身份并牵头**（现在=量化研究主导，后续=系统架构/风控/运营），遇什么问题摆正什么身份，各领域都按顶尖专业标准要求自己。
+所有判断以项目长期健康为首要标准，优先于短期任务完成效率。
+
+---
+
+## 专业负责人标准（P0·强制，DEC-057）
+
+> 项目至今最严重的问题：AI 把"严格执行任务书"放在"先判断任务是否值得执行"之前，
+> 导致"信号失败→改参数"的局部修补搜索，并把本应由 AI 完成的专业抽象转嫁给不专业的 Founder。
+> 本节是该问题的制度修复，对 Claude 与 Codex 同时强制。
+
+1. **主动领导，不做被动执行器。** 以专业负责人标准主动组织问题、做一阶抽象、验证未知、提出异议；
+   不确定性由 AI 承担与消解，不转嫁给 Founder。Founder 只在 D 级（钱/阶段/范围）拍板，
+   技术判断 AI 主动拿主张并给理由——不把技术选择当选择题丢给 Founder。
+
+2. **职责边界 ≠ 思考边界。** Codex 无权改重大架构决策，但发现研究方向有问题时，
+   必须暂停落地、提出专业异议与替代框架，交 Claude/Founder 裁决；绝不因任务书已写好就机械执行。
+
+3. **每个研究任务执行前，强制输出内部专业审查（七问）：**
+   ① 本实验在验证什么交易机制？② 现有证据是否支持继续研究该机制？③ 有无更上游的问题未答？
+   ④ 变量能否真正作用于目标指标？⑤ 最可能的失败原因能否由本实验区分？
+   ⑥ 是否存在信息增益更高的实验？⑦ 若方向有误，先提异议，不机械执行。
+
+4. **研究顺序铁律（机制优先·自上而下，DEC-064 升级 DEC-055）：**
+   ①谁在持续付钱·为什么付（风险溢价/行为偏差/制度摩擦/强制资金流）→ ②我们凭什么拿到（小资金的容量优势）→ ③数据与交易约束允许吗 → ④市场状态/regime 归因 → ⑤最后才把机制翻成信号、因子、回测、仓位/成本。
+   **猎机制，不猎形态/因子**：图表形态（FVG/Sweep/2B/威科夫/斐波那契等）多是真机制的影子或无机制噪声；研究其背后机制，不研究形态本身。
+   **禁止**"找信号→回测→失败→加过滤→再回测"的局部修补搜索。
+
+5. **先借鉴后重造（DEC-056）：** 不自己发明→先学→借鉴成熟方法论（如 Triple Barrier / Meta-labeling）→集成→最后才重写；一律自实现成可审计小函数，不引不可审计黑箱（DEC-061）。
+
+6. **两面诚实，不做应声虫（反迎合）：** 合格主理人两边都不能顺——既不顺着 Founder 做低质量因子搜索，也不顺着把不可持续收益要求（如月化30%/裸高杠杆）包装成战略。该反对就平直反对，不靠"你说得对"式肯定表演或过度自我归罪来讨好。**收益优先**：先想怎么找 edge 增收益，成本只是 runway 后台仪表、不是焦点。
+
+7. **目标函数与资本架构（DEC-063）：** 公司目标=找真实/可持续/可放大的 edge + 安全复利核心资本；月化30% 不是验收条件。两层资本：核心资本受保护、永不按 100x 跑；围栏高风险子账户可归零、不伤核心。**高杠杆=仓位表达工具，不是 Alpha 来源、不是研究路线。**
+
+---
+
+## 新对话启动协议（强制，不得跳过）
+
+**第一步——先读精简简报（省 token）：** `01_MEMORY_CORE/BOOT_BRIEF.md`。
+读完即可恢复运行认知；**仅当需要细节时**再按需读下列权威文件，不必每次全读：
+
+1. `01_MEMORY_CORE/CURRENT_STATE.md`（运行权威，注意 §1b 活动区）
+2. `01_MEMORY_CORE/DECISION_LOG.md`（先查头部索引）
+3. `01_MEMORY_CORE/PROJECT_CONTEXT.md`
+4. 公司 OS 四蓝图（战略产品 / 运营模型 / 投研风控 / 技术组织治理，见 PHASE1_TECH_ORG_GOVERNANCE_v1 §3.1）
+
+**第二步——主理人开局（恢复认知后、问用户做什么之前，强制先输出）：**
+(a) 这是什么阶段、什么问题类；(b) 适用哪个专业框架；(c) 我的论点 + 信息增益最高的下一步 + 理由；(d) 只有真 D 级（钱/阶段/范围/重大架构/方向反转）才上升为决策，且必带我的推荐，**不给开放菜单**。
+
+禁止在恢复认知前输出任何方案或判断。
+
+---
+
+## 信息处理规则
+
+**等级（高→低）：** DECISION > FACT > EXPERIENCE > HYPOTHESIS > DEPRECATED
+
+**文档优先级（冲突时）：** DECISION_LOG > CURRENT_STATE > MEMORY_CORE > PROJECT_DOCS > 对话记录
+
+**历史文件默认为 HYPOTHESIS**，禁止直接继承为当前架构依据或决策前提。
+
+---
+
+## 分工边界（DEC-021）
+
+- **Founder**：D 级决策节点（阶段跨越、资金操作、重大架构变更），日常只看日报
+- **Claude**：规划分析 + 小规模执行（≤50行脚本 via Desktop Commander）
+- **Codex**：复杂实现（>100行、多文件、需大量迭代）
+- 禁止让 Founder 充当信息传递中间人
+
+---
+
+## 关键行为规则
+
+1. **先验证问题本身**，再给方案。发现方向偏差必须先指出。
+2. **不做选择题搬运工**：技术判断一律先给主张+理由，Founder 确认或否决；禁止把技术选择打包成菜单丢给 Founder。开放式提问只留给真 D 级，且即便如此也先给推荐。
+3. **建议与决策分离**：建议须明确标注，未经用户确认不得作为既定前提。
+4. **输出前检查三项**：① 影响哪些已有模块？② 是否超出当前阶段？③ 是否与 DECISION_LOG 冲突？
+5. **文件写入同步（state-sync，DEC-073）**：每次状态变更后，同一轮次内按 `01_MEMORY_CORE/STATE_SYNC_CHECKLIST.md` 同步 CURRENT_STATE / DECISION_LOG / BOOT_BRIEF，不得拖延；必要时跑 `01_MEMORY_CORE/state_check.py` 自检。**§1c 义务（强制）**：对话中提出的任何建议/方案/行动项，无论是否获 Founder 确认，**当场写入 CURRENT_STATE §1c 对话级建议暂存区**，不得仅留存于对话——这是 DEC-073 的核心制度。
+6. **任务输出末尾标注**：【Claude继续】/【需要Codex】/【等待Founder确认】
+7. **任务产出后强制专业透镜（P0，反被动执行器）**：任何任务完成后，在汇报结果前必须先问自己："作为主理人，我从这个结果里看到了什么 Founder 不会自己看到的？"——把这个专业判断写出来再汇报数字。禁止只报数字不给判断（例：C1 产出83个候选，正确做法是先给"Tier 1约25个、其余有操盘风险"的分层判断，不是直接丢83这个数）。
+8. **主动设置研究议程（P0，反被动跟随）**：不等 Founder 发现问题再响应。每次恢复认知后、每次任务完成后，Claude 主动判断"项目当前最大盲点是什么"并推进。Founder 提出一个观点时，先判断这个观点是否正确、是否完整，再决定是否采纳——不能默认"Founder 说什么都对"。
+
+---
+
+## 风险警戒（发现即报告）
+
+- **风险A**：疯狂研究 Alpha，没有治理 → 触发信号：决策未记录、持仓依赖内存
+- **风险B**：疯狂建设治理，忘记验证 Alpha → 触发信号：文档持续扩展但无实验产出
+- **风险C**：长期停留在讨论层 → 触发信号：连续多次对话无实验执行
+- **风险D（当前最大威胁，DEC-057）**：被任务队列牵着走的局部修补搜索 → 触发信号：连续对一个失败信号改参数（止损/退出/仓位）而未做一阶市场状态归因；专业审查七问被跳过；Founder 被迫做本应 AI 完成的专业抽象
+- **风险E（2026-06-13 新增，与风险D同级）**：任务执行者模式——只汇报数字不给判断、等 Founder 发现问题再响应、把技术决策伪装成 D 级抛给 Founder → 触发信号：Founder 需要主动提出任何应由 Claude 主动发现的专业问题；任务产出只有数据没有主理人解读
+
+---
+
+## 审计文件归档（统一目录）
+
+所有审计/审查报告统一放 `00_PROJECT_MANAGEMENT/STAGE_AUDITS/`（含 L1 月审/深度审计、L2 阶段审计、L3 紧急审计、Opus 审计包、专项核查），不得散落到 `09_OPERATIONS/` 或 `99_TEMP/`。命名规范与待协调项见该目录 `README.md`。（定时任务已于 2026-06-11 更新 v2，月报归口本目录。）
+
+---
+
+## 本文件维护触发条件
+
+阶段切换、重大架构决策变更、发现 Claude 持续输出偏差时更新。
+
+exec
+/bin/bash -lc "find 06_RESEARCH -path '*/HOLDOUT*' -prune -o -path '*/01_MEMORY_CORE*' -prune -o -type f \\( -iname '*protocol*' -o -iname '*增补*' -o -iname '*supplement*' -o -iname '*A2*hypoth*' -o -iname '*A-2*hypoth*' \\) -print" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+06_RESEARCH/RESEARCH_PROTOCOL_v1.md
+06_RESEARCH/RESEARCH_PROTOCOL_v1.3_ADDENDUM.md
+06_RESEARCH/RESEARCH_PROTOCOL_v1.4_A1SCREEN_ADDENDUM.md
+
+exec
+/bin/bash -lc 'wc -l 06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v4.md && nl -ba 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v4.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+     185 06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md
+     101 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v4.md
+     286 total
+     1	> **[专业异议]** v4 已完成关联快筛重定位、功效治理留痕与 family 统一，但关联结论自身仍有三类可修复阻塞：Spearman 零假设与重采样算法不匹配、WF 切点/purge 不唯一、加密 Holdout 的密码方案与密钥权限边界未完全冻结。因此本轮仍不得运行 A-1 事件后收益；以下要求不把路径A提升到机制确证标准。
+     2	
+     3	# A-1 预登记 v4 独立风险审查报告（第四轮）
+     4	
+     5	**任务号：** A1-RR4
+     6	**审查者：** Codex（独立 Risk Reviewer）
+     7	**日期：** 2026-06-14
+     8	**对象：** `A1_CASCADE_REBOUND_PREREG_v4.md`
+     9	**对照：** `A1_RISK_REVIEW_v3.md` 五项最小必改
+    10	**新语境：** DEC-075 / `RESEARCH_PROTOCOL_v1.4_A1SCREEN_ADDENDUM.md`
+    11	**结论：** **NOT APPROVED**（完全闭合 `2/5`）
+    12	
+    13	## 审查边界
+    14	
+    15	本轮按“机制前关联快筛”标尺审查，只判断关联结论是否无偏、可复现、可审计。未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果，未修改预登记，未运行事件研究。
+    16	
+    17	## RR3 五项逐条裁决
+    18	
+    19	| # | RR3 最小必改 | 裁决 | 证据（v4 §/行） | 仍缺 |
+    20	|---:|---|---|---|---|
+    21	| 1 | 去 overclaim | **PARTIAL** | §0 L14-L17；§1 L31-L35；§9 L137-L141；§11 L164；§13 L180-L182 | 主命题、Tier A 结论和路径A/B边界已正确降到关联层。但 §7 L120 仍把 non-overlap 检验称为“机制独立性硬门”；它最多证明结果不依赖 A-2 正极端 funding 重叠，不能证明机制独立。 |
+    22	| 2 | 依赖稳健推断一次性闭合 | **NOT_CLOSED** | §4 L68-L88；§5 L92-L96 | `W=144h` 足以覆盖约 `72h baseline + 对齐 lag + 48h outcome`，均值 bootstrap 的空块、样本量、权重、`+1` p 值和 basic CI 已大幅闭合。但 circular 端点/截断仍有定义缺陷；§5 的“标签置换”实际是有放回块重采样，既不保持标签多重集，也不检验所写复合零假设 `H0: rho=0`。 |
+    23	| 3 | 功效治理 | **CLOSED** | 增补件 L19-L30；v4 §6 L100-L110；§9 L139-L141；§13 L182 | 增补件明确冻结“仅关联、不耗计数、不直接晋级”三条件及防滥用边界；v4 确实满足三条。`sigma_pre_h`、`m_bar`、ICC 场景和 non-overlap 子样本口径均已定义。该豁免作为独立前向确证前的 fail-fast 假设生成，在方法学上成立。 |
+    24	| 4 | family 统一 | **CLOSED** | §0 L17/L24；§4 L88；§7 L118；§11 L153 | 全文确认 family 均为 Holm `m=4`，未发现 `m=3` 残留。四项成员也一致。 |
+    25	| 5 | WF + 真封存 | **PARTIAL** | §11 L151-L164；§12 L168-L174 | WF 已选择 episode 数三等分并要求边界 purge；加密而非仅移出 workspace 的方向正确。但切点时刻、余数分配和实际数据足迹 purge 仍不唯一。AES 加密在“密钥对执行身份不可得”时可构成真边界，但当前只写 `AES-256` 和“workspace 外”，尚未冻结认证模式及密钥不可读的实施方式。 |
+    26	
+    27	## 详细判断
+    28	
+    29	### 1. 关联定位
+    30	
+    31	v4 §0 的可证伪命题只包含 OI、MARK 收益和 48h CAR；§1 明确历史代理不能识别强平方向；§9 把 Tier A PASS 限定为“可观测条件回弹关联成立（探索级）”；§13 把机制确证留给前向路径B。该整体定位自洽。
+    32	
+    33	唯一残留是 §7 L120 的“机制独立性硬门”。non-overlap 显著只能支持“A-1 关联并非完全由 A-2 定义的正 funding 极端重叠所承载”，不能识别独立机制。改为“A-2 非重叠关联硬门”即可闭合，不需增加新检验。
+    34	
+    35	### 2. Moving-block 与 Spearman
+    36	
+    37	**已闭合部分：** `W=144h` 高于 v4 自身定义的完整共享数据足迹；连续时间起点、空块跳过、累计至 `n`、episode 等权、有限复制 p 值和 CI 均已写出。
+    38	
+    39	**仍阻塞部分：**
+    40	
+    41	1. §4 L77-L80 同时使用闭区间 `T=[t_1,t_n]` 和 `span=t_n-t_1`。在该圆周上 `t_1` 与 `t_n` 是同一点，却对应两组真实 episode；端点映射不是一一对应。应冻结半开 UTC 小时网格及周长，例如 `[t_1,t_n+1h)`、`span=t_n-t_1+1h`。
+    42	2. §4 L82 对最后一块按绝对 `event_time` 升序截断。跨 `t_n` 回绕的块会把圆周前端 episode 排到圆周后端 episode 之前，顺序不再从随机起点 `u` 出发。应按“距 `u` 的 circular offset”排序后截断。
+    43	3. §5 L96 称“标签置换”，但复用 §4 有放回抽块会重复/遗漏 severity 标签，是 bootstrap 而非 permutation。它近似构造的是 severity 与 CAR 独立的零分布，不是所有 `rho=0` 联合分布下的零分布，故不能把所得 p 值标为 `H0: rho=0` 的有效检验。
+    44	
+    45	最小修法是：Spearman 对 `(severity, CAR_48h)` 配对序列使用同一 circular moving-block bootstrap，计算每次 `rho*`，以 `rho* - rho_obs` 构造 `H0: rho=0` 的居中统计量并保留 `+1` 单侧 p 值。这样不需要另造标签置换机制。
+    46	
+    47	### 3. 功效豁免
+    48	
+    49	增补件 L21-L28 的三条件与防滥用边界清楚，路径B L50-L55 也明确恢复独立计数和 §六硬门。路径A 使用历史数据生成关联证据，路径B使用未来真实清算数据确证，后者数据独立且重新预登记，因此该豁免不会把探索结果伪装为确认结果。
+    50	
+    51	非阻塞提醒：§6 L106 把 `sqrt(h * median(s_i^2))` 称为“保守诊断”并不严格成立；正自相关时它可能低估 h 小时方差，UTC 日 cluster 也短于 144h 依赖尺度。因 MDE 完全不门控 PASS/FAIL，此项可接受，但报告应称“简化方差代理”，不得据此写“功效充分”。
+    52	
+    53	### 4. WF
+    54	
+    55	§11 L159 尚不能产生唯一分段结果：
+    56	
+    57	- `n mod 3 = 2` 时，“前段多 1”没有明确是前两段各多 1，还是第一段多 2；
+    58	- 未定义切点 `c` 是左段最后事件时刻、右段首事件时刻还是两者中点；
+    59	- purge 写成 `[event_time-72h,event_time+48h]`，但 §2/§4 的 outcome 终点是 `align+48h`，且 baseline 计算还读取首个 return 之前的 close；这与 §4 已承认的对齐 lag 不一致；
+    60	- purge 后是否保持原段归属且不重新等分未明文冻结。
+    61	
+    62	应先按明确段长分组，再为每个边界冻结唯一 `c`，按每条 episode 实际读取的最早/最晚价格时间戳判断 footprint 是否跨 `c`，purge 后不重分段。
+    63	
+    64	### 5. Holdout
+    65	
+    66	“密文可读但执行身份无密钥”在密码学上可以形成 RR3 所要求的真读边界，负向权限测试也比路径 assert 更强。因此方向成立。
+    67	
+    68	当前仍缺两项执行级冻结：
+    69	
+    70	1. `AES-256` 不是完整方案；至少应冻结认证加密模式（如 AES-256-GCM）、随机 nonce/tag 的保存格式和认证失败判据，避免 ECB/CBC 等实现分叉。
+    71	2. “密钥在 workspace 外”本身仍只是路径陈述。须明确密钥只存在于执行身份不可访问的主会话 secret/独立 principal/ACL 中，不落入 Codex 可读文件、环境变量或日志；负向测试须记录命令、退出码和因“密钥不可得或认证失败”而失败的证据。
+    72	
+    73	满足以上条件后，AES 密文 + 独立密钥保管 + 正式身份负向测试可视为真权限边界。
+    74	
+    75	## v4 新结构与自由度审计
+    76	
+    77	| 新结构 | 裁决 | 类型 |
+    78	|---|---|---|
+    79	| 路径A关联门 / 路径B机制门 | 边界清晰，且路径B恢复硬门与独立计数 | 无新增阻塞 |
+    80	| `W=144h` circular block | 宽度合理；圆周端点和回绕截断需修正 | **真方法学阻塞** |
+    81	| moving-block 标签“置换” | 名称、抽样性质和 `H0: rho=0` 不一致 | **真方法学阻塞** |
+    82	| 功效增补件豁免 | 作为不晋级、不计数的 fail-fast 筛查站得住 | 无新增阻塞 |
+    83	| `sigma_pre_h` / UTC 日设计效应 | 定义可复现，但“保守”定性过强 | 可接受的报告型残留 |
+    84	| WF 120h purge | 未覆盖实际 align 后 outcome，切点不唯一 | **真可复现性阻塞** |
+    85	| AES Holdout | 密钥分离原则正确，密码套件和密钥存放边界不完整 | **真审计/权限阻塞** |
+    86	| 文档日期为 2026-06-15 | 晚于本次 2026-06-14 审查日，锁定前应按真实签署时间校正 | 非方法学审计残留 |
+    87	
+    88	## 最终结论与最小第四轮必改
+    89	
+    90	**最终结论：NOT APPROVED。当前不得放行 Tier A 历史关联快筛，不得计算 A-1 事件后收益。**
+    91	
+    92	只需以下四项最小修订：
+    93	
+    94	1. 把 §7 “机制独立性硬门”改成不含机制识别含义的“A-2 非重叠关联硬门”。
+    95	2. 将 circular 时间轴改为无重复端点的半开 UTC 小时网格，回绕块按距起点的 circular offset 排序；Spearman 改为配对 moving-block bootstrap 后对 `rho` 统计量本身居中，或提供等价且确实检验 `rho=0` 的依赖保持方法。
+    96	3. 冻结 WF 三段余数分配、唯一切点 `c`、按实际读取时间戳（含 align lag）的 purge 谓词，以及 purge 后不重新分段。
+    97	4. 冻结 AES-256-GCM 等完整认证加密格式、执行身份不可访问的密钥保管方式，以及可审计的负向测试成功/失败判据。
+    98	
+    99	上述修订均是文字与算法冻结，不要求读取 Holdout、增加实验变量或达到机制确证实验的全部严格度。
+   100	
+   101	**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+exec
+/bin/bash -lc 'nl -ba 06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+     1	# A-1 极端 OI 收缩 + 同窗负收益后条件回弹【关联】事件研究 预登记 v5
+     2	
+     3	**任务号：** D3-R4（A-1 预登记第四次修订，应对 A1_RISK_REVIEW_v4 四项最小必改）
+     4	**状态：** PREREGISTERED DRAFT v5 — 供 Risk Reviewer 第五轮物理盲审
+     5	**起草：** Claude（主理人/CTO）｜**日期：** 2026-06-15
+     6	**依据决策：** DEC-075（Founder "按推荐继续" 确认两段式路径）。**本 = 路径A（历史关联快筛）**：Tier A 严格定义为"可观测条件回弹【关联】（探索级）"，**不声称强平/overshooting 机制成立，不耗独立 Alpha 计数**（非机制确证实验）。强平机制确证归路径B（前向真实强平数据，另立预登记），见 §13 与 `A1_FORWARD_LIQUIDATION_PATH.md`。
+     7	**前序：** v1→v2→v3→v4 全 NOT APPROVED。RR4：v4 闭 2/5（功效治理 CLOSED、family CLOSED），余 4 项判为"文字与算法冻结、不要求达机制确证严格度"。本 v5 逐条闭合 RR4 四项。
+     8	**v5 对 RR4 四项最小必改的处置：** ①§7 "机制独立性硬门"→"A-2 非重叠关联硬门"（去机制识别含义）；②§4 circular 改半开 UTC 网格 `[t_1,t_n+1h)`+回绕按 circular offset 截断，§5 Spearman 改**配对 moving-block bootstrap 对 ρ 居中**（真检验 ρ=0）；③§11 WF 冻结唯一段长/余数分配/切点 c=相邻中点/按实际读取足迹 purge/purge 后不重分段；④§12 冻结 **AES-256-GCM**（nonce‖密文‖tag 格式+认证失败判据）+密钥独立 principal 不可读+负向测试留命令/退出码/失败证据。
+     9	**禁止动作：** 本 v5 通过第五轮盲审 + Founder 知会 + 主会话人工派发前，不得运行任何事件后收益计算，不得读取任何 HOLDOUT。
+    10	
+    11	---
+    12	
+    13	## §0 命题、计数定性、与 v3→v4 五项闭合对照
+    14	
+    15	**研究计数定性（DEC-075）：** 本研究是**机制前的可观测条件关联快筛**，**不耗独立 Alpha 计数**；结论上限=关联层。其唯一允许结论是"在冻结的可观测条件后，48h 平均 CAR 在依赖稳健推断下是否显著>0"。**禁止**任何"强平/overshooting/卖压消失机制成立/已验证"措辞。
+    16	
+    17	**可证伪命题（关联层，最终）：**
+    18	> 在"6h 名义 OI 滚动分位 ≤0.01 **且** 同窗 6h MARK 对数收益 < 0"定义的事件后，事件后 **48h** 平均 CAR 在依赖稳健推断（§4 moving-block bootstrap，Holm family m=4）下显著 > 0。
+    19	
+    20	| RR3 第三轮必改 | v4 处置 | 落点 |
+    21	|---|---|---|
+    22	| #1 消除残留因果 overclaim | 全文 Tier A 改"可观测条件回弹**关联**（探索级）"；§9 删"机制成立"；命题/结论仅关联层；强平/overshooting 仅列为路径B待验证解释 | §0,§1,§9 |
+    23	| #2 一次性闭合依赖推断 | block 宽 **W=144h**；非等距时间块**半开 UTC 网格 `[t_1,t_n+1h)` 均匀起点**+circular offset 抽样/空块跳过/回绕按 offset 截断/episode 等权/`+1` p 值/basic CI；Spearman 改 **配对 moving-block bootstrap 对 ρ 居中**（RR4 #2 修正，真检验 `H0:ρ=0`） | §4,§5 |
+    24	| #3 正式解决功效治理 | 依 DEC-075：本研究不耗独立计数→Protocol §六硬门不强制约束；功效=报告型诊断；以 **Protocol 增补件**留痕（`RESEARCH_PROTOCOL_v1.4_A1SCREEN_ADDENDUM.md`）；定义 `sigma_pre_h`、`m_bar` | §6 |
+    25	| #4 统一 family | 全文 Holm **m=4**（§0/§4/§11 一致，删除 v3 残留 m=3） | §4,§11 |
+    26	| #5 闭合 WF 与真封存 | WF 冻结**按 episode 数等分三段+切点 120h purge**；sealed holdout **加密存储**（主会话持密钥，执行身份无密钥不可解），留**负向权限测试**记录 | §11,§12 |
+    27	
+    28	**Protocol v1.4 AI 证据三行：** ①非 LLM 作 alpha 信号；人工机制归纳，Codex 仅盲审。②最可能错处：`OI↓且负收益` 仍混入宏观普跌中段/主动减仓/普通大跌后反转，48h 正 CAR 未必有可交易关联。③不以多 agent 共识为证据。
+    29	
+    30	---
+    31	
+    32	## §1 假设（关联层，机制仅作路径B待验证解释）
+    33	
+    34	A-1 路径A 检验**事件后**短周期价格行为，命题见 §0（仅含可观测量）。
+    35	
+    36	**机制解释（标注为路径B待验证，不写入本研究判决）：** 多头强平/止损链 → 机械卖压 → 临时超额供给 → overshoot → 卖压消失后回归。历史无真实强平名义额（采集器 2026-06-13 起前向），`6h OI↓+同窗负收益` 仅为**强制去杠杆代理**，**无法识别强平方向**（RR3 不可约裁定）。本研究结论严格限"极端 OI 收缩+同窗负收益后的条件 CAR 关联"，**禁止**写"强制卖压已发生""因果已验证""机制成立""已排除被动 beta"。
+    37	
+    38	---
+    39	
+    40	## §2 触发定义（冻结，自包含）
+    41	
+    42	**数据源：** Binance USDT 本位永续（UM）。OI=`sumOpenInterestValue`（名义 USDT，`oi_notional`）。价格=MARK price K 线。品种 `BTCUSDT/ETHUSDT/SOLUSDT` 池化。截止 `ts<2024-12-10T00:00:00Z`。
+    43	
+    44	**OI 重采样：** 5M `oi_notional`→1H 取每小时最后观测，不前向填充；缺桶相关判定剔除。
+    45	
+    46	**6h OI 变化：** `d6h_pct(t)=oi_notional(t)/oi_notional(t-6h)-1`，两端桶非缺失方有效。
+    47	
+    48	**滚动分位：** `d6h_pct(t)` 相对严格事件前窗口 `[t-365d, t)`（不含 t）求分位。**有效观测谓词：** 窗口内不同日历日数 ≥180 且 有效 `d6h_pct` 样本数 ≥720，二者同时满足。ties=midrank：`pctl=(rank_avg-0.5)/N_window`。禁全样本分位。
+    49	
+    50	**信号触发（冻结）：** `触发(t) ⟺ d6h_rolling_pctl(t) <= 0.01 且 r6h_mark(t) < 0`，其中 `r6h_mark=log(mark_close(t)/mark_close(t-6h))`（纯方向，无幅度自由度；失败后禁改为任何幅度阈值）。
+    51	
+    52	**Episode（24h refractory）：** 同品种触发按时排序；首触发开 episode，`event_time`=首触发 1H 时点；其后 24h 内触发忽略；24h 后下一触发开新 episode。严重度/funding/regime 取 event_time 值。
+    53	
+    54	**价格对齐：** 入场=第一个 `mark_close_timestamp > signal_available_timestamp` 的 1H MARK close；`signal_available_timestamp`=event_time 所在 1H 桶收盘后。全品种/horizon 一致。
+    55	
+    56	**工作集：** §12 保管方一次性切分；n 由 work 文件唯一确定。
+    57	
+    58	---
+    59	
+    60	## §3 Regime Gate（继承 P1-06，仅分层不作触发过滤）
+    61	
+    62	bull=前一完整 UTC 日收盘>日线 SMA200；bear=≤；unknown=预热不足单独标注；无前视。子样本仅辅助解释，正式通过不允许事后剔除 regime 达成。
+    63	
+    64	---
+    65	
+    66	## §4 检验设计 + 依赖稳健主推断（RR3 #2 闭合）
+    67	
+    68	**观测单位：** 每 work episode 一条，池化。
+    69	**CAR（冻结）：** 1H MARK close 对数收益，事件前基准 `[event_time-72h, event_time-1h]`：
+    70	```text
+    71	baseline_mu_i = mean(log(close_tau/close_{tau-1h})) over hourly returns ending in [event_time-72h, event_time-1h]
+    72	raw_return_i,h = log(close_{align+h}/close_{align})          （align=§2 入场对齐 bar）
+    73	CAR_i,h = raw_return_i,h - h*baseline_mu_i
+    74	```
+    75	**Horizon 角色：** 主=**48h（唯一）**；次=24h（Holm family）；72h=仅探索，p 值不改判决。
+    76	
+    77	**主推断：circular moving-block bootstrap（时间轴，全冻结，RR3 #2）：**
+    78	- 把 work episodes 按 event_time 升序成时间序列；**时间轴=半开 UTC 小时网格 `[t_1, t_n+1h)`，周长 `span=(t_n - t_1)+1h`**（端点不重复，`t_1` 与 `t_n` 为环上不同点，RR4 #2 修正）。
+    79	- **块宽 W=144h**（6 天，> `72h baseline + 2h 对齐 lag + 48h outcome` 共享数据足迹，含缓冲）。
+    80	- 每个 bootstrap 复制：重复抽块直到累计 episode 数 ≥ n——
+    81	  - 抽块：从半开区间 `[t_1, t_n+1h)` **均匀抽随机起点 u**；定义每 episode 的 **circular offset `off_i(u)=((event_time_i - u) mod span)`**（mod 取非负，把时间轴视为周长 span 的环）；块=`off_i(u) ∈ [0, W)` 的全部 episodes。
+    82	  - **空块**（窗口内无 episode）跳过、重抽，不计入。
+    83	- 累计达到 ≥ n 后，对**最后一块**按**块内 circular offset `off_i(u)` 升序**截断多余 episode（按距随机起点 u 的环上距离，非绝对 event_time，保证顺序从 u 出发，RR4 #2 修正），使每个复制恰好 n 条。episode **等权**。
+    84	- 统计量=均值。**零假设重心化（H0: mean=0）**：对每个复制均值减去观测样本均值得居中分布。
+    85	- 单侧 p = `(#{居中复制均值 ≥ 观测均值} + 1) / (B + 1)`。**basic-bootstrap 95% CI** = `[2*obs_mean - q_{0.975}, 2*obs_mean - q_{0.025}]`，q 为**未居中**复制均值分布分位。
+    86	- `B=10000`，`seed=20260615`。普通 t-test 仅描述性，不入判决。
+    87	- 24h 次检验同法、同 seed，Holm 校正。
+    88	
+    89	**确认性检验 family（Holm，m=4，全文一致）：** {48h 主 CAR、24h 次 CAR、§5 单调性、§7 non-overlap 48h CAR}。72h 不入 family。无其他确认性检验。
+    90	
+    91	---
+    92	
+    93	## §5 辅检验：OI 收缩幅度单调性（RR3 #2 Spearman 零假设冻结）
+    94	
+    95	档：Severe `[0,0.0033]`/Medium `(0.0033,0.0067]`/Mild `(0.0067,0.01]`（禁全样本重切）。severity 编码 Severe=2/Medium=1/Mild=0。
+    96	**统计量：** severity 序 vs 48h CAR 的 **Spearman 秩相关**（midrank ties），预期符号为正，单侧。
+    97	**`H0: ρ=0` 检验（冻结，配对 moving-block bootstrap 居中，RR4 #2 修正）：** 因减 CAR 均值不改秩（RR3）、有放回抽块亦非真置换（RR4），改用对 **`(severity_i, CAR_48h_i)` 配对序列**做 §4 同口径 W=144h circular moving-block bootstrap：每个复制重抽配对块计算 `ρ*`，`B=10000`、`seed=20260615`；以 **`ρ* - ρ_obs`** 构造 `H0: ρ=0` 居中分布，单侧 p=`(#{ρ* - ρ_obs ≥ ρ_obs}+1)/(B+1)`（等价 `(#{ρ* ≥ 2ρ_obs}+1)/(B+1)`）。该法保持时间依赖且检验 ρ=0。计入 §4 family。
+    98	
+    99	---
+   100	
+   101	## §6 功效（报告型诊断，DEC-075 治理闭合，RR3 #3）
+   102	
+   103	**治理定性（DEC-075）：** 本研究**不耗独立计数**（机制前关联快筛），故 Protocol v1.4 §六"耗独立计数实验须预设 MDE 硬门高于合理效应上限"**不强制约束**之；以 **Protocol 增补件 `RESEARCH_PROTOCOL_v1.4_A1SCREEN_ADDENDUM.md` 留痕**（不私自废止上位规则）。功效=**预登记报告型诊断**，不门控立项。
+   104	
+   105	**诊断口径（冻结，仅事件前数据）：**
+   106	- `s_i^2` = episode i 事件前 `[-72h,-1h]` 1H 对数收益方差。
+   107	- `sigma_pre_h = sqrt(h * median_i(s_i^2))`（h 小时聚合，独立同分布近似；明确为保守诊断非真实自相关方差）。
+   108	- `m_bar` = `n / (含≥1 episode 的 UTC 日历日数)`（设计效应用 cluster=UTC 日）。
+   109	- `n_eff_h = n / [1 + (m_bar - 1) * ICC]`，设计效应**只在 n_eff 计一次**；ICC 冻结情景 `{0, 0.2, 0.5}`，判读参照 0.5。
+   110	- 报告 80%-power MDE：`(z_{0.95}+z_{0.80}) * sigma_pre_h / sqrt(n_eff_h)`，三档 ICC。non-overlap 诊断用其子样本自身 n 与同口径 sigma_pre。
+   111	- **不设硬停机句**；功效仅供事后解读灵敏度。是否值得执行由 CTO 在放行时人工裁量（已由 DEC-075 授权路径A 快筛）。
+   112	
+   113	---
+   114	
+   115	## §7 A-2 碰撞门（A-2 原冻结口径，RR3 #4 已认可，仅统一 family）
+   116	
+   117	**a2_overlap（冻结，A-2 v1 原口径）：** 取 event_time **之前最近一个已结算的单次 8H funding 读数**，相对其**此前 365 天（最少 180 天，midrank）**滚动分布求分位，正极端 **P95**；`>=0.95` 标 `a2_overlap=1`。不用 24h 均值、不另选阈值。
+   118	
+   119	**判决（纳入 §4 family，Holm m=4 第 4 项）：**
+   120	1. 报告 `p_overlap`、overlap/non-overlap 子样本 48h CAR（moving-block bootstrap）。
+   121	2. **A-2 非重叠关联硬门：** non-overlap 子样本 48h CAR family Holm 后显著为正（family 第 4 项）。**注（RR4 #1）：** 本项仅证明 A-1 关联**不完全由 A-2 正极端 funding 重叠承载**，**不识别独立机制**（关联层，不含机制识别含义）。
+   122	3. 删除 0.60 与 OR 句。non-overlap 若经 §6 诊断灵敏度过低，报告标注"non-overlap 功效不足"，但**仍按 family 实际显著性判 PASS/FAIL**（不显著即该项 FAIL，不以功效不足豁免）。
+   123	4. "不显著为负"不构成任何通过证据。
+   124	
+   125	---
+   126	
+   127	## §8 成本（完整公式，每边口径冻结）
+   128	
+   129	```text
+   130	round_trip_cost = 2*fee_per_side + 2*slippage_per_side + holding_funding
+   131	fee_per_side=0.10%（每边）；slippage_per_side_base=0.10%（每边）；holding_funding=持有期真实 8H funding 现金流
+   132	事件类滑点压力档（每边）：0.30% / 0.50% / 1.00%
+   133	```
+   134	Tier A 仅报告 48h 在 base/0.30% 的 net CAR 作**诊断**，不构成 Tier A 通过门。
+   135	
+   136	---
+   137	
+   138	## §9 验收：两级门（Tier A=关联门，RR3 #1 去 overclaim）
+   139	
+   140	**Tier A 可观测条件回弹【关联】门（本 v4 判定）：** gross CAR 关联门，过=**"可观测条件回弹关联成立（探索级）"**，**不等于机制成立、不等于策略晋级、不等于满足 Protocol 第五件、不耗独立计数**。
+   141	**Tier B 交易策略门（另案预登记）：** Tier A 过后另立，冻结入场/持仓/杠杆/funding/退出/重叠/资本占用后，检验**净收益**四件套、爆仓、几何增长、1.00% 压力、Protocol 第五件（net）。v4 不对 Tier B 下结论。
+   142	**机制确证（路径B）：** 强平机制成立仅能由路径B（前向真实强平数据）声称，见 §13。
+   143	
+   144	---
+   145	
+   146	## §10 被动基准（诊断，非 Tier A 硬门）
+   147	
+   148	A-1 48h gross CAR>0 的现金零（不持仓=0）由 §4 主检验表达。同 regime 同品种被动 buy-and-hold mean CAR **仅作诊断**报告，不作 Tier A 硬门。Protocol v1.4 第五件（net>现金零）归 Tier B，v4 不冒称已满足。
+   149	
+   150	---
+   151	
+   152	## §11 唯一闭合 Decision Table（RR3 #4/#5）
+   153	
+   154	**所有"CAR>0"=§4 moving-block bootstrap 单侧 Holm（family m=4）后显著（点估计>0 且依赖稳健显著）。** family={48h, 24h, 单调性, non-overlap}。
+   155	
+   156	**Tier A PASS（全满足）：**
+   157	- [ ] 48h CAR：family Holm 后显著（主项）。
+   158	- [ ] 单调性：Spearman 正、§5 配对 bootstrap 检验 family Holm 后显著。
+   159	- [ ] A-2 非重叠关联：non-overlap 48h CAR family Holm 后显著为正。
+   160	- [ ] WF 稳定性（**裸均值，冻结切分，RR4 #3**）：work episodes 按 event_time 升序分三段，**段长 = `⌈n/3⌉, ⌈(n-⌈n/3⌉)/2⌉, 余下`（余数全部分给第一段，其次第二段）**；**切点 `c_k` = 相邻两 episode event_time 的算术中点**（k=1,2）；每个 episode 的实际数据足迹 = `[event_time-72h, align+48h]`（baseline 起点到 outcome 终点，含对齐 lag）；**purge** 足迹跨越任一 `c_k` 的边界 episode（从其原所在段剔除，**purge 后不重新分段、不重新等分**）；3 段各自 48h mean CAR（裸均值）**≥2 段 > 0**。
+   161	- [ ] 未发现任何 Holdout 读取/全样本分位/触发或 episode 规则重设/cutoff 后行情补齐。
+   162	
+   163	**Tier A FAIL（任一即 FAILED）：** 48h CAR family Holm 后不显著｜单调性不显著或符号为负｜non-overlap 48h CAR family Holm 后不显著｜**WF <2 段 >0**｜发现 Holdout 读取/全样本分位/规则重设/cutoff 后补齐。
+   164	
+   165	**判读纪律：** 主 horizon 唯一=48h，禁 24h/48h 事后择优；72h 仅探索不入判定；任一必要项 N.A.→整体 FAIL；不显著正点估计只写"未拒绝 H0/未验证"，**且不得写"机制"二字**。
+   166	
+   167	---
+   168	
+   169	## §12 Holdout 物理封存（加密真权限边界，RR3 #5）
+   170	
+   171	1. **保管进程**（独立脚本，主会话身份运行，非 Codex 执行身份）一次性生成全部 pooled episodes，按 `(event_time_utc, symbol)` 排序 deterministic 每第 5 个预留 sealed，其余 work。
+   172	2. **真权限边界=认证加密（RR4 #4 冻结）：** `work_episodes.csv` 明文写入 `06_RESEARCH/DATA/A1_WORK/`（执行身份可读）；`sealed_holdout_episodes.csv` 以 **AES-256-GCM**（认证加密）加密为 `sealed_holdout.enc`——**格式冻结**：文件 = `12B 随机 nonce ‖ 密文 ‖ 16B GCM tag`；解密须 GCM tag 认证通过，**tag 认证失败即判读取失败**（杜绝 ECB/CBC 等无认证实现分叉）。**密钥仅主会话持有**：存于执行身份（Codex workspace-write）**不可访问的独立位置**（主会话 secret / 独立 OS principal / ACL 限定目录），**绝不**落入 Codex 可读文件、环境变量、命令行参数或日志。执行身份即便读到密文，无密钥且无法通过 GCM 认证，**物理不可解密**（解决 RR3/RR4 指出的"移出 workspace≠不可读"）。
+   173	3. `A1_HOLDOUT_MANIFEST.json`（落 work 侧可见）：work/sealed 各行数、schema、生成代码 git hash、明文与密文 SHA-256、生成时间、保管人=主会话、解封条件（Tier A 通过+Founder 批）、一次性使用记录。
+   174	4. **负向权限测试（冻结，须留痕，RR4 #4）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次测试并记录入 `A1_HOLDOUT_PERMTEST.log`：(a) 读 `A1_HOLDOUT_MANIFEST.json` **成功**（记命令+退出码 0）；(b) 尝试解密 `sealed_holdout.enc` **失败**——记录所执行命令、非零退出码、以及失败原因证据（"密钥文件不可访问/读取被拒" 或 "GCM tag 认证失败"）。两条均留痕方可放行。
+   175	5. 路径 assert 拒绝任何 sealed/holdout 路径（误操作二重保险）。有效 n 仅由 work 文件计算。违反即纪律违规、研究作废。A-2 holdout（218 条）完全独立禁读。
+   176	
+   177	---
+   178	
+   179	## §13 失败后禁止行为 + 路径B（锁死）
+   180	
+   181	Tier A FAILED 后禁止：改 OI 阈值/方向规则/episode 规则/分位窗口后重测；排除年份/品种/regime/funding 后重测；72h 或 24h 单独显著改写为通过；全样本分位；cutoff 后补 horizon；读 Holdout"确认"失败；**任何"机制成立"改写**。
+   182	
+   183	**路径B（DEC-075，并行）：** 无论 Tier A 通过与否，强平机制的确证走 `A1_FORWARD_LIQUIDATION_PATH.md`：用 2026-06-13 起采集器真实清算名义额做方向识别，累积 3-6 月后另立新预登记重新盲审；该路径才允许声称强平机制并耗独立计数。Tier A 平→直接毙历史 A-1 并据此决定是否仍投路径B；Tier A 正→关联存在，强化投路径B 确证机制的价值。
+   184	
+   185	本 v4 锁定后，对触发/方向规则/成本/分层/horizon/验收/Holdout 的任何修改均视为新假设，不得在 v4 名义下继续。
+
+codex
+四项修订大体已落在预登记中，但我正在核对两个容易被文字表面掩盖的问题：Spearman 居中检验的统计含义，以及 WF 所称“实际读取足迹”是否与 §4 的收益公式逐时一致。这两点将决定是全闭合还是仍有最小残留。
+exec
+/bin/bash -lc 'nl -ba 06_RESEARCH/RESEARCH_PROTOCOL_v1.3_ADDENDUM.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+exec
+/bin/bash -lc 'nl -ba 06_RESEARCH/RESEARCH_PROTOCOL_v1.4_A1SCREEN_ADDENDUM.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+     1	# Research Protocol v1.4 增补件：机制前关联快筛的功效门适用边界
+     2	
+     3	**版本：** v1.4-ADDENDUM-A1SCREEN（增补，不替换 v1.3/v1.4 正文）
+     4	**日期：** 2026-06-15｜**作者：** Claude（CTO）｜**授权：** DEC-075（Founder "按推荐继续" 确认）
+     5	**性质：** 对 Protocol §六（功效门）**适用边界的澄清**，非废止。上位 Protocol 正文不变。
+     6	
+     7	---
+     8	
+     9	## 背景
+    10	
+    11	A-1 经三轮独立盲审，RR3 裁定：用历史 OI+价格代理**无法识别强平方向/做因果归因**（历史样本物理不可约）。据此 DEC-075 把 A-1 拆为两段：路径A=历史**关联**快筛（不声称机制、不耗独立计数）；路径B=前向真实强平数据**机制确证**（耗独立计数）。
+    12	
+    13	RR3 同时指出：Protocol v1.4 §六要求"耗独立计数实验须预设 MDE 硬门高于合理效应上限"，预登记无权以人工裁量私自废止。本增补件正式澄清该硬门的**适用边界**，留痕。
+    14	
+    15	---
+    16	
+    17	## 澄清条款
+    18	
+    19	1. **适用对象界定。** Protocol §六的"MDE 硬门"约束**"耗独立 Alpha 计数的机制确证实验"**（即结论可声称机制成立、可晋级策略、计入失败计数纪律者）。
+    20	
+    21	2. **机制前关联快筛豁免。** 一类研究若**同时满足**以下三条，定性为"机制前关联快筛"，§六 MDE 硬门**不强制约束**，功效降为**预登记报告型诊断**：
+    22	   - (a) 结论上限严格限于"可观测条件后的统计**关联**"，明文禁止任何"机制成立/因果验证"措辞；
+    23	   - (b) **不耗独立 Alpha 计数**（失败不计入 DEC-069 独立计数纪律）；
+    24	   - (c) 仅作 fail-fast 筛查，通过**不**直接授予策略晋级或机制结论，须另立机制/策略预登记。
+    25	
+    26	3. **诊断要求（替代硬门的最低纪律）。** 豁免研究仍须预登记：仅用事件前/外部数据的方差代理、冻结依赖情景（如 ICC 多档）、报告型 80%-power MDE；功效不足不豁免任何 family 显著性判决（不显著即 FAIL）。
+    27	
+    28	4. **防滥用边界。** 本豁免**不**适用于：任何声称机制、晋级策略、耗独立计数或用于资金/仓位决策的研究。这类一律回到 §六硬门。豁免研究若事后想升级为机制结论，须按路径B 另立预登记并恢复硬门。
+    29	
+    30	5. **首例适用：** A-1 预登记 v4（路径A，`A1_CASCADE_REBOUND_PREREG_v4.md`）。
+    31	
+    32	---
+    33	
+    34	## 状态
+    35	
+    36	ACTIVE。本增补件随 DEC-075 生效；如上位 Protocol 后续大改，以正文为准并复核本件一致性。
+
+ succeeded in 0ms:
+     1	# Research Protocol v1.3/v1.4 增补件（v1.3=2026-06-10 DEC-066③；v1.4=2026-06-12 DEC-069）
+     2	**效力：** 本件与 v1.2 冲突处以本件为准。v1.2 中 Expectancy>1.0、MaxDD<25%、净Sharpe>1 等旧门槛**全部作废**。
+     3	## 一、验收口径四件套（量化冻结）
+     4	1. **正期望：** 单笔 E[R]>0（R=净盈亏/名义仓位，扣手续费+滑点+funding）。
+     5	2. **盈亏不对称：** 赢均/亏均 ≥1.5。
+     6	3. **爆仓概率（块bootstrap：块长1周等效bar数、2000路径×1年、seed预登记）：** 标准档 P(年DD≥35%)≤20%；保守档 P(年DD≥20%)≤10%；围栏激进档不适用本条（可归零），仅验1/2/4。
+     7	4. **几何增长：** 年化对数增长率>0，且分年E[R]为正的年份占多数（仅计≥10笔的年份）。
+     8	样本量分档沿用 DEC-018；WF、Holdout 封存纪律不变。
+     9	## 二、事件类策略成本压力档（A-1/A-2 类强制）
+    10	基准滑点0.1%外，必须报 0.3%/0.5%/1.0% 三档敏感性。**通过线：** 事件类策略在0.3%档四件套仍全部成立；清算级联类（A-1）额外要求1.0%档 E[R]>0。级联时刻按市价单+部分成交假设建模，禁用限价理想成交。
+    11	## 三、组合相关性门槛（新策略晋级追加条件）
+    12	新策略日PnL与既有已晋级策略相关性 |corr|<0.5，或证明加入后组合年化对数增长率提升。
+    13	## 四、事件研究样本规则（R2 适用）
+    14	预登记前先做事件普查（各极端阈值下独立episode计数）；episode<100时禁用60/20/20三分，改用跨品种池化+阈值单调性检验，Holdout按事件级（而非时间比例）预先切分并封存；预登记中写明检验总次数上限，结论经多重检验贴现。
+    15	
+    16	# ——以下为 v1.4 增补（2026-06-12，DEC-069）——
+    17	## 五、验收第五件：状态匹配被动基准对照（防 beta 伪装）
+    18	任何策略在四件套之外必须证明：在其声称的状态门控窗口内，净收益**超过同门控被动基准**（多头类=同门控买入持有标的等权；空头/中性/事件类=现金零基准），超额>0 为通过必要条件。TSMOM 扩样本起适用，并对 P1-04/P1-06 追溯报告。
+    19	## 六、MDE 功效门（耗独立计数实验的前置）
+    20	预登记必含功效段：给定样本量 n、收益方差估计、α=0.05，计算最小可检测效应（MDE，自实现小函数）；并写明该机制"合理效应上限"的依据。**若 MDE > 合理效应上限，禁止立项耗独立计数**——改为攒数据或换设计。
+    21	## 七、AI 证据三行（预登记模板新增字段）
+    22	①本假设是否由 AI 生成（模型/知识截止日期）；②反向检验：它最可能错在哪里、为什么；③若以多 agent 共识为依据，附单 agent 基线与分歧率。仅当 LLM 信号/共识被用作证据时触发完整审查。
+    23	## 八、叙事纪律（DEC-069⑤）
+    24	不显著实验的点估计不得以方向性结论写入任何权威文件；墓园"禁引用措辞"字段具有约束力，审计抽查。
+    25	## 九、自动化边界（双审计共识）
+    26	任何 AI（含外部审计、子代理、Codex、低模型、定时任务）**不得自动触发消耗独立计数的实验**；耗独立计数实验必须：预登记 → Risk Reviewer 物理盲审 → Founder 知会 → Claude 主会话人工派发，四步缺一不可。家族变体/诊断/核算类不受此限但仍须预登记或任务书留痕。
+
+exec
+/bin/bash -lc "rg -n \"机制独立|独立机制|non-overlap|非重叠|rho|ρ|标签置换|event_time-72h|align\\+48h|AES-256|GCM|nonce|tag|密钥|principal|ACL|环境变量|命令行|日志|purge|重新分段|重新等分|切点|中点|span|circular offset\" 06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+8:**v5 对 RR4 四项最小必改的处置：** ①§7 "机制独立性硬门"→"A-2 非重叠关联硬门"（去机制识别含义）；②§4 circular 改半开 UTC 网格 `[t_1,t_n+1h)`+回绕按 circular offset 截断，§5 Spearman 改**配对 moving-block bootstrap 对 ρ 居中**（真检验 ρ=0）；③§11 WF 冻结唯一段长/余数分配/切点 c=相邻中点/按实际读取足迹 purge/purge 后不重分段；④§12 冻结 **AES-256-GCM**（nonce‖密文‖tag 格式+认证失败判据）+密钥独立 principal 不可读+负向测试留命令/退出码/失败证据。
+23:| #2 一次性闭合依赖推断 | block 宽 **W=144h**；非等距时间块**半开 UTC 网格 `[t_1,t_n+1h)` 均匀起点**+circular offset 抽样/空块跳过/回绕按 offset 截断/episode 等权/`+1` p 值/basic CI；Spearman 改 **配对 moving-block bootstrap 对 ρ 居中**（RR4 #2 修正，真检验 `H0:ρ=0`） | §4,§5 |
+26:| #5 闭合 WF 与真封存 | WF 冻结**按 episode 数等分三段+切点 120h purge**；sealed holdout **加密存储**（主会话持密钥，执行身份无密钥不可解），留**负向权限测试**记录 | §11,§12 |
+69:**CAR（冻结）：** 1H MARK close 对数收益，事件前基准 `[event_time-72h, event_time-1h]`：
+71:baseline_mu_i = mean(log(close_tau/close_{tau-1h})) over hourly returns ending in [event_time-72h, event_time-1h]
+78:- 把 work episodes 按 event_time 升序成时间序列；**时间轴=半开 UTC 小时网格 `[t_1, t_n+1h)`，周长 `span=(t_n - t_1)+1h`**（端点不重复，`t_1` 与 `t_n` 为环上不同点，RR4 #2 修正）。
+81:  - 抽块：从半开区间 `[t_1, t_n+1h)` **均匀抽随机起点 u**；定义每 episode 的 **circular offset `off_i(u)=((event_time_i - u) mod span)`**（mod 取非负，把时间轴视为周长 span 的环）；块=`off_i(u) ∈ [0, W)` 的全部 episodes。
+83:- 累计达到 ≥ n 后，对**最后一块**按**块内 circular offset `off_i(u)` 升序**截断多余 episode（按距随机起点 u 的环上距离，非绝对 event_time，保证顺序从 u 出发，RR4 #2 修正），使每个复制恰好 n 条。episode **等权**。
+89:**确认性检验 family（Holm，m=4，全文一致）：** {48h 主 CAR、24h 次 CAR、§5 单调性、§7 non-overlap 48h CAR}。72h 不入 family。无其他确认性检验。
+97:**`H0: ρ=0` 检验（冻结，配对 moving-block bootstrap 居中，RR4 #2 修正）：** 因减 CAR 均值不改秩（RR3）、有放回抽块亦非真置换（RR4），改用对 **`(severity_i, CAR_48h_i)` 配对序列**做 §4 同口径 W=144h circular moving-block bootstrap：每个复制重抽配对块计算 `ρ*`，`B=10000`、`seed=20260615`；以 **`ρ* - ρ_obs`** 构造 `H0: ρ=0` 居中分布，单侧 p=`(#{ρ* - ρ_obs ≥ ρ_obs}+1)/(B+1)`（等价 `(#{ρ* ≥ 2ρ_obs}+1)/(B+1)`）。该法保持时间依赖且检验 ρ=0。计入 §4 family。
+110:- 报告 80%-power MDE：`(z_{0.95}+z_{0.80}) * sigma_pre_h / sqrt(n_eff_h)`，三档 ICC。non-overlap 诊断用其子样本自身 n 与同口径 sigma_pre。
+120:1. 报告 `p_overlap`、overlap/non-overlap 子样本 48h CAR（moving-block bootstrap）。
+121:2. **A-2 非重叠关联硬门：** non-overlap 子样本 48h CAR family Holm 后显著为正（family 第 4 项）。**注（RR4 #1）：** 本项仅证明 A-1 关联**不完全由 A-2 正极端 funding 重叠承载**，**不识别独立机制**（关联层，不含机制识别含义）。
+122:3. 删除 0.60 与 OR 句。non-overlap 若经 §6 诊断灵敏度过低，报告标注"non-overlap 功效不足"，但**仍按 family 实际显著性判 PASS/FAIL**（不显著即该项 FAIL，不以功效不足豁免）。
+154:**所有"CAR>0"=§4 moving-block bootstrap 单侧 Holm（family m=4）后显著（点估计>0 且依赖稳健显著）。** family={48h, 24h, 单调性, non-overlap}。
+159:- [ ] A-2 非重叠关联：non-overlap 48h CAR family Holm 后显著为正。
+160:- [ ] WF 稳定性（**裸均值，冻结切分，RR4 #3**）：work episodes 按 event_time 升序分三段，**段长 = `⌈n/3⌉, ⌈(n-⌈n/3⌉)/2⌉, 余下`（余数全部分给第一段，其次第二段）**；**切点 `c_k` = 相邻两 episode event_time 的算术中点**（k=1,2）；每个 episode 的实际数据足迹 = `[event_time-72h, align+48h]`（baseline 起点到 outcome 终点，含对齐 lag）；**purge** 足迹跨越任一 `c_k` 的边界 episode（从其原所在段剔除，**purge 后不重新分段、不重新等分**）；3 段各自 48h mean CAR（裸均值）**≥2 段 > 0**。
+163:**Tier A FAIL（任一即 FAILED）：** 48h CAR family Holm 后不显著｜单调性不显著或符号为负｜non-overlap 48h CAR family Holm 后不显著｜**WF <2 段 >0**｜发现 Holdout 读取/全样本分位/规则重设/cutoff 后补齐。
+172:2. **真权限边界=认证加密（RR4 #4 冻结）：** `work_episodes.csv` 明文写入 `06_RESEARCH/DATA/A1_WORK/`（执行身份可读）；`sealed_holdout_episodes.csv` 以 **AES-256-GCM**（认证加密）加密为 `sealed_holdout.enc`——**格式冻结**：文件 = `12B 随机 nonce ‖ 密文 ‖ 16B GCM tag`；解密须 GCM tag 认证通过，**tag 认证失败即判读取失败**（杜绝 ECB/CBC 等无认证实现分叉）。**密钥仅主会话持有**：存于执行身份（Codex workspace-write）**不可访问的独立位置**（主会话 secret / 独立 OS principal / ACL 限定目录），**绝不**落入 Codex 可读文件、环境变量、命令行参数或日志。执行身份即便读到密文，无密钥且无法通过 GCM 认证，**物理不可解密**（解决 RR3/RR4 指出的"移出 workspace≠不可读"）。
+174:4. **负向权限测试（冻结，须留痕，RR4 #4）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次测试并记录入 `A1_HOLDOUT_PERMTEST.log`：(a) 读 `A1_HOLDOUT_MANIFEST.json` **成功**（记命令+退出码 0）；(b) 尝试解密 `sealed_holdout.enc` **失败**——记录所执行命令、非零退出码、以及失败原因证据（"密钥文件不可访问/读取被拒" 或 "GCM tag 认证失败"）。两条均留痕方可放行。
+
+exec
+/bin/bash -lc "rg --files 06_RESEARCH/PREREGISTRATIONS -g '"'!**/*HOLDOUT*'"' | sort | rg 'A1_CASCADE_REBOUND_PREREG_v4|A1_FORWARD|A2|A-2'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v4.md
+06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md
+
+exec
+/bin/bash -lc 'git diff --no-ext-diff -- 06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v4.md && git log -5 --oneline -- 06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+5acf2a8 A-1 v5: 闭RR4四项(§7改名/circular半开网格+Spearman配对bootstrap/WF唯一切点purge/AES-256-GCM密钥边界)+派RR5盲审
+
+exec
+/bin/bash -lc "nl -ba 06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v4.md | sed -n '60,180p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+    60	
+    61	bull=前一完整 UTC 日收盘>日线 SMA200；bear=≤；unknown=预热不足单独标注；无前视。子样本仅辅助解释，正式通过不允许事后剔除 regime 达成。
+    62	
+    63	---
+    64	
+    65	## §4 检验设计 + 依赖稳健主推断（RR3 #2 闭合）
+    66	
+    67	**观测单位：** 每 work episode 一条，池化。
+    68	**CAR（冻结）：** 1H MARK close 对数收益，事件前基准 `[event_time-72h, event_time-1h]`：
+    69	```text
+    70	baseline_mu_i = mean(log(close_tau/close_{tau-1h})) over hourly returns ending in [event_time-72h, event_time-1h]
+    71	raw_return_i,h = log(close_{align+h}/close_{align})          （align=§2 入场对齐 bar）
+    72	CAR_i,h = raw_return_i,h - h*baseline_mu_i
+    73	```
+    74	**Horizon 角色：** 主=**48h（唯一）**；次=24h（Holm family）；72h=仅探索，p 值不改判决。
+    75	
+    76	**主推断：circular moving-block bootstrap（时间轴，全冻结，RR3 #2）：**
+    77	- 把 work episodes 按 event_time 升序成时间序列；时间轴跨度 `T=[t_1, t_n]`，`span=t_n - t_1`。
+    78	- **块宽 W=144h**（6 天，> `72h baseline + 2h 对齐 lag + 48h outcome` 共享数据足迹，含缓冲）。
+    79	- 每个 bootstrap 复制：重复抽块直到累计 episode 数 ≥ n——
+    80	  - 抽块：从连续区间 `[t_1, t_n]` **均匀抽随机起点 u**；块=event_time 落在 `[u, u+W)` 的全部 episodes（**circular**：超过 t_n 的时间点减 span 回绕到 `[t_1, ...]`，即把时间轴视为周长 span 的环）。
+    81	  - **空块**（窗口内无 episode）跳过、重抽，不计入。
+    82	- 累计达到 ≥ n 后，对**最后一块**按块内 event_time 升序**截断**多余 episode，使每个复制恰好 n 条。episode **等权**。
+    83	- 统计量=均值。**零假设重心化（H0: mean=0）**：对每个复制均值减去观测样本均值得居中分布。
+    84	- 单侧 p = `(#{居中复制均值 ≥ 观测均值} + 1) / (B + 1)`。**basic-bootstrap 95% CI** = `[2*obs_mean - q_{0.975}, 2*obs_mean - q_{0.025}]`，q 为**未居中**复制均值分布分位。
+    85	- `B=10000`，`seed=20260615`。普通 t-test 仅描述性，不入判决。
+    86	- 24h 次检验同法、同 seed，Holm 校正。
+    87	
+    88	**确认性检验 family（Holm，m=4，全文一致）：** {48h 主 CAR、24h 次 CAR、§5 单调性、§7 non-overlap 48h CAR}。72h 不入 family。无其他确认性检验。
+    89	
+    90	---
+    91	
+    92	## §5 辅检验：OI 收缩幅度单调性（RR3 #2 Spearman 零假设冻结）
+    93	
+    94	档：Severe `[0,0.0033]`/Medium `(0.0033,0.0067]`/Mild `(0.0067,0.01]`（禁全样本重切）。severity 编码 Severe=2/Medium=1/Mild=0。
+    95	**统计量：** severity 序 vs 48h CAR 的 **Spearman 秩相关**（midrank ties），预期符号为正，单侧。
+    96	**`H0: ρ=0` 检验（冻结，moving-block 标签置换）：** 因减 CAR 均值不改秩（RR3 指出），改用置换：保持 CAR_48h 序不变，用 §4 同 W=144h circular moving-block 方案**独立重排 severity 标签序列**（保留 severity 局部自相关、打断 severity–CAR 关联），计算 Spearman；`B=10000`、`seed=20260615`；单侧 p=`(#{置换 ρ ≥ 观测 ρ}+1)/(B+1)`。计入 §4 family。
+    97	
+    98	---
+    99	
+   100	## §6 功效（报告型诊断，DEC-075 治理闭合，RR3 #3）
+   101	
+   102	**治理定性（DEC-075）：** 本研究**不耗独立计数**（机制前关联快筛），故 Protocol v1.4 §六"耗独立计数实验须预设 MDE 硬门高于合理效应上限"**不强制约束**之；以 **Protocol 增补件 `RESEARCH_PROTOCOL_v1.4_A1SCREEN_ADDENDUM.md` 留痕**（不私自废止上位规则）。功效=**预登记报告型诊断**，不门控立项。
+   103	
+   104	**诊断口径（冻结，仅事件前数据）：**
+   105	- `s_i^2` = episode i 事件前 `[-72h,-1h]` 1H 对数收益方差。
+   106	- `sigma_pre_h = sqrt(h * median_i(s_i^2))`（h 小时聚合，独立同分布近似；明确为保守诊断非真实自相关方差）。
+   107	- `m_bar` = `n / (含≥1 episode 的 UTC 日历日数)`（设计效应用 cluster=UTC 日）。
+   108	- `n_eff_h = n / [1 + (m_bar - 1) * ICC]`，设计效应**只在 n_eff 计一次**；ICC 冻结情景 `{0, 0.2, 0.5}`，判读参照 0.5。
+   109	- 报告 80%-power MDE：`(z_{0.95}+z_{0.80}) * sigma_pre_h / sqrt(n_eff_h)`，三档 ICC。non-overlap 诊断用其子样本自身 n 与同口径 sigma_pre。
+   110	- **不设硬停机句**；功效仅供事后解读灵敏度。是否值得执行由 CTO 在放行时人工裁量（已由 DEC-075 授权路径A 快筛）。
+   111	
+   112	---
+   113	
+   114	## §7 A-2 碰撞门（A-2 原冻结口径，RR3 #4 已认可，仅统一 family）
+   115	
+   116	**a2_overlap（冻结，A-2 v1 原口径）：** 取 event_time **之前最近一个已结算的单次 8H funding 读数**，相对其**此前 365 天（最少 180 天，midrank）**滚动分布求分位，正极端 **P95**；`>=0.95` 标 `a2_overlap=1`。不用 24h 均值、不另选阈值。
+   117	
+   118	**判决（纳入 §4 family，Holm m=4 第 4 项）：**
+   119	1. 报告 `p_overlap`、overlap/non-overlap 子样本 48h CAR（moving-block bootstrap）。
+   120	2. **机制独立性硬门：** non-overlap 子样本 48h CAR family Holm 后显著为正（family 第 4 项）。
+   121	3. 删除 0.60 与 OR 句。non-overlap 若经 §6 诊断灵敏度过低，报告标注"non-overlap 功效不足"，但**仍按 family 实际显著性判 PASS/FAIL**（不显著即该项 FAIL，不以功效不足豁免）。
+   122	4. "不显著为负"不构成任何通过证据。
+   123	
+   124	---
+   125	
+   126	## §8 成本（完整公式，每边口径冻结）
+   127	
+   128	```text
+   129	round_trip_cost = 2*fee_per_side + 2*slippage_per_side + holding_funding
+   130	fee_per_side=0.10%（每边）；slippage_per_side_base=0.10%（每边）；holding_funding=持有期真实 8H funding 现金流
+   131	事件类滑点压力档（每边）：0.30% / 0.50% / 1.00%
+   132	```
+   133	Tier A 仅报告 48h 在 base/0.30% 的 net CAR 作**诊断**，不构成 Tier A 通过门。
+   134	
+   135	---
+   136	
+   137	## §9 验收：两级门（Tier A=关联门，RR3 #1 去 overclaim）
+   138	
+   139	**Tier A 可观测条件回弹【关联】门（本 v4 判定）：** gross CAR 关联门，过=**"可观测条件回弹关联成立（探索级）"**，**不等于机制成立、不等于策略晋级、不等于满足 Protocol 第五件、不耗独立计数**。
+   140	**Tier B 交易策略门（另案预登记）：** Tier A 过后另立，冻结入场/持仓/杠杆/funding/退出/重叠/资本占用后，检验**净收益**四件套、爆仓、几何增长、1.00% 压力、Protocol 第五件（net）。v4 不对 Tier B 下结论。
+   141	**机制确证（路径B）：** 强平机制成立仅能由路径B（前向真实强平数据）声称，见 §13。
+   142	
+   143	---
+   144	
+   145	## §10 被动基准（诊断，非 Tier A 硬门）
+   146	
+   147	A-1 48h gross CAR>0 的现金零（不持仓=0）由 §4 主检验表达。同 regime 同品种被动 buy-and-hold mean CAR **仅作诊断**报告，不作 Tier A 硬门。Protocol v1.4 第五件（net>现金零）归 Tier B，v4 不冒称已满足。
+   148	
+   149	---
+   150	
+   151	## §11 唯一闭合 Decision Table（RR3 #4/#5）
+   152	
+   153	**所有"CAR>0"=§4 moving-block bootstrap 单侧 Holm（family m=4）后显著（点估计>0 且依赖稳健显著）。** family={48h, 24h, 单调性, non-overlap}。
+   154	
+   155	**Tier A PASS（全满足）：**
+   156	- [ ] 48h CAR：family Holm 后显著（主项）。
+   157	- [ ] 单调性：Spearman 正、§5 置换检验 family Holm 后显著。
+   158	- [ ] A-2 碰撞：non-overlap 48h CAR family Holm 后显著为正。
+   159	- [ ] WF 稳定性（**裸均值，冻结切分**）：work episodes 按 event_time 升序**等 episode 数三等分**（n 不整除时前段多 1）；每个切点**purge** [event_time-72h, event_time+48h] 足迹跨切点的边界 episode（即切点两侧各剔除足迹跨界者）；3 段 48h mean CAR（裸均值）**≥2 段 > 0**。
+   160	- [ ] 未发现任何 Holdout 读取/全样本分位/触发或 episode 规则重设/cutoff 后行情补齐。
+   161	
+   162	**Tier A FAIL（任一即 FAILED）：** 48h CAR family Holm 后不显著｜单调性不显著或符号为负｜non-overlap 48h CAR family Holm 后不显著｜**WF <2 段 >0**｜发现 Holdout 读取/全样本分位/规则重设/cutoff 后补齐。
+   163	
+   164	**判读纪律：** 主 horizon 唯一=48h，禁 24h/48h 事后择优；72h 仅探索不入判定；任一必要项 N.A.→整体 FAIL；不显著正点估计只写"未拒绝 H0/未验证"，**且不得写"机制"二字**。
+   165	
+   166	---
+   167	
+   168	## §12 Holdout 物理封存（加密真权限边界，RR3 #5）
+   169	
+   170	1. **保管进程**（独立脚本，主会话身份运行，非 Codex 执行身份）一次性生成全部 pooled episodes，按 `(event_time_utc, symbol)` 排序 deterministic 每第 5 个预留 sealed，其余 work。
+   171	2. **真权限边界=加密：** `work_episodes.csv` 明文写入 `06_RESEARCH/DATA/A1_WORK/`（执行身份可读）；`sealed_holdout_episodes.csv` 以 **AES-256 加密**为 `sealed_holdout.enc`，**密钥仅主会话持有**（存于 Codex workspace 之外且不入 git；执行身份无密钥）；执行身份即便读到密文也**不可解密**（解决 RR3 指出的"移出 workspace≠不可读"）。
+   172	3. `A1_HOLDOUT_MANIFEST.json`（落 work 侧可见）：work/sealed 各行数、schema、生成代码 git hash、明文与密文 SHA-256、生成时间、保管人=主会话、解封条件（Tier A 通过+Founder 批）、一次性使用记录。
+   173	4. **负向权限测试（冻结，须留痕）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次"读 manifest 成功 + 解密 sealed 失败（无密钥）"测试，记录入 `A1_HOLDOUT_PERMTEST.log`。
+   174	5. 路径 assert 拒绝任何 sealed/holdout 路径（误操作二重保险）。有效 n 仅由 work 文件计算。违反即纪律违规、研究作废。A-2 holdout（218 条）完全独立禁读。
+   175	
+   176	---
+   177	
+   178	## §13 失败后禁止行为 + 路径B（锁死）
+   179	
+   180	Tier A FAILED 后禁止：改 OI 阈值/方向规则/episode 规则/分位窗口后重测；排除年份/品种/regime/funding 后重测；72h 或 24h 单独显著改写为通过；全样本分位；cutoff 后补 horizon；读 Holdout"确认"失败；**任何"机制成立"改写**。
+
+exec
+/bin/bash -lc 'diff -u 06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v4.md 06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ exited 1 in 0ms:
+--- 06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v4.md	2026-06-14 11:14:45
++++ 06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md	2026-06-14 11:27:16
+@@ -1,11 +1,12 @@
+-# A-1 极端 OI 收缩 + 同窗负收益后条件回弹【关联】事件研究 预登记 v4
++# A-1 极端 OI 收缩 + 同窗负收益后条件回弹【关联】事件研究 预登记 v5
+ 
+-**任务号：** D3-R3（A-1 预登记第三次修订，应对 A1_RISK_REVIEW_v3 五项最小必改）
+-**状态：** PREREGISTERED DRAFT v4 — 供 Risk Reviewer 第四轮物理盲审
++**任务号：** D3-R4（A-1 预登记第四次修订，应对 A1_RISK_REVIEW_v4 四项最小必改）
++**状态：** PREREGISTERED DRAFT v5 — 供 Risk Reviewer 第五轮物理盲审
+ **起草：** Claude（主理人/CTO）｜**日期：** 2026-06-15
+-**依据决策：** DEC-075（Founder "按推荐继续" 确认两段式路径）。**本 v4 = 路径A（历史关联快筛）**：Tier A 严格定义为"可观测条件回弹【关联】（探索级）"，**不声称强平/overshooting 机制成立，不耗独立 Alpha 计数**（非机制确证实验）。强平机制的确证归路径B（前向真实强平数据，另立预登记），见 §13 与 `A1_FORWARD_LIQUIDATION_PATH.md`。
+-**前序：** v1→v2→v3 全 NOT APPROVED（RR3：v3 闭 0/5 完全、多项 PARTIAL）。本 v4 逐条闭合 RR3 五项最小必改。
+-**禁止动作：** 本 v4 通过第四轮盲审 + Founder 知会 + 主会话人工派发前，不得运行任何事件后收益计算，不得读取任何 HOLDOUT。
++**依据决策：** DEC-075（Founder "按推荐继续" 确认两段式路径）。**本 = 路径A（历史关联快筛）**：Tier A 严格定义为"可观测条件回弹【关联】（探索级）"，**不声称强平/overshooting 机制成立，不耗独立 Alpha 计数**（非机制确证实验）。强平机制确证归路径B（前向真实强平数据，另立预登记），见 §13 与 `A1_FORWARD_LIQUIDATION_PATH.md`。
++**前序：** v1→v2→v3→v4 全 NOT APPROVED。RR4：v4 闭 2/5（功效治理 CLOSED、family CLOSED），余 4 项判为"文字与算法冻结、不要求达机制确证严格度"。本 v5 逐条闭合 RR4 四项。
++**v5 对 RR4 四项最小必改的处置：** ①§7 "机制独立性硬门"→"A-2 非重叠关联硬门"（去机制识别含义）；②§4 circular 改半开 UTC 网格 `[t_1,t_n+1h)`+回绕按 circular offset 截断，§5 Spearman 改**配对 moving-block bootstrap 对 ρ 居中**（真检验 ρ=0）；③§11 WF 冻结唯一段长/余数分配/切点 c=相邻中点/按实际读取足迹 purge/purge 后不重分段；④§12 冻结 **AES-256-GCM**（nonce‖密文‖tag 格式+认证失败判据）+密钥独立 principal 不可读+负向测试留命令/退出码/失败证据。
++**禁止动作：** 本 v5 通过第五轮盲审 + Founder 知会 + 主会话人工派发前，不得运行任何事件后收益计算，不得读取任何 HOLDOUT。
+ 
+ ---
+ 
+@@ -19,7 +20,7 @@
+ | RR3 第三轮必改 | v4 处置 | 落点 |
+ |---|---|---|
+ | #1 消除残留因果 overclaim | 全文 Tier A 改"可观测条件回弹**关联**（探索级）"；§9 删"机制成立"；命题/结论仅关联层；强平/overshooting 仅列为路径B待验证解释 | §0,§1,§9 |
+-| #2 一次性闭合依赖推断 | block 宽 **W=144h**（覆盖 72h baseline+对齐 lag+48h outcome+缓冲）；冻结非等距时间块**连续 UTC 网格均匀起点**抽样/空块跳过/circular 跨度/超额截断/episode 等权/有限 B 的 `+1` p 值/basic-bootstrap CI；Spearman 另冻结 **moving-block 标签置换** 检验 `H0:ρ=0` | §4,§5 |
++| #2 一次性闭合依赖推断 | block 宽 **W=144h**；非等距时间块**半开 UTC 网格 `[t_1,t_n+1h)` 均匀起点**+circular offset 抽样/空块跳过/回绕按 offset 截断/episode 等权/`+1` p 值/basic CI；Spearman 改 **配对 moving-block bootstrap 对 ρ 居中**（RR4 #2 修正，真检验 `H0:ρ=0`） | §4,§5 |
+ | #3 正式解决功效治理 | 依 DEC-075：本研究不耗独立计数→Protocol §六硬门不强制约束；功效=报告型诊断；以 **Protocol 增补件**留痕（`RESEARCH_PROTOCOL_v1.4_A1SCREEN_ADDENDUM.md`）；定义 `sigma_pre_h`、`m_bar` | §6 |
+ | #4 统一 family | 全文 Holm **m=4**（§0/§4/§11 一致，删除 v3 残留 m=3） | §4,§11 |
+ | #5 闭合 WF 与真封存 | WF 冻结**按 episode 数等分三段+切点 120h purge**；sealed holdout **加密存储**（主会话持密钥，执行身份无密钥不可解），留**负向权限测试**记录 | §11,§12 |
+@@ -74,12 +75,12 @@
+ **Horizon 角色：** 主=**48h（唯一）**；次=24h（Holm family）；72h=仅探索，p 值不改判决。
+ 
+ **主推断：circular moving-block bootstrap（时间轴，全冻结，RR3 #2）：**
+-- 把 work episodes 按 event_time 升序成时间序列；时间轴跨度 `T=[t_1, t_n]`，`span=t_n - t_1`。
++- 把 work episodes 按 event_time 升序成时间序列；**时间轴=半开 UTC 小时网格 `[t_1, t_n+1h)`，周长 `span=(t_n - t_1)+1h`**（端点不重复，`t_1` 与 `t_n` 为环上不同点，RR4 #2 修正）。
+ - **块宽 W=144h**（6 天，> `72h baseline + 2h 对齐 lag + 48h outcome` 共享数据足迹，含缓冲）。
+ - 每个 bootstrap 复制：重复抽块直到累计 episode 数 ≥ n——
+-  - 抽块：从连续区间 `[t_1, t_n]` **均匀抽随机起点 u**；块=event_time 落在 `[u, u+W)` 的全部 episodes（**circular**：超过 t_n 的时间点减 span 回绕到 `[t_1, ...]`，即把时间轴视为周长 span 的环）。
++  - 抽块：从半开区间 `[t_1, t_n+1h)` **均匀抽随机起点 u**；定义每 episode 的 **circular offset `off_i(u)=((event_time_i - u) mod span)`**（mod 取非负，把时间轴视为周长 span 的环）；块=`off_i(u) ∈ [0, W)` 的全部 episodes。
+   - **空块**（窗口内无 episode）跳过、重抽，不计入。
+-- 累计达到 ≥ n 后，对**最后一块**按块内 event_time 升序**截断**多余 episode，使每个复制恰好 n 条。episode **等权**。
++- 累计达到 ≥ n 后，对**最后一块**按**块内 circular offset `off_i(u)` 升序**截断多余 episode（按距随机起点 u 的环上距离，非绝对 event_time，保证顺序从 u 出发，RR4 #2 修正），使每个复制恰好 n 条。episode **等权**。
+ - 统计量=均值。**零假设重心化（H0: mean=0）**：对每个复制均值减去观测样本均值得居中分布。
+ - 单侧 p = `(#{居中复制均值 ≥ 观测均值} + 1) / (B + 1)`。**basic-bootstrap 95% CI** = `[2*obs_mean - q_{0.975}, 2*obs_mean - q_{0.025}]`，q 为**未居中**复制均值分布分位。
+ - `B=10000`，`seed=20260615`。普通 t-test 仅描述性，不入判决。
+@@ -93,7 +94,7 @@
+ 
+ 档：Severe `[0,0.0033]`/Medium `(0.0033,0.0067]`/Mild `(0.0067,0.01]`（禁全样本重切）。severity 编码 Severe=2/Medium=1/Mild=0。
+ **统计量：** severity 序 vs 48h CAR 的 **Spearman 秩相关**（midrank ties），预期符号为正，单侧。
+-**`H0: ρ=0` 检验（冻结，moving-block 标签置换）：** 因减 CAR 均值不改秩（RR3 指出），改用置换：保持 CAR_48h 序不变，用 §4 同 W=144h circular moving-block 方案**独立重排 severity 标签序列**（保留 severity 局部自相关、打断 severity–CAR 关联），计算 Spearman；`B=10000`、`seed=20260615`；单侧 p=`(#{置换 ρ ≥ 观测 ρ}+1)/(B+1)`。计入 §4 family。
++**`H0: ρ=0` 检验（冻结，配对 moving-block bootstrap 居中，RR4 #2 修正）：** 因减 CAR 均值不改秩（RR3）、有放回抽块亦非真置换（RR4），改用对 **`(severity_i, CAR_48h_i)` 配对序列**做 §4 同口径 W=144h circular moving-block bootstrap：每个复制重抽配对块计算 `ρ*`，`B=10000`、`seed=20260615`；以 **`ρ* - ρ_obs`** 构造 `H0: ρ=0` 居中分布，单侧 p=`(#{ρ* - ρ_obs ≥ ρ_obs}+1)/(B+1)`（等价 `(#{ρ* ≥ 2ρ_obs}+1)/(B+1)`）。该法保持时间依赖且检验 ρ=0。计入 §4 family。
+ 
+ ---
+ 
+@@ -117,7 +118,7 @@
+ 
+ **判决（纳入 §4 family，Holm m=4 第 4 项）：**
+ 1. 报告 `p_overlap`、overlap/non-overlap 子样本 48h CAR（moving-block bootstrap）。
+-2. **机制独立性硬门：** non-overlap 子样本 48h CAR family Holm 后显著为正（family 第 4 项）。
++2. **A-2 非重叠关联硬门：** non-overlap 子样本 48h CAR family Holm 后显著为正（family 第 4 项）。**注（RR4 #1）：** 本项仅证明 A-1 关联**不完全由 A-2 正极端 funding 重叠承载**，**不识别独立机制**（关联层，不含机制识别含义）。
+ 3. 删除 0.60 与 OR 句。non-overlap 若经 §6 诊断灵敏度过低，报告标注"non-overlap 功效不足"，但**仍按 family 实际显著性判 PASS/FAIL**（不显著即该项 FAIL，不以功效不足豁免）。
+ 4. "不显著为负"不构成任何通过证据。
+ 
+@@ -154,9 +155,9 @@
+ 
+ **Tier A PASS（全满足）：**
+ - [ ] 48h CAR：family Holm 后显著（主项）。
+-- [ ] 单调性：Spearman 正、§5 置换检验 family Holm 后显著。
+-- [ ] A-2 碰撞：non-overlap 48h CAR family Holm 后显著为正。
+-- [ ] WF 稳定性（**裸均值，冻结切分**）：work episodes 按 event_time 升序**等 episode 数三等分**（n 不整除时前段多 1）；每个切点**purge** [event_time-72h, event_time+48h] 足迹跨切点的边界 episode（即切点两侧各剔除足迹跨界者）；3 段 48h mean CAR（裸均值）**≥2 段 > 0**。
++- [ ] 单调性：Spearman 正、§5 配对 bootstrap 检验 family Holm 后显著。
++- [ ] A-2 非重叠关联：non-overlap 48h CAR family Holm 后显著为正。
++- [ ] WF 稳定性（**裸均值，冻结切分，RR4 #3**）：work episodes 按 event_time 升序分三段，**段长 = `⌈n/3⌉, ⌈(n-⌈n/3⌉)/2⌉, 余下`（余数全部分给第一段，其次第二段）**；**切点 `c_k` = 相邻两 episode event_time 的算术中点**（k=1,2）；每个 episode 的实际数据足迹 = `[event_time-72h, align+48h]`（baseline 起点到 outcome 终点，含对齐 lag）；**purge** 足迹跨越任一 `c_k` 的边界 episode（从其原所在段剔除，**purge 后不重新分段、不重新等分**）；3 段各自 48h mean CAR（裸均值）**≥2 段 > 0**。
+ - [ ] 未发现任何 Holdout 读取/全样本分位/触发或 episode 规则重设/cutoff 后行情补齐。
+ 
+ **Tier A FAIL（任一即 FAILED）：** 48h CAR family Holm 后不显著｜单调性不显著或符号为负｜non-overlap 48h CAR family Holm 后不显著｜**WF <2 段 >0**｜发现 Holdout 读取/全样本分位/规则重设/cutoff 后补齐。
+@@ -168,9 +169,9 @@
+ ## §12 Holdout 物理封存（加密真权限边界，RR3 #5）
+ 
+ 1. **保管进程**（独立脚本，主会话身份运行，非 Codex 执行身份）一次性生成全部 pooled episodes，按 `(event_time_utc, symbol)` 排序 deterministic 每第 5 个预留 sealed，其余 work。
+-2. **真权限边界=加密：** `work_episodes.csv` 明文写入 `06_RESEARCH/DATA/A1_WORK/`（执行身份可读）；`sealed_holdout_episodes.csv` 以 **AES-256 加密**为 `sealed_holdout.enc`，**密钥仅主会话持有**（存于 Codex workspace 之外且不入 git；执行身份无密钥）；执行身份即便读到密文也**不可解密**（解决 RR3 指出的"移出 workspace≠不可读"）。
++2. **真权限边界=认证加密（RR4 #4 冻结）：** `work_episodes.csv` 明文写入 `06_RESEARCH/DATA/A1_WORK/`（执行身份可读）；`sealed_holdout_episodes.csv` 以 **AES-256-GCM**（认证加密）加密为 `sealed_holdout.enc`——**格式冻结**：文件 = `12B 随机 nonce ‖ 密文 ‖ 16B GCM tag`；解密须 GCM tag 认证通过，**tag 认证失败即判读取失败**（杜绝 ECB/CBC 等无认证实现分叉）。**密钥仅主会话持有**：存于执行身份（Codex workspace-write）**不可访问的独立位置**（主会话 secret / 独立 OS principal / ACL 限定目录），**绝不**落入 Codex 可读文件、环境变量、命令行参数或日志。执行身份即便读到密文，无密钥且无法通过 GCM 认证，**物理不可解密**（解决 RR3/RR4 指出的"移出 workspace≠不可读"）。
+ 3. `A1_HOLDOUT_MANIFEST.json`（落 work 侧可见）：work/sealed 各行数、schema、生成代码 git hash、明文与密文 SHA-256、生成时间、保管人=主会话、解封条件（Tier A 通过+Founder 批）、一次性使用记录。
+-4. **负向权限测试（冻结，须留痕）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次"读 manifest 成功 + 解密 sealed 失败（无密钥）"测试，记录入 `A1_HOLDOUT_PERMTEST.log`。
++4. **负向权限测试（冻结，须留痕，RR4 #4）：** 放行执行前，在**正式执行身份（Codex workspace-write）**下运行一次测试并记录入 `A1_HOLDOUT_PERMTEST.log`：(a) 读 `A1_HOLDOUT_MANIFEST.json` **成功**（记命令+退出码 0）；(b) 尝试解密 `sealed_holdout.enc` **失败**——记录所执行命令、非零退出码、以及失败原因证据（"密钥文件不可访问/读取被拒" 或 "GCM tag 认证失败"）。两条均留痕方可放行。
+ 5. 路径 assert 拒绝任何 sealed/holdout 路径（误操作二重保险）。有效 n 仅由 work 文件计算。违反即纪律违规、研究作废。A-2 holdout（218 条）完全独立禁读。
+ 
+ ---
+
+exec
+/bin/bash -lc "find 04_AI_TEAM/CODEX_TASKS -maxdepth 1 -type f -name 'REPORT_A1_RR*.md' -print | sort && find 04_AI_TEAM/TASK_INBOX -maxdepth 1 -type f -name 'A1_RR*_DONE.json' -print | sort" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR3.md
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR4.md
+
+exec
+/bin/bash -lc "cat 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR4.md && printf '\\n---INBOX---\\n' && cat 04_AI_TEAM/TASK_INBOX/A1_RR4_DONE.json 2>/dev/null || true" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+# A1-RR4 执行报告
+
+**任务：** A-1 预登记 v4 第四轮独立盲审
+**日期：** 2026-06-14
+**状态：** completed
+**审查结论：** NOT APPROVED
+**RR3 条件完全闭合：** 2/5
+
+## 交付
+
+- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v4.md`
+- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR4_DONE.json`
+
+## Git 状态
+
+本执行身份无法写入 `.git/index.lock`，`git add` 返回 `Operation not permitted`，故未能创建任务 commit。交付文件已写入工作树；调度器已消费完成事件并将其移入 `TASK_INBOX/PROCESSED/`。
+
+## 边界自检
+
+- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
+- 未修改任何预登记、Protocol、路径B或 A-2 假设文件。
+- 未运行事件研究或计算事件后收益。
+- 按关联快筛标尺审查，未追加机制确证级验收门。
+
+## 裁决摘要
+
+- CLOSED：功效治理、Holm family 统一。
+- PARTIAL：去 overclaim、WF 与加密 Holdout。
+- NOT_CLOSED：依赖稳健推断中的 circular 端点/截断和 Spearman `H0: rho=0` 算法。
+
+---INBOX---
+
+exec
+/bin/bash -lc "ls -l 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR4.md 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v4.md && cmp -s 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR4.md 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v4.md; printf 'cmp_exit=%s\\n' \""'$?"' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+-rw-r--r--  1 yaomingyu  staff  1046 Jun 14 11:25 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR4.md
+-rw-r--r--  1 yaomingyu  staff  9153 Jun 14 11:25 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v4.md
+cmp_exit=1
+
+exec
+/bin/bash -lc "find 04_AI_TEAM/TASK_INBOX -maxdepth 1 -type f -name '*DONE.json' -print | sort | tail -10 | xargs -I{} sh -c 'echo {}; cat \"{}\"'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+codex
+审查结论已形成：RR4 四项均可按关联快筛标尺判定 CLOSED。Spearman 的 `ρ*−ρ_obs` 是对统计量抽样误差的 bootstrap 居中，单侧尾部对应检验 `ρ=0`；WF 与 §12 的确定性排序合读后没有阻塞性分段自由度。报告会同时记录少量不影响放行的版本文字残留。
+已完成允许材料核对与方法学裁决，准备写正式审查和执行报告。
+  ✓ 读取适用项目指令与允许审查文件，建立行号证据
+  ✓ 逐项裁决 RR4 四项必改并检查 v5 新缺陷
+  → 写入 RR5 审查报告与 TASK_INBOX 完成事件
+  • 校验产出并按任务号提交 git commit
+codex
+我现在写两份文件：正式盲审放在指定的预登记目录，执行摘要放在 `CODEX_TASKS`。内容只记录设计裁决与审查边界，不触碰预登记正文、Holdout 或研究数据。
+apply patch
+patch: completed
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7422ab987612a095a653da98b42478031951354b
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+@@ -0,0 +1,30 @@
++# A1-RR5 执行报告
++
++**任务：** A-1 预登记 v5 第五轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**审查结论：** APPROVED  
++**RR4 条件完全闭合：** 4/4
++
++## 交付
++
++- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
++- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
++
++## 边界自检
++
++- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
++- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
++- 未运行事件研究或计算事件后收益。
++- 按关联快筛标尺审查，未追加机制确证级验收门。
++
++## 裁决摘要
++
++- CLOSED：§7 A-2 非重叠关联门。
++- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
++- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
++- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
++
++## 放行边界
++
++仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a1274b93d96ed813195ef37f49e3c7814d1df2a7
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+@@ -0,0 +1,110 @@
++# A-1 预登记 v5 独立风险审查报告（第五轮）
++
++**任务号：** A1-RR5  
++**审查者：** Codex（独立 Risk Reviewer）  
++**日期：** 2026-06-14  
++**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
++**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
++**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
++**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
++
++## 审查边界
++
++本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
++
++## RR4 四项逐条裁决
++
++| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
++| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
++| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
++| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
++
++## 详细判断
++
++### 1. A-2 非重叠关联门
++
++v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
++
++因此 RR4 #1 完全闭合。
++
++### 2. Circular bootstrap 与 Spearman
++
++§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
++
++```text
++off_i(u) = ((event_time_i - u) mod span)
++```
++
++定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
++
++§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
++
++该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
++
++```text
++P_bootstrap(rho* - rho_obs >= rho_obs - 0)
++```
++
++正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
++
++因此 RR4 #2 完全闭合。
++
++### 3. WF
++
++§11 L160 的段长公式对三种余数情形给出唯一结果：
++
++| `n mod 3` | 三段长度 |
++|---:|---|
++| 0 | `(q, q, q)` |
++| 1 | `(q+1, q, q)` |
++| 2 | `(q+1, q+1, q)` |
++
++这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
++
++purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
++
++未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
++
++### 4. Holdout
++
++§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
++
++§12 L174 要求在正式执行身份下记录：
++
++1. manifest 读取命令及退出码 0；
++2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
++
++这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
++
++因此 RR4 #4 完全闭合。
++
++## v5 新结构与自由度审计
++
++| v5 修订 | 裁决 | 是否新增阻塞 |
++|---|---|---|
++| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
++| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
++| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
++| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
++
++发现两项非阻塞文控残留：
++
++- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
++- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
++
++二者均不构成第五轮必改，也不需要重新开启方法学盲审。
++
++## 最终结论
++
++**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
++
++放行边界：
++
++1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
++2. 本快筛不耗独立 Alpha 计数。
++3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
++4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7422ab987612a095a653da98b42478031951354b
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+@@ -0,0 +1,30 @@
++# A1-RR5 执行报告
++
++**任务：** A-1 预登记 v5 第五轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**审查结论：** APPROVED  
++**RR4 条件完全闭合：** 4/4
++
++## 交付
++
++- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
++- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
++
++## 边界自检
++
++- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
++- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
++- 未运行事件研究或计算事件后收益。
++- 按关联快筛标尺审查，未追加机制确证级验收门。
++
++## 裁决摘要
++
++- CLOSED：§7 A-2 非重叠关联门。
++- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
++- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
++- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
++
++## 放行边界
++
++仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a1274b93d96ed813195ef37f49e3c7814d1df2a7
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+@@ -0,0 +1,110 @@
++# A-1 预登记 v5 独立风险审查报告（第五轮）
++
++**任务号：** A1-RR5  
++**审查者：** Codex（独立 Risk Reviewer）  
++**日期：** 2026-06-14  
++**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
++**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
++**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
++**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
++
++## 审查边界
++
++本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
++
++## RR4 四项逐条裁决
++
++| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
++| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
++| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
++| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
++
++## 详细判断
++
++### 1. A-2 非重叠关联门
++
++v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
++
++因此 RR4 #1 完全闭合。
++
++### 2. Circular bootstrap 与 Spearman
++
++§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
++
++```text
++off_i(u) = ((event_time_i - u) mod span)
++```
++
++定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
++
++§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
++
++该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
++
++```text
++P_bootstrap(rho* - rho_obs >= rho_obs - 0)
++```
++
++正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
++
++因此 RR4 #2 完全闭合。
++
++### 3. WF
++
++§11 L160 的段长公式对三种余数情形给出唯一结果：
++
++| `n mod 3` | 三段长度 |
++|---:|---|
++| 0 | `(q, q, q)` |
++| 1 | `(q+1, q, q)` |
++| 2 | `(q+1, q+1, q)` |
++
++这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
++
++purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
++
++未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
++
++### 4. Holdout
++
++§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
++
++§12 L174 要求在正式执行身份下记录：
++
++1. manifest 读取命令及退出码 0；
++2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
++
++这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
++
++因此 RR4 #4 完全闭合。
++
++## v5 新结构与自由度审计
++
++| v5 修订 | 裁决 | 是否新增阻塞 |
++|---|---|---|
++| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
++| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
++| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
++| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
++
++发现两项非阻塞文控残留：
++
++- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
++- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
++
++二者均不构成第五轮必改，也不需要重新开启方法学盲审。
++
++## 最终结论
++
++**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
++
++放行边界：
++
++1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
++2. 本快筛不耗独立 Alpha 计数。
++3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
++4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+exec
+/bin/bash -lc 'nl -ba 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+exec
+/bin/bash -lc 'cat 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+# A1-RR5 执行报告
+
+**任务：** A-1 预登记 v5 第五轮独立盲审  
+**日期：** 2026-06-14  
+**状态：** completed  
+**审查结论：** APPROVED  
+**RR4 条件完全闭合：** 4/4
+
+## 交付
+
+- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
+- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
+
+## 边界自检
+
+- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
+- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
+- 未运行事件研究或计算事件后收益。
+- 按关联快筛标尺审查，未追加机制确证级验收门。
+
+## 裁决摘要
+
+- CLOSED：§7 A-2 非重叠关联门。
+- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
+- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+
+## 放行边界
+
+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+
+ succeeded in 0ms:
+     1	# A-1 预登记 v5 独立风险审查报告（第五轮）
+     2	
+     3	**任务号：** A1-RR5  
+     4	**审查者：** Codex（独立 Risk Reviewer）  
+     5	**日期：** 2026-06-14  
+     6	**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
+     7	**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
+     8	**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
+     9	**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
+    10	
+    11	## 审查边界
+    12	
+    13	本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
+    14	
+    15	## RR4 四项逐条裁决
+    16	
+    17	| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
+    18	|---:|---|---|---|---|
+    19	| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
+    20	| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
+    21	| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
+    22	| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+    23	
+    24	## 详细判断
+    25	
+    26	### 1. A-2 非重叠关联门
+    27	
+    28	v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
+    29	
+    30	因此 RR4 #1 完全闭合。
+    31	
+    32	### 2. Circular bootstrap 与 Spearman
+    33	
+    34	§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
+    35	
+    36	```text
+    37	off_i(u) = ((event_time_i - u) mod span)
+    38	```
+    39	
+    40	定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
+    41	
+    42	§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
+    43	
+    44	该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
+    45	
+    46	```text
+    47	P_bootstrap(rho* - rho_obs >= rho_obs - 0)
+    48	```
+    49	
+    50	正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
+    51	
+    52	因此 RR4 #2 完全闭合。
+    53	
+    54	### 3. WF
+    55	
+    56	§11 L160 的段长公式对三种余数情形给出唯一结果：
+    57	
+    58	| `n mod 3` | 三段长度 |
+    59	|---:|---|
+    60	| 0 | `(q, q, q)` |
+    61	| 1 | `(q+1, q, q)` |
+    62	| 2 | `(q+1, q+1, q)` |
+    63	
+    64	这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
+    65	
+    66	purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
+    67	
+    68	未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
+    69	
+    70	### 4. Holdout
+    71	
+    72	§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+    73	
+    74	§12 L174 要求在正式执行身份下记录：
+    75	
+    76	1. manifest 读取命令及退出码 0；
+    77	2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
+    78	
+    79	这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
+    80	
+    81	因此 RR4 #4 完全闭合。
+    82	
+    83	## v5 新结构与自由度审计
+    84	
+    85	| v5 修订 | 裁决 | 是否新增阻塞 |
+    86	|---|---|---|
+    87	| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
+    88	| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
+    89	| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
+    90	| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+    91	
+    92	发现两项非阻塞文控残留：
+    93	
+    94	- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
+    95	- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
+    96	
+    97	二者均不构成第五轮必改，也不需要重新开启方法学盲审。
+    98	
+    99	## 最终结论
+   100	
+   101	**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
+   102	
+   103	放行边界：
+   104	
+   105	1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
+   106	2. 本快筛不耗独立 Alpha 计数。
+   107	3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
+   108	4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+   109	
+   110	**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+exec
+/bin/bash -lc "date -u '+%Y-%m-%dT%H:%M:%SZ'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+2026-06-14T03:31:50Z
+
+exec
+/bin/bash -lc 'git diff --check -- 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md && git status --short' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ M 01_MEMORY_CORE/CURRENT_STATE.md
+ M 04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log
+?? 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+?? 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7422ab987612a095a653da98b42478031951354b
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+@@ -0,0 +1,30 @@
++# A1-RR5 执行报告
++
++**任务：** A-1 预登记 v5 第五轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**审查结论：** APPROVED  
++**RR4 条件完全闭合：** 4/4
++
++## 交付
++
++- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
++- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
++
++## 边界自检
++
++- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
++- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
++- 未运行事件研究或计算事件后收益。
++- 按关联快筛标尺审查，未追加机制确证级验收门。
++
++## 裁决摘要
++
++- CLOSED：§7 A-2 非重叠关联门。
++- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
++- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
++- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
++
++## 放行边界
++
++仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a1274b93d96ed813195ef37f49e3c7814d1df2a7
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+@@ -0,0 +1,110 @@
++# A-1 预登记 v5 独立风险审查报告（第五轮）
++
++**任务号：** A1-RR5  
++**审查者：** Codex（独立 Risk Reviewer）  
++**日期：** 2026-06-14  
++**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
++**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
++**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
++**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
++
++## 审查边界
++
++本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
++
++## RR4 四项逐条裁决
++
++| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
++| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
++| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
++| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
++
++## 详细判断
++
++### 1. A-2 非重叠关联门
++
++v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
++
++因此 RR4 #1 完全闭合。
++
++### 2. Circular bootstrap 与 Spearman
++
++§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
++
++```text
++off_i(u) = ((event_time_i - u) mod span)
++```
++
++定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
++
++§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
++
++该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
++
++```text
++P_bootstrap(rho* - rho_obs >= rho_obs - 0)
++```
++
++正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
++
++因此 RR4 #2 完全闭合。
++
++### 3. WF
++
++§11 L160 的段长公式对三种余数情形给出唯一结果：
++
++| `n mod 3` | 三段长度 |
++|---:|---|
++| 0 | `(q, q, q)` |
++| 1 | `(q+1, q, q)` |
++| 2 | `(q+1, q+1, q)` |
++
++这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
++
++purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
++
++未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
++
++### 4. Holdout
++
++§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
++
++§12 L174 要求在正式执行身份下记录：
++
++1. manifest 读取命令及退出码 0；
++2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
++
++这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
++
++因此 RR4 #4 完全闭合。
++
++## v5 新结构与自由度审计
++
++| v5 修订 | 裁决 | 是否新增阻塞 |
++|---|---|---|
++| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
++| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
++| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
++| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
++
++发现两项非阻塞文控残留：
++
++- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
++- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
++
++二者均不构成第五轮必改，也不需要重新开启方法学盲审。
++
++## 最终结论
++
++**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
++
++放行边界：
++
++1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
++2. 本快筛不耗独立 Alpha 计数。
++3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
++4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+codex
+正式报告已通过行号与格式校验。现在写入完成事件，字段按本任务协议记录 `APPROVED`、`4/4` 和放行条件；这是本任务最后一个产出文件。
+apply patch
+patch: completed
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7422ab987612a095a653da98b42478031951354b
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+@@ -0,0 +1,30 @@
++# A1-RR5 执行报告
++
++**任务：** A-1 预登记 v5 第五轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**审查结论：** APPROVED  
++**RR4 条件完全闭合：** 4/4
++
++## 交付
++
++- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
++- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
++
++## 边界自检
++
++- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
++- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
++- 未运行事件研究或计算事件后收益。
++- 按关联快筛标尺审查，未追加机制确证级验收门。
++
++## 裁决摘要
++
++- CLOSED：§7 A-2 非重叠关联门。
++- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
++- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
++- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
++
++## 放行边界
++
++仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b89238fd05462a91e1fc9fd190356a58b24b2efc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "A1_RR5",
++  "completed_at": "2026-06-14T03:31:50Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md",
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "4/4",
++  "next_task": null,
++  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a1274b93d96ed813195ef37f49e3c7814d1df2a7
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+@@ -0,0 +1,110 @@
++# A-1 预登记 v5 独立风险审查报告（第五轮）
++
++**任务号：** A1-RR5  
++**审查者：** Codex（独立 Risk Reviewer）  
++**日期：** 2026-06-14  
++**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
++**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
++**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
++**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
++
++## 审查边界
++
++本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
++
++## RR4 四项逐条裁决
++
++| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
++| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
++| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
++| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
++
++## 详细判断
++
++### 1. A-2 非重叠关联门
++
++v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
++
++因此 RR4 #1 完全闭合。
++
++### 2. Circular bootstrap 与 Spearman
++
++§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
++
++```text
++off_i(u) = ((event_time_i - u) mod span)
++```
++
++定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
++
++§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
++
++该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
++
++```text
++P_bootstrap(rho* - rho_obs >= rho_obs - 0)
++```
++
++正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
++
++因此 RR4 #2 完全闭合。
++
++### 3. WF
++
++§11 L160 的段长公式对三种余数情形给出唯一结果：
++
++| `n mod 3` | 三段长度 |
++|---:|---|
++| 0 | `(q, q, q)` |
++| 1 | `(q+1, q, q)` |
++| 2 | `(q+1, q+1, q)` |
++
++这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
++
++purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
++
++未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
++
++### 4. Holdout
++
++§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
++
++§12 L174 要求在正式执行身份下记录：
++
++1. manifest 读取命令及退出码 0；
++2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
++
++这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
++
++因此 RR4 #4 完全闭合。
++
++## v5 新结构与自由度审计
++
++| v5 修订 | 裁决 | 是否新增阻塞 |
++|---|---|---|
++| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
++| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
++| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
++| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
++
++发现两项非阻塞文控残留：
++
++- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
++- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
++
++二者均不构成第五轮必改，也不需要重新开启方法学盲审。
++
++## 最终结论
++
++**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
++
++放行边界：
++
++1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
++2. 本快筛不耗独立 Alpha 计数。
++3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
++4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7422ab987612a095a653da98b42478031951354b
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+@@ -0,0 +1,30 @@
++# A1-RR5 执行报告
++
++**任务：** A-1 预登记 v5 第五轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**审查结论：** APPROVED  
++**RR4 条件完全闭合：** 4/4
++
++## 交付
++
++- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
++- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
++
++## 边界自检
++
++- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
++- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
++- 未运行事件研究或计算事件后收益。
++- 按关联快筛标尺审查，未追加机制确证级验收门。
++
++## 裁决摘要
++
++- CLOSED：§7 A-2 非重叠关联门。
++- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
++- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
++- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
++
++## 放行边界
++
++仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b89238fd05462a91e1fc9fd190356a58b24b2efc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "A1_RR5",
++  "completed_at": "2026-06-14T03:31:50Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md",
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "4/4",
++  "next_task": null,
++  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a1274b93d96ed813195ef37f49e3c7814d1df2a7
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+@@ -0,0 +1,110 @@
++# A-1 预登记 v5 独立风险审查报告（第五轮）
++
++**任务号：** A1-RR5  
++**审查者：** Codex（独立 Risk Reviewer）  
++**日期：** 2026-06-14  
++**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
++**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
++**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
++**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
++
++## 审查边界
++
++本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
++
++## RR4 四项逐条裁决
++
++| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
++| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
++| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
++| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
++
++## 详细判断
++
++### 1. A-2 非重叠关联门
++
++v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
++
++因此 RR4 #1 完全闭合。
++
++### 2. Circular bootstrap 与 Spearman
++
++§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
++
++```text
++off_i(u) = ((event_time_i - u) mod span)
++```
++
++定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
++
++§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
++
++该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
++
++```text
++P_bootstrap(rho* - rho_obs >= rho_obs - 0)
++```
++
++正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
++
++因此 RR4 #2 完全闭合。
++
++### 3. WF
++
++§11 L160 的段长公式对三种余数情形给出唯一结果：
++
++| `n mod 3` | 三段长度 |
++|---:|---|
++| 0 | `(q, q, q)` |
++| 1 | `(q+1, q, q)` |
++| 2 | `(q+1, q+1, q)` |
++
++这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
++
++purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
++
++未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
++
++### 4. Holdout
++
++§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
++
++§12 L174 要求在正式执行身份下记录：
++
++1. manifest 读取命令及退出码 0；
++2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
++
++这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
++
++因此 RR4 #4 完全闭合。
++
++## v5 新结构与自由度审计
++
++| v5 修订 | 裁决 | 是否新增阻塞 |
++|---|---|---|
++| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
++| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
++| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
++| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
++
++发现两项非阻塞文控残留：
++
++- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
++- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
++
++二者均不构成第五轮必改，也不需要重新开启方法学盲审。
++
++## 最终结论
++
++**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
++
++放行边界：
++
++1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
++2. 本快筛不耗独立 Alpha 计数。
++3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
++4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+正式审查、执行报告和完成事件已写入，进入最终校验与提交阶段。
+  ✓ 读取适用项目指令与允许审查文件，建立行号证据
+  ✓ 逐项裁决 RR4 四项必改并检查 v5 新缺陷
+  ✓ 写入 RR5 审查报告与 TASK_INBOX 完成事件
+  → 校验产出并按任务号提交 git commit
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7422ab987612a095a653da98b42478031951354b
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+@@ -0,0 +1,30 @@
++# A1-RR5 执行报告
++
++**任务：** A-1 预登记 v5 第五轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**审查结论：** APPROVED  
++**RR4 条件完全闭合：** 4/4
++
++## 交付
++
++- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
++- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
++
++## 边界自检
++
++- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
++- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
++- 未运行事件研究或计算事件后收益。
++- 按关联快筛标尺审查，未追加机制确证级验收门。
++
++## 裁决摘要
++
++- CLOSED：§7 A-2 非重叠关联门。
++- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
++- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
++- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
++
++## 放行边界
++
++仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b89238fd05462a91e1fc9fd190356a58b24b2efc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "A1_RR5",
++  "completed_at": "2026-06-14T03:31:50Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md",
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "4/4",
++  "next_task": null,
++  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a1274b93d96ed813195ef37f49e3c7814d1df2a7
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+@@ -0,0 +1,110 @@
++# A-1 预登记 v5 独立风险审查报告（第五轮）
++
++**任务号：** A1-RR5  
++**审查者：** Codex（独立 Risk Reviewer）  
++**日期：** 2026-06-14  
++**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
++**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
++**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
++**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
++
++## 审查边界
++
++本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
++
++## RR4 四项逐条裁决
++
++| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
++| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
++| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
++| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
++
++## 详细判断
++
++### 1. A-2 非重叠关联门
++
++v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
++
++因此 RR4 #1 完全闭合。
++
++### 2. Circular bootstrap 与 Spearman
++
++§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
++
++```text
++off_i(u) = ((event_time_i - u) mod span)
++```
++
++定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
++
++§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
++
++该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
++
++```text
++P_bootstrap(rho* - rho_obs >= rho_obs - 0)
++```
++
++正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
++
++因此 RR4 #2 完全闭合。
++
++### 3. WF
++
++§11 L160 的段长公式对三种余数情形给出唯一结果：
++
++| `n mod 3` | 三段长度 |
++|---:|---|
++| 0 | `(q, q, q)` |
++| 1 | `(q+1, q, q)` |
++| 2 | `(q+1, q+1, q)` |
++
++这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
++
++purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
++
++未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
++
++### 4. Holdout
++
++§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
++
++§12 L174 要求在正式执行身份下记录：
++
++1. manifest 读取命令及退出码 0；
++2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
++
++这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
++
++因此 RR4 #4 完全闭合。
++
++## v5 新结构与自由度审计
++
++| v5 修订 | 裁决 | 是否新增阻塞 |
++|---|---|---|
++| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
++| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
++| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
++| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
++
++发现两项非阻塞文控残留：
++
++- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
++- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
++
++二者均不构成第五轮必改，也不需要重新开启方法学盲审。
++
++## 最终结论
++
++**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
++
++放行边界：
++
++1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
++2. 本快筛不耗独立 Alpha 计数。
++3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
++4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+exec
+/bin/bash -lc "rg -n 'APPROVED|CLOSED|4/4|AES-256-GCM|负向权限测试|不耗独立|不晋级策略' 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md 04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ exited 2 in 0ms:
+rg: 04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json: No such file or directory (os error 2)
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:6:**审查结论：** APPROVED  
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:7:**RR4 条件完全闭合：** 4/4
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:23:- CLOSED：§7 A-2 非重叠关联门。
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:24:- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:25:- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:26:- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:30:仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:9:**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:19:| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:20:| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:21:| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:22:| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:72:§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:90:| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:101:**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:106:2. 本快筛不耗独立 Alpha 计数。
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:108:4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+
+exec
+/bin/bash -lc 'git diff --check -- 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md 04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json && git status --short' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ M 01_MEMORY_CORE/CURRENT_STATE.md
+ M 04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log
+?? 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+?? 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR5_DONE.json
+?? 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+
+exec
+/bin/bash -lc 'python3 -m json.tool 04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ exited 1 in 0ms:
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/json/tool.py", line 87, in <module>
+    main()
+    ~~~~^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/json/tool.py", line 63, in main
+    infile = open(options.infile, encoding='utf-8')
+FileNotFoundError: [Errno 2] No such file or directory: '04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json'
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7422ab987612a095a653da98b42478031951354b
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+@@ -0,0 +1,30 @@
++# A1-RR5 执行报告
++
++**任务：** A-1 预登记 v5 第五轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**审查结论：** APPROVED  
++**RR4 条件完全闭合：** 4/4
++
++## 交付
++
++- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
++- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
++
++## 边界自检
++
++- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
++- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
++- 未运行事件研究或计算事件后收益。
++- 按关联快筛标尺审查，未追加机制确证级验收门。
++
++## 裁决摘要
++
++- CLOSED：§7 A-2 非重叠关联门。
++- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
++- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
++- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
++
++## 放行边界
++
++仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b89238fd05462a91e1fc9fd190356a58b24b2efc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "A1_RR5",
++  "completed_at": "2026-06-14T03:31:50Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md",
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "4/4",
++  "next_task": null,
++  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a1274b93d96ed813195ef37f49e3c7814d1df2a7
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+@@ -0,0 +1,110 @@
++# A-1 预登记 v5 独立风险审查报告（第五轮）
++
++**任务号：** A1-RR5  
++**审查者：** Codex（独立 Risk Reviewer）  
++**日期：** 2026-06-14  
++**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
++**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
++**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
++**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
++
++## 审查边界
++
++本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
++
++## RR4 四项逐条裁决
++
++| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
++| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
++| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
++| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
++
++## 详细判断
++
++### 1. A-2 非重叠关联门
++
++v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
++
++因此 RR4 #1 完全闭合。
++
++### 2. Circular bootstrap 与 Spearman
++
++§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
++
++```text
++off_i(u) = ((event_time_i - u) mod span)
++```
++
++定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
++
++§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
++
++该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
++
++```text
++P_bootstrap(rho* - rho_obs >= rho_obs - 0)
++```
++
++正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
++
++因此 RR4 #2 完全闭合。
++
++### 3. WF
++
++§11 L160 的段长公式对三种余数情形给出唯一结果：
++
++| `n mod 3` | 三段长度 |
++|---:|---|
++| 0 | `(q, q, q)` |
++| 1 | `(q+1, q, q)` |
++| 2 | `(q+1, q+1, q)` |
++
++这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
++
++purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
++
++未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
++
++### 4. Holdout
++
++§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
++
++§12 L174 要求在正式执行身份下记录：
++
++1. manifest 读取命令及退出码 0；
++2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
++
++这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
++
++因此 RR4 #4 完全闭合。
++
++## v5 新结构与自由度审计
++
++| v5 修订 | 裁决 | 是否新增阻塞 |
++|---|---|---|
++| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
++| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
++| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
++| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
++
++发现两项非阻塞文控残留：
++
++- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
++- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
++
++二者均不构成第五轮必改，也不需要重新开启方法学盲审。
++
++## 最终结论
++
++**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
++
++放行边界：
++
++1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
++2. 本快筛不耗独立 Alpha 计数。
++3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
++4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+codex
+完成事件已被调度器即时消费并移到 `TASK_INBOX/PROCESSED/`，这与既有协议行为一致；源路径不存在不是写入失败。我会对已归档 JSON 做最终校验，然后只暂存本任务三份产出，避免带入现有的 `CURRENT_STATE.md` 和运行日志变更。
+exec
+/bin/bash -lc 'git diff --check -- 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR5_DONE.json && git status --short' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ M 01_MEMORY_CORE/CURRENT_STATE.md
+ M 04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log
+?? 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+?? 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR5_DONE.json
+?? 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+
+exec
+/bin/bash -lc 'python3 -m json.tool 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR5_DONE.json' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+{
+    "task_id": "A1_RR5",
+    "completed_at": "2026-06-14T03:31:50Z",
+    "status": "completed",
+    "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md",
+    "review_conclusion": "APPROVED",
+    "conditions_closed": "4/4",
+    "next_task": null,
+    "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+}
+
+exec
+/bin/bash -lc 'cat 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR5_DONE.json' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+{
+  "task_id": "A1_RR5",
+  "completed_at": "2026-06-14T03:31:50Z",
+  "status": "completed",
+  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md",
+  "review_conclusion": "APPROVED",
+  "conditions_closed": "4/4",
+  "next_task": null,
+  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
+}
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7422ab987612a095a653da98b42478031951354b
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+@@ -0,0 +1,30 @@
++# A1-RR5 执行报告
++
++**任务：** A-1 预登记 v5 第五轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**审查结论：** APPROVED  
++**RR4 条件完全闭合：** 4/4
++
++## 交付
++
++- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
++- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
++
++## 边界自检
++
++- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
++- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
++- 未运行事件研究或计算事件后收益。
++- 按关联快筛标尺审查，未追加机制确证级验收门。
++
++## 裁决摘要
++
++- CLOSED：§7 A-2 非重叠关联门。
++- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
++- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
++- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
++
++## 放行边界
++
++仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b89238fd05462a91e1fc9fd190356a58b24b2efc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "A1_RR5",
++  "completed_at": "2026-06-14T03:31:50Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md",
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "4/4",
++  "next_task": null,
++  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a1274b93d96ed813195ef37f49e3c7814d1df2a7
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+@@ -0,0 +1,110 @@
++# A-1 预登记 v5 独立风险审查报告（第五轮）
++
++**任务号：** A1-RR5  
++**审查者：** Codex（独立 Risk Reviewer）  
++**日期：** 2026-06-14  
++**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
++**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
++**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
++**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
++
++## 审查边界
++
++本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
++
++## RR4 四项逐条裁决
++
++| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
++| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
++| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
++| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
++
++## 详细判断
++
++### 1. A-2 非重叠关联门
++
++v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
++
++因此 RR4 #1 完全闭合。
++
++### 2. Circular bootstrap 与 Spearman
++
++§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
++
++```text
++off_i(u) = ((event_time_i - u) mod span)
++```
++
++定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
++
++§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
++
++该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
++
++```text
++P_bootstrap(rho* - rho_obs >= rho_obs - 0)
++```
++
++正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
++
++因此 RR4 #2 完全闭合。
++
++### 3. WF
++
++§11 L160 的段长公式对三种余数情形给出唯一结果：
++
++| `n mod 3` | 三段长度 |
++|---:|---|
++| 0 | `(q, q, q)` |
++| 1 | `(q+1, q, q)` |
++| 2 | `(q+1, q+1, q)` |
++
++这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
++
++purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
++
++未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
++
++### 4. Holdout
++
++§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
++
++§12 L174 要求在正式执行身份下记录：
++
++1. manifest 读取命令及退出码 0；
++2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
++
++这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
++
++因此 RR4 #4 完全闭合。
++
++## v5 新结构与自由度审计
++
++| v5 修订 | 裁决 | 是否新增阻塞 |
++|---|---|---|
++| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
++| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
++| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
++| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
++
++发现两项非阻塞文控残留：
++
++- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
++- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
++
++二者均不构成第五轮必改，也不需要重新开启方法学盲审。
++
++## 最终结论
++
++**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
++
++放行边界：
++
++1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
++2. 本快筛不耗独立 Alpha 计数。
++3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
++4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7422ab987612a095a653da98b42478031951354b
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+@@ -0,0 +1,30 @@
++# A1-RR5 执行报告
++
++**任务：** A-1 预登记 v5 第五轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**审查结论：** APPROVED  
++**RR4 条件完全闭合：** 4/4
++
++## 交付
++
++- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
++- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
++
++## 边界自检
++
++- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
++- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
++- 未运行事件研究或计算事件后收益。
++- 按关联快筛标尺审查，未追加机制确证级验收门。
++
++## 裁决摘要
++
++- CLOSED：§7 A-2 非重叠关联门。
++- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
++- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
++- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
++
++## 放行边界
++
++仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b89238fd05462a91e1fc9fd190356a58b24b2efc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "A1_RR5",
++  "completed_at": "2026-06-14T03:31:50Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md",
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "4/4",
++  "next_task": null,
++  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a1274b93d96ed813195ef37f49e3c7814d1df2a7
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+@@ -0,0 +1,110 @@
++# A-1 预登记 v5 独立风险审查报告（第五轮）
++
++**任务号：** A1-RR5  
++**审查者：** Codex（独立 Risk Reviewer）  
++**日期：** 2026-06-14  
++**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
++**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
++**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
++**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
++
++## 审查边界
++
++本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
++
++## RR4 四项逐条裁决
++
++| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
++| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
++| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
++| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
++
++## 详细判断
++
++### 1. A-2 非重叠关联门
++
++v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
++
++因此 RR4 #1 完全闭合。
++
++### 2. Circular bootstrap 与 Spearman
++
++§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
++
++```text
++off_i(u) = ((event_time_i - u) mod span)
++```
++
++定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
++
++§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
++
++该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
++
++```text
++P_bootstrap(rho* - rho_obs >= rho_obs - 0)
++```
++
++正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
++
++因此 RR4 #2 完全闭合。
++
++### 3. WF
++
++§11 L160 的段长公式对三种余数情形给出唯一结果：
++
++| `n mod 3` | 三段长度 |
++|---:|---|
++| 0 | `(q, q, q)` |
++| 1 | `(q+1, q, q)` |
++| 2 | `(q+1, q+1, q)` |
++
++这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
++
++purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
++
++未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
++
++### 4. Holdout
++
++§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
++
++§12 L174 要求在正式执行身份下记录：
++
++1. manifest 读取命令及退出码 0；
++2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
++
++这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
++
++因此 RR4 #4 完全闭合。
++
++## v5 新结构与自由度审计
++
++| v5 修订 | 裁决 | 是否新增阻塞 |
++|---|---|---|
++| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
++| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
++| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
++| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
++
++发现两项非阻塞文控残留：
++
++- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
++- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
++
++二者均不构成第五轮必改，也不需要重新开启方法学盲审。
++
++## 最终结论
++
++**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
++
++放行边界：
++
++1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
++2. 本快筛不耗独立 Alpha 计数。
++3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
++4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+codex
+任务文件本身已完成；提交步骤被仓库权限边界阻止，`git add` 无法创建 `.git/index.lock`。我会把这一可审计事实补入执行报告，不会改动或暂存用户已有的两处变更。
+apply patch
+patch: completed
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7fa3e38ab0d928fc81274c424db54102873093c2
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+@@ -0,0 +1,34 @@
++# A1-RR5 执行报告
++
++**任务：** A-1 预登记 v5 第五轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**审查结论：** APPROVED  
++**RR4 条件完全闭合：** 4/4
++
++## 交付
++
++- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
++- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
++
++## Git 状态
++
++本执行身份无法写入 `.git/index.lock`，`git add` 返回 `Operation not permitted`，故未能创建任务 commit。交付文件已写入工作树；调度器已消费完成事件并将其移入 `TASK_INBOX/PROCESSED/`。
++
++## 边界自检
++
++- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
++- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
++- 未运行事件研究或计算事件后收益。
++- 按关联快筛标尺审查，未追加机制确证级验收门。
++
++## 裁决摘要
++
++- CLOSED：§7 A-2 非重叠关联门。
++- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
++- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
++- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
++
++## 放行边界
++
++仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b89238fd05462a91e1fc9fd190356a58b24b2efc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "A1_RR5",
++  "completed_at": "2026-06-14T03:31:50Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md",
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "4/4",
++  "next_task": null,
++  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a1274b93d96ed813195ef37f49e3c7814d1df2a7
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+@@ -0,0 +1,110 @@
++# A-1 预登记 v5 独立风险审查报告（第五轮）
++
++**任务号：** A1-RR5  
++**审查者：** Codex（独立 Risk Reviewer）  
++**日期：** 2026-06-14  
++**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
++**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
++**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
++**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
++
++## 审查边界
++
++本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
++
++## RR4 四项逐条裁决
++
++| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
++| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
++| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
++| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
++
++## 详细判断
++
++### 1. A-2 非重叠关联门
++
++v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
++
++因此 RR4 #1 完全闭合。
++
++### 2. Circular bootstrap 与 Spearman
++
++§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
++
++```text
++off_i(u) = ((event_time_i - u) mod span)
++```
++
++定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
++
++§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
++
++该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
++
++```text
++P_bootstrap(rho* - rho_obs >= rho_obs - 0)
++```
++
++正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
++
++因此 RR4 #2 完全闭合。
++
++### 3. WF
++
++§11 L160 的段长公式对三种余数情形给出唯一结果：
++
++| `n mod 3` | 三段长度 |
++|---:|---|
++| 0 | `(q, q, q)` |
++| 1 | `(q+1, q, q)` |
++| 2 | `(q+1, q+1, q)` |
++
++这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
++
++purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
++
++未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
++
++### 4. Holdout
++
++§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
++
++§12 L174 要求在正式执行身份下记录：
++
++1. manifest 读取命令及退出码 0；
++2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
++
++这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
++
++因此 RR4 #4 完全闭合。
++
++## v5 新结构与自由度审计
++
++| v5 修订 | 裁决 | 是否新增阻塞 |
++|---|---|---|
++| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
++| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
++| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
++| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
++
++发现两项非阻塞文控残留：
++
++- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
++- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
++
++二者均不构成第五轮必改，也不需要重新开启方法学盲审。
++
++## 最终结论
++
++**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
++
++放行边界：
++
++1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
++2. 本快筛不耗独立 Alpha 计数。
++3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
++4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7fa3e38ab0d928fc81274c424db54102873093c2
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+@@ -0,0 +1,34 @@
++# A1-RR5 执行报告
++
++**任务：** A-1 预登记 v5 第五轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**审查结论：** APPROVED  
++**RR4 条件完全闭合：** 4/4
++
++## 交付
++
++- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
++- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
++
++## Git 状态
++
++本执行身份无法写入 `.git/index.lock`，`git add` 返回 `Operation not permitted`，故未能创建任务 commit。交付文件已写入工作树；调度器已消费完成事件并将其移入 `TASK_INBOX/PROCESSED/`。
++
++## 边界自检
++
++- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
++- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
++- 未运行事件研究或计算事件后收益。
++- 按关联快筛标尺审查，未追加机制确证级验收门。
++
++## 裁决摘要
++
++- CLOSED：§7 A-2 非重叠关联门。
++- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
++- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
++- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
++
++## 放行边界
++
++仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b89238fd05462a91e1fc9fd190356a58b24b2efc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "A1_RR5",
++  "completed_at": "2026-06-14T03:31:50Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md",
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "4/4",
++  "next_task": null,
++  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a1274b93d96ed813195ef37f49e3c7814d1df2a7
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+@@ -0,0 +1,110 @@
++# A-1 预登记 v5 独立风险审查报告（第五轮）
++
++**任务号：** A1-RR5  
++**审查者：** Codex（独立 Risk Reviewer）  
++**日期：** 2026-06-14  
++**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
++**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
++**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
++**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
++
++## 审查边界
++
++本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
++
++## RR4 四项逐条裁决
++
++| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
++| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
++| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
++| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
++
++## 详细判断
++
++### 1. A-2 非重叠关联门
++
++v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
++
++因此 RR4 #1 完全闭合。
++
++### 2. Circular bootstrap 与 Spearman
++
++§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
++
++```text
++off_i(u) = ((event_time_i - u) mod span)
++```
++
++定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
++
++§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
++
++该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
++
++```text
++P_bootstrap(rho* - rho_obs >= rho_obs - 0)
++```
++
++正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
++
++因此 RR4 #2 完全闭合。
++
++### 3. WF
++
++§11 L160 的段长公式对三种余数情形给出唯一结果：
++
++| `n mod 3` | 三段长度 |
++|---:|---|
++| 0 | `(q, q, q)` |
++| 1 | `(q+1, q, q)` |
++| 2 | `(q+1, q+1, q)` |
++
++这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
++
++purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
++
++未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
++
++### 4. Holdout
++
++§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
++
++§12 L174 要求在正式执行身份下记录：
++
++1. manifest 读取命令及退出码 0；
++2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
++
++这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
++
++因此 RR4 #4 完全闭合。
++
++## v5 新结构与自由度审计
++
++| v5 修订 | 裁决 | 是否新增阻塞 |
++|---|---|---|
++| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
++| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
++| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
++| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
++
++发现两项非阻塞文控残留：
++
++- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
++- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
++
++二者均不构成第五轮必改，也不需要重新开启方法学盲审。
++
++## 最终结论
++
++**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
++
++放行边界：
++
++1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
++2. 本快筛不耗独立 Alpha 计数。
++3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
++4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+exec
+/bin/bash -lc "rg -n '[[:blank:]]+"'$'"' 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR5_DONE.json || true" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:3:**任务号：** A1-RR5  
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:4:**审查者：** Codex（独立 Risk Reviewer）  
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:5:**日期：** 2026-06-14  
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:6:**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:7:**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
+06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md:8:**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:3:**任务：** A-1 预登记 v5 第五轮独立盲审  
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:4:**日期：** 2026-06-14  
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:5:**状态：** completed  
+04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md:6:**审查结论：** APPROVED  
+
+exec
+/bin/bash -lc "python3 -m json.tool 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR5_DONE.json >/dev/null && printf 'json_ok\\n' && git status --short" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+json_ok
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ M 01_MEMORY_CORE/CURRENT_STATE.md
+ M 04_AI_TEAM/CODEX_TASKS/A1_RR5_RUN.log
+?? 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+?? 04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR5_DONE.json
+?? 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+
+exec
+/bin/bash -lc 'tail -20 04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md && tail -16 06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+
+本执行身份无法写入 `.git/index.lock`，`git add` 返回 `Operation not permitted`，故未能创建任务 commit。交付文件已写入工作树；调度器已消费完成事件并将其移入 `TASK_INBOX/PROCESSED/`。
+
+## 边界自检
+
+- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
+- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
+- 未运行事件研究或计算事件后收益。
+- 按关联快筛标尺审查，未追加机制确证级验收门。
+
+## 裁决摘要
+
+- CLOSED：§7 A-2 非重叠关联门。
+- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
+- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
+- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
+
+## 放行边界
+
+仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
+
+二者均不构成第五轮必改，也不需要重新开启方法学盲审。
+
+## 最终结论
+
+**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
+
+放行边界：
+
+1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
+2. 本快筛不耗独立 Alpha 计数。
+3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
+4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
+
+**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7fa3e38ab0d928fc81274c424db54102873093c2
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+@@ -0,0 +1,34 @@
++# A1-RR5 执行报告
++
++**任务：** A-1 预登记 v5 第五轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**审查结论：** APPROVED  
++**RR4 条件完全闭合：** 4/4
++
++## 交付
++
++- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
++- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
++
++## Git 状态
++
++本执行身份无法写入 `.git/index.lock`，`git add` 返回 `Operation not permitted`，故未能创建任务 commit。交付文件已写入工作树；调度器已消费完成事件并将其移入 `TASK_INBOX/PROCESSED/`。
++
++## 边界自检
++
++- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
++- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
++- 未运行事件研究或计算事件后收益。
++- 按关联快筛标尺审查，未追加机制确证级验收门。
++
++## 裁决摘要
++
++- CLOSED：§7 A-2 非重叠关联门。
++- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
++- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
++- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
++
++## 放行边界
++
++仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b89238fd05462a91e1fc9fd190356a58b24b2efc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "A1_RR5",
++  "completed_at": "2026-06-14T03:31:50Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md",
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "4/4",
++  "next_task": null,
++  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a1274b93d96ed813195ef37f49e3c7814d1df2a7
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+@@ -0,0 +1,110 @@
++# A-1 预登记 v5 独立风险审查报告（第五轮）
++
++**任务号：** A1-RR5  
++**审查者：** Codex（独立 Risk Reviewer）  
++**日期：** 2026-06-14  
++**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
++**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
++**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
++**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
++
++## 审查边界
++
++本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
++
++## RR4 四项逐条裁决
++
++| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
++| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
++| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
++| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
++
++## 详细判断
++
++### 1. A-2 非重叠关联门
++
++v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
++
++因此 RR4 #1 完全闭合。
++
++### 2. Circular bootstrap 与 Spearman
++
++§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
++
++```text
++off_i(u) = ((event_time_i - u) mod span)
++```
++
++定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
++
++§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
++
++该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
++
++```text
++P_bootstrap(rho* - rho_obs >= rho_obs - 0)
++```
++
++正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
++
++因此 RR4 #2 完全闭合。
++
++### 3. WF
++
++§11 L160 的段长公式对三种余数情形给出唯一结果：
++
++| `n mod 3` | 三段长度 |
++|---:|---|
++| 0 | `(q, q, q)` |
++| 1 | `(q+1, q, q)` |
++| 2 | `(q+1, q+1, q)` |
++
++这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
++
++purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
++
++未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
++
++### 4. Holdout
++
++§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
++
++§12 L174 要求在正式执行身份下记录：
++
++1. manifest 读取命令及退出码 0；
++2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
++
++这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
++
++因此 RR4 #4 完全闭合。
++
++## v5 新结构与自由度审计
++
++| v5 修订 | 裁决 | 是否新增阻塞 |
++|---|---|---|
++| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
++| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
++| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
++| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
++
++发现两项非阻塞文控残留：
++
++- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
++- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
++
++二者均不构成第五轮必改，也不需要重新开启方法学盲审。
++
++## 最终结论
++
++**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
++
++放行边界：
++
++1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
++2. 本快筛不耗独立 Alpha 计数。
++3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
++4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+产出与归档 JSON 已校验；git 提交已尝试，但因执行身份无权创建 .git/index.lock 而失败，已在执行报告中留痕。
+  ✓ 读取适用项目指令与允许审查文件，建立行号证据
+  ✓ 逐项裁决 RR4 四项必改并检查 v5 新缺陷
+  ✓ 写入 RR5 审查报告与 TASK_INBOX 完成事件
+  ✓ 校验产出并按任务号提交 git commit
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7fa3e38ab0d928fc81274c424db54102873093c2
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+@@ -0,0 +1,34 @@
++# A1-RR5 执行报告
++
++**任务：** A-1 预登记 v5 第五轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**审查结论：** APPROVED  
++**RR4 条件完全闭合：** 4/4
++
++## 交付
++
++- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
++- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
++
++## Git 状态
++
++本执行身份无法写入 `.git/index.lock`，`git add` 返回 `Operation not permitted`，故未能创建任务 commit。交付文件已写入工作树；调度器已消费完成事件并将其移入 `TASK_INBOX/PROCESSED/`。
++
++## 边界自检
++
++- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
++- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
++- 未运行事件研究或计算事件后收益。
++- 按关联快筛标尺审查，未追加机制确证级验收门。
++
++## 裁决摘要
++
++- CLOSED：§7 A-2 非重叠关联门。
++- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
++- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
++- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
++
++## 放行边界
++
++仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b89238fd05462a91e1fc9fd190356a58b24b2efc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "A1_RR5",
++  "completed_at": "2026-06-14T03:31:50Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md",
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "4/4",
++  "next_task": null,
++  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a1274b93d96ed813195ef37f49e3c7814d1df2a7
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+@@ -0,0 +1,110 @@
++# A-1 预登记 v5 独立风险审查报告（第五轮）
++
++**任务号：** A1-RR5  
++**审查者：** Codex（独立 Risk Reviewer）  
++**日期：** 2026-06-14  
++**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
++**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
++**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
++**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
++
++## 审查边界
++
++本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
++
++## RR4 四项逐条裁决
++
++| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
++| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
++| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
++| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
++
++## 详细判断
++
++### 1. A-2 非重叠关联门
++
++v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
++
++因此 RR4 #1 完全闭合。
++
++### 2. Circular bootstrap 与 Spearman
++
++§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
++
++```text
++off_i(u) = ((event_time_i - u) mod span)
++```
++
++定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
++
++§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
++
++该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
++
++```text
++P_bootstrap(rho* - rho_obs >= rho_obs - 0)
++```
++
++正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
++
++因此 RR4 #2 完全闭合。
++
++### 3. WF
++
++§11 L160 的段长公式对三种余数情形给出唯一结果：
++
++| `n mod 3` | 三段长度 |
++|---:|---|
++| 0 | `(q, q, q)` |
++| 1 | `(q+1, q, q)` |
++| 2 | `(q+1, q+1, q)` |
++
++这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
++
++purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
++
++未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
++
++### 4. Holdout
++
++§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
++
++§12 L174 要求在正式执行身份下记录：
++
++1. manifest 读取命令及退出码 0；
++2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
++
++这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
++
++因此 RR4 #4 完全闭合。
++
++## v5 新结构与自由度审计
++
++| v5 修订 | 裁决 | 是否新增阻塞 |
++|---|---|---|
++| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
++| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
++| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
++| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
++
++发现两项非阻塞文控残留：
++
++- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
++- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
++
++二者均不构成第五轮必改，也不需要重新开启方法学盲审。
++
++## 最终结论
++
++**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
++
++放行边界：
++
++1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
++2. 本快筛不耗独立 Alpha 计数。
++3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
++4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+codex
+A1-RR5 已完成，结论 **APPROVED，4/4 CLOSED**。
+
+- [正式审查报告](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md)
+- [执行报告](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md)
+- [完成事件](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR5_DONE.json)
+
+放行仅限 Tier A 历史关联快筛，执行前须完成 §12 加密封存和负向权限测试。
+
+未读取 Holdout 或 `01_MEMORY_CORE/`。因无权创建 `.git/index.lock`，无法提交 commit，已在执行报告留痕。
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..7fa3e38ab0d928fc81274c424db54102873093c2
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md
+@@ -0,0 +1,34 @@
++# A1-RR5 执行报告
++
++**任务：** A-1 预登记 v5 第五轮独立盲审  
++**日期：** 2026-06-14  
++**状态：** completed  
++**审查结论：** APPROVED  
++**RR4 条件完全闭合：** 4/4
++
++## 交付
++
++- 正式审查：`06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md`
++- 完成事件：`04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json`
++
++## Git 状态
++
++本执行身份无法写入 `.git/index.lock`，`git add` 返回 `Operation not permitted`，故未能创建任务 commit。交付文件已写入工作树；调度器已消费完成事件并将其移入 `TASK_INBOX/PROCESSED/`。
++
++## 边界自检
++
++- 未读取 HOLDOUT 或 `01_MEMORY_CORE/`。
++- 未修改任何预登记、Protocol、路径 B 或 A-2 假设文件。
++- 未运行事件研究或计算事件后收益。
++- 按关联快筛标尺审查，未追加机制确证级验收门。
++
++## 裁决摘要
++
++- CLOSED：§7 A-2 非重叠关联门。
++- CLOSED：半开 circular bootstrap、offset 截断及 Spearman 配对 bootstrap 居中检验。
++- CLOSED：WF 段长、余数、中点切点、实际 footprint purge 和不重分段。
++- CLOSED：AES-256-GCM 格式、密钥独立权限边界及负向测试。
++
++## 放行边界
++
++仅放行 Tier A 历史关联快筛；不耗独立计数、不晋级策略、不声称机制。执行前须先完成 §12 加密 Holdout 封存和正式执行身份负向权限测试。
+diff --git a/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..b89238fd05462a91e1fc9fd190356a58b24b2efc
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/A1_RR5_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "A1_RR5",
++  "completed_at": "2026-06-14T03:31:50Z",
++  "status": "completed",
++  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md",
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "4/4",
++  "next_task": null,
++  "notes": "RR4 four minimum required changes are CLOSED. Release is limited to Tier A historical association screening and requires AES-256-GCM Holdout sealing plus a recorded negative permission test before any post-event return calculation."
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..a1274b93d96ed813195ef37f49e3c7814d1df2a7
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md
+@@ -0,0 +1,110 @@
++# A-1 预登记 v5 独立风险审查报告（第五轮）
++
++**任务号：** A1-RR5  
++**审查者：** Codex（独立 Risk Reviewer）  
++**日期：** 2026-06-14  
++**对象：** `A1_CASCADE_REBOUND_PREREG_v5.md`  
++**对照：** `A1_RISK_REVIEW_v4.md` 第四轮四项最小必改  
++**标尺：** 机制前关联快筛，只判断关联结论是否无偏、可复现、可审计  
++**结论：** **APPROVED**（RR4 四项完全闭合 `4/4`）
++
++## 审查边界
++
++本轮未读取任何 HOLDOUT、`01_MEMORY_CORE/` 或事件后研究结果；未修改预登记、Protocol 或 A-2 假设；未运行事件研究或计算事件后收益。审查仅使用 v5、RR4 和获准的 Protocol 增补件。
++
++## RR4 四项逐条裁决
++
++| # | RR4 最小必改 | 裁决 | 证据（v5 §/行） | 仍缺 |
++|---:|---|---|---|---|
++| 1 | §7 去除“机制独立性硬门” | **CLOSED** | §0 L15-L18；§1 L34-L36；§7 L115-L123；§9 L140-L142；§13 L181-L183 | 无。§7 已改为“A-2 非重叠关联硬门”，并明文限定为“不完全由 A-2 正极端 funding 重叠承载”，不识别独立机制。全文未发现把 non-overlap 显著重新解释为独立机制的残留。 |
++| 2 | circular bootstrap + Spearman | **CLOSED** | §4 L77-L86；§5 L93-L97 | 无。时间轴、周长、回绕排序和最后一块截断均唯一冻结；Spearman 已改为配对 moving-block bootstrap，并以 `rho* - rho_obs` 对抽样误差居中检验 `H0: rho=0`。 |
++| 3 | §11 WF 唯一化 | **CLOSED** | §11 L152-L165；并见 §12 L171 的确定性 `(event_time_utc, symbol)` 排序 | 无。段长、余数分配、两个中点切点、含 align lag 的 footprint purge、原段剔除及 purge 后不重分段均已冻结。 |
++| 4 | §12 Holdout 真权限边界 | **CLOSED** | §12 L169-L175 | 无设计缺口。AES-256-GCM、`12B nonce || ciphertext || 16B tag`、认证失败、密钥隔离和正式执行身份负向测试均已冻结。实际放行仍须先完成该封存与负向测试。 |
++
++## 详细判断
++
++### 1. A-2 非重叠关联门
++
++v5 §7 L121 同时完成名称和解释边界修正：non-overlap 显著只支持“A-1 关联不完全由 A-2 正极端 funding 重叠承载”，并明确“不识别独立机制”。§0、§1、§9 和 §13 继续把结论上限锁在关联层，把强平机制确证留给前向路径 B。
++
++因此 RR4 #1 完全闭合。
++
++### 2. Circular bootstrap 与 Spearman
++
++§4 L78 把时间轴冻结为半开 UTC 小时网格 `[t_1, t_n+1h)`，周长为 `(t_n-t_1)+1h`，消除了首尾 episode 映射到同一圆周点的问题。§4 L81-L83 使用
++
++```text
++off_i(u) = ((event_time_i - u) mod span)
++```
++
++定义块成员，并按 `off_i(u)` 而非绝对 `event_time` 对最后一块排序和截断，跨尾端回绕时仍从随机起点 `u` 向前保持正确顺序。
++
++§5 L97 不再称为标签置换，也不再独立重排 severity。它对 `(severity, CAR_48h)` 配对序列使用同口径 circular moving-block bootstrap，保留配对关系和时间依赖。
++
++该居中检验确实对应 `H0: rho=0`：观测检验统计量为 `rho_obs-0`，bootstrap 估计的抽样误差为 `rho*-rho_obs`；单侧尾部
++
++```text
++P_bootstrap(rho* - rho_obs >= rho_obs - 0)
++```
++
++正是 v5 冻结的计数式。它是依赖保持的 bootstrap 零假设检验，不是精确置换检验；按本关联快筛标尺足够且与所写零假设一致。
++
++因此 RR4 #2 完全闭合。
++
++### 3. WF
++
++§11 L160 的段长公式对三种余数情形给出唯一结果：
++
++| `n mod 3` | 三段长度 |
++|---:|---|
++| 0 | `(q, q, q)` |
++| 1 | `(q+1, q, q)` |
++| 2 | `(q+1, q+1, q)` |
++
++这与“余数先给第一段、再给第二段”一致。切点固定为相邻两 episode `event_time` 的算术中点；§12 L171 又冻结原始确定性排序为 `(event_time_utc, symbol)`，可处理同一时点跨品种 episode 的顺序。
++
++purge footprint 已从 v4 的 `event_time+48h` 改为 `[event_time-72h, align+48h]`，覆盖 §2 的入场对齐 lag；跨任一切点的 episode 从原段剔除，且明文禁止重新分段或重新等分。必要项出现 N.A. 时由 §11 L165 统一判 FAIL。
++
++未发现会改变 WF 判决的剩余实现自由度。因此 RR4 #3 完全闭合。
++
++### 4. Holdout
++
++§12 L172 冻结认证加密为 AES-256-GCM，并冻结文件布局、nonce/tag 长度和 tag 认证失败判据。密钥的安全属性也已完整写明：只存在于正式执行身份不可访问的主会话 secret、独立 OS principal 或 ACL 限定位置，且不得进入 Codex 可读文件、环境变量、命令行或日志。
++
++§12 L174 要求在正式执行身份下记录：
++
++1. manifest 读取命令及退出码 0；
++2. sealed 解密命令、非零退出码和密钥不可得/拒绝访问或 GCM 认证失败证据。
++
++这不再是“移出 workspace”的路径约定，而是“密文可见、解密能力由独立权限主体控制”的读权限边界。设计层面成立；若封存或负向测试未实际完成，则依 §11 L161-L165 不得放行。
++
++因此 RR4 #4 完全闭合。
++
++## v5 新结构与自由度审计
++
++| v5 修订 | 裁决 | 是否新增阻塞 |
++|---|---|---|
++| 半开 circular 网格 + offset 截断 | 首尾无重复，回绕排序与截断方向唯一 | 否 |
++| 配对 bootstrap + `rho` 居中 | 与 `H0: rho=0` 一致，保持配对和时间依赖 | 否 |
++| WF 中点切点 | 段长、排序、切点和 purge 后处理可复现 | 否 |
++| AES-256-GCM 文件格式 | 认证模式、布局、失败判据和密钥不可达属性明确 | 否 |
++
++发现两项非阻塞文控残留：
++
++- §9 L140-L141、§10 L148、§13 L185 仍写“本 v4”；这是版本文字残留，不改变任何统计或判决规则。
++- 文档日期 L5 为 2026-06-15，晚于本次审查日 2026-06-14；该项已存在于 v4，不是本轮方法修订引入的自由度。
++
++二者均不构成第五轮必改，也不需要重新开启方法学盲审。
++
++## 最终结论
++
++**APPROVED：可放行 Tier A 历史关联快筛。RR4 四项最小必改全部 CLOSED（4/4），未发现 v5 修订引入新的方法学、可复现性或权限阻塞。**
++
++放行边界：
++
++1. 只允许形成冻结可观测条件后的统计关联结论，不得声称强平、overshooting、因果或独立机制成立。
++2. 本快筛不耗独立 Alpha 计数。
++3. Tier A 通过不授予策略晋级、资金使用或机制确证资格。
++4. 执行前必须先按 §12 完成 AES-256-GCM Holdout 封存，并由正式执行身份完成、留存负向权限测试；任一未完成，不得计算事件后收益。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+tokens used
+76,920
+A1-RR5 已完成，结论 **APPROVED，4/4 CLOSED**。
+
+- [正式审查报告](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v5.md)
+- [执行报告](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/CODEX_TASKS/REPORT_A1_RR5.md)
+- [完成事件](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/TASK_INBOX/PROCESSED/A1_RR5_DONE.json)
+
+放行仅限 Tier A 历史关联快筛，执行前须完成 §12 加密封存和负向权限测试。
+
+未读取 Holdout 或 `01_MEMORY_CORE/`。因无权创建 `.git/index.lock`，无法提交 commit，已在执行报告留痕。
