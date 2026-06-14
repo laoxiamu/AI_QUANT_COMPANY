@@ -1,0 +1,9 @@
+{
+  "task_id": "A1_TIERA",
+  "completed_at": "2026-06-14T04:01:11Z",
+  "status": "blocked",
+  "verdict": null,
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_A1_TIERA.md",
+  "next_task": null,
+  "notes": "v5 §12 要求独立 custodian principal 持有 executor 不可读密钥；当前 Codex 无法写 ~/.aiquant_sealed 且不能由本进程生成密钥。代码与 17 项定向测试已完成，真实封存、权限测试和事件后收益均未运行；git 提交也因 .git/index.lock 无写权限未完成。"
+}

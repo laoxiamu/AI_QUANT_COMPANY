@@ -1,0 +1,11 @@
+A1 HOLDOUT NEGATIVE PERMISSION TEST
+tested_at_utc=2026-06-14T08:36:15Z
+manifest_command=/Library/Frameworks/Python.framework/Versions/3.13/bin/python3 -c import json; json.load(open('/Users/yaomingyu/Documents/AI_QUANT_COMPANY/06_RESEARCH/DATA/A1_WORK/A1_HOLDOUT_MANIFEST.json'))
+manifest_exit_code=0
+manifest_evidence=manifest readable; work_rows=156; sealed_rows=38
+manifest_stderr=
+decrypt_command=/Library/Frameworks/Python.framework/Versions/3.13/bin/python3 /Users/yaomingyu/Documents/AI_QUANT_COMPANY/06_RESEARCH/CODE/a1_tiera_permtest.py --decrypt-probe
+decrypt_exit_code=17
+decrypt_stdout=
+decrypt_stderr=key file inaccessible; decryption not attempted: PermissionError: [Errno 13] Permission denied: '/Users/yaomingyu/.aiquant_sealed/a1/a1_key.bin'
+overall=PASS

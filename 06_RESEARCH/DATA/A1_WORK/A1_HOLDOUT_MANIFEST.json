@@ -1,0 +1,67 @@
+{
+  "task_id": "A1_TIERA",
+  "generated_at_utc": "2026-06-14T08:16:03Z",
+  "cutoff_exclusive_utc": "2024-12-10T00:00:00Z",
+  "custodian": "main-session independent principal",
+  "split_rule": "sort (event_time_utc, symbol); every fifth row sealed",
+  "work_rows": 156,
+  "sealed_rows": 38,
+  "schema": [
+    "event_time_utc",
+    "symbol",
+    "oi_notional",
+    "d6h_pct",
+    "d6h_rolling_pctl",
+    "r6h_mark",
+    "severity",
+    "severity_code",
+    "funding_time_utc",
+    "funding_value",
+    "funding_rolling_pctl",
+    "a2_overlap",
+    "regime"
+  ],
+  "git_hash": "95a813244da9f8fa6c71eaea8f927d897433828d",
+  "generation_code_sha256": {
+    "a1_tiera_custodian.py": "2536a8ffec521504e32c830e9ab030d9d13b679602451f886e4ce91aadf0f59b",
+    "a1_tiera_core.py": "687a517e1ffd06cb844ff0a572febfb274b4c488a6c1447cccd6ca86c3c68662"
+  },
+  "work_plaintext_sha256": "9ac21af03d6ae68115e3f4bfef586275748269b095bbb7b22e7afecb6e7ed1c1",
+  "sealed_plaintext_sha256": "91b4757152384eca65f762deec5b7f36a23fbd2790b82c4d7ffb34ce11cd7c4b",
+  "sealed_ciphertext_sha256": "0b032d28b6f185283c9990482d630bf15631e01e338892c8b066bee68878b25d",
+  "cipher": "AES-256-GCM",
+  "format": "12B nonce || ciphertext || 16B GCM tag",
+  "key_location": "~/.aiquant_sealed/a1/a1_key.bin",
+  "unseal_condition": "Tier A PASS and Founder approval",
+  "one_time_use": {
+    "used": false,
+    "used_at_utc": null,
+    "approved_by": null,
+    "purpose": null
+  },
+  "source_audit": {
+    "BTCUSDT": {
+      "hourly_oi_rows": 37464,
+      "hourly_oi_missing": 22,
+      "trigger_rows": 260,
+      "episode_rows": 71
+    },
+    "ETHUSDT": {
+      "hourly_oi_rows": 26520,
+      "hourly_oi_missing": 10,
+      "trigger_rows": 184,
+      "episode_rows": 59
+    },
+    "SOLUSDT": {
+      "hourly_oi_rows": 26520,
+      "hourly_oi_missing": 10,
+      "trigger_rows": 208,
+      "episode_rows": 64
+    }
+  },
+  "implementation_differences": [
+    "Rebuilt from sum_open_interest_value; prior feature used sum_open_interest.",
+    "Warmup uses only the v5 d6h valid-day and valid-observation predicate.",
+    "Trigger includes the frozen r6h_mark < 0 condition before refractory."
+  ]
+}

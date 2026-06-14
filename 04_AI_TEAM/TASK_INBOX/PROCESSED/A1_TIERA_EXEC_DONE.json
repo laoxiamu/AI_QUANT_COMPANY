@@ -1,0 +1,9 @@
+{
+  "task_id": "A1_TIERA_EXEC",
+  "completed_at": "2026-06-14T09:08:17.668833Z",
+  "status": "completed",
+  "verdict": "FAILED",
+  "output_file": "06_RESEARCH/RESULTS/20260615_a1_tierA_screen.md",
+  "next_task": null,
+  "notes": "48h mean=0.013224768795590402; Holm p=0.31556844315568444; 判断=不支持继续投路径B前向确证。"
+}

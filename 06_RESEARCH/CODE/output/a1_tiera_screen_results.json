@@ -1,0 +1,310 @@
+{
+  "verdict": "FAILED",
+  "horizons": {
+    "24": {
+      "n": 154,
+      "estimate": 0.011425052619532106,
+      "raw_p": 0.0430956904309569,
+      "ci_low": -0.0018642996033255005,
+      "ci_high": 0.02257862991769321,
+      "replications": 10000,
+      "seed": 20260615
+    },
+    "48": {
+      "n": 152,
+      "estimate": 0.013224768795590402,
+      "raw_p": 0.11598840115988401,
+      "ci_low": -0.009527971617407139,
+      "ci_high": 0.032673734541495775,
+      "replications": 10000,
+      "seed": 20260615
+    },
+    "72": {
+      "n": 154,
+      "estimate": 0.020035790761433952,
+      "raw_p": 0.08209179082091791,
+      "ci_low": -0.00843260084363364,
+      "ci_high": 0.04537189114314164,
+      "replications": 10000,
+      "seed": 20260615
+    }
+  },
+  "monotonicity": {
+    "n": 152,
+    "estimate": 0.08267914322077335,
+    "raw_p": 0.15198480151984803,
+    "ci_low": -0.07345875884077754,
+    "ci_high": 0.2395761291005708,
+    "replications": 10000,
+    "seed": 20260615
+  },
+  "nonoverlap_48h": {
+    "n": 137,
+    "estimate": 0.014930266755777808,
+    "raw_p": 0.10518948105189481,
+    "ci_low": -0.009931702087696084,
+    "ci_high": 0.0354039108222668,
+    "replications": 10000,
+    "seed": 20260615
+  },
+  "overlap_48h": {
+    "n": 15,
+    "estimate": -0.002352112574121227,
+    "raw_p": 0.521047895210479,
+    "ci_low": -0.04893134646609644,
+    "ci_high": 0.04868342819536512,
+    "replications": 10000,
+    "seed": 20260615
+  },
+  "holm_adjusted_p": {
+    "car_48h": 0.31556844315568444,
+    "car_24h": 0.1723827617238276,
+    "monotonicity": 0.31556844315568444,
+    "nonoverlap_48h": 0.31556844315568444
+  },
+  "gates": {
+    "car_48h": "FAIL",
+    "car_24h": "FAIL",
+    "monotonicity": "FAIL",
+    "nonoverlap_48h": "FAIL"
+  },
+  "wf": {
+    "status": "PASS",
+    "lengths_before_purge": [
+      52,
+      52,
+      52
+    ],
+    "cutpoints": [
+      "2022-09-27T17:00:00Z",
+      "2023-10-11T06:30:00Z"
+    ],
+    "segments": [
+      {
+        "segment": 1,
+        "n_before_purge": 52,
+        "n_purged": 1,
+        "n_car": 51,
+        "mean_car_48h": -0.009167395770886615
+      },
+      {
+        "segment": 2,
+        "n_before_purge": 52,
+        "n_purged": 1,
+        "n_car": 49,
+        "mean_car_48h": 0.025103446427178065
+      },
+      {
+        "segment": 3,
+        "n_before_purge": 52,
+        "n_purged": 0,
+        "n_car": 50,
+        "mean_car_48h": 0.024426905041691725
+      }
+    ],
+    "positive_segments": 2
+  },
+  "p_overlap": 0.09615384615384616,
+  "overlap_rows": 15,
+  "nonoverlap_rows": 141,
+  "power": {
+    "24": [
+      {
+        "horizon_hours": 24,
+        "n": 154,
+        "event_days": 117,
+        "m_bar": 1.3162393162393162,
+        "icc": 0.0,
+        "n_eff": 154.0,
+        "sigma_pre_h": 0.038134507882459236,
+        "mde_80": 0.007640853246679633
+      },
+      {
+        "horizon_hours": 24,
+        "n": 154,
+        "event_days": 117,
+        "m_bar": 1.3162393162393162,
+        "icc": 0.2,
+        "n_eff": 144.83922829581994,
+        "sigma_pre_h": 0.038134507882459236,
+        "mde_80": 0.007878782612999381
+      },
+      {
+        "horizon_hours": 24,
+        "n": 154,
+        "event_days": 117,
+        "m_bar": 1.3162393162393162,
+        "icc": 0.5,
+        "n_eff": 132.97416974169744,
+        "sigma_pre_h": 0.038134507882459236,
+        "mde_80": 0.008222778189353727
+      }
+    ],
+    "48": [
+      {
+        "horizon_hours": 48,
+        "n": 152,
+        "event_days": 116,
+        "m_bar": 1.3103448275862069,
+        "icc": 0.0,
+        "n_eff": 152.0,
+        "sigma_pre_h": 0.053930338241797555,
+        "mde_80": 0.01087665674249178
+      },
+      {
+        "horizon_hours": 48,
+        "n": 152,
+        "event_days": 116,
+        "m_bar": 1.3103448275862069,
+        "icc": 0.2,
+        "n_eff": 143.11688311688312,
+        "sigma_pre_h": 0.053930338241797555,
+        "mde_80": 0.011209126802152004
+      },
+      {
+        "horizon_hours": 48,
+        "n": 152,
+        "event_days": 116,
+        "m_bar": 1.3103448275862069,
+        "icc": 0.5,
+        "n_eff": 131.5820895522388,
+        "sigma_pre_h": 0.053930338241797555,
+        "mde_80": 0.011690116181023105
+      }
+    ],
+    "72": [
+      {
+        "horizon_hours": 72,
+        "n": 154,
+        "event_days": 117,
+        "m_bar": 1.3162393162393162,
+        "icc": 0.0,
+        "n_eff": 154.0,
+        "sigma_pre_h": 0.06605090517405525,
+        "mde_80": 0.013234346036426738
+      },
+      {
+        "horizon_hours": 72,
+        "n": 154,
+        "event_days": 117,
+        "m_bar": 1.3162393162393162,
+        "icc": 0.2,
+        "n_eff": 144.83922829581994,
+        "sigma_pre_h": 0.06605090517405525,
+        "mde_80": 0.01364645178750521
+      },
+      {
+        "horizon_hours": 72,
+        "n": 154,
+        "event_days": 117,
+        "m_bar": 1.3162393162393162,
+        "icc": 0.5,
+        "n_eff": 132.97416974169744,
+        "sigma_pre_h": 0.06605090517405525,
+        "mde_80": 0.014242269603329876
+      }
+    ],
+    "nonoverlap_48h": [
+      {
+        "horizon_hours": 48,
+        "n": 137,
+        "event_days": 107,
+        "m_bar": 1.280373831775701,
+        "icc": 0.0,
+        "n_eff": 137.0,
+        "sigma_pre_h": 0.054249548440259095,
+        "mde_80": 0.011524442268525522
+      },
+      {
+        "horizon_hours": 48,
+        "n": 137,
+        "event_days": 107,
+        "m_bar": 1.280373831775701,
+        "icc": 0.2,
+        "n_eff": 129.72566371681415,
+        "sigma_pre_h": 0.054249548440259095,
+        "mde_80": 0.011843150536276619
+      },
+      {
+        "horizon_hours": 48,
+        "n": 137,
+        "event_days": 107,
+        "m_bar": 1.280373831775701,
+        "icc": 0.5,
+        "n_eff": 120.15573770491804,
+        "sigma_pre_h": 0.054249548440259095,
+        "mde_80": 0.012305745900245395
+      }
+    ]
+  },
+  "cost_diagnostic": {
+    "n_48h": 152,
+    "mean_net_car_48h_base": 0.010894325308748296,
+    "mean_net_car_48h_slip_030": 0.006894325308748298,
+    "mean_holding_funding_48h": -0.0016258555128205133
+  },
+  "symbol_regime_diagnostic": [
+    {
+      "symbol": "BTCUSDT",
+      "regime": "bear",
+      "n_48h": 16,
+      "mean_car_48h": 0.013084993099707674
+    },
+    {
+      "symbol": "BTCUSDT",
+      "regime": "bull",
+      "n_48h": 15,
+      "mean_car_48h": 0.0016756160257019792
+    },
+    {
+      "symbol": "BTCUSDT",
+      "regime": "unknown",
+      "n_48h": 20,
+      "mean_car_48h": 0.004025074669936943
+    },
+    {
+      "symbol": "ETHUSDT",
+      "regime": "bear",
+      "n_48h": 22,
+      "mean_car_48h": -0.009007576514595154
+    },
+    {
+      "symbol": "ETHUSDT",
+      "regime": "bull",
+      "n_48h": 13,
+      "mean_car_48h": 0.024769777306144086
+    },
+    {
+      "symbol": "ETHUSDT",
+      "regime": "unknown",
+      "n_48h": 13,
+      "mean_car_48h": 0.005375940156710798
+    },
+    {
+      "symbol": "SOLUSDT",
+      "regime": "bear",
+      "n_48h": 18,
+      "mean_car_48h": -0.00014497905902627494
+    },
+    {
+      "symbol": "SOLUSDT",
+      "regime": "bull",
+      "n_48h": 16,
+      "mean_car_48h": 0.02067784422699013
+    },
+    {
+      "symbol": "SOLUSDT",
+      "regime": "unknown",
+      "n_48h": 19,
+      "mean_car_48h": 0.06174766869919792
+    }
+  ],
+  "metadata": {
+    "task_id": "A1_TIERA_EXEC",
+    "generated_at_utc": "2026-06-14T09:08:17Z",
+    "seed": 20260615,
+    "bootstrap_replications": 10000,
+    "work_rows": 156,
+    "manifest_sha256": "95917a65fd1a4fb5bb5acd1ef0763ef8934f3692fff338ec59ae1001ac2576f6"
+  }
+}

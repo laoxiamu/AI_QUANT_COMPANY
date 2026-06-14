@@ -1,0 +1,17 @@
+{
+  "task_id": "PB1",
+  "completed_at": "2026-06-14T04:13:00Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_PB1.md",
+  "output_files": [
+    "06_RESEARCH/CODE/forward_liq/liq_parser.py",
+    "06_RESEARCH/CODE/forward_liq/forward_event_counter.py",
+    "06_RESEARCH/CODE/forward_liq/tests/test_liq_parser.py",
+    "06_RESEARCH/CODE/forward_liq/tests/test_forward_event_counter.py",
+    "06_RESEARCH/RESULTS/20260615_pb1_harness_selftest.md",
+    "06_RESEARCH/RESULTS/A1_FORWARD_EVENT_COUNT.md",
+    "04_AI_TEAM/CODEX_TASKS/REPORT_PB1.md"
+  ],
+  "next_task": null,
+  "notes": "Parser and readiness counter completed; 6 synthetic tests passed. Local LIQUIDATIONS had no JSONL, so formal count remains n=0/N/A. Commit was blocked because the managed workspace denied .git/index.lock writes."
+}
