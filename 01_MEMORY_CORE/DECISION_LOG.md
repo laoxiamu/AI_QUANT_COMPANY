@@ -98,6 +98,7 @@
 | DEC-072 | Phase 2执行层风控参数基线（DRAFT，关闭E4审计断点）| ACTIVE |
 | DEC-073 | 项目全周期决策记录规范：对话级建议须当场写入§1c，不得仅存于对话 | ACTIVE |
 | DEC-074 | OPERATING_MODEL_DESIGN_v2.md 产研三循环框架（R/S/E）初步确认，待优化 | ACTIVE |
+| DEC-075 | A-1 采两段式路径（历史关联快筛+前向真实强平确证）；TSMOM universe扩展暂缓优先A-1 | ACTIVE |
 | DEC-DEPRECATED-001 | 三方AI协作模式（OpenClaw + DeepSeek + | DEPRECATED |
 
 ## 本项目自身决策
@@ -1944,6 +1945,36 @@ L3 紧急审计：
 来源：Claude(CTO)接受E4 Codex专业异议后主动裁决；Codex审计驱动
 影响范围：Phase 2 Decision Gateway风控规则；E2/E4模块设计文档；实盘上线审计链
 状态：ACTIVE（DRAFT参数部分，Phase 2实施时须单独冻结DEC）
+```
+
+---
+
+**[DEC-075]**
+```
+决策内容：A-1 研究路径两段式 + TSMOM universe 扩展暂缓（Founder "按推荐继续" 确认）
+  背景：A-1 预登记经独立 Risk Reviewer 三轮盲审（v1→v2→v3 全 NOT APPROVED）。
+       RR3 关键裁定=不可约性：仅"用历史 OI 骤降+同窗负收益干净识别多头强平方向/做因果归因"
+       是历史样本物理不可约（无历史真实强平名义额，价格代理必混入主动减仓/宏观普跌/普通反转）；
+       其余（依赖稳健 block bootstrap、功效门治理、Holm m 冲突、WF 切点、真 Holdout 保管）均可修复。
+  1. A-1 采【两段式】（CTO 推荐，Founder 确认）：
+     - 路径A（先行·历史关联快筛）：修订 v4 闭 RR3 五项机械/治理必改，
+       并把 Tier A 严格改名为"可观测条件回弹【关联】（探索级）"——
+       明确【不声称强平/overshooting 机制成立】，因此【不耗独立 Alpha 计数】（非机制确证实验）。
+       目的：fail-fast 快筛"OI 骤降+负收益后是否存在条件回弹 edge"；平→毙 A-1 省 6 个月，正→才投前向。
+     - 路径B（并行·机制忠实确证）：转前向真实强平名义额（采集器 2026-06-13 起，首个明确 alpha 用途）
+       做方向识别，累积 3-6 月后另立新预登记重新盲审；此路径才允许声称强平机制并耗独立计数。
+  2. Protocol v1.4 功效门治理澄清（随 v4）：历史关联快筛=机制前诊断、不耗独立计数，
+     故 Protocol §六"耗独立计数实验须预设 MDE 硬门"不强制约束之；快筛功效降为报告型诊断。
+     该澄清以 Protocol 增补件留痕（版本号递增），不私自废止上位规则。
+  3. Holdout 真权限保管（随 v4）：sealed holdout 以主会话持有密钥【加密】存储，
+     执行身份（Codex workspace-write）无密钥不可解密；留负向权限测试记录。仅移出 workspace 不足（RR3 核查）。
+  4. TSMOM universe 扩展【暂缓】，优先 A-1（CTO 推荐，Founder 确认）：
+     扩样本只解决 DD、不解决 TSMOM 核心"无可行定仓"；DEC070 审计显示本地数据连 quote volume 都缺、
+     float 市值比/OI 市值比两过滤需外部历史数据（Binance OI REST 仅近 1 月），数据成本叠加、性价比低。
+决策时间：2026-06-14（深夜 CTO 三轮盲审收敛）→ 2026-06-15 Founder "按推荐继续" 确认
+来源：Claude(CTO) 三轮独立盲审闭环 + RR3 不可约性裁定 + Founder 整包确认
+影响范围：A-1 研究路径与计数纪律、Protocol 功效门适用边界、Holdout 保管方式、TSMOM 优先级、采集器 alpha 用途
+状态：ACTIVE
 ```
 
 ---
