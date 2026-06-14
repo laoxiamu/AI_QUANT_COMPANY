@@ -12,7 +12,7 @@
 | 槽位 | 当前值 |
 |---|---|
 | **阶段** | Phase 1（找真实 edge）。公司 OS **原则层已冻结**（DEC-068②/069②：目标函数/两层资本/机制优先/验收纪律/权威层级）；机会地图与运行层 = v0.x 可迭代，运行层升 v1 条件="连续14天定时任务零卡死+state_check零漂移" |
-| **机会地图** | 见 `00_PROJECT_MANAGEMENT/OPPORTUNITY_MAP_STATUS.md`（DEC-069③）：TSMOM=**Baseline**｜A-1=Conditional（四门）｜A-4=Candidate｜carry=核算中｜funding/OI=状态变量｜A-2=**Dead** |
+| **机会地图** | 见 `OPPORTUNITY_MAP_STATUS.md`：TSMOM=**Baseline**｜**A-1独立回弹=Dead（2026-06-15历史快筛FAILED，48h+1.32% Holm p=0.32不显著；OI信号降级为carry风控触发候选；前向路径休眠免费期权）**｜**carry=最高优先活体方向（升主线，下一步起草正式预登记含A-1×Carry交互）**｜A-4=Candidate｜funding/OI=State｜A-2=Dead |
 | **失败计数（DEC-069①）** | 旧范式 5 条封账（历史合计 11 次失败存档）；**新范式独立计数=1**（a2，2026-06-11）；计数=L3触发器（每+2触发复评）。**项目主闸=时间盒（2026-06-07 重置起 6 个月无 edge）+成本盒（5000 元，已用 871.93）+L3 裁量** |
 | **Holdout** | 全部封存完好（含 a2 事件级 Holdout 218 条）；任何实验未读取 |
 | **验收口径** | **v1.3/v1.4 增补件已完成**（§一~§九：四件套+成本压力档+相关性+事件规则+第五件基准对照+MDE功效门+AI三行+叙事纪律+自动化边界），文件 `06_RESEARCH/RESEARCH_PROTOCOL_v1.3_ADDENDUM.md` |
