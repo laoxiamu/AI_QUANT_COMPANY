@@ -1,0 +1,9 @@
+{
+  "task_id": "A1_RR4",
+  "completed_at": "2026-06-14T03:23:01Z",
+  "status": "completed",
+  "output_file": "06_RESEARCH/PREREGISTRATIONS/A1_RISK_REVIEW_v4.md",
+  "review_conclusion": "NOT APPROVED",
+  "conditions_closed": "2/5",
+  "notes": "功效治理与Holm family闭合；关联措辞、Spearman依赖检验、WF切点/purge及加密密钥边界仍需最小修订。未读取HOLDOUT或运行事件研究。git提交因执行沙箱无权写.git/index.lock而未创建。"
+}
