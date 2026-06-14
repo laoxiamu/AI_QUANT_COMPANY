@@ -1081,3 +1081,10 @@ cf91c54 A-1预登记v2→v3三轮盲审闭环+D2/A1-RR验收+E2验收+跨对话�
 1edc5a2 accept universe+carry; map+protocol v1.4(+§9); dual-engine erratum+dispatch; lint v2 (intercept reads not mentions)
 dd66fcc DEC-069: adjudication package executed — counting reform, map restated (OPPORTUNITY_MAP_STATUS), CURRENT_STATE v4.0 board, narrative decontamination; dispatch universe+carry
 
+codex
+证据对照已完成。初步裁决不是“机制实验标准加码”，而是关联结论自身仍有三处直接问题：§5 所称标签“置换”实际是有放回块重采样，检验的是独立性而非所写复合零假设 `ρ=0`；§11 的 purge 未纳入 §4 已承认的对齐 lag，且切点时刻未定义；§12 的加密边界方向正确，但只写 `AES-256` 尚未冻结认证模式和可审计解密失败条件。接下来我会把这些区分为真阻塞与非阻塞残留。
+允许材料与证据行已核对，进入方法学裁决和最小整改边界整理。
+  ✓ 读取允许文件并建立 RR3 五项证据对照
+  → 评估 v4 新结构的缺陷与自由度
+  • 写 A1_RISK_REVIEW_v4.md 与完成事件
+  • 校验输出并提交 A1_RR4 commit

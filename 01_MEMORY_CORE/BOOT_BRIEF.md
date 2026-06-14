@@ -19,7 +19,7 @@ Phase 1。公司 OS **原则层已冻结**。A-2 已死（新范式第1败）。
 
 机制优先七问（含"付的钱经什么路径到我口袋"）；预登记+单变量+WF+Holdout物理封存；事件类按 v1.3 增补件（池化+单调性+成本压力档）；**预登记须含 MDE 功效段、验收含同状态被动基准对照（v1.4 已完成）**；不显著点估计禁作方向结论（墓园禁引用措辞字段）。新假设先查 `06_RESEARCH/GRAVEYARD_INDEX.md`。
 
-## 在途与等待（2026-06-14 深夜，Founder委托CTO自主推进）
+## 在途与等待（2026-06-15，DEC-075后）
 
 - **B1-B5 全部验收完成**：B1 FAILED（TSMOM 定仓穷尽）｜B2通过（P1-06第五件更正True，墓园已改）｜B3通过（A-4 2023+数据可得率99%）｜B4通过（A-1功效门预判通过，n=163）｜B5通过（Mac侧无解确认）。
 - **C1 完成（2026-06-13）**：83/88 TSMOM universe 候选可构建（onboard≤2021-06-30）——universe ≥20 币数据层无障碍，D 级讨论所需探针已就绪。
@@ -58,8 +58,8 @@ Phase 1。公司 OS **原则层已冻结**。A-2 已死（新范式第1败）。
 
 ## 细节指针
 
-CURRENT_STATE v4.0（看板）｜**§1b=活动工作区（Claude对话级在途，每次开局必查，有内容即恢复上次任务）**｜DECISION_LOG（索引→**DEC-072为最新**）｜OPPORTUNITY_MAP_STATUS｜直调配方 04_AI_TEAM/CODEX_DIRECT_CALL_RUNBOOK｜启动协议见 CLAUDE.md v2.4。
+CURRENT_STATE v4.0（看板）｜**§1b=活动工作区（Claude对话级在途，每次开局必查，有内容即恢复上次任务）**｜DECISION_LOG（索引→**DEC-075为最新**）｜OPPORTUNITY_MAP_STATUS｜直调配方 04_AI_TEAM/CODEX_DIRECT_CALL_RUNBOOK｜启动协议见 CLAUDE.md v2.4。
 **新协议**：Codex完成任务→写04_AI_TEAM/TASK_INBOX/{ID}_DONE.json→15min调度器自动拾取→派发下一步（见TASK_INBOX/README.md）。
 
 **§1b 制度**：Founder 主动打断对话时，Claude 在结束前必须更新 §1b（已完成什么、剩余什么、恢复点在哪）。新对话开局如 §1b 有内容，优先恢复，不重新分析。
-**§1c 制度（DEC-073）**：对话中 Claude 提出的任何建议须当场写入 §1c；Founder 确认→升入§4；否决→清除；未响应=下次开局必提。**DECISION_LOG 最新=DEC-073**（全周期决策记录规范）。
+**§1c 制度（DEC-073）**：对话中 Claude 提出的任何建议须当场写入 §1c；Founder 确认→升入§4；否决→清除；未响应=下次开局必提。DEC-073=全周期决策记录规范（§1c制度来源）；**最新=DEC-075**。
