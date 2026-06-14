@@ -1,0 +1,11 @@
+{
+  "task_id": "CARRY_RR2",
+  "completed_at": "2026-06-14T13:05:12Z",
+  "status": "completed",
+  "output_file": "06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v2.md",
+  "report_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR2.md",
+  "review_conclusion": "NOT APPROVED",
+  "conditions_closed": "2/8",
+  "next_task": null,
+  "notes": "研究身份降级与审计元数据闭合；资本/N恒等式、OI单腿减仓、1H强平路径bootstrap、事件清单及前向shadow确认门仍未闭合。未读取Holdout或01_MEMORY_CORE，未改预登记，未跑回测。git commit因.git/index.lock权限被拒未完成。"
+}
