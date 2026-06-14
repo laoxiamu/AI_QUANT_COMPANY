@@ -1,0 +1,10 @@
+{
+  "task_id": "CARRY_RR3",
+  "completed_at": "2026-06-14T13:38:27Z",
+  "status": "completed",
+  "review_conclusion": "NOT APPROVED",
+  "conditions_closed": "4/6",
+  "output_file": "06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md",
+  "next_task": null,
+  "notes": "RR2 remaining conditions closed 4/6. Capital/USD-USDT accounting and exact 1H synthetic liquidation-path reconstruction remain partial; trade-hour PnL accounting is a new blocker. Historical feasibility review is not released."
+}
