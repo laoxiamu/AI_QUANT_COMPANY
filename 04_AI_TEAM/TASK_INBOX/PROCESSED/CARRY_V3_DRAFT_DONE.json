@@ -1,0 +1,10 @@
+{
+  "task_id": "CARRY_V3_DRAFT",
+  "completed_at": "2026-06-14T13:22:13Z",
+  "status": "completed",
+  "output_file": "06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v3.md",
+  "report_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_V3_DRAFT.md",
+  "items_closed": 6,
+  "next_task": null,
+  "notes": "v3完整自包含草案已闭合资本/N恒等式、OI双腿减仓、逐1H强平bootstrap、精确事件清单、前向shadow一次性确认门及RR2其余执行歧义。未读Holdout/01_MEMORY_CORE，未跑回测，未改核心重构；须由独立Reviewer另轮盲审，本轮不自审通过。"
+}
