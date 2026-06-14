@@ -1,0 +1,15 @@
+{
+  "task_id": "CARRY_SCAFFOLD",
+  "completed_at": "2026-06-14T10:47:20Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_SCAFFOLD.md",
+  "output_files": [
+    "06_RESEARCH/CODE/carry/",
+    "06_RESEARCH/RESULTS/20260615_carry_scaffold_selftest.md",
+    "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_SCAFFOLD.md"
+  ],
+  "tests_passed": true,
+  "test_command": "PYTHONDONTWRITEBYTECODE=1 python3 -m pytest 06_RESEARCH/CODE/carry/tests -q",
+  "next_task": null,
+  "notes": "25 synthetic tests passed. No Holdout or 01_MEMORY_CORE access; no real-data acceptance values or edge conclusion produced."
+}

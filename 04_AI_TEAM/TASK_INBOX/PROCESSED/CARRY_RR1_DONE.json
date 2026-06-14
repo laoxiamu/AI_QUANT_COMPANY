@@ -1,0 +1,20 @@
+{
+  "task_id": "CARRY_RR1",
+  "completed_at": "2026-06-14T09:32:31Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR1.md",
+  "review_file": "06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v1.md",
+  "review_conclusion": "NOT APPROVED",
+  "conditions": [
+    "将已披露工作集降为探索数据，并冻结独立确认或前瞻 shadow 晋级门",
+    "唯一化 venue、价源、名义、资本分母、再平衡与保证金强平账本",
+    "闭合 OI 触发状态机、配对非劣检验和唯一尾部硬门",
+    "逐腿计完整成本并加入 0.3%/0.5%/1.0% 事件压力与 basis/ADL/脱锚",
+    "补齐赢亏比、分档爆仓概率、log growth、同步块 bootstrap、WF 与 N.A.=>FAIL",
+    "预登记 n_eff、合理净 edge 上限与 MDE，功效不足则不得耗独立计数",
+    "冻结事件 UTC 窗口、路径级短腿强平和永久不可读 Holdout 权限边界",
+    "校正未来日期并补 Protocol v1.4 AI 证据及结果驱动选择留痕"
+  ],
+  "next_task": null,
+  "notes": "八维评级为 B/D/D/D/D/D/C/D。未读取 Holdout、01_MEMORY_CORE 或引用的实证报告，未修改预登记，未运行回测。git commit 因无法创建 .git/index.lock（Operation not permitted）未完成。"
+}
