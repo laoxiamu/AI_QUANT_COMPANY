@@ -40,13 +40,27 @@
 
 月预算约 1000 元｜Founder 时间约 1h/天、只批 D 级、无技术背景｜本金上限 30,000（DEC-015 阶梯）｜首要行为风险=风险B/C（治理膨胀/停留讨论层）
 
-## 4. 下一步（执行序，2026-06-15 更新，A-1 Dead 后 carry 主线）
+## 4. 任务计划台账（单一持久来源·四态齐全，2026-06-15）
 
-1. 【Claude验收·进行中】carry v3(Codex起草,闭RR2六项)出→CTO验收→派独立盲审CARRY-RR3→迭代至APPROVED→custodian封Holdout→用已就绪脚手架(25单测)跑**历史可行性复核**(不耗计数/不上线核心资本)。
-2. 【确认·进行中】采集器修复(Codex danger-full-access,经住宅代理绕Binance云IP封锁)结果→成则路径B免费期权激活被动攒数据,不成报告托管选项。
-3. 【前向·待carry过历史复核】carry前向shadow确认协议(纸面跑攒独立月)→达确认门→DEC-069证据等级解锁小额真金(D级,Founder)。
-4. 【等Founder D级】审阅 `OPERATING_MODEL_DESIGN_v2.md`。
-5. 空头:独立机制另案(先查墓园);Sweep做空已封账不复活。A-4=Candidate第8命排队;A-1前向真实强平=休眠免费期权。
+> 本节=项目持久任务计划（Cowork任务widget仅会话级辅助、不持久、无废弃态，不作准）。状态：🟢进行中/⚪待执行/✅已完成里程碑/⛔已废弃(→墓园)。
+
+**🟢 进行中（Codex nohup）**
+1. carry v4 起草（闭 RR3 剩余:资本USDT计价账/1H强平路径/交易小时PnL）→ 完成派 CARRY-RR4。
+2. 采集器一行修复（WS_URL→`/market/ws/`,根因=Binance 2026-04-23路由迁移非封IP）+ 验证收帧。
+
+**⚪ 待执行（链路）**
+3. carry v4→RR4→收敛APPROVED→custodian封Holdout→脚手架(25单测)跑**历史可行性复核**(不耗计数/不上线)。
+4. carry过历史复核→设计**前向shadow确认协议**(纸面攒独立月)→达门→DEC-069证据等级解锁小额真金(**D级·Founder**)。
+5. 采集器修好→路径B免费期权激活被动攒强平数据(就绪门倒计时)。
+6. 【等Founder D级】审阅 `OPERATING_MODEL_DESIGN_v2.md`。
+7. A-4=Candidate第8命排队；空头独立机制另案(先查墓园)。
+
+**✅ 已完成里程碑（本阶段）**
+- A-1路径A五轮盲审APPROVED→Tier A执行→FAILED→判Dead（见⛔）。DEC-075落账。E2验收。DEC070审计。跨对话回收。state-sync全量对齐(§1b/§4/§1c/§等待Founder)。采集器根因查实纠正。
+
+**⛔ 已废弃（→GRAVEYARD_INDEX + OPPORTUNITY_MAP，不复活）**
+- A-1独立回弹(2026-06-15 FAILED,Holm p=0.32)｜A-2 funding反转｜Sweep形态(多头无可部署/做空失败)｜TSMOM引擎S镜像做空/v2风险预算｜裸卖VRP｜TSMOM universe扩展(DEC-075暂缓,非废弃但不推进)。
+- **A-1前向真实强平=休眠免费期权（非废弃,待采集器攒数据+无更优方向才重启）。**
 
 ## 5. 启动协议
 

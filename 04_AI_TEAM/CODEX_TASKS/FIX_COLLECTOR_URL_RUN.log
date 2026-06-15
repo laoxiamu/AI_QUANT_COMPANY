@@ -1549,3 +1549,540 @@ exec
 04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:35999:+        "e": "forceOrder",
 04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:36114:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
 
+2026-06-15T00:34:06.516057Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+codex
+本地已有 `VERIFY-V462` 根因报告，当前工作区还带有用户未提交的状态文件和 run log；我会保留它们，不纳入本任务提交。下一步先读取任务书/既有报告格式，然后对远端做只读基线检查，包含红线服务状态。
+exec
+/bin/bash -lc "sed -n '1,240p' 04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+# FIX-COLLECTOR-URL：采集器一行修复（Binance WS 路由迁移，已查实）
+
+**调用：** `--sandbox danger-full-access`（需 SSH）。
+**已查实根因（VERIFY-V462）：** 非IP封锁；Binance 2026-04-23 WS 路由迁移。旧 `wss://fstream.binance.com/ws/!forceOrder@arr`→0帧；新 `wss://fstream.binance.com/market/ws/!forceOrder@arr`→立即收帧（同机已验 3 帧）。
+**SSH：** `sshpass -p "$(cat ~/.aiquant_sealed/sg_pass)" ssh -o StrictHostKeyChecking=no root@43.160.200.224 "<cmd>"`。**禁浏览器。红线：danted/v4-proxy 不能停；只动 aiquant-liq-collector。**
+
+## 任务
+1. 备份 `/opt/ai_quant_liq_collector/liquidation_collector.py` 为 `.bak.20260615`。
+2. 把 `WS_URL` 从 `wss://fstream.binance.com/ws/!forceOrder@arr` 改为 `wss://fstream.binance.com/market/ws/!forceOrder@arr`（仅改这一行；其余逻辑不动）。
+3. `systemctl restart aiquant-liq-collector`。
+4. **验证**：2-3 分钟内 collector.log 出现 `[message]`、`process_messages>0`、`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_YYYYMMDD.jsonl` 出现且行数增长；贴日志+样本首行证据（确认含 `o.S` side 字段）。
+5. 若新路由仍 0 帧→回滚 .bak，报告并改用 VERIFY-V462 的 REST 方案备选（`/fapi/v1` futures REST 轮询强平/OI）。
+
+## 安全：**不要把任何 API key / 密码写入报告或 commit**；若 run 日志混入服务器上无关服务的凭据，脱敏，且该 run 日志不纳入 git。
+## 完成写 `04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json`(task_id=FIX_COLLECTOR_URL,fixed=yes/no,frames_after=N,notes)。报告 `REPORT_FIX_COLLECTOR_URL.md`。
+
+exec
+/bin/bash -lc "sed -n '1,260p' 04_AI_TEAM/CODEX_TASKS/REPORT_VERIFY_V462.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+# REPORT_VERIFY_V462
+
+## 结论
+
+- 任务状态：`completed`
+- v4.6.2 路径：`/opt/v4`
+- v4.6.2 当前收数：`no`
+- 判定：`v4.6.2方法可用`
+- 根因：**不是 Binance 封锁 SG IP，而是采集器仍使用 2026-04-23 已退役的 futures WS 旧路由。**
+
+同一台 SG、同一 `websocket-client 1.7.0` 的差分结果：
+
+| 地址 | 时长 | 结果 |
+|---|---:|---:|
+| `wss://fstream.binance.com/ws/btcusdt@aggTrade` | 10 秒 | 握手成功，0 帧 |
+| `wss://fstream.binance.com/market/ws/btcusdt@aggTrade` | 1.107 秒 | 3 帧 |
+| `wss://fstream.binance.com/ws/!forceOrder@arr` | 15 秒 | 握手成功，0 帧 |
+| `wss://fstream.binance.com/market/ws/!forceOrder@arr` | 2.649 秒 | 3 帧 |
+
+旧 URL 的“握手后 0 帧”是 Binance 路由迁移后的预期行为，不能作为 IP 封锁证据。
+
+## 1. v4.6.2 定位
+
+- systemd unit：`v4-strategy-runner.service`
+- unit 描述：`V4.6.2 Strategy Runner`
+- 工作目录：`/opt/v4/strategy`
+- 启动文件：`/opt/v4/strategy/strategy_runner.py`
+- 源码版本标记：`strategy_runner.py`、`data_fetcher.py`、`config.py` 均声明 `V4.6.2`
+- 源码 SHA-256：
+  - `data_fetcher.py`：`723bd8803a3e5333f3e48030b718a275691ef0dadf90f562a90bbb56cd2c4abe`
+  - `strategy_runner.py`：`8ed05231c3bbb57e3aebe9a34c7d2d20b1feb7ed3fff29d4bb0b92496804af11`
+  - `config.py`：`096ebc6882e22f90613e02aa11bedf31caf3c4e67bd3c29c9ae42a96d0e9f5ab`
+
+当前状态：
+
+- `v4-strategy-runner.service`：`inactive/disabled`
+- `v4-proxy.service`：`inactive/disabled`，本任务未操作
+- `danted.service`：`active/enabled`，本任务未操作
+- 未发现容器、cron 或其他进程替代运行 `strategy_runner.py`
+
+## 2. 币安数据源
+
+v4.6.2 使用 **Binance USD-M futures 公共 REST**，不是 WebSocket：
+
+- Base：`https://fapi.binance.com/fapi/v1`
+- 客户端：Python `requests.get(..., timeout=10)`
+- `ticker/24hr`：全市场 24 小时行情，进程内缓存 60 秒
+- `klines`：每币种 30 根 K 线，进程内缓存 120 秒
+- `ticker/price`：最新价，缓存 10 秒
+- `depth`：订单簿，缓存 5 秒
+- `trades`：近期成交，缓存 3 秒
+- 策略调度：每小时扫描一次
+
+鉴权和出网：
+
+- 无 Binance API key、签名或 listen key。
+- 源码未设置 HTTP/SOCKS proxy。
+- systemd unit 无 proxy 环境变量。
+- 直接从 SG 公网出口访问 Binance REST；`danted` 是入站代理，不在 v4.6.2 请求链上。
+- `v4-proxy.service` 是模型代理，不是 Binance 行情代理。
+
+## 3. 历史与当前活跃性
+
+v4.6.2 **历史上确实持续取得 Binance 数据**，但当前未运行：
+
+- 策略日志最后一轮：`2026-06-13T08:46:06.696Z`
+- `signals` 表：3,469 行，最大时间戳 `2026-06-13T08:46:06.690Z`
+- 最后信号包含当时的 BTC/ETH/SOL 实时入场价。
+- systemd 停止时间：`2026-06-13T09:45:54Z`
+- 停止后 `signals` 无新增。
+
+`health_checks` 和 `system_metrics` 仍在由 cron 写入，最大时间分别为
+`2026-06-14T13:30:02.198Z` 和 `2026-06-14T13:46:02.184Z`；这些不是币安行情数据，不能据此认定策略仍在收数。
+
+## 4. 同款 REST 探针
+
+探针时间：`2026-06-14T13:47:14Z`，SG 直连、无代理、无鉴权。
+
+| 请求 | HTTP | 现场证据 |
+|---|---:|---|
+| `/fapi/v1/ticker/24hr?symbol=BTCUSDT` | 200 | 返回实时价格与 closeTime |
+| `/fapi/v1/klines?symbol=BTCUSDT&interval=1m&limit=2` | 200 | 返回 2 根最新 K 线 |
+| `/fapi/v1/depth?symbol=BTCUSDT&limit=5` | 200 | 返回 5 档 bid/ask |
+| `/fapi/v1/trades?symbol=BTCUSDT&limit=2` | 200 | 返回最新成交 |
+| `/fapi/v1/openInterest?symbol=BTCUSDT` | 200 | 返回当前 OI |
+| `/fapi/v1/fundingRate?symbol=BTCUSDT&limit=1` | 200 | 返回最近 funding |
+| `/futures/data/openInterestHist?symbol=BTCUSDT&period=5m&limit=2` | 200 | 返回历史 OI |
+
+因此“Binance 封整个 SG IP”明确为假。
+
+## 5. WS 根因
+
+Binance 官方在 2026-04-23 后将 futures WS 拆分为：
+
+- `/public`：高频订单簿等
+- `/market`：`aggTrade`、ticker、kline、mark price、`forceOrder`
+- `/private`：用户数据
+
+未带路由的旧连接只会收到 `/public` 类 stream；`aggTrade` 和 `forceOrder`
+在旧 URL 上仍可握手，但不会推送。
+
+官方依据：
+
+- https://developers.binance.com/docs/derivatives/usds-margined-futures/websocket-market-streams
+- https://developers.binance.com/docs/derivatives/usds-margined-futures/websocket-market-streams/Important-WebSocket-Change-Notice
+- https://developers.binance.com/docs/derivatives/usds-margined-futures/websocket-market-streams/All-Market-Liquidation-Order-Streams
+
+## 6. 采集器修复路径
+
+最小修复只有一处：
+
+```python
+WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+```
+
+适用文件：
+
+- 本地：`06_RESEARCH/CODE/liquidation_collector.py`
+- 远端：`/opt/ai_quant_liq_collector/liquidation_collector.py`
+
+不需要 Binance API key，不需要住宅代理，也不需要 `danted` 出网。
+新路由消息仍是顶层 `forceOrder` 对象，现有原始 JSONL 写入和
+`forward_liq/liq_parser.py` 的字段约定兼容。
+
+建议在独立修复任务中执行部署和重启，验收顺序：
+
+1. 先用 `/market/ws/btcusdt@aggTrade` 确认 10 秒内有帧。
+2. 改为 `/market/ws/!forceOrder@arr` 后重启采集器。
+3. 2 分钟内确认 `process_messages > 0`、`last_message_utc` 非空且当日 JSONL 行数增长。
+4. 保留小时 heartbeat，以真实帧和文件增量为健康标准。
+
+OI/funding 可直接使用上述公共 REST 端点。`GET /fapi/v1/forceOrders`
+查询的是已鉴权账户自身的强平/ADL 订单，不是全市场强平流，不能替代
+`!forceOrder@arr`。
+
+## 7. 红线与验收自检
+
+- [x] 定位并确认 v4.6.2 目录、unit 和版本。
+- [x] 确认 REST/futures、端点、鉴权、代理和频率。
+- [x] 用日志与 DB 最大时间戳区分历史收数和当前停服。
+- [x] 完成同机 REST 及旧/新 WS 差分探针。
+- [x] 给出强平、OI、funding 的具体修复路径。
+- [x] 未启动、停止、重启或修改任何远端服务和文件。
+- [x] 未触碰 `danted`、v4.6.2、Holdout 或研究数据。
+- [x] 未写入或提交 SSH 密码、代理凭据或 API key。
+
+exec
+/bin/bash -lc 'cat 04_AI_TEAM/TASK_INBOX/PROCESSED/VERIFY_V462_DONE.json' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+{
+  "task_id": "VERIFY_V462",
+  "completed_at": "2026-06-14T13:49:34Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_VERIFY_V462.md",
+  "next_task": null,
+  "v462_path": "/opt/v4",
+  "binance_source": "REST+futures+https://fapi.binance.com/fapi/v1 (ticker/24hr, klines, ticker/price, depth, trades); SG direct, unauthenticated, no proxy",
+  "currently_active": "no",
+  "verdict": "v4.6.2方法可用",
+  "fix_path": "Change liquidation collector WS_URL to wss://fstream.binance.com/market/ws/!forceOrder@arr; no API key or proxy required. Use /fapi/v1/openInterest, /futures/data/openInterestHist, and /fapi/v1/fundingRate for OI/funding REST data.",
+  "notes": "v4.6.2 historically fetched Binance futures REST through 2026-06-13T08:46:06Z but is currently stopped. Same-host differential probe: legacy unrouted aggTrade/forceOrder opened with 0 frames; routed /market endpoints returned 3 frames immediately. Root cause is Binance's 2026-04-23 WS route migration, not an IP ban. Production was not modified."
+}
+
+exec
+/bin/bash -lc 'git status --short --untracked-files=all' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+ M 04_AI_TEAM/CODEX_TASKS/CARRY_V4_DRAFT_RUN.log
+ M 04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL_RUN.log
+
+2026-06-15T00:34:31.708094Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+exec
+/bin/bash -lc 'sshpass -p "$(cat ~/.aiquant_sealed/sg_pass)" ssh -o StrictHostKeyChecking=no root@43.160.200.224 '"'bash -s' <<'REMOTE'
+set -eu
+printf '%s\\n' '=== utc ==='
+date -u +'%Y-%m-%dT%H:%M:%SZ'
+printf '%s\\n' '=== protected services ==='
+for svc in danted.service v4-proxy.service; do printf '%s=' \""'$svc"; systemctl is-active "$svc" || true; done
+printf '"'%s\\n' '=== collector service ==='
+systemctl is-active aiquant-liq-collector.service || true
+systemctl show aiquant-liq-collector.service -p ActiveEnterTimestamp -p MainPID --no-pager
+printf '%s\\n' '=== current WS_URL ==='
+grep -n '"'^WS_URL[[:space:]]*='"' /opt/ai_quant_liq_collector/liquidation_collector.py
+printf '%s\\n' '=== backup status ==='
+if [ -e /opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615 ]; then ls -l /opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615; else echo 'missing'; fi
+printf '%s\\n' '=== current data files/counts ==='
+find /opt/ai_quant_liq_collector/data/LIQUIDATIONS -maxdepth 1 -type f -name 'liq_*.jsonl' -print -exec wc -l {} \\; 2>/dev/null || true
+printf '%s\\n' '=== recent collector log ==='
+tail -n 30 /opt/ai_quant_liq_collector/collector.log 2>/dev/null || true
+REMOTE" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 8167ms:
+=== utc ===
+2026-06-15T00:34:53Z
+=== protected services ===
+danted.service=active
+v4-proxy.service=inactive
+=== collector service ===
+active
+MainPID=2550847
+ActiveEnterTimestamp=Sat 2026-06-13 17:43:04 CST
+=== current WS_URL ===
+15:WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+=== backup status ===
+missing
+=== current data files/counts ===
+=== recent collector log ===
+
+2026-06-15T00:35:06.824068Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+codex
+远端基线与根因一致：采集器仍是旧 URL，服务 active 但无强平 JSONL；`danted` 保持 active，`v4-proxy` 原本就是 inactive，本任务不会操作它。`collector.log` 指定路径当前为空，我正在确认 unit 的实际日志/工作目录，避免把验收证据取错位置。
+本地任务上下文与既有根因报告已核对；远端确认旧 URL、无 JSONL、collector active，继续定位实际日志路径后执行单行修复。
+  ✓ 检查本地任务上下文、git 状态与报告惯例
+  → 远端确认旧 URL、服务状态和修复前症状
+  • 备份并仅替换 WS_URL，重启 collector
+  • 轮询验证消息、计数、数据文件增长及 side 字段
+  • 写报告与 TASK_INBOX，检查 diff 并提交任务 commit
+2026-06-15T00:36:00.454730Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+exec
+/bin/bash -lc 'sshpass -p "$(cat ~/.aiquant_sealed/sg_pass)" ssh -o StrictHostKeyChecking=no root@43.160.200.224 '"'bash -s' <<'REMOTE'
+set -eu
+printf '%s\\n' '=== unit ==='
+systemctl cat aiquant-liq-collector.service
+printf '%s\\n' '=== relevant code paths/counters ==='
+grep -nE 'WS_URL|collector\\.log|process_messages|last_message|LIQUIDATIONS|\\[message\\]|logging|LOG' /opt/ai_quant_liq_collector/liquidation_collector.py
+printf '%s\\n' '=== files under collector root ==='
+find /opt/ai_quant_liq_collector -maxdepth 3 -type f -printf '%p %s bytes\\n' | sort
+printf '%s\\n' '=== journal recent ==='
+journalctl -u aiquant-liq-collector.service --since '2026-06-15 00:25:00 UTC' --no-pager -o short-iso | tail -n 50
+REMOTE" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 42889ms:
+=== unit ===
+# /etc/systemd/system/aiquant-liq-collector.service
+[Unit]
+Description=AI Quant Binance Liquidation Collector
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/ai_quant_liq_collector
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /opt/ai_quant_liq_collector/liquidation_collector.py
+Restart=always
+RestartSec=10
+StandardOutput=append:/opt/ai_quant_liq_collector/logs/collector.log
+StandardError=append:/opt/ai_quant_liq_collector/logs/collector.log
+
+[Install]
+WantedBy=multi-user.target
+=== relevant code paths/counters ===
+4:Writes UTC-dated JSONL files under /opt/ai_quant_liq_collector/data/LIQUIDATIONS.
+15:WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+17:OUT_DIR = os.path.join(BASE_DIR, "data", "LIQUIDATIONS")
+20:_last_message_ms = None
+40:    print("[connected]", utc_now().isoformat(), WS_URL, flush=True)
+44:    global _last_message_ms, _message_count
+50:        _last_message_ms = data["recv_ts"]
+53:            print("[message]", utc_now().isoformat(), "count=", _message_count, flush=True)
+71:        if _last_message_ms is not None:
+72:            last = datetime.datetime.fromtimestamp(_last_message_ms / 1000, tz=datetime.timezone.utc).isoformat()
+77:            "process_messages=", _message_count,
+78:            "last_message_utc=", last,
+89:                WS_URL,
+=== files under collector root ===
+/opt/ai_quant_liq_collector/liquidation_collector.py 2899 bytes
+/opt/ai_quant_liq_collector/logs/collector.log 4019 bytes
+=== journal recent ===
+-- No entries --
+
+2026-06-15T00:36:47.165914Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+2026-06-15T00:37:07.125409Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+exec
+/bin/bash -lc 'sshpass -p "$(cat ~/.aiquant_sealed/sg_pass)" ssh -o StrictHostKeyChecking=no root@43.160.200.224 '"'bash -s' <<'REMOTE'
+set -eu
+printf '%s\\n' '=== pre-fix sha256 ==='
+sha256sum /opt/ai_quant_liq_collector/liquidation_collector.py
+printf '%s\\n' '=== pre-fix collector log tail ==='
+tail -n 40 /opt/ai_quant_liq_collector/logs/collector.log
+REMOTE" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 4726ms:
+=== pre-fix sha256 ===
+0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c  /opt/ai_quant_liq_collector/liquidation_collector.py
+=== pre-fix collector log tail ===
+starting liquidation collector (VM direct, no proxy)
+[connected] 2026-06-13T09:43:04.787737+00:00 wss://fstream.binance.com/ws/!forceOrder@arr
+[heartbeat] 2026-06-13T10:43:04.497838+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-13T11:43:04.499600+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-13T12:43:04.499976+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-13T13:43:04.500238+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-13T14:43:04.500499+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-13T15:43:04.500745+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-13T16:43:04.501011+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-13T17:43:04.501270+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-13T18:43:04.501522+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-13T19:43:04.501810+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-13T20:43:04.502068+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-13T21:43:04.502328+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-13T22:43:04.502595+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-13T23:43:04.502851+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T00:43:04.503099+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T01:43:04.503369+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T02:43:04.503635+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T03:43:04.503897+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T04:43:04.504145+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T05:43:04.504402+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T06:43:04.504647+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T07:43:04.504905+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T08:43:04.505182+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T09:43:04.505451+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T10:43:04.505732+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T11:43:04.506034+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T12:43:04.506290+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T13:43:04.506567+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T14:43:04.506830+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T15:43:04.507073+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T16:43:04.507352+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T17:43:04.507687+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T18:43:04.507978+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T19:43:04.508242+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T20:43:04.508517+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T21:43:04.508822+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T22:43:04.509083+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T23:43:04.509366+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+
+exec
+/bin/bash -lc "grep -n '"'^WS_URL[[:space:]]*='"' 06_RESEARCH/CODE/liquidation_collector.py 2>/dev/null || true" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+15:WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+
+codex
+日志实现有一个验收细节：`process_messages=` 只在每小时 heartbeat 输出，重启后 2-3 分钟内不会出现该字面量；首个 `[message] ... count=1` 是同一进程计数器大于 0 的直接证据。我会严格不改日志逻辑，以 `[message] count>0`、JSONL 行数增长和 `o.S` 字段共同验收，并在报告中明确这一点。现在执行备份、精确单行替换、diff 检查和仅重启采集器。
+已定位实际日志为 logs/collector.log，并确认修复前连续 heartbeat 为 process_messages=0。开始执行精确单行修复。
+  ✓ 检查本地任务上下文、git 状态与报告惯例
+  ✓ 远端确认旧 URL、服务状态和修复前症状
+  → 备份并仅替换 WS_URL，重启 collector
+  • 轮询验证消息、计数、数据文件增长及 side 字段
+  • 写报告与 TASK_INBOX，检查 diff 并提交任务 commit
+exec
+/bin/bash -lc 'sshpass -p "$(cat ~/.aiquant_sealed/sg_pass)" ssh -o StrictHostKeyChecking=no root@43.160.200.224 '"'bash -s' <<'REMOTE'
+set -euo pipefail
+file=/opt/ai_quant_liq_collector/liquidation_collector.py
+backup="'${file}.bak.20260615
+old='"'WS_URL = \"wss://fstream.binance.com/ws/"'!forceOrder@arr"'"'
+new='WS_URL = \"wss://fstream.binance.com/market/ws/"'!forceOrder@arr"'"'
+[ \""'$(grep -Fxc "$old" "$file")" -eq 1 ]
+[ "$(grep -Fxc "$new" "$file")" -eq 0 ]
+[ ! -e "$backup" ]
+cp -p -- "$file" "$backup"
+sed -i "s|''^${old}$|${new}|" "$file"
+[ "$(grep -Fxc "$old" "$file")" -eq 0 ]
+[ "$(grep -Fxc "$new" "$file")" -eq 1 ]
+printf '"'%s\\n' '=== backup/current sha256 ==='
+sha256sum \""'$backup" "$file"
+printf '"'%s\\n' '=== exact diff ==='
+diff -u \""'$backup" "$file" || test "$?" -eq 1
+printf '"'%s\\n' '=== restart ==='
+systemctl restart aiquant-liq-collector.service
+systemctl is-active aiquant-liq-collector.service
+systemctl show aiquant-liq-collector.service -p ActiveEnterTimestamp -p MainPID --no-pager
+printf '%s\\n' '=== protected services after restart ==='
+for svc in danted.service v4-proxy.service; do printf '%s=' \""'$svc"; systemctl is-active "$svc" || true; done
+REMOTE' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 5172ms:
+=== backup/current sha256 ===
+0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c  /opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615
+1bd580965527d6884f0fe4e151d48e7f69cf7153d8e1207282ec145fdbf80a36  /opt/ai_quant_liq_collector/liquidation_collector.py
+=== exact diff ===
+--- /opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615	2026-06-13 17:42:21.868828932 +0800
++++ /opt/ai_quant_liq_collector/liquidation_collector.py	2026-06-15 08:38:31.852399501 +0800
+@@ -12,7 +12,7 @@
+ 
+ import websocket
+ 
+-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+ BASE_DIR = "/opt/ai_quant_liq_collector"
+ OUT_DIR = os.path.join(BASE_DIR, "data", "LIQUIDATIONS")
+ os.makedirs(OUT_DIR, exist_ok=True)
+=== restart ===
+active
+MainPID=4039584
+ActiveEnterTimestamp=Mon 2026-06-15 08:38:31 CST
+=== protected services after restart ===
+danted.service=active
+v4-proxy.service=inactive
+
+exec
+/bin/bash -lc 'sshpass -p "$(cat ~/.aiquant_sealed/sg_pass)" ssh -o StrictHostKeyChecking=no root@43.160.200.224 '"'bash -s' <<'REMOTE'
+set -euo pipefail
+log=/opt/ai_quant_liq_collector/logs/collector.log
+data=/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_"'$(date -u +%Y%m%d).jsonl
+start_epoch=$(date +%s)
+first_count=0
+first_elapsed=-1
+second_count=0
+second_elapsed=-1
+while [ $(( $(date +%s) - start_epoch )) -lt 180 ]; do
+  count=0
+  [ -f "$data" ] && count=$(wc -l < "$data")
+  elapsed=$(( $(date +%s) - start_epoch ))
+  if [ "$first_count" -eq 0 ] && [ "$count" -gt 0 ]; then
+    first_count=$count
+    first_elapsed=$elapsed
+  elif [ "$first_count" -gt 0 ] && [ "$count" -gt "$first_count" ]; then
+    second_count=$count
+    second_elapsed=$elapsed
+    break
+  fi
+  sleep 5
+done
+printf '"'%s\\n' '=== verification timing/counts ==='
+printf 'data_file=%s\\nfirst_count=%s\\nfirst_elapsed_s=%s\\nsecond_count=%s\\nsecond_elapsed_s=%s\\n' \""'$data" "$first_count" "$first_elapsed" "$second_count" "$second_elapsed"
+printf '"'%s\\n' '=== post-fix URL/service ==='
+grep -n '"'^WS_URL[[:space:]]*='"' /opt/ai_quant_liq_collector/liquidation_collector.py
+systemctl is-active aiquant-liq-collector.service
+systemctl show aiquant-liq-collector.service -p ActiveEnterTimestamp -p MainPID --no-pager
+printf '%s\\n' '=== post-restart log evidence ==='
+tail -n 20 \""'$log"
+printf '"'%s\\n' '=== data file evidence ==='
+ls -l \""'$data"
+wc -l "$data"
+printf '"'%s\\n' '=== first raw line ==='
+head -n 1 \""'$data"
+printf '"'%s\\n' '=== parsed first-line side ==='
+python3 - \""'$data" <<'"'PY'
+import json, sys
+with open(sys.argv[1], encoding='utf-8') as f:
+    row = json.loads(f.readline())
+print('event=', row.get('e'))
+print('symbol=', row.get('o', {}).get('s'))
+print('o.S=', row.get('o', {}).get('S'))
+assert row.get('o', {}).get('S') in {'BUY', 'SELL'}
+PY
+printf '%s\\n' '=== protected services final ==='
+for svc in danted.service v4-proxy.service; do printf '%s=' \""'$svc"; systemctl is-active "$svc" || true; done
+[ "$first_count" -gt 0 ]
+[ "$second_count" -gt "$first_count" ]
+grep -q '"'\\[message\\].*count= *[1-9]' \""'$log"
+REMOTE' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 9267ms:
+=== verification timing/counts ===
+data_file=/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260615.jsonl
+first_count=10
+first_elapsed_s=0
+second_count=11
+second_elapsed_s=5
+=== post-fix URL/service ===
+15:WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+active
+MainPID=4039584
+ActiveEnterTimestamp=Mon 2026-06-15 08:38:31 CST
+=== post-restart log evidence ===
+[heartbeat] 2026-06-14T09:43:04.505451+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T10:43:04.505732+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T11:43:04.506034+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T12:43:04.506290+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T13:43:04.506567+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T14:43:04.506830+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T15:43:04.507073+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T16:43:04.507352+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T17:43:04.507687+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T18:43:04.507978+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T19:43:04.508242+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T20:43:04.508517+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T21:43:04.508822+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T22:43:04.509083+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+[heartbeat] 2026-06-14T23:43:04.509366+00:00 today_rows= 0 process_messages= 0 last_message_utc= None
+starting liquidation collector (VM direct, no proxy)
+[connected] 2026-06-15T00:38:32.263426+00:00 wss://fstream.binance.com/market/ws/!forceOrder@arr
+[message] 2026-06-15T00:38:32.830360+00:00 count= 1
+[message] 2026-06-15T00:38:39.442301+00:00 count= 2
+[message] 2026-06-15T00:39:05.586781+00:00 count= 3
+=== data file evidence ===
+-rw-r--r-- 1 root root 2318 Jun 15 08:39 /opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260615.jsonl
+11 /opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260615.jsonl
+=== first raw line ===
+{"e":"forceOrder","E":1781483912792,"o":{"s":"ETHUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.023","p":"1713.87","ap":"1720.61","X":"FILLED","l":"0.023","z":"0.023","T":1781483911784},"recv_ts":1781483912830}
+=== parsed first-line side ===
+event= forceOrder
+symbol= ETHUSDT
+o.S= SELL
+=== protected services final ===
+danted.service=active
+v4-proxy.service=inactive
+
+codex
+新路由已生效：重启后约 0.6 秒出现首帧，JSONL 已从 10 行增长到 11 行，首行 `o.S=SELL`。我会再取一次约 2 分钟后的持续增长证据，然后同步本地规范脚本的同一 URL 行，写审计报告与完成事件。
+远端备份成功，diff 仅 WS_URL 一行，collector 已重启并立即收到消息。继续做持续增长复验。
+  ✓ 检查本地任务上下文、git 状态与报告惯例
+  ✓ 远端确认旧 URL、服务状态和修复前症状
+  ✓ 备份并仅替换 WS_URL，重启 collector
+  → 轮询验证消息、计数、数据文件增长及 side 字段
+  • 写报告与 TASK_INBOX，检查 diff 并提交任务 commit
+exec
+/bin/bash -lc 'sshpass -p "$(cat ~/.aiquant_sealed/sg_pass)" ssh -o StrictHostKeyChecking=no root@43.160.200.224 '"'bash -s' <<'REMOTE'
+set -euo pipefail
+log=/opt/ai_quant_liq_collector/logs/collector.log
+data=/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_"'$(date -u +%Y%m%d).jsonl
+before=$(wc -l < "$data")
+before_ts=$(date -u +'"'%Y-%m-%dT%H:%M:%SZ')
+sleep 120
+after="'$(wc -l < "$data")
+after_ts=$(date -u +'"'%Y-%m-%dT%H:%M:%SZ')
+printf '%s\\n' '=== sustained growth ==='
+printf 'before_utc=%s before_rows=%s\\nafter_utc=%s after_rows=%s\\ndelta=%s\\n' \""'$before_ts" "$before" "$after_ts" "$after" "$((after-before))"
+printf '"'%s\\n' '=== recent post-fix messages ==='
+grep -E '"'^'"\\[(connected|message)\\]' \""'$log" | tail -n 12
+printf '"'%s\\n' '=== service and protected services ==='
+systemctl is-active aiquant-liq-collector.service
+for svc in danted.service v4-proxy.service; do printf '%s=' \""'$svc"; systemctl is-active "$svc" || true; done
+[ "$after" -gt "$before" ]
+REMOTE' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
