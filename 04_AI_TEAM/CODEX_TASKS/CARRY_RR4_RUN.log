@@ -1,0 +1,3053 @@
+Reading additional input from stdin...
+OpenAI Codex v0.139.0
+--------
+workdir: /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: high
+reasoning summaries: none
+session id: 019ec9d0-b96a-7201-b96d-e671b378cc97
+--------
+user
+# CARRY-RR4：Carry 预登记 v4 第四轮独立盲审
+
+**角色：** 独立 Risk Reviewer（与 v4 起草者分离）。**对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md`
+**对照：** `CARRY_RISK_REVIEW_v3.md`（v3 闭 4/6，剩资本/USDT计价账 + 1H强平路径 + 交易小时PnL）。**输出：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`，结论 APPROVED/NOT APPROVED + 最小必改。
+
+## 逐条裁决（CLOSED/PARTIAL/NOT_CLOSED + 证据§/行）
+1. 资本/USDT 计价账：全程 USDT 口径、资本与损益恒等式、USDT 脱锚是否计入、分母唯一。
+2. 1H 合成强平路径：2000 路径逐 1H 保证金账本(维持/补款延迟/强平)、buffer_breach/liquidation 两级、seed。
+3. 交易小时 PnL 计账：funding/成交/再平衡/强平 损益归属到哪个 8h interval、无重复/漏计、与观测单位一致。
+4. 核心重构(历史=可行性复核不耗计数/前向shadow=真确认/不自动上线)是否仍完整；有无新自由度。
+
+## 结论：按"历史可行性复核"标尺，三项 CLOSED 且无新阻塞→APPROVED(可放行历史可行性复核,不耗计数/不上线核心资本);否则 NOT APPROVED + 最小必改。
+## 铁律：禁读HOLDOUT/`01_MEMORY_CORE/`/禁改预登记/禁跑回测。完成写`04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json`(task_id=CARRY_RR4,review_conclusion,conditions_closed=x/3,notes)。
+codex
+我将按独立盲审执行，只读取 v4 预登记与 v3 风险评审，不触碰 `HOLDOUT`、`01_MEMORY_CORE/`，不运行回测，也不修改预登记。先加载适用技能与两份指定文档，再逐项核对行号证据。
+exec
+/bin/bash -lc 'cat /Users/yaomingyu/.codex/skills/using-superpowers/SKILL.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+---
+name: using-superpowers
+description: Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions
+---
+
+<SUBAGENT-STOP>
+If you were dispatched as a subagent to execute a specific task, skip this skill.
+</SUBAGENT-STOP>
+
+<EXTREMELY-IMPORTANT>
+If you think there is even a 1% chance a skill might apply to what you are doing, you ABSOLUTELY MUST invoke the skill.
+
+IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
+
+This is not negotiable. This is not optional. You cannot rationalize your way out of this.
+</EXTREMELY-IMPORTANT>
+
+## Instruction Priority
+
+Superpowers skills override default system prompt behavior, but **user instructions always take precedence**:
+
+1. **User's explicit instructions** (CLAUDE.md, GEMINI.md, AGENTS.md, direct requests) — highest priority
+2. **Superpowers skills** — override default system behavior where they conflict
+3. **Default system prompt** — lowest priority
+
+If CLAUDE.md, GEMINI.md, or AGENTS.md says "don't use TDD" and a skill says "always use TDD," follow the user's instructions. The user is in control.
+
+## How to Access Skills
+
+**In Claude Code:** Use the `Skill` tool. When you invoke a skill, its content is loaded and presented to you—follow it directly. Never use the Read tool on skill files.
+
+**In Copilot CLI:** Use the `skill` tool. Skills are auto-discovered from installed plugins. The `skill` tool works the same as Claude Code's `Skill` tool.
+
+**In Gemini CLI:** Skills activate via the `activate_skill` tool. Gemini loads skill metadata at session start and activates the full content on demand.
+
+**In other environments:** Check your platform's documentation for how skills are loaded.
+
+## Platform Adaptation
+
+Skills use Claude Code tool names. Non-CC platforms: see `references/copilot-tools.md` (Copilot CLI), `references/codex-tools.md` (Codex) for tool equivalents. Gemini CLI users get the tool mapping loaded automatically via GEMINI.md.
+
+# Using Skills
+
+## The Rule
+
+**Invoke relevant or requested skills BEFORE any response or action.** Even a 1% chance a skill might apply means that you should invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use it.
+
+```dot
+digraph skill_flow {
+    "User message received" [shape=doublecircle];
+    "About to EnterPlanMode?" [shape=doublecircle];
+    "Already brainstormed?" [shape=diamond];
+    "Invoke brainstorming skill" [shape=box];
+    "Might any skill apply?" [shape=diamond];
+    "Invoke Skill tool" [shape=box];
+    "Announce: 'Using [skill] to [purpose]'" [shape=box];
+    "Has checklist?" [shape=diamond];
+    "Create TodoWrite todo per item" [shape=box];
+    "Follow skill exactly" [shape=box];
+    "Respond (including clarifications)" [shape=doublecircle];
+
+    "About to EnterPlanMode?" -> "Already brainstormed?";
+    "Already brainstormed?" -> "Invoke brainstorming skill" [label="no"];
+    "Already brainstormed?" -> "Might any skill apply?" [label="yes"];
+    "Invoke brainstorming skill" -> "Might any skill apply?";
+
+    "User message received" -> "Might any skill apply?";
+    "Might any skill apply?" -> "Invoke Skill tool" [label="yes, even 1%"];
+    "Might any skill apply?" -> "Respond (including clarifications)" [label="definitely not"];
+    "Invoke Skill tool" -> "Announce: 'Using [skill] to [purpose]'";
+    "Announce: 'Using [skill] to [purpose]'" -> "Has checklist?";
+    "Has checklist?" -> "Create TodoWrite todo per item" [label="yes"];
+    "Has checklist?" -> "Follow skill exactly" [label="no"];
+    "Create TodoWrite todo per item" -> "Follow skill exactly";
+}
+```
+
+## Red Flags
+
+These thoughts mean STOP—you're rationalizing:
+
+| Thought | Reality |
+|---------|---------|
+| "This is just a simple question" | Questions are tasks. Check for skills. |
+| "I need more context first" | Skill check comes BEFORE clarifying questions. |
+| "Let me explore the codebase first" | Skills tell you HOW to explore. Check first. |
+| "I can check git/files quickly" | Files lack conversation context. Check for skills. |
+| "Let me gather information first" | Skills tell you HOW to gather information. |
+| "This doesn't need a formal skill" | If a skill exists, use it. |
+| "I remember this skill" | Skills evolve. Read current version. |
+| "This doesn't count as a task" | Action = task. Check for skills. |
+| "The skill is overkill" | Simple things become complex. Use it. |
+| "I'll just do this one thing first" | Check BEFORE doing anything. |
+| "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
+| "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
+
+## Skill Priority
+
+When multiple skills could apply, use this order:
+
+1. **Process skills first** (brainstorming, debugging) - these determine HOW to approach the task
+2. **Implementation skills second** (frontend-design, mcp-builder) - these guide execution
+
+"Let's build X" → brainstorming first, then implementation skills.
+"Fix this bug" → debugging first, then domain-specific skills.
+
+## Skill Types
+
+**Rigid** (TDD, debugging): Follow exactly. Don't adapt away discipline.
+
+**Flexible** (patterns): Adapt principles to context.
+
+The skill itself tells you which.
+
+## User Instructions
+
+Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
+
+exec
+/bin/bash -lc 'cat /Users/yaomingyu/.codex/skills/verification-before-completion/SKILL.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+---
+name: verification-before-completion
+description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always
+---
+
+# Verification Before Completion
+
+## Overview
+
+Claiming work is complete without verification is dishonesty, not efficiency.
+
+**Core principle:** Evidence before claims, always.
+
+**Violating the letter of this rule is violating the spirit of this rule.**
+
+## The Iron Law
+
+```
+NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
+```
+
+If you haven't run the verification command in this message, you cannot claim it passes.
+
+## The Gate Function
+
+```
+BEFORE claiming any status or expressing satisfaction:
+
+1. IDENTIFY: What command proves this claim?
+2. RUN: Execute the FULL command (fresh, complete)
+3. READ: Full output, check exit code, count failures
+4. VERIFY: Does output confirm the claim?
+   - If NO: State actual status with evidence
+   - If YES: State claim WITH evidence
+5. ONLY THEN: Make the claim
+
+Skip any step = lying, not verifying
+```
+
+## Common Failures
+
+| Claim | Requires | Not Sufficient |
+|-------|----------|----------------|
+| Tests pass | Test command output: 0 failures | Previous run, "should pass" |
+| Linter clean | Linter output: 0 errors | Partial check, extrapolation |
+| Build succeeds | Build command: exit 0 | Linter passing, logs look good |
+| Bug fixed | Test original symptom: passes | Code changed, assumed fixed |
+| Regression test works | Red-green cycle verified | Test passes once |
+| Agent completed | VCS diff shows changes | Agent reports "success" |
+| Requirements met | Line-by-line checklist | Tests passing |
+
+## Red Flags - STOP
+
+- Using "should", "probably", "seems to"
+- Expressing satisfaction before verification ("Great!", "Perfect!", "Done!", etc.)
+- About to commit/push/PR without verification
+- Trusting agent success reports
+- Relying on partial verification
+- Thinking "just this once"
+- Tired and wanting work over
+- **ANY wording implying success without having run verification**
+
+## Rationalization Prevention
+
+| Excuse | Reality |
+|--------|---------|
+| "Should work now" | RUN the verification |
+| "I'm confident" | Confidence ≠ evidence |
+| "Just this once" | No exceptions |
+| "Linter passed" | Linter ≠ compiler |
+| "Agent said success" | Verify independently |
+| "I'm tired" | Exhaustion ≠ excuse |
+| "Partial check is enough" | Partial proves nothing |
+| "Different words so rule doesn't apply" | Spirit over letter |
+
+## Key Patterns
+
+**Tests:**
+```
+✅ [Run test command] [See: 34/34 pass] "All tests pass"
+❌ "Should pass now" / "Looks correct"
+```
+
+**Regression tests (TDD Red-Green):**
+```
+✅ Write → Run (pass) → Revert fix → Run (MUST FAIL) → Restore → Run (pass)
+❌ "I've written a regression test" (without red-green verification)
+```
+
+**Build:**
+```
+✅ [Run build] [See: exit 0] "Build passes"
+❌ "Linter passed" (linter doesn't check compilation)
+```
+
+**Requirements:**
+```
+✅ Re-read plan → Create checklist → Verify each → Report gaps or completion
+❌ "Tests pass, phase complete"
+```
+
+**Agent delegation:**
+```
+✅ Agent reports success → Check VCS diff → Verify changes → Report actual state
+❌ Trust agent report
+```
+
+## Why This Matters
+
+From 24 failure memories:
+- your human partner said "I don't believe you" - trust broken
+- Undefined functions shipped - would crash
+- Missing requirements shipped - incomplete features
+- Time wasted on false completion → redirect → rework
+- Violates: "Honesty is a core value. If you lie, you'll be replaced."
+
+## When To Apply
+
+**ALWAYS before:**
+- ANY variation of success/completion claims
+- ANY expression of satisfaction
+- ANY positive statement about work state
+- Committing, PR creation, task completion
+- Moving to next task
+- Delegating to agents
+
+**Rule applies to:**
+- Exact phrases
+- Paraphrases and synonyms
+- Implications of success
+- ANY communication suggesting completion/correctness
+
+## The Bottom Line
+
+**No shortcuts for verification.**
+
+Run the command. Read the output. THEN claim the result.
+
+This is non-negotiable.
+
+exec
+/bin/bash -lc 'cat /Users/yaomingyu/.codex/skills/writing-plans/SKILL.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+---
+name: writing-plans
+description: Use when you have a spec or requirements for a multi-step task, before touching code
+---
+
+# Writing Plans
+
+## Overview
+
+Write comprehensive implementation plans assuming the engineer has zero context for our codebase and questionable taste. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+
+Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
+
+**Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
+
+**Context:** If working in an isolated worktree, it should have been created via the `superpowers:using-git-worktrees` skill at execution time.
+
+**Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
+- (User preferences for plan location override this default)
+
+## Scope Check
+
+If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
+
+## File Structure
+
+Before defining tasks, map out which files will be created or modified and what each one is responsible for. This is where decomposition decisions get locked in.
+
+- Design units with clear boundaries and well-defined interfaces. Each file should have one clear responsibility.
+- You reason best about code you can hold in context at once, and your edits are more reliable when files are focused. Prefer smaller, focused files over large ones that do too much.
+- Files that change together should live together. Split by responsibility, not by technical layer.
+- In existing codebases, follow established patterns. If the codebase uses large files, don't unilaterally restructure - but if a file you're modifying has grown unwieldy, including a split in the plan is reasonable.
+
+This structure informs the task decomposition. Each task should produce self-contained changes that make sense independently.
+
+## Bite-Sized Task Granularity
+
+**Each step is one action (2-5 minutes):**
+- "Write the failing test" - step
+- "Run it to make sure it fails" - step
+- "Implement the minimal code to make the test pass" - step
+- "Run the tests and make sure they pass" - step
+- "Commit" - step
+
+## Plan Document Header
+
+**Every plan MUST start with this header:**
+
+```markdown
+# [Feature Name] Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** [One sentence describing what this builds]
+
+**Architecture:** [2-3 sentences about approach]
+
+**Tech Stack:** [Key technologies/libraries]
+
+---
+```
+
+## Task Structure
+
+````markdown
+### Task N: [Component Name]
+
+**Files:**
+- Create: `exact/path/to/file.py`
+- Modify: `exact/path/to/existing.py:123-145`
+- Test: `tests/exact/path/to/test.py`
+
+- [ ] **Step 1: Write the failing test**
+
+```python
+def test_specific_behavior():
+    result = function(input)
+    assert result == expected
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: FAIL with "function not defined"
+
+- [ ] **Step 3: Write minimal implementation**
+
+```python
+def function(input):
+    return expected
+```
+
+- [ ] **Step 4: Run test to verify it passes**
+
+Run: `pytest tests/path/test.py::test_name -v`
+Expected: PASS
+
+- [ ] **Step 5: Commit**
+
+```bash
+git add tests/path/test.py src/path/file.py
+git commit -m "feat: add specific feature"
+```
+````
+
+## No Placeholders
+
+Every step must contain the actual content an engineer needs. These are **plan failures** — never write them:
+- "TBD", "TODO", "implement later", "fill in details"
+- "Add appropriate error handling" / "add validation" / "handle edge cases"
+- "Write tests for the above" (without actual test code)
+- "Similar to Task N" (repeat the code — the engineer may be reading tasks out of order)
+- Steps that describe what to do without showing how (code blocks required for code steps)
+- References to types, functions, or methods not defined in any task
+
+## Remember
+- Exact file paths always
+- Complete code in every step — if a step changes code, show the code
+- Exact commands with expected output
+- DRY, YAGNI, TDD, frequent commits
+
+## Self-Review
+
+After writing the complete plan, look at the spec with fresh eyes and check the plan against it. This is a checklist you run yourself — not a subagent dispatch.
+
+**1. Spec coverage:** Skim each section/requirement in the spec. Can you point to a task that implements it? List any gaps.
+
+**2. Placeholder scan:** Search your plan for red flags — any of the patterns from the "No Placeholders" section above. Fix them.
+
+**3. Type consistency:** Do the types, method signatures, and property names you used in later tasks match what you defined in earlier tasks? A function called `clearLayers()` in Task 3 but `clearFullLayers()` in Task 7 is a bug.
+
+If you find issues, fix them inline. No need to re-review — just fix and move on. If you find a spec requirement with no task, add the task.
+
+## Execution Handoff
+
+After saving the plan, offer execution choice:
+
+**"Plan complete and saved to `docs/superpowers/plans/<filename>.md`. Two execution options:**
+
+**1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
+
+**2. Inline Execution** - Execute tasks in this session using executing-plans, batch execution with checkpoints
+
+**Which approach?"**
+
+**If Subagent-Driven chosen:**
+- **REQUIRED SUB-SKILL:** Use superpowers:subagent-driven-development
+- Fresh subagent per task + two-stage review
+
+**If Inline Execution chosen:**
+- **REQUIRED SUB-SKILL:** Use superpowers:executing-plans
+- Batch execution with checkpoints for review
+
+exec
+/bin/bash -lc "printf '%s\\n' '--- v4 prereg ---'; nl -ba 06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md; printf '%s\\n' '--- v3 review ---'; nl -ba 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+--- v4 prereg ---
+     1	# Delta 中性 Carry 预登记 v4
+     2	
+     3	**状态：** PREREGISTERED DRAFT v4 — 待独立 Risk Reviewer 盲审；本文不构成自审通过
+     4	**起草：** Codex（实现细化，非 thesis owner）｜**日期：** 2026-06-14（Asia/Singapore）
+     5	**基线：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v3.md`
+     6	**必改依据：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md`
+     7	**Protocol v1.4 AI 证据三行：** ①本策略非 LLM 作 alpha 信号，机制=人工经济归纳（杠杆多头需求→正 funding）；知识截止 2025-05，carry 经济链为公开市场常识。②最可能错处：funding 长期转负 / 制度变化（现货 ETF、更多做空工具）使风险溢价消失；短永续腿急涨强平致 delta 暴露。③不以多 agent 共识为证据；本预登记仅作设计冻结。
+     8	
+     9	---
+    10	
+    11	## §0 研究身份与独立性（核心重构不变）
+    12	
+    13	1. **历史工作集（全部输入 `<2024-12-10`）= 锁定可行性复核（FEASIBILITY-LOCK）。** 用途仅为检验“按 v4 完全冻结口径、含全成本与路径级强平账本，历史上 carry 是否仍可行”。设计参数已被历史探索污染，因此历史 PASS 不是独立机制确认、**不耗独立 Alpha 计数、不授权核心资本上线**，最多表述为“历史可行性复核通过”。
+    14	2. **真确认 = 前向 SHADOW（paper-trade，未来数据）。** v4 经独立 Reviewer 放行后，按 §9 的固定起点、固定样本量和一次性检验运行；不得回填放行前数据，不得因观察到结果而延长或提前停止。只有前向 net E[R] 显著>0、无强平且跑赢现金零基准，才计入前向确认证据。
+    15	3. **证据等级上线 = Founder 治理决定。** 纸面=0；历史复核过=观察级；前向 shadow 过=具备小额真金申请资格；实盘过后才可另议升额。前向 PASS 不自动下单、不自动成为核心资本，也不改变历史段“不耗独立计数”的定性。
+    16	
+    17	盲审副本不得披露待确认的具体收益数值。
+    18	
+    19	---
+    20	
+    21	## §1 机制与策略命题（不变）
+    22	
+    23	- **机制命题（可证伪）：** carry 净收益主要来自 funding 收取，而非 basis 波动、方向价格漂移或再平衡运气。必要条件是 `funding_received > 0`，且 funding 是净收益归因中的最大正贡献项。
+    24	- **策略命题：** 按 §2-§6 冻结构造和全成本执行后，净收益通过 §5 全部基础 carry 硬门。
+    25	- **非 alpha 声明：** 不以 funding 极端、价格反转或 funding 均值回归择时；正、负 funding 时段均按冻结规则持有。OI 信号只能把双腿同步减至 50%，不能加到 100% 以上。
+    26	- **制度依赖：** 逐年和滚动 12 个月报告净 funding；交易所 funding、保证金或合约制度变更按实际生效时点分段，不得结果后挑窗口。
+    27	
+    28	---
+    29	
+    30	## §2 构造、USDT 资本恒等式与保证金账本
+    31	
+    32	### §2.1 Venue、合约、价格源与账户模式
+    33	
+    34	| 项目 | 唯一定义 |
+    35	|---|---|
+    36	| Venue | Binance |
+    37	| 现货 | Binance Spot `BTCUSDT`、`ETHUSDT` |
+    38	| 永续 | Binance USDⓈ-M、USDT 本位线性永续 `BTCUSDT`、`ETHUSDT` |
+    39	| 账户模式 | 标准 USDT-M **cross margin**；关闭 portfolio margin 和 multi-assets mode；BTC/ETH 短仓共用一个 USDT cross wallet |
+    40	| 现货信号/估值 | Binance Spot 1H kline close |
+    41	| 现货成交 | Binance Spot 次一根 1H kline open |
+    42	| 永续信号/归因 | Binance USD-M 合约 1H kline close；成交用次一根合约 1H kline open |
+    43	| 保证金/权威永续 MTM/强平 | Binance USD-M mark price 1H OHLC；mark 不作现货成交价 |
+    44	| basis 归因 | 同一 UTC 1H 的 `spot close - perpetual contract close`；不得用 mark 代替经济 basis，mark 与 contract 的差额按 §4.3 单列 |
+    45	| funding | Binance 实际 funding rate、实际结算时间、结算时 mark 和结算前短腿数量 |
+    46	| OI | Binance USD-M `sumOpenInterestValue`，5M 数据每小时取最后一个有效值；不前填 |
+    47	| 维持保证金 | 对应历史时点的 Binance 完整 leverage bracket 表（floor/cap/mmr/cum）和 liquidation clearance fee rate |
+    48	| USDT/USD | 仅按 §6.4 生成 USDT 脱锚事件，不进入 USDT 资本、收益或 PnL 换算 |
+    49	
+    50	任一必要价格、funding、OI、历史完整保证金表、清算费或 §6 事件输入缺失且无法从执行前冻结的输入 manifest 取得，相关必要项记 `N.A. ⇒ FEASIBILITY-LOCK FAIL`；不得用当前费率、插值或另一 venue 代替历史值。
+    51	
+    52	### §2.2 唯一计价单位、绝对资本与初始建仓
+    53	
+    54	全程唯一记账单位为 **USDT**。现货价格、现货现金、USDT-M wallet、funding、手续费、滑点、强平损益、basis MTM、净值和所有收益率分子均用 USDT；不再把 `C0` 称作 USD 等值，也不在策略 PnL 中加入 `cash_fx_pnl`。
+    55	
+    56	```text
+    57	C0 = 100,000 USDT
+    58	C0 = S0 + M0 + B0 + E0
+    59	
+    60	B0 = 10,000 USDT
+    61	E0 = 10,000 USDT
+    62	paired_capital = 80,000 USDT
+    63	```
+    64	
+    65	`C0` 是 sleeve 的绝对初始资本，也是所有小时收益、8h 收益、MDD、log growth 和年化指标的**唯一固定分母**。BTC/ETH 权重冻结为 `w_BTC=0.70`、`w_ETH=0.30`：
+    66	
+    67	```text
+    68	pair_budget_i = 80,000 * w_i USDT
+    69	pair_budget_BTC = 56,000 USDT
+    70	pair_budget_ETH = 24,000 USDT
+    71	```
+    72	
+    73	在初始成交小时 open 取现货参考成交价 `S_i,0` 与永续合约参考成交价 `F_i,0`。为使双腿基础资产数量相等、且永续初始保证金等于其名义：
+    74	
+    75	```text
+    76	q_i,0 = pair_budget_i / (S_i,0 + F_i,0)
+    77	spot_principal_i = q_i,0 * S_i,0
+    78	N_i = perp_initial_notional_i = q_i,0 * F_i,0
+    79	perp_initial_margin_i = N_i
+    80	
+    81	q_spot_i,0 = +q_i,0
+    82	q_perp_i,0 = -q_i,0
+    83	```
+    84	
+    85	因此：
+    86	
+    87	```text
+    88	spot_principal_i + perp_initial_margin_i = pair_budget_i
+    89	q_spot_i,0 + q_perp_i,0 = 0
+    90	```
+    91	
+    92	`N_i` 是该品种初始短永续名义及后续 100% 状态的名义基准，不是额外资本项。
+    93	
+    94	**初始资本占用表（开仓成本前）：**
+    95	
+    96	| 资本桶 | 冻结数值/公式 | 是否进入 `C0` | 是否另计为 `N` |
+    97	|---|---:|---:|---:|
+    98	| BTC 现货本金 | `q_BTC,0*S_BTC,0` | 是 | 否 |
+    99	| BTC 永续初始保证金 | `N_BTC=q_BTC,0*F_BTC,0` | 是 | 否；`N_BTC` 即本行 |
+   100	| ETH 现货本金 | `q_ETH,0*S_ETH,0` | 是 | 否 |
+   101	| ETH 永续初始保证金 | `N_ETH=q_ETH,0*F_ETH,0` | 是 | 否；`N_ETH` 即本行 |
+   102	| 闲置缓冲现金 `B0` | `10,000 USDT` | 是 | 否 |
+   103	| 事件备用现金 `E0` | `10,000 USDT` | 是 | 否 |
+   104	| **合计** | **`100,000 USDT`** | **唯一一次** | **无额外资本** |
+   105	
+   106	所有交易使用未加滑点的 market open 作为参考成交价，滑点按 §4.1 作为独立 USDT 成本科目只扣一次。初始 open 前，`S0` 先作为 `spot_reserved_cash` 持有，故首个 `A_t` 满足
+   107	`spot_reserved_cash + M0 + B0 + E0 = C0`；初始买入后该预留现金一对一转成现货市值，开仓费和滑点另从 `B` 扣。初始永续开仓的 fee/slippage 从 futures wallet `M` 扣。`spot_reserved_cash` 只存在于初始开仓前，完成或撤销开仓后必须为零，不是第五个资本桶。
+   108	
+   109	后续现货买卖的本金流入/流出 `B`，其 fee/slippage 也从 `B` 扣；永续交易不交换名义本金，其 realized PnL、fee/slippage 和 funding 只进入 futures wallet。若所需账户余额不足，按 §3.2 的 `execution_fail` 撤销规则处理，不允许 `B` 或 `M` 隐式为负来完成自愿交易。
+   110	
+   111	`B/E → M` 只是在 sleeve 内部转账，不产生 PnL、不改变 `C0`、不得在现金与 wallet 中重复计数。`E` 只用于 §2.4 规定的事件小时保证金补款，不用于普通开仓、恢复或现货购买。
+   112	
+   113	### §2.3 持仓、delta 与每日再平衡
+   114	
+   115	- 初始开仓在每段首个可交易日 `00:00 UTC` 信号后的次一根 1H open 完成；边界和 PnL 归属按 §4.2。
+   116	- 共同指数价 `I_i,t` 只用于把基础资产数量差换算为 delta 名义：
+   117	
+   118	```text
+   119	delta_drift_i(t) = abs(q_spot_i(t) + q_perp_i(t)) * I_i,t / N_i
+   120	```
+   121	
+   122	- 每日 `00:00 UTC` 用刚闭合 1H bar 的 close 检查。若 `delta_drift_i>5%`，在该 close 后开启的下一根 1H bar open **只调整现货腿**到 `q_spot_i=-q_perp_i`；永续腿不动。若 `≤5%` 不交易。该规则修正数量失配，不把 spot/perp basis 当方向 delta。
+   123	- 若同一 open 既有 OI 状态切换又有每日再平衡，先执行 §3 的双腿状态切换，并取消该 open 的单独每日再平衡；状态切换后的两腿目标数量已经相等。
+   124	
+   125	### §2.4 Cross-margin 逐 1H 状态机
+   126	
+   127	对品种 `i` 的短永续持仓维护 `q_perp_i<=0`、加权平均 `entry_i`；对账户维护 USDT wallet `W`：
+   128	
+   129	```text
+   130	W =
+   131	    M0 + internal_transfers_in - internal_transfers_out
+   132	    + cumulative_realized_perp_pnl
+   133	    + cumulative_funding_received
+   134	    - cumulative_futures_fees
+   135	    - cumulative_futures_slippage
+   136	    - cumulative_liquidation_clearance_fees
+   137	```
+   138	
+   139	在任一估值点、mark 向量 `m_i` 下：
+   140	
+   141	```text
+   142	UPNL(m) = Σ_i q_perp_i * (m_i - entry_i)
+   143	margin_balance(m) = W + UPNL(m)
+   144	notional_i(m) = abs(q_perp_i) * m_i
+   145	```
+   146	
+   147	对每个品种，用当时完整历史 bracket 表按
+   148	`floor <= notional_i(m) < cap` 重新选唯一档位；最后一档上界为 `+∞`：
+   149	
+   150	```text
+   151	maintenance_i(m) = max(0, notional_i(m) * mmr_i - cum_i)
+   152	maintenance(m) = Σ_i maintenance_i(m)
+   153	```
+   154	
+   155	只携带历史 bracket id 而没有 floor/cap/mmr/cum/clearance fee 完整表不合格。
+   156	
+   157	每根 bar 定义为半开区间 `H_t=[t,t+1h)`，open 为 `t`，close 为 `t+1h`。在两个 bar 共用的边界，先完成前一 bar 的 close 风险检查/可能强平，再处理新边界的 funding；若 close 已清算，则 funding 数量为零。其后才允许补款和新 open 交易。唯一处理顺序如下：
+   158	
+   159	1. **边界 funding：** 若实际 funding timestamp 恰为 `t`，先按边界前持仓 `q_perp_i(t-)` 和结算 mark 入账：
+   160	
+   161	   ```text
+   162	   funding_received_i,t =
+   163	       -q_perp_i(t-) * mark_i,t * funding_rate_i,t
+   164	   ```
+   165	
+   166	   正 funding 对短仓为正收入，负 funding 原样为支出。该现金流属于刚结束的小时和刚结束的 8h interval；不得按边界后的新仓数量计算。
+   167	2. **funding 后即时风险检查：** 用 `mark_i,t` 及当前完整 bracket 表重算保证金。若 `margin_balance<=maintenance`，在任何补款或自愿交易前立即进入 account-level liquidation。
+   168	3. **延迟补款：** 若上根 bar close 产生 `buffer_breach` 且第 2 步未强平，在 `t` 执行预定补款。按当前 mark/bracket 计算：
+   169	
+   170	   ```text
+   171	   topup_gap_t = max(0, 3*maintenance_t - margin_balance_t)
+   172	   ```
+   173	
+   174	   先从 `B` 转入；仅当 `H_t` 属于 §6 事件窗时，`B` 用尽后可从 `E` 转入。Binance 官方提现暂停导致跨账户转入不可用时，本步转账为零。转账后若 `margin_balance<=maintenance`，立即强平；若仍低于 `3*maintenance` 但高于维持线，继续持仓并保留风险状态。
+   175	4. **小时 open 自愿交易：** 执行已由上一 close 排定的 OI、每日再平衡、脱锚退出/恢复或强平后的现货处置。成交参考价是该 bar 对应市场 open；数量、realized PnL、现金本金流和逐腿成本立即入账。永续部分平仓量
+   176	   `q_closed=q_old-q_new`，其 realized PnL 唯一为：
+   177	
+   178	   ```text
+   179	   realized_perp_pnl = q_closed * (F_open - entry_old)
+   180	   ```
+   181	
+   182	   同方向加仓按绝对数量加权更新 `entry`；本协议禁止主动翻转为净多永续。
+   183	5. **open 后即时风险检查：** 用该 bar mark open 和交易后数量重算 bracket、保证金及维持线；若 `margin_balance<=maintenance`，立即强平。
+   184	6. **小时内最坏点：** 对两个短仓同时使用各自该小时 mark high，形成保守的同步最坏向量 `m_i=mark_high_i,t`，并按该向量的合成名义重新选档。若 `margin_balance<=maintenance`，首次触发 account-level liquidation；不允许等 close 后补款。
+   185	7. **小时 close：** 未强平时用 mark close 重算。若
+   186	   `maintenance < margin_balance < 3*maintenance`，本小时记一次 `buffer_breach`，排定下一 bar open 补款；若 `margin_balance>=3*maintenance`，清除 breach 状态。若 close 已满足 `margin_balance<=maintenance`，在该 close 立即强平并归属本小时。
+   187	
+   188	`buffer_breach` 与 `liquidation` 是两级互斥终态：前者表示仍高于维持线、只能触发延迟补款；后者表示首次达到或跌破维持线、立即终止全部短永续。每条路径分别报告“至少一次 buffer breach”和“至少一次 account-level liquidation”，不得把 breach 当作 liquidation，也不得用补款后的结果抹去已发生 breach。
+   189	
+   190	Account-level liquidation 时：
+   191	
+   192	- BTC/ETH 所有未平短永续在首次触发检查点一起按该检查点 mark 参考价买回；滑点作为 §4.1 独立成本，不能既改执行价又重复扣 cost。
+   193	- 每腿计 regular fee、对应压力档 slippage，并按触发名义所在完整历史 bracket 的 clearance fee rate 计清算费。
+   194	- realized PnL、成本与 wallet 在该检查点立即入账；这计为一个 liquidation episode，并记录受影响品种。
+   195	- 现货腿保留到下一根 1H open，再全部卖出并计成本；期间方向暴露和现货 PnL 完整入账。此后路径保持 USDT 现金，不再重开。
+   196	- 若清算后 `W_raw<0`，令 `bankruptcy_liability=max(0,-W_raw)`、账面 `W=0`，并在 sleeve NAV 中作为外部负债扣除。该操作只是把负 wallet 重分类为负债；损失已经包含在清算 realized PnL 和费用中，不能再记一笔 bankruptcy PnL。后续用现货卖出所得偿还负债只是资产与负债同时减少，不产生第二次 PnL。若 sleeve 原始权益 `<=0`，净值记零并成为吸收态。
+   197	
+   198	ADL 只在 Binance 官方市场/账户执行记录能证明该小时发生时入账：按实际减仓数量和执行价替代普通平仓；缺少执行数量或价格则该事件项 `N.A.⇒FAIL`。提现暂停不改变 MTM，但按 §6.3 阻止暂停期内 `B/E` 跨账户转入；已在 futures wallet 的资金仍可用。
+   199	
+   200	---
+   201	
+   202	## §3 A-1×Carry OI 风控触发器
+   203	
+   204	### §3.1 信号
+   205	
+   206	```text
+   207	d6h_i(t) = OI_i(t) / OI_i(t-6h) - 1
+   208	oi_6h_pctl_i(t) =
+   209	    d6h_i(t) 在严格过去固定滚动窗 [t-365d, t) 中的 midrank 分位
+   210	```
+   211	
+   212	窗口是**固定 365 日滚动窗，不是扩张窗**；不含当前值。至少覆盖 180 日历日且有 `>=720` 个有效 1H 样本才可出信号，否则状态保持 100% 且记 warm-up，不以缺数触发。OI 不前填。
+   213	
+   214	### §3.2 双腿减仓、成交顺序与恢复
+   215	
+   216	- `oi_6h_pctl_i(t)<=0.01` 且当前为 100%：在次一根 1H open 把该品种**现货和短永续同步降到 50%**，目标短永续名义=`0.5*N_i`，目标数量=`0.5*N_i/F_i,open`，现货目标数量与短永续绝对数量相等。
+   217	- 风险优先顺序：减仓时先用 reduce-only 买回短永续，再卖出匹配现货；恢复时先买入现货，再卖出永续。两腿均用各自次一根 1H open，模拟账本视为同一时间戳；实盘 shadow 要求第二腿在第一腿确认后 60 秒内提交。
+   218	- 任一腿不能足额成交、现金不足或风控检查禁止第二腿时，立即按当时可得价反向撤销已成交第一腿，回到切换前状态；所有成交、撤销、fee 和 slippage 均入账，该次状态切换记 `execution_fail`，24h 内不重试。
+   219	- 首次成功减仓启动 24h refractory。期间新触发不延长。24h 到期时若当根仍触发，则续 24h；若不再触发，则次一根 1H open 按上述恢复顺序一次性恢复到 100%。
+   220	- BTC/ETH 各自独立运行状态机；无论 50% 或 100% 状态，成功切换后均满足 `q_spot+q_perp=0`，减仓本身不得制造方向暴露。
+   221	
+   222	### §3.3 判决去循环
+   223	
+   224	1. **基础 carry FEASIBILITY-LOCK** 只用不含 OI 触发器的 baseline 按 §5.2 判 PASS/FAIL。
+   225	2. 只有 baseline PASS，才评估 OI 模块是否保留。非劣检验为同一路径“有触发器−无触发器”，`H0: ΔnetER<=-0.5%/年`，单侧 `alpha=0.05`，同步 1 周块、`B=2000`、`seed=20260614`。
+   226	3. 尾部门唯一化：若 baseline 的事件期 liquidation episodes `L0>0`，要求触发器版 `L1<L0`；若 `L0=0`，要求 `L1=0`。同时要求触发器不得增加 account-level liquidation 总次数。
+   227	4. 非劣与尾部门均通过才“保留 OI 模块”。任一不通过则 OI 模块 REJECTED，但不得改写 baseline 的独立 PASS/FAIL，也不得在有/无触发器两版中择优包装 edge。
+   228	
+   229	---
+   230	
+   231	## §4 成本、交易小时与无重复损益账本
+   232	
+   233	### §4.1 成本
+   234	
+   235	```text
+   236	regular_fee_per_side = 0.10%
+   237	baseline_slippage_per_side = 0.10%
+   238	event_slippage_per_side = 0.30% / 0.50% / 1.00% 三个压力档
+   239	
+   240	trade_cost =
+   241	    abs(reference_price * quantity_filled)
+   242	    * (fee_per_side + slippage_per_side)
+   243	```
+   244	
+   245	- 现货、永续每一腿分别计费；fee 固定用 0.10%，不根据 VIP、maker/taker 或结果后费率优化。
+   246	- 开仓、强制收尾平仓、每日再平衡、OI 减仓/恢复、失败撤销、脱锚退出/恢复、强平和强平后现货处置均逐笔计费。
+   247	- 事件窗内对每一笔交易分别重跑 0.30%/0.50%/1.00% 滑点压力档；fee 仍为 0.10%。清算另加历史 liquidation clearance fee，不能用普通手续费替代。
+   248	- 参考成交价始终是规则指定的 raw open 或强平 mark；slippage 只作为上式成本扣一次，不再改成交价。
+   249	- `financing=0`：全部资金属于 `C0`，无借贷。任何外部借款或补资均为协议违规。
+   250	
+   251	### §4.2 小时边界、权威 NAV 与交易小时 PnL
+   252	
+   253	对每个 UTC 小时边界 `t` 定义检查点 `A_t`：已完成该边界实际 funding 结算及 funding 后即时强平检查，但**尚未**执行该边界的延迟补款和自愿 open 交易。bar `H_t=[t,t+1h)` 的权威净 PnL 为：
+   254	
+   255	```text
+   256	spot_value_A_t = Σ_i q_spot_i(t-) * S_i,t
+   257	futures_equity_A_t = W_t + Σ_i q_perp_i(t-) * (mark_i,t - entry_i,t)
+   258	
+   259	NAV_A_t_raw =
+   260	    spot_value_A_t + futures_equity_A_t
+   261	    + spot_reserved_cash_t + B_t + E_t
+   262	    - bankruptcy_liability_t
+   263	
+   264	NAV_A_t = max(0, NAV_A_t_raw)
+   265	net_pnl_H_t = NAV_A_(t+1h) - NAV_A_t
+   266	r_H_t = net_pnl_H_t / C0
+   267	```
+   268	
+   269	内部 `B/E/M` 转账在 NAV 中净额为零。open 交易发生在 `A_t` 之后，因此其 fee、slippage、实现损益与随后持仓 PnL全部归属 `H_t`；`t+1h` 边界的 funding 发生在 `A_(t+1h)` 之前，因此归属 `H_t`。若 `t+1h` 同时有 funding 和新交易，funding 用交易前数量并归属 `H_t`，新交易归属下一小时。强平归属首次触发所在 `H_t`；强平后现货在下一 open 的卖出及成本归属下一小时。
+   270	
+   271	每个固定 UTC 8h 观测 interval 定义为：
+   272	
+   273	```text
+   274	I_k = [T_k, T_k+8h)
+   275	T_k ∈ {每天 00:00, 08:00, 16:00 UTC}
+   276	
+   277	net_pnl_8h,k = Σ_{H_t subset I_k} net_pnl_H_t
+   278	r_8h,k = net_pnl_8h,k / C0
+   279	```
+   280	
+   281	因此：
+   282	
+   283	- `T_k` 边界 funding 已归属前一 interval；
+   284	- `T_k` 的 open 交易归属 `I_k`；
+   285	- `T_k+8h` 边界 funding 归属 `I_k`；
+   286	- `T_k+8h` 的 open 交易归属下一 interval。
+   287	
+   288	若交易所临时增加、取消或改变 funding 时点，现金流仍按实际 timestamp 归入包含该 timestamp 的小时，并在该小时右边界入账；结算名义使用实际 timestamp 前最后一个已确认仓位。若同一小时既有非整点 funding 又发生无法排序的 intrahour liquidation/ADL，由于 1H 数据不能证明先后，该小时 `N.A.⇒FAIL`。研究观测单位继续固定为上述 UTC 8h interval，不改年化因子，不按结果重分箱。
+   289	
+   290	### §4.3 腿级对账与机制归因
+   291	
+   292	权威总收益只取 §4.2 的 NAV 差。为审计 open 改仓小时，另计算下列严格求和的腿级价格 PnL。令 `q^-` 为 `t` open 交易前数量、`q^+` 为交易后数量。无小时内强平时：
+   293	
+   294	```text
+   295	spot_price_pnl_i,H =
+   296	    q_spot_i^- * (S_open_i,t - S_close_i,t-1)
+   297	    + q_spot_i^+ * (S_close_i,t - S_open_i,t)
+   298	
+   299	perp_ledger_price_pnl_i,H =
+   300	    q_perp_i^- * (F_open_i,t - mark_close_i,t-1)
+   301	    + q_perp_i^+ * (mark_close_i,t - F_open_i,t)
+   302	```
+   303	
+   304	该 `perp_ledger_price_pnl` 必须等于本小时 `realized_perp_pnl + ΔUPNL`（内部转账、funding 和成本剔除后）。不相等超过 `1e-8*C0` 记账即失败，不得用平衡项静默修补。
+   305	
+   306	经济 basis 归因继续使用 spot 与 perpetual contract 价格。令：
+   307	
+   308	```text
+   309	paired_qty^- = min(q_spot^-, abs(q_perp^-))
+   310	paired_qty^+ = min(q_spot^+, abs(q_perp^+))
+   311	
+   312	basis_pnl_i,H =
+   313	    paired_qty^- *
+   314	      [(S_open-S_prev_close) - (F_open-F_prev_close)]
+   315	    + paired_qty^+ *
+   316	      [(S_close-S_open) - (F_close-F_open)]
+   317	
+   318	contract_leg_pnl_i,H =
+   319	    q_spot^-*(S_open-S_prev_close)
+   320	    + q_spot^+*(S_close-S_open)
+   321	    + q_perp^-*(F_open-F_prev_close)
+   322	    + q_perp^+*(F_close-F_open)
+   323	
+   324	rebalance_directional_pnl_i,H =
+   325	    contract_leg_pnl_i,H - basis_pnl_i,H
+   326	
+   327	mark_contract_adjustment_i,H =
+   328	    q_perp^-*(F_prev_close-mark_prev_close)
+   329	    + q_perp^+*(mark_close-F_close)
+   330	```
+   331	
+   332	于是每小时必须满足：
+   333	
+   334	```text
+   335	net_pnl_H =
+   336	    Σ_i basis_pnl_i,H
+   337	    + Σ_i rebalance_directional_pnl_i,H
+   338	    + Σ_i mark_contract_adjustment_i,H
+   339	    + funding_received_H
+   340	    - spot_fees_H - futures_fees_H
+   341	    - spot_slippage_H - futures_slippage_H
+   342	    - liquidation_clearance_fees_H
+   343	    - ADL_cash_charge_H
+   344	```
+   345	
+   346	`ADL_cash_charge_H` 只允许记录官方账单中独立于执行价的额外现金扣款；ADL 执行数量和执行价本身进入 `perp_ledger_price_pnl`，不得再记为 `ADL_cash_charge`。`bankruptcy_liability` 是负 wallet 重分类，不是额外 PnL 科目。
+   347	
+   348	若在 bar open 或 close 强平，仍使用上式对应边界价格。若在小时内 mark high 触发强平/ADL，由于没有同一触发时刻的可审计 spot 与 perpetual contract 成交价，归因唯一改为：
+   349	
+   350	```text
+   351	preopen_basis_pnl =
+   352	    paired_qty^- *
+   353	    [(S_open-S_prev_close) - (F_open-F_prev_close)]
+   354	
+   355	preopen_contract_residual =
+   356	    q_spot^-*(S_open-S_prev_close)
+   357	    + q_perp^-*(F_open-F_prev_close)
+   358	    - preopen_basis_pnl
+   359	
+   360	forced_segment_pnl =
+   361	    本小时实际 spot_price_pnl
+   362	    + 本小时实际 perp_ledger_price_pnl
+   363	    - preopen_basis_pnl
+   364	    - preopen_contract_residual
+   365	```
+   366	
+   367	`forced_segment_pnl` 是公开列示的强制执行段价格损益，不再拆成 basis 或方向项；不得用插值构造触发时刻 spot 价格。该小时不用常规整小时 basis 公式，唯一归因为：
+   368	
+   369	```text
+   370	net_pnl_forced_H =
+   371	    preopen_basis_pnl
+   372	    + preopen_contract_residual
+   373	    + forced_segment_pnl
+   374	    + funding_received_H
+   375	    - all_fees_H
+   376	    - all_slippage_H
+   377	    - liquidation_clearance_fees_H
+   378	    - ADL_cash_charge_H
+   379	```
+   380	
+   381	分段和仍必须与 NAV 差一致。
+   382	
+   383	逐小时强制检查：
+   384	
+   385	```text
+   386	abs(
+   387	  net_pnl_H_from_NAV
+   388	  - net_pnl_H_from_attribution
+   389	) <= 1e-8 * C0
+   390	```
+   391	
+   392	不满足即 `ACCOUNTING_FAIL ⇒ FEASIBILITY-LOCK FAIL`。basis、腿级 PnL、wallet realized/unrealized、事件损失均是同一权威 PnL 的互斥解释，不得二次加总。
+   393	
+   394	### §4.4 USDT 脱锚的计价边界
+   395	
+   396	策略收益以 USDT 为 numeraire，故 USDT 相对 USD 的涨跌**不进入** `C0`、NAV、funding、basis 或净收益换算；这样避免把全部 USDT 资产重复乘汇率。USDT 脱锚仍属于 venue/结算资产事件风险，必须按 §6.4 生成事件、应用事件滑点、补款限制和事件硬门，并单独报告 `USDTUSD` 最低值及脱锚幅度。报告可附 USD 购买力敏感性，但只能作为非判决附表，不能替换或叠加 USDT 权威 PnL。
+   397	
+   398	---
+   399	
+   400	## §5 历史 FEASIBILITY-LOCK 验收与 1H 路径 bootstrap
+   401	
+   402	### §5.1 主收益推断
+   403	
+   404	- 观测单位：§4.2 固定 UTC 8h interval 的组合全成本净收益。
+   405	- 同步 UTC BTC/ETH 向量 moving-block bootstrap；块长 21 个 8h interval（1 周），`B=2000`，`seed=20260614`。
+   406	- 点估计：`annualized_net_ER = mean(r_8h)*1095`。
+   407	- 显著性：在 `H0:E[R]=0` 边界下，把组合 8h 净收益减去样本均值后重心化；对重心化序列做上述块重采样。`p=(1+#(T_b>=T_obs))/(B+1)`，单侧 `alpha=0.05`。同时报告未重心化 bootstrap 的 percentile 95% CI。
+   408	- 年化 log growth 唯一公式：`mean(log1p(r_8h))*1095`。
+   409	
+   410	### §5.2 基础 carry 二元门
+   411	
+   412	**FEASIBILITY-LOCK PASS 必须全部满足：**
+   413	
+   414	- [ ] `annualized_net_ER>0` 且 §5.1 单侧 `p<=0.05`。
+   415	- [ ] 赢亏比 `mean(r|r>0)/abs(mean(r|r<0)) >=1.5`。
+   416	- [ ] 完整 UTC 年中净 E[R]>0 的年份占严格多数；不足一个完整年不计入分母。
+   417	- [ ] 年化 log growth >0。
+   418	- [ ] 相对现金零收益基准的净超额收益通过同一个 `H0:E[R]<=0` 检验。
+   419	- [ ] §5.3 分档爆仓概率通过。
+   420	- [ ] 组合 MDD `<=15%`，并通过 §6 固定事件直接重演。
+   421	- [ ] WF 三段中至少两段净 E[R]>0。
+   422	- [ ] 所有必要数据均非 N.A.，逐小时账本对账通过，且无 Holdout/全样本分位/事后改窗违规。
+   423	
+   424	任一不满足即 **FEASIBILITY-LOCK FAIL**。历史 PASS 只允许使用 §0 的限定表述。
+   425	
+   426	### §5.3 2000 条一年路径：精确 1H 合成与保证金重演
+   427	
+   428	**bootstrap 输入不是 8h 收盘收益。** 对每个历史 1H bar `s=[u,u+1h)` 和每个价格序列
+   429	`Y ∈ {spot, perpetual_contract, mark, index}`，保存无量纲模板：
+   430	
+   431	```text
+   432	gap_Y,s   = open_Y,s / close_Y,s-1
+   433	body_Y,s  = close_Y,s / open_Y,s
+   434	
+   435	mark_high_ratio_s = mark_high_s / mark_open_s
+   436	mark_low_ratio_s  = mark_low_s / mark_open_s
+   437	oi_ratio_s        = OI_close_s / OI_close_s-1
+   438	```
+   439	
+   440	同时保存：
+   441	
+   442	```text
+   443	X_s = {
+   444	  上述 BTC/ETH 同步价格模板,
+   445	  funding rate、实际 settlement flag 及 bar 内 timestamp offset,
+   446	  OI 缺失标记,
+   447	  每个品种该历史小时生效的完整 bracket rows
+   448	    [floor, cap, mmr, cum, clearance_fee_rate],
+   449	  由真实历史序列预先按 §6 机械生成的 event membership,
+   450	  withdrawal / ADL flags,
+   451	  USDTUSD 事件监控值,
+   452	  data-availability flags
+   453	}
+   454	```
+   455	
+   456	候选块须满足：
+   457	
+   458	1. 从历史任意 `00:00 UTC` 开始，连续 168 个完整 1H bar；
+   459	2. 候选首 bar 的前一小时 close 完整，使 `gap` 可计算；
+   460	3. 块内 BTC/ETH 所有必要字段同步完整；跨缺失小时的块不得入池；
+   461	4. 完整 bracket 表按实际生效小时存在，不能只有 bracket id；
+   462	5. 168h 是固定 UTC 8h interval 的整数倍。
+   463	
+   464	**随机算法冻结：**
+   465	
+   466	```text
+   467	PRNG = NumPy Generator(PCG64(seed=20260614))
+   468	paths = 2000
+   469	draws_per_path = 105
+   470	sampling = 对候选块索引有放回均匀抽样
+   471	draw_order = path 0 的 105 次、path 1 的 105 次……依次生成
+   472	```
+   473	
+   474	每条路径串接 105 个块共 `17,640h`，只取前 `17,520h`。同一块内 BTC/ETH、价格模板、funding、OI、事件、USDTUSD 和制度表始终一起移动，禁止逐列独立抽样。
+   475	
+   476	**固定合成时钟与数值基准：**
+   477	
+   478	```text
+   479	synthetic_start = 2001-01-01T00:00:00Z
+   480	BTC prior-close base = 100,000 USDT
+   481	ETH prior-close base = 4,000 USDT
+   482	
+   483	在 n=-1：
+   484	spot = perpetual_contract = mark = index = 对应品种 base
+   485	OI = 1.0（无量纲，仅保留相对变化与滚动分位）
+   486	```
+   487	
+   488	对路径第 `n` 个合成 bar、其抽中的历史源 bar `s`，逐序列精确递推：
+   489	
+   490	```text
+   491	open_Y,n  = close_Y,n-1 * gap_Y,s
+   492	close_Y,n = open_Y,n * body_Y,s
+   493	
+   494	mark_high_n = mark_open_n * mark_high_ratio_s
+   495	mark_low_n  = mark_open_n * mark_low_ratio_s
+   496	OI_n        = OI_n-1 * oi_ratio_s
+   497	```
+   498	
+   499	funding rate、结算 flag/timestamp offset、预先生成的事件 membership、withdrawal/ADL flag 和完整 bracket 表直接从源 bar `s` 复制到合成 bar `n`。合成路径使用复制后的 event membership，不在重建价格上重新扫描 §6，避免块边界制造人工事件；真实历史直接重演仍按 §6 从原始序列机械扫描。块边界使用新块首 bar 自身的 `gap/body` 接续上一合成 close；不插值、不重置、不按源绝对价格重估 basis。若递推后 OHLC 关系不满足
+   500	`high>=max(open,close)` 或 `low<=min(open,close)`，该源模板不合格并在抽样前剔除；不得执行后修正。
+   501	
+   502	完整 bracket 表随源 bar 移动，但**档位不随源历史名义复制**。在合成路径每个 funding/open/high/close 检查点，按合成持仓数量乘合成 mark 得到 USDT 名义，再用该检查点携带的完整表按 §2.4 的 floor/cap 重新选 `mmr/cum/clearance_fee_rate`。若合成名义不落入任何档、表有重叠/缺口或制度字段缺失，该路径项 `N.A.⇒FAIL`。
+   503	
+   504	路径运行规则：
+   505	
+   506	1. 前 `8,760h` 只作 OI 365 日滚动窗口 warm-up；不计评价收益。
+   507	2. 在合成时钟 `2002-01-01T00:00:00Z`、即零基索引 `n=8,760`（自然数第 `8,761` 个 bar）的 open，以新的 `C0=100,000 USDT` 按当时合成 spot/perpetual open 初始化资本和持仓，所有 PnL、breach、refractory 和负债状态归零；合成价格与 OI 历史不断链。
+   508	3. 后 `8,760h` 是唯一一年评价期。§5 基础 carry 风险门先在关闭 OI 模块的 baseline 上，逐小时运行 §2.4、§4 和 §6 的完整状态机；funding、补款、交易、强平、费用和 NAV 必须重新产生，不得从 8h 收益、组合 MDD或源历史强平结果推断。
+   509	4. 只有 baseline PASS 后，才在完全相同的 2000 条路径及抽样索引上另跑开启 §3 的配对版本。
+   510	5. 每条路径分别运行基准滑点及三个事件压力滑点账本。若路径含 §6 事件小时，只替换事件小时内发生交易的滑点；该路径的风险统计取四个账本中的最坏值。
+   511	6. account-level liquidation 后按 §2.4 处置现货并保持现金，不得重开；一年 MDD 按 `NAV_A_t/C0` 逐小时计算。
+   512	
+   513	`B=2000`，统一 `seed=20260614`。报告：
+   514	
+   515	- `P(至少一次 buffer_breach)`、每路径 breach 小时数和补款次数；
+   516	- `P(至少一次 account-level liquidation)`、各品种受影响概率及首次强平小时；
+   517	- `P(一年 MDD>=20%)`、`P(一年 MDD>=35%)` 和年 MDD 分布。
+   518	
+   519	硬门：
+   520	
+   521	```text
+   522	P(一年 MDD >= 35%) <= 20%
+   523	P(一年 MDD >= 20%) <= 10%
+   524	```
+   525	
+   526	两者均按 2000 条路径的最坏压力账本频率计算。任一路径无法重建完整 bracket、funding 边界、补款延迟或首次强平状态，则该分档爆仓项 `N.A.⇒FAIL`。
+   527	
+   528	### §5.4 WF
+   529	
+   530	按历史工作集 8h interval 数时间等分三段，余数依次分给前段。每段在首个可交易 open 用同一 `C0=100,000 USDT` 独立开仓，在段末最后一个 close 强制平仓并计成本；不把持仓或 PnL 跨段传递，不在段内重估参数。这样切点持仓被显式结算而非静默跨界。至少两段净 E[R]>0。
+   531	
+   532	---
+   533	
+   534	## §6 事件清单与规则生成事件
+   535	
+   536	### §6.1 固定命名事件（半开 UTC 窗口）
+   537	
+   538	| 事件 | Venue/策略资产 | UTC 起点（含） | UTC 终点（不含） | 说明 |
+   539	|---|---|---|---|---|
+   540	| ETH Merge | Binance ETH spot + USDT-M perp | `2022-09-08T06:00:00Z` | `2022-09-22T07:00:00Z` | 围绕 Merge 时点 `2022-09-15T06:42:42Z` 前后各 168h，向外对齐完整 1H |
+   541	| Terra/LUNA/UST 崩盘 | Binance BTC、ETH spot + USDT-M perp | `2022-05-09T00:00:00Z` | `2022-05-14T00:00:00Z` | 市场级冲击；不得只保留受益品种 |
+   542	| 3AC/借贷连环 | Binance BTC、ETH spot + USDT-M perp | `2022-06-12T00:00:00Z` | `2022-07-01T00:00:00Z` | 从 Celsius 暂停提现起覆盖 3AC/借贷传染至 6 月末 |
+   543	| FTX 暴雷 | Binance BTC、ETH spot + USDT-M perp | `2022-11-06T00:00:00Z` | `2022-11-15T00:00:00Z` | 覆盖公开挤兑至冻结窗口终点 |
+   544	
+   545	ETH Merge 已在前序材料披露，不作独立确认样本，只作事件压力诊断。
+   546	
+   547	### §6.2 永续脱锚规则
+   548	
+   549	对每个策略永续逐 1H 计算：
+   550	
+   551	```text
+   552	perp_depeg_i,h = abs(mark_close_i,h / index_close_i,h - 1)
+   553	```
+   554	
+   555	- 连续两个完整 1H bar 均 `perp_depeg>2%` 才生成事件。
+   556	- 起点是该连续 run 的第一个 bar open。
+   557	- 起点后首次出现连续六个完整 1H bar 均 `perp_depeg<=0.5%`，事件终点为第六个 bar 的 close；若直到工作集末仍未恢复，终点取工作集 cutoff。
+   558	- 相邻事件间隔 `<=6h` 时合并为一个事件。
+   559	- mark/index 任一缺失会中断连续计数；若缺失发生在已触发事件内，事件建模 `N.A.⇒FAIL`，不得用插值缩短窗口。
+   560	- 第二个确认 bar close 后，次一根 1H open 将该品种双腿降到 0：先买回短永续，再卖出现货；事件期间保持现金。事件终点后再等待 24h，在下一个 `00:00 UTC` 检查点后的 1H open 恢复。baseline 恢复到 100%；开启 OI 模块的配对版本按当时 OI 信号恢复到 50% 或 100%。退出、等待和恢复全部计逐腿成本，脱锚风险规则优先于每日再平衡和 OI 状态切换。
+   561	
+   562	### §6.3 Binance 提现暂停规则
+   563	
+   564	- 只扫描 Binance 官方 announcement archive 及执行前冻结的 BTC、ETH、USDT withdrawal-status 小时快照。
+   565	- 仅当官方记录明确显示 BTC、ETH 或 USDT 提现不可用并持续至少两个完整 1H bar，才生成事件。
+   566	- 起点取官方生效时间；无生效时间时取公告发布时间向下取整到小时。终点取官方恢复生效时间；无明确时间时取状态快照连续两个小时恢复可用后的第二个小时 close。
+   567	- 公告与状态冲突时取更早起点、更晚终点；缺少终点证据则持续到工作集 cutoff。
+   568	- 事件期间不允许 `B/E` 向 futures wallet 新转入；已在 futures wallet 的保证金照常使用。该限制在逐 1H 状态机和 bootstrap 中一致执行。
+   569	
+   570	### §6.4 USDT 脱锚规则
+   571	
+   572	USDT/USD 只用于事件识别。逐 1H 计算两个 Binance index 交叉价：
+   573	
+   574	```text
+   575	u_BTC,h = BTCUSD_COINM_index_close_h / BTCUSDT_USDM_index_close_h
+   576	u_ETH,h = ETHUSD_COINM_index_close_h / ETHUSDT_USDM_index_close_h
+   577	USDTUSD_h = median(u_BTC,h, u_ETH,h)
+   578	usdt_depeg_h = abs(USDTUSD_h - 1)
+   579	```
+   580	
+   581	两个交叉价都必须存在；不得假定 `USDTUSD=1` 或结果后换用另一稳定币。事件生成规则：
+   582	
+   583	- 连续两个完整 1H bar 均 `usdt_depeg>1%` 时触发，起点为该 run 第一个 bar open；
+   584	- 触发后首次连续六个完整 1H bar 均 `usdt_depeg<=0.5%`，终点为第六个 bar close；
+   585	- 相邻事件间隔 `<=6h` 合并；工作集末未恢复则终点取 cutoff；
+   586	- 已触发事件内任一交叉价缺失则 `N.A.⇒FAIL`。
+   587	
+   588	USDT 脱锚事件不主动平掉双腿，因为两腿及保证金均以 USDT 结算；但该窗口适用事件滑点压力、`E` 补款资格和 §6.5 事件硬门，并单列 USDT 相对 USD 的购买力变化。不得把该购买力变化再次加入 USDT PnL。
+   589	
+   590	### §6.5 新事件纳入算法与硬门
+   591	
+   592	固定命名事件之外，**只能**由 §6.2、§6.3 或 §6.4 的全工作集机械扫描生成事件；禁止凭新闻记忆新增名称、事后移动边界或删除亏损事件。执行前输出按 `(start_utc, end_utc, rule_id, symbol)` 排序的事件 manifest 及 SHA-256；同一规则、同一输入必须生成同一清单。重叠窗口取并集，不能裁短。
+   593	
+   594	每个固定或规则生成事件均按真实 1H 路径直接重演 §2.4 账本，并分别报告 0.10%/0.30%/0.50%/1.00% 滑点。任一压力档发生 account-level liquidation，或事件窗口至恢复后 24h 的 sleeve MDD>15%，则 §5 的事件硬门 FAIL。
+   595	
+   596	---
+   597	
+   598	## §7 Holdout、cutoff 与输入 manifest
+   599	
+   600	- 全部历史输入统一 cutoff `<2024-12-10`：spot、perpetual contract、mark、index、funding、OI、USDTUSD 事件源、事件公告/状态、完整保证金阶梯和清算费。
+   601	- Holdout 物理封存规范固定引用：`06_RESEARCH/PREREGISTRATIONS/A1_CASCADE_REBOUND_PREREG_v5.md §12`；该文件版本 git commit `5acf2a8aa149f740fc78db78f410841add1a087a`，文件 SHA-256 `a5f5051b9fd4c1365ce08d21a6dd7b3b1213d83148136af968b7eeafa8e3cbfa`。
+   602	- 封存使用 AES-256-GCM，格式 `12B nonce || ciphertext || 16B tag`；密钥由执行身份不可读的独立 principal 保管。执行前必须留下 manifest 可读成功、密钥/解密不可用失败的负向权限测试命令、退出码和证据。
+   603	- 执行代码拒绝任何路径名含 `HOLDOUT`、`sealed` 的输入。Holdout 对研究执行身份永久不可读；只有 Founder 批准的独立评估身份可一次性解封。
+   604	- Holdout 即使未来被独立评估，也只是一轮锁定后的历史稳健性复核，**不耗独立 Alpha 计数、不能救回失败的工作集、不能替代 §9 前向确认**。
+   605	- 执行前生成输入 manifest：路径、schema、UTC 起止、行数、缺失率、来源、抓取版本、文件 SHA-256、生成代码 git hash。任一 manifest 后输入变更均视为新版本，须重新盲审。
+   606	
+   607	---
+   608	
+   609	## §8 功效与判读边界
+   610	
+   611	- 历史 8h 序列描述性有效样本量：`n_eff=n/(1+2Σrho_k)`，ACF 截断 30 个 8h lag（10 天）。该数不把被探索污染的历史段升级为独立确认。
+   612	- 独立制度周期约 4-5 年，年度样本很少；历史年度正负和显著性仅按冻结门机械报告，不声称充分机制功效。
+   613	- v4 不使用 v2 未冻结来源的“年化 5%-12%”外部先验作任何 PASS/FAIL、MDE 或上线判决，也不得执行后补选有利来源。历史身份降级和前向确认的必要性不依赖该数值。
+   614	- 不显著点估计必须写“未验证”；负 funding、事件亏损、清算、ADL、USDT 脱锚事件和强平不得剔除。
+   615	
+   616	---
+   617	
+   618	## §9 前向 SHADOW 真确认协议
+   619	
+   620	### §9.1 起点、样本与停机
+   621	
+   622	- 起点 `T0`：v4 经独立 Reviewer 书面放行、历史 baseline FEASIBILITY-LOCK PASS、OI 模块去留已经按 §3.3 冻结，且前向数据 manifest/hash 冻结后的**下一个 UTC 月首 `00:00`**。`T0` 前数据一律不得回填。
+   623	- shadow 唯一运行版本：baseline 加上“仅当 §3.3 判保留时才启用”的 OI 模块；不得在 shadow 期切换有/无触发器版本。
+   624	- “独立月”仅指独立于历史工作集、在 `T0` 后完整采集的 UTC 日历月，不声称月份在统计上相互独立。
+   625	- 一个完整月要求 BTC/ETH 所有必要 1H 字段和组合 8h interval 均 `>=99%` 完整、无单次连续缺口超过 8h，且所有缺口原因在结果解盲前留痕；不插值。
+   626	- 最少 18 个完整前向月，且组合有效 8h intervals `n>=1620`。最多观察 24 个 UTC 日历月。
+   627	- 在第一个达到“18 个完整月且 `n>=1620`”的月末只检验一次；若 24 个月结束仍未达到数据门，直接 SHADOW FAIL。停机只由预定日历和数据完整性决定，不由收益结果决定。
+   628	- 期间可做持仓、成交、缺数和风险运维检查，但不得运行确认 p 值、不得以累计收益提前通过或延长观察。
+   629	
+   630	### §9.2 一次性统计确认门
+   631	
+   632	对 `T0` 后组合 8h 全成本净收益：
+   633	
+   634	1. 检验统计量 `T_obs=mean(r_8h)*1095`。
+   635	2. `H0:E[R]<=0`，在零边界把序列减去样本均值重心化。
+   636	3. 对重心化序列做 90 个 8h interval（30 天）moving-block bootstrap，`B=10000`，`seed=20260614`。
+   637	4. `p=(1+#(T_b>=T_obs))/(B+1)`；要求 `T_obs>0` 且单侧 `p<=0.05`。同时报告未重心化 percentile 95% CI。
+   638	
+   639	**SHADOW CONFIRMED 必须同时满足：**
+   640	
+   641	- [ ] 上述前向 net E[R] 显著>0；这同时是对现金零收益基准的超额收益门。
+   642	- [ ] 整个 shadow 期 account-level liquidation episodes = 0。
+   643	- [ ] 无未解决的 N.A.、外部补资、Holdout 读取、规则变更、账本不平或执行偏离。
+   644	
+   645	任一不满足即 SHADOW FAIL；不得延长到显著、不得换 seed/块长/alpha、不得把历史 PASS 与前向 FAIL 合并为“部分确认”。重新提出假设必须新版本预登记，并只使用新版本放行后的未来数据。
+   646	
+   647	### §9.3 证据等级与小额真金
+   648	
+   649	SHADOW CONFIRMED 经独立 Reviewer 核对后，只把策略从“历史观察级”提升为“前向确认、可申请小额真金”，不自动进入核心资本。Founder 书面批准后，小额真金 sleeve 上限冻结为：
+   650	
+   651	```text
+   652	min(批准日公司可投资 NAV 的 0.5%, 10,000 USDT)
+   653	```
+   654	
+   655	真金阶段继续使用同一 venue、1.0 初始杠杆、资本比例、USDT 计价、成本和风控，不得升杠杆。任何升额、降级或核心资本上线须另立实盘协议和独立审批；不属于本预登记自动授权范围。
+   656	
+   657	---
+   658	
+   659	## §10 失败后禁止行为
+   660	
+   661	FEASIBILITY-LOCK FAIL 或 SHADOW FAIL 后禁止：改 funding/权重/资本比例/再平衡/OI 阈值/事件窗/seed/块长后在同一数据重测；剔除负 funding 或事件；读取 Holdout“确认”失败；把不显著写成“弱 edge”或“部分成功”；把历史可行性复核冒称独立确认；以 shadow 运行时间代替固定确认门；未经新预登记和独立审批上线或升额。
+--- v3 review ---
+     1	# Delta 中性 Carry 预登记 v3 第三轮独立风险审查
+     2	
+     3	**任务号：** CARRY-RR3
+     4	**审查者：** Codex（独立 Risk Reviewer，与 v3 起草上下文分离）
+     5	**审查日期：** 2026-06-14（Asia/Singapore）
+     6	**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v3.md`
+     7	**对照：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v2.md`
+     8	**结论：** **NOT APPROVED**
+     9	**RR2 剩余条件完全闭合：** **4/6**
+    10	
+    11	## 关键发现
+    12	
+    13	1. **资本恒等式的结构已修复，但 USD/USDT 计价不自洽，绝对 `C0` 仍未冻结。** v3 把 `C0` 定义为 USD 等值，却直接用 USDT 报价计算 `q_i`、`S0`、`M0` 和 `C_t`，未乘当时 `USDTUSD`。当 USDT 不等于 1 USD 时，所列 USD 恒等式不成立。绝对 `C0` 未指定也使历史 leverage bracket、`cum` 和 liquidation fee 档位无法唯一选择。
+    14	2. **逐 1H 强平重演框架已经建立，但合成路径仍不能唯一复原。** “固定基准”和 open/close/OHLC 相对量没有数值及精确递推方程；重采样后的合成名义如何映射到采样小时的完整历史 bracket schedule 也未冻结。不同实现会产生不同 mark high、维持保证金和首次强平时点。
+    15	3. **v3 新增的权威 PnL 恒等式在交易发生小时会漏计或错计。** §4.2 用单一 `q_(h-1) * (close_h-close_(h-1))`，但 OI、再平衡、脱锚退出和恢复均在小时 open 改变数量。该公式未拆分“前收盘至本 open 的旧仓 PnL”和“本 open 至本收盘的新仓 PnL”，也未说明成交实现损益与 futures wallet 账本如何对账。
+    16	
+    17	以上均会直接改变净 E[R]、MDD 或 liquidation，属于历史可行性复核本身的可复现性阻塞，不是要求历史段达到独立确认级。
+    18	
+    19	## 审查边界
+    20	
+    21	- 仅做预登记设计、公式和执行唯一性审查；未运行回测、收益计算、bootstrap、事件研究或参数搜索。
+    22	- 未读取 HOLDOUT、`01_MEMORY_CORE/`、sealed 内容或 carry 实证结果。
+    23	- 未修改 `CARRY_DELTA_NEUTRAL_PREREG_v3.md`。
+    24	- 裁决标尺是“能否放行历史 FEASIBILITY-LOCK 复核”，不要求历史段达到独立确认级。
+    25	
+    26	## RR2 剩余六项闭合裁决
+    27	
+    28	| # | RR2 剩余项 | 裁决 | 证据（v3 §/行） | 仍缺 |
+    29	|---:|---|---|---|---|
+    30	| 1 | 资本 / `N` 恒等式 | **PARTIAL** | §2.2 L53-L113；§4.2 L226-L250 | `C0=S0+M0+B0+E0`、80/10/10 分配、等数量双腿、固定收益率分母和资本占用表均已写明，且 `N` 不再重复计作资本。但 `C0` 被定义为 USD 等值（L53），仓位公式却直接除以 USDT 报价（L78-L85），`C_t` 也直接相加 USDT 资产（L104-L112）；初始及逐时 `USDTUSD` 换算未进入恒等式。另未冻结绝对 `C0`，无法唯一确定名义对应的历史保证金档。 |
+    31	| 2 | OI 双腿减仓 | **CLOSED** | §3.2 L172-L178；§3.3 L180-L185 | 减仓和恢复均把现货、短永续目标数量配平；减仓先 reduce-only 回补永续再卖现货，恢复顺序相反；次一根 1H open、60 秒 shadow 提交约束、部分成交撤销、24h refractory 和 baseline/OI 判决顺序均唯一。未发现减仓制造净方向暴露的残留规则。 |
+    32	| 3 | 逐 1H 强平路径 bootstrap | **PARTIAL** | §2.4 L127-L156；§5.3 L280-L316 | 已明确以同步 1H 完整状态向量生成 2000 条路径，在一年评价期逐小时重跑 cross-wallet、funding、补款延迟、维持保证金、事件和首次强平，而非从 8H 收益或组合 MDD 推断。仍缺：固定价格基准的数值/来源；open、close、high、low 相对量的精确递推式；合成名义按哪套完整历史 bracket schedule 重新选档。绝对 `C0` 未冻结进一步使 bracket/clearance fee 不唯一。 |
+    33	| 4 | 事件清单 | **CLOSED** | §6.1 L324-L335；§6.2-§6.4 L337-L363 | 四个命名事件均有 venue/资产及半开 UTC 精确起止。新事件只能由永续脱锚或 Binance 提现暂停规则机械扫描生成；触发、恢复、缺数、合并、冲突和 manifest SHA 均冻结，禁止凭新闻记忆增删或移动边界。 |
+    34	| 5 | 前向 shadow 确认门 | **CLOSED** | §9.1 L387-L397；§9.2 L399-L414；§9.3 L416-L424 | `T0`、不得回填、最少 18 个完整月、`n>=1620`、最长 24 月、一次性检验、30 日块、`B=10000`、`seed=20260614`、单侧 `alpha=0.05`、零强平和失败停机均可执行。通过只解锁“小额真金申请资格”，上限为 NAV 0.5% 与 10,000 USDT 较小者，不自动下单或进入核心资本。 |
+    35	| 6 | 其余 RR2 执行歧义 | **CLOSED** | 页首 L3-L7；§2.1 L32-L49；§2.3 L115-L125；§4.1 L191-L205 | 日期和 AI 证据三行完整；venue、现货、USDT-M 合约、账户模式、现货/永续/mark/basis/funding/OI 来源均唯一；日再平衡只调现货腿且与 OI 同时发生时有优先级；手续费、基准滑点和事件 0.3/0.5/1.0% 压力档逐腿逐成交冻结。新发现的 PnL 交易时点缺陷另列下节，不否定本项所指定字段已经闭合。 |
+    36	
+    37	## 新缺陷与新自由度
+    38	
+    39	### 1. USD/USDT 单位混用会破坏资本恒等式
+    40	
+    41	§2.2 L53 把 `C0` 定义为 USD 等值，L102 又规定资本桶实际持有 USDT。若初始 `u_0=USDTUSD_0`，单位一致的建仓数量至少应包含 `u_0`：
+    42	
+    43	```text
+    44	q_i,0 = pair_budget_i_USD / ((S_i,0 + F_i,0) * u_0)
+    45	```
+    46	
+    47	或者全文统一以 USDT 为资本记账单位，另设 USD 报告净值。当前 §2.2 L81、L107-L112 和 §4.2 L226-L250 没有冻结哪一种做法，也没有说明 `cash_fx_pnl` 是仅作用于闲置现金，还是作用于全部 USDT 计价的现货市值、futures wallet、funding、费用和已实现损益。该缺口会导致 FX 漏计或重复计入。
+    48	
+    49	### 2. 交易小时的 PnL 与 wallet 对账不唯一
+    50	
+    51	§2.4 L148 规定在小时 open 交易，§3.2 和 §6.2 会在 open 改变持仓；但 §4.2 L212-L214 对整小时只使用一个数量。至少需要冻结以下等价账本之一：
+    52	
+    53	```text
+    54	price_pnl_h =
+    55	    q_preopen_h * (open_h - close_h-1)
+    56	    + q_postopen_h * (close_h - open_h)
+    57	```
+    58	
+    59	并单列成交实现损益、fee、slippage；或直接以逐时 NAV 差作为权威总 PnL，再把归因项约束为严格求和一致。现有公式不能保证与 `wallet_balance + unrealized_perp_pnl` 对账。
+    60	
+    61	### 3. 合成 1H 路径存在实现选择
+    62	
+    63	§5.3 L282-L307 已选对重采样层级，但“固定基准连续复原”仍允许执行者自行选择基准价格、open gap 定义、high/low 相对 open 或前 close 的定义，以及块边界后的第一根 open。bracket 字段只列 `id`，未明确携带当时完整 `notional floor/cap, mmr, cum, clearance fee` 表并按合成名义重新选档。上述选择会改变强平首达事件。
+    64	
+    65	## 核心重构完整性
+    66	
+    67	核心重构**未被稀释**：
+    68	
+    69	- 历史段仍明确只是 FEASIBILITY-LOCK，可行性 PASS 不耗独立 Alpha 计数、不授权核心资本上线（§0 L13）。
+    70	- 真确认仍限定为放行后的未来 shadow 数据，禁止回填和按收益 optional stopping（§0 L14；§9.1 L391-L397）。
+    71	- 前向 PASS 只形成小额真金申请资格，不自动下单、不自动成为核心资本；升额和核心上线须另立协议审批（§0 L15；§9.3 L418-L424）。
+    72	- Holdout 未来即使由独立身份评估，也不耗计数、不能救回失败工作集、不能替代前向确认（§7 L367-L374）。
+    73	- 失败后禁止把历史或 shadow 失败包装为弱 edge/部分成功（§10 L428-L430）。
+    74	
+    75	因此本轮否决只针对执行与账本唯一性，不否定 v3 的研究身份重构。
+    76	
+    77	## 最小必改
+    78	
+    79	1. **统一资本计价并冻结绝对规模。** 明确 `C0` 的唯一记账币种和绝对数值；若以 USD 记账，在 `q_i`、资本占用、`C_t` 和所有 USDT 现金流中显式使用 `USDTUSD`，并规定 FX 只计一次。冻结 spot/futures 开仓 fee 与 slippage 从哪个资本桶扣除。由合成名义按完整历史 bracket 表选择 `mmr/cum/clearance fee`。
+    80	2. **修正交易小时权威 PnL。** 用 pre-open/post-open 数量和实际 open 成交价拆分价格损益，或改用逐时 NAV 差作权威总 PnL；明确 realized/unrealized、funding、fee、slippage 与 futures wallet 的逐项对账，保证 OI、再平衡、事件退出/恢复小时无漏计和重复。
+    81	3. **冻结 1H 合成路径递推。** 给出固定价格基准、各 return/OHLC 相对量定义、块边界第一根 bar 的递推方程，以及完整历史 bracket schedule 随块移动并按合成名义选档的算法。完成后再做文档盲审；本轮仍不得运行历史复核或读取 Holdout。
+    82	
+    83	## 最终结论
+    84	
+    85	**NOT APPROVED。** RR2 剩余六项中 **4/6 CLOSED**。在上述三项最小必改闭合前，不得放行历史 FEASIBILITY-LOCK 复核。即使后续放行，历史结果仍不耗独立 Alpha 计数、不授权自动下单或核心资本上线。
+    86	
+    87	**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-14
+
+exec
+/bin/bash -lc 'git status --short' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ M 04_AI_TEAM/CODEX_TASKS/CARRY_RR4_RUN.log
+ M 04_AI_TEAM/CODEX_TASKS/DRAFT_MASTERPLAN_RUN.log
+
+codex
+采用 `using-superpowers` 约束流程，并以 `verification-before-completion` 做最终证据核验；本任务是文档审查而非实现计划，因此不生成额外实施计划文件。现有工作区有两份无关日志改动，我会保持不动，只提交评审报告和完成事件。
+  → 核对 v4 三项剩余条件及核心重构，记录精确行号证据
+  • 形成独立盲审报告并写入 CARRY_RISK_REVIEW_v4.md
+  • 验证报告、写 TASK_INBOX 完成事件并按任务号提交
+exec
+/bin/bash -lc "sed -n '430,535p' 06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md | nl -ba -v430" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+   430	
+   431	```text
+   432	gap_Y,s   = open_Y,s / close_Y,s-1
+   433	body_Y,s  = close_Y,s / open_Y,s
+   434	
+   435	mark_high_ratio_s = mark_high_s / mark_open_s
+   436	mark_low_ratio_s  = mark_low_s / mark_open_s
+   437	oi_ratio_s        = OI_close_s / OI_close_s-1
+   438	```
+   439	
+   440	同时保存：
+   441	
+   442	```text
+   443	X_s = {
+   444	  上述 BTC/ETH 同步价格模板,
+   445	  funding rate、实际 settlement flag 及 bar 内 timestamp offset,
+   446	  OI 缺失标记,
+   447	  每个品种该历史小时生效的完整 bracket rows
+   448	    [floor, cap, mmr, cum, clearance_fee_rate],
+   449	  由真实历史序列预先按 §6 机械生成的 event membership,
+   450	  withdrawal / ADL flags,
+   451	  USDTUSD 事件监控值,
+   452	  data-availability flags
+   453	}
+   454	```
+   455	
+   456	候选块须满足：
+   457	
+   458	1. 从历史任意 `00:00 UTC` 开始，连续 168 个完整 1H bar；
+   459	2. 候选首 bar 的前一小时 close 完整，使 `gap` 可计算；
+   460	3. 块内 BTC/ETH 所有必要字段同步完整；跨缺失小时的块不得入池；
+   461	4. 完整 bracket 表按实际生效小时存在，不能只有 bracket id；
+   462	5. 168h 是固定 UTC 8h interval 的整数倍。
+   463	
+   464	**随机算法冻结：**
+   465	
+   466	```text
+   467	PRNG = NumPy Generator(PCG64(seed=20260614))
+   468	paths = 2000
+   469	draws_per_path = 105
+   470	sampling = 对候选块索引有放回均匀抽样
+   471	draw_order = path 0 的 105 次、path 1 的 105 次……依次生成
+   472	```
+   473	
+   474	每条路径串接 105 个块共 `17,640h`，只取前 `17,520h`。同一块内 BTC/ETH、价格模板、funding、OI、事件、USDTUSD 和制度表始终一起移动，禁止逐列独立抽样。
+   475	
+   476	**固定合成时钟与数值基准：**
+   477	
+   478	```text
+   479	synthetic_start = 2001-01-01T00:00:00Z
+   480	BTC prior-close base = 100,000 USDT
+   481	ETH prior-close base = 4,000 USDT
+   482	
+   483	在 n=-1：
+   484	spot = perpetual_contract = mark = index = 对应品种 base
+   485	OI = 1.0（无量纲，仅保留相对变化与滚动分位）
+   486	```
+   487	
+   488	对路径第 `n` 个合成 bar、其抽中的历史源 bar `s`，逐序列精确递推：
+   489	
+   490	```text
+   491	open_Y,n  = close_Y,n-1 * gap_Y,s
+   492	close_Y,n = open_Y,n * body_Y,s
+   493	
+   494	mark_high_n = mark_open_n * mark_high_ratio_s
+   495	mark_low_n  = mark_open_n * mark_low_ratio_s
+   496	OI_n        = OI_n-1 * oi_ratio_s
+   497	```
+   498	
+   499	funding rate、结算 flag/timestamp offset、预先生成的事件 membership、withdrawal/ADL flag 和完整 bracket 表直接从源 bar `s` 复制到合成 bar `n`。合成路径使用复制后的 event membership，不在重建价格上重新扫描 §6，避免块边界制造人工事件；真实历史直接重演仍按 §6 从原始序列机械扫描。块边界使用新块首 bar 自身的 `gap/body` 接续上一合成 close；不插值、不重置、不按源绝对价格重估 basis。若递推后 OHLC 关系不满足
+   500	`high>=max(open,close)` 或 `low<=min(open,close)`，该源模板不合格并在抽样前剔除；不得执行后修正。
+   501	
+   502	完整 bracket 表随源 bar 移动，但**档位不随源历史名义复制**。在合成路径每个 funding/open/high/close 检查点，按合成持仓数量乘合成 mark 得到 USDT 名义，再用该检查点携带的完整表按 §2.4 的 floor/cap 重新选 `mmr/cum/clearance_fee_rate`。若合成名义不落入任何档、表有重叠/缺口或制度字段缺失，该路径项 `N.A.⇒FAIL`。
+   503	
+   504	路径运行规则：
+   505	
+   506	1. 前 `8,760h` 只作 OI 365 日滚动窗口 warm-up；不计评价收益。
+   507	2. 在合成时钟 `2002-01-01T00:00:00Z`、即零基索引 `n=8,760`（自然数第 `8,761` 个 bar）的 open，以新的 `C0=100,000 USDT` 按当时合成 spot/perpetual open 初始化资本和持仓，所有 PnL、breach、refractory 和负债状态归零；合成价格与 OI 历史不断链。
+   508	3. 后 `8,760h` 是唯一一年评价期。§5 基础 carry 风险门先在关闭 OI 模块的 baseline 上，逐小时运行 §2.4、§4 和 §6 的完整状态机；funding、补款、交易、强平、费用和 NAV 必须重新产生，不得从 8h 收益、组合 MDD或源历史强平结果推断。
+   509	4. 只有 baseline PASS 后，才在完全相同的 2000 条路径及抽样索引上另跑开启 §3 的配对版本。
+   510	5. 每条路径分别运行基准滑点及三个事件压力滑点账本。若路径含 §6 事件小时，只替换事件小时内发生交易的滑点；该路径的风险统计取四个账本中的最坏值。
+   511	6. account-level liquidation 后按 §2.4 处置现货并保持现金，不得重开；一年 MDD 按 `NAV_A_t/C0` 逐小时计算。
+   512	
+   513	`B=2000`，统一 `seed=20260614`。报告：
+   514	
+   515	- `P(至少一次 buffer_breach)`、每路径 breach 小时数和补款次数；
+   516	- `P(至少一次 account-level liquidation)`、各品种受影响概率及首次强平小时；
+   517	- `P(一年 MDD>=20%)`、`P(一年 MDD>=35%)` 和年 MDD 分布。
+   518	
+   519	硬门：
+   520	
+   521	```text
+   522	P(一年 MDD >= 35%) <= 20%
+   523	P(一年 MDD >= 20%) <= 10%
+   524	```
+   525	
+   526	两者均按 2000 条路径的最坏压力账本频率计算。任一路径无法重建完整 bracket、funding 边界、补款延迟或首次强平状态，则该分档爆仓项 `N.A.⇒FAIL`。
+   527	
+   528	### §5.4 WF
+   529	
+   530	按历史工作集 8h interval 数时间等分三段，余数依次分给前段。每段在首个可交易 open 用同一 `C0=100,000 USDT` 独立开仓，在段末最后一个 close 强制平仓并计成本；不把持仓或 PnL 跨段传递，不在段内重估参数。这样切点持仓被显式结算而非静默跨界。至少两段净 E[R]>0。
+   531	
+   532	---
+   533	
+   534	## §6 事件清单与规则生成事件
+   535	
+
+exec
+/bin/bash -lc "sed -n '245,430p' 06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md | nl -ba -v245" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+   245	- 现货、永续每一腿分别计费；fee 固定用 0.10%，不根据 VIP、maker/taker 或结果后费率优化。
+   246	- 开仓、强制收尾平仓、每日再平衡、OI 减仓/恢复、失败撤销、脱锚退出/恢复、强平和强平后现货处置均逐笔计费。
+   247	- 事件窗内对每一笔交易分别重跑 0.30%/0.50%/1.00% 滑点压力档；fee 仍为 0.10%。清算另加历史 liquidation clearance fee，不能用普通手续费替代。
+   248	- 参考成交价始终是规则指定的 raw open 或强平 mark；slippage 只作为上式成本扣一次，不再改成交价。
+   249	- `financing=0`：全部资金属于 `C0`，无借贷。任何外部借款或补资均为协议违规。
+   250	
+   251	### §4.2 小时边界、权威 NAV 与交易小时 PnL
+   252	
+   253	对每个 UTC 小时边界 `t` 定义检查点 `A_t`：已完成该边界实际 funding 结算及 funding 后即时强平检查，但**尚未**执行该边界的延迟补款和自愿 open 交易。bar `H_t=[t,t+1h)` 的权威净 PnL 为：
+   254	
+   255	```text
+   256	spot_value_A_t = Σ_i q_spot_i(t-) * S_i,t
+   257	futures_equity_A_t = W_t + Σ_i q_perp_i(t-) * (mark_i,t - entry_i,t)
+   258	
+   259	NAV_A_t_raw =
+   260	    spot_value_A_t + futures_equity_A_t
+   261	    + spot_reserved_cash_t + B_t + E_t
+   262	    - bankruptcy_liability_t
+   263	
+   264	NAV_A_t = max(0, NAV_A_t_raw)
+   265	net_pnl_H_t = NAV_A_(t+1h) - NAV_A_t
+   266	r_H_t = net_pnl_H_t / C0
+   267	```
+   268	
+   269	内部 `B/E/M` 转账在 NAV 中净额为零。open 交易发生在 `A_t` 之后，因此其 fee、slippage、实现损益与随后持仓 PnL全部归属 `H_t`；`t+1h` 边界的 funding 发生在 `A_(t+1h)` 之前，因此归属 `H_t`。若 `t+1h` 同时有 funding 和新交易，funding 用交易前数量并归属 `H_t`，新交易归属下一小时。强平归属首次触发所在 `H_t`；强平后现货在下一 open 的卖出及成本归属下一小时。
+   270	
+   271	每个固定 UTC 8h 观测 interval 定义为：
+   272	
+   273	```text
+   274	I_k = [T_k, T_k+8h)
+   275	T_k ∈ {每天 00:00, 08:00, 16:00 UTC}
+   276	
+   277	net_pnl_8h,k = Σ_{H_t subset I_k} net_pnl_H_t
+   278	r_8h,k = net_pnl_8h,k / C0
+   279	```
+   280	
+   281	因此：
+   282	
+   283	- `T_k` 边界 funding 已归属前一 interval；
+   284	- `T_k` 的 open 交易归属 `I_k`；
+   285	- `T_k+8h` 边界 funding 归属 `I_k`；
+   286	- `T_k+8h` 的 open 交易归属下一 interval。
+   287	
+   288	若交易所临时增加、取消或改变 funding 时点，现金流仍按实际 timestamp 归入包含该 timestamp 的小时，并在该小时右边界入账；结算名义使用实际 timestamp 前最后一个已确认仓位。若同一小时既有非整点 funding 又发生无法排序的 intrahour liquidation/ADL，由于 1H 数据不能证明先后，该小时 `N.A.⇒FAIL`。研究观测单位继续固定为上述 UTC 8h interval，不改年化因子，不按结果重分箱。
+   289	
+   290	### §4.3 腿级对账与机制归因
+   291	
+   292	权威总收益只取 §4.2 的 NAV 差。为审计 open 改仓小时，另计算下列严格求和的腿级价格 PnL。令 `q^-` 为 `t` open 交易前数量、`q^+` 为交易后数量。无小时内强平时：
+   293	
+   294	```text
+   295	spot_price_pnl_i,H =
+   296	    q_spot_i^- * (S_open_i,t - S_close_i,t-1)
+   297	    + q_spot_i^+ * (S_close_i,t - S_open_i,t)
+   298	
+   299	perp_ledger_price_pnl_i,H =
+   300	    q_perp_i^- * (F_open_i,t - mark_close_i,t-1)
+   301	    + q_perp_i^+ * (mark_close_i,t - F_open_i,t)
+   302	```
+   303	
+   304	该 `perp_ledger_price_pnl` 必须等于本小时 `realized_perp_pnl + ΔUPNL`（内部转账、funding 和成本剔除后）。不相等超过 `1e-8*C0` 记账即失败，不得用平衡项静默修补。
+   305	
+   306	经济 basis 归因继续使用 spot 与 perpetual contract 价格。令：
+   307	
+   308	```text
+   309	paired_qty^- = min(q_spot^-, abs(q_perp^-))
+   310	paired_qty^+ = min(q_spot^+, abs(q_perp^+))
+   311	
+   312	basis_pnl_i,H =
+   313	    paired_qty^- *
+   314	      [(S_open-S_prev_close) - (F_open-F_prev_close)]
+   315	    + paired_qty^+ *
+   316	      [(S_close-S_open) - (F_close-F_open)]
+   317	
+   318	contract_leg_pnl_i,H =
+   319	    q_spot^-*(S_open-S_prev_close)
+   320	    + q_spot^+*(S_close-S_open)
+   321	    + q_perp^-*(F_open-F_prev_close)
+   322	    + q_perp^+*(F_close-F_open)
+   323	
+   324	rebalance_directional_pnl_i,H =
+   325	    contract_leg_pnl_i,H - basis_pnl_i,H
+   326	
+   327	mark_contract_adjustment_i,H =
+   328	    q_perp^-*(F_prev_close-mark_prev_close)
+   329	    + q_perp^+*(mark_close-F_close)
+   330	```
+   331	
+   332	于是每小时必须满足：
+   333	
+   334	```text
+   335	net_pnl_H =
+   336	    Σ_i basis_pnl_i,H
+   337	    + Σ_i rebalance_directional_pnl_i,H
+   338	    + Σ_i mark_contract_adjustment_i,H
+   339	    + funding_received_H
+   340	    - spot_fees_H - futures_fees_H
+   341	    - spot_slippage_H - futures_slippage_H
+   342	    - liquidation_clearance_fees_H
+   343	    - ADL_cash_charge_H
+   344	```
+   345	
+   346	`ADL_cash_charge_H` 只允许记录官方账单中独立于执行价的额外现金扣款；ADL 执行数量和执行价本身进入 `perp_ledger_price_pnl`，不得再记为 `ADL_cash_charge`。`bankruptcy_liability` 是负 wallet 重分类，不是额外 PnL 科目。
+   347	
+   348	若在 bar open 或 close 强平，仍使用上式对应边界价格。若在小时内 mark high 触发强平/ADL，由于没有同一触发时刻的可审计 spot 与 perpetual contract 成交价，归因唯一改为：
+   349	
+   350	```text
+   351	preopen_basis_pnl =
+   352	    paired_qty^- *
+   353	    [(S_open-S_prev_close) - (F_open-F_prev_close)]
+   354	
+   355	preopen_contract_residual =
+   356	    q_spot^-*(S_open-S_prev_close)
+   357	    + q_perp^-*(F_open-F_prev_close)
+   358	    - preopen_basis_pnl
+   359	
+   360	forced_segment_pnl =
+   361	    本小时实际 spot_price_pnl
+   362	    + 本小时实际 perp_ledger_price_pnl
+   363	    - preopen_basis_pnl
+   364	    - preopen_contract_residual
+   365	```
+   366	
+   367	`forced_segment_pnl` 是公开列示的强制执行段价格损益，不再拆成 basis 或方向项；不得用插值构造触发时刻 spot 价格。该小时不用常规整小时 basis 公式，唯一归因为：
+   368	
+   369	```text
+   370	net_pnl_forced_H =
+   371	    preopen_basis_pnl
+   372	    + preopen_contract_residual
+   373	    + forced_segment_pnl
+   374	    + funding_received_H
+   375	    - all_fees_H
+   376	    - all_slippage_H
+   377	    - liquidation_clearance_fees_H
+   378	    - ADL_cash_charge_H
+   379	```
+   380	
+   381	分段和仍必须与 NAV 差一致。
+   382	
+   383	逐小时强制检查：
+   384	
+   385	```text
+   386	abs(
+   387	  net_pnl_H_from_NAV
+   388	  - net_pnl_H_from_attribution
+   389	) <= 1e-8 * C0
+   390	```
+   391	
+   392	不满足即 `ACCOUNTING_FAIL ⇒ FEASIBILITY-LOCK FAIL`。basis、腿级 PnL、wallet realized/unrealized、事件损失均是同一权威 PnL 的互斥解释，不得二次加总。
+   393	
+   394	### §4.4 USDT 脱锚的计价边界
+   395	
+   396	策略收益以 USDT 为 numeraire，故 USDT 相对 USD 的涨跌**不进入** `C0`、NAV、funding、basis 或净收益换算；这样避免把全部 USDT 资产重复乘汇率。USDT 脱锚仍属于 venue/结算资产事件风险，必须按 §6.4 生成事件、应用事件滑点、补款限制和事件硬门，并单独报告 `USDTUSD` 最低值及脱锚幅度。报告可附 USD 购买力敏感性，但只能作为非判决附表，不能替换或叠加 USDT 权威 PnL。
+   397	
+   398	---
+   399	
+   400	## §5 历史 FEASIBILITY-LOCK 验收与 1H 路径 bootstrap
+   401	
+   402	### §5.1 主收益推断
+   403	
+   404	- 观测单位：§4.2 固定 UTC 8h interval 的组合全成本净收益。
+   405	- 同步 UTC BTC/ETH 向量 moving-block bootstrap；块长 21 个 8h interval（1 周），`B=2000`，`seed=20260614`。
+   406	- 点估计：`annualized_net_ER = mean(r_8h)*1095`。
+   407	- 显著性：在 `H0:E[R]=0` 边界下，把组合 8h 净收益减去样本均值后重心化；对重心化序列做上述块重采样。`p=(1+#(T_b>=T_obs))/(B+1)`，单侧 `alpha=0.05`。同时报告未重心化 bootstrap 的 percentile 95% CI。
+   408	- 年化 log growth 唯一公式：`mean(log1p(r_8h))*1095`。
+   409	
+   410	### §5.2 基础 carry 二元门
+   411	
+   412	**FEASIBILITY-LOCK PASS 必须全部满足：**
+   413	
+   414	- [ ] `annualized_net_ER>0` 且 §5.1 单侧 `p<=0.05`。
+   415	- [ ] 赢亏比 `mean(r|r>0)/abs(mean(r|r<0)) >=1.5`。
+   416	- [ ] 完整 UTC 年中净 E[R]>0 的年份占严格多数；不足一个完整年不计入分母。
+   417	- [ ] 年化 log growth >0。
+   418	- [ ] 相对现金零收益基准的净超额收益通过同一个 `H0:E[R]<=0` 检验。
+   419	- [ ] §5.3 分档爆仓概率通过。
+   420	- [ ] 组合 MDD `<=15%`，并通过 §6 固定事件直接重演。
+   421	- [ ] WF 三段中至少两段净 E[R]>0。
+   422	- [ ] 所有必要数据均非 N.A.，逐小时账本对账通过，且无 Holdout/全样本分位/事后改窗违规。
+   423	
+   424	任一不满足即 **FEASIBILITY-LOCK FAIL**。历史 PASS 只允许使用 §0 的限定表述。
+   425	
+   426	### §5.3 2000 条一年路径：精确 1H 合成与保证金重演
+   427	
+   428	**bootstrap 输入不是 8h 收盘收益。** 对每个历史 1H bar `s=[u,u+1h)` 和每个价格序列
+   429	`Y ∈ {spot, perpetual_contract, mark, index}`，保存无量纲模板：
+   430	
+
+exec
+/bin/bash -lc 'rg -n "C0|USDT|NAV_A|net_pnl|funding|8h|bootstrap|seed|buffer_breach|liquidation|bracket|FEASIBILITY|SHADOW|核心资本|自由度|上线" 06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+7:**Protocol v1.4 AI 证据三行：** ①本策略非 LLM 作 alpha 信号，机制=人工经济归纳（杠杆多头需求→正 funding）；知识截止 2025-05，carry 经济链为公开市场常识。②最可能错处：funding 长期转负 / 制度变化（现货 ETF、更多做空工具）使风险溢价消失；短永续腿急涨强平致 delta 暴露。③不以多 agent 共识为证据；本预登记仅作设计冻结。
+13:1. **历史工作集（全部输入 `<2024-12-10`）= 锁定可行性复核（FEASIBILITY-LOCK）。** 用途仅为检验“按 v4 完全冻结口径、含全成本与路径级强平账本，历史上 carry 是否仍可行”。设计参数已被历史探索污染，因此历史 PASS 不是独立机制确认、**不耗独立 Alpha 计数、不授权核心资本上线**，最多表述为“历史可行性复核通过”。
+14:2. **真确认 = 前向 SHADOW（paper-trade，未来数据）。** v4 经独立 Reviewer 放行后，按 §9 的固定起点、固定样本量和一次性检验运行；不得回填放行前数据，不得因观察到结果而延长或提前停止。只有前向 net E[R] 显著>0、无强平且跑赢现金零基准，才计入前向确认证据。
+15:3. **证据等级上线 = Founder 治理决定。** 纸面=0；历史复核过=观察级；前向 shadow 过=具备小额真金申请资格；实盘过后才可另议升额。前向 PASS 不自动下单、不自动成为核心资本，也不改变历史段“不耗独立计数”的定性。
+23:- **机制命题（可证伪）：** carry 净收益主要来自 funding 收取，而非 basis 波动、方向价格漂移或再平衡运气。必要条件是 `funding_received > 0`，且 funding 是净收益归因中的最大正贡献项。
+25:- **非 alpha 声明：** 不以 funding 极端、价格反转或 funding 均值回归择时；正、负 funding 时段均按冻结规则持有。OI 信号只能把双腿同步减至 50%，不能加到 100% 以上。
+26:- **制度依赖：** 逐年和滚动 12 个月报告净 funding；交易所 funding、保证金或合约制度变更按实际生效时点分段，不得结果后挑窗口。
+30:## §2 构造、USDT 资本恒等式与保证金账本
+37:| 现货 | Binance Spot `BTCUSDT`、`ETHUSDT` |
+38:| 永续 | Binance USDⓈ-M、USDT 本位线性永续 `BTCUSDT`、`ETHUSDT` |
+39:| 账户模式 | 标准 USDT-M **cross margin**；关闭 portfolio margin 和 multi-assets mode；BTC/ETH 短仓共用一个 USDT cross wallet |
+45:| funding | Binance 实际 funding rate、实际结算时间、结算时 mark 和结算前短腿数量 |
+47:| 维持保证金 | 对应历史时点的 Binance 完整 leverage bracket 表（floor/cap/mmr/cum）和 liquidation clearance fee rate |
+48:| USDT/USD | 仅按 §6.4 生成 USDT 脱锚事件，不进入 USDT 资本、收益或 PnL 换算 |
+50:任一必要价格、funding、OI、历史完整保证金表、清算费或 §6 事件输入缺失且无法从执行前冻结的输入 manifest 取得，相关必要项记 `N.A. ⇒ FEASIBILITY-LOCK FAIL`；不得用当前费率、插值或另一 venue 代替历史值。
+54:全程唯一记账单位为 **USDT**。现货价格、现货现金、USDT-M wallet、funding、手续费、滑点、强平损益、basis MTM、净值和所有收益率分子均用 USDT；不再把 `C0` 称作 USD 等值，也不在策略 PnL 中加入 `cash_fx_pnl`。
+57:C0 = 100,000 USDT
+58:C0 = S0 + M0 + B0 + E0
+60:B0 = 10,000 USDT
+61:E0 = 10,000 USDT
+62:paired_capital = 80,000 USDT
+65:`C0` 是 sleeve 的绝对初始资本，也是所有小时收益、8h 收益、MDD、log growth 和年化指标的**唯一固定分母**。BTC/ETH 权重冻结为 `w_BTC=0.70`、`w_ETH=0.30`：
+68:pair_budget_i = 80,000 * w_i USDT
+69:pair_budget_BTC = 56,000 USDT
+70:pair_budget_ETH = 24,000 USDT
+96:| 资本桶 | 冻结数值/公式 | 是否进入 `C0` | 是否另计为 `N` |
+102:| 闲置缓冲现金 `B0` | `10,000 USDT` | 是 | 否 |
+103:| 事件备用现金 `E0` | `10,000 USDT` | 是 | 否 |
+104:| **合计** | **`100,000 USDT`** | **唯一一次** | **无额外资本** |
+106:所有交易使用未加滑点的 market open 作为参考成交价，滑点按 §4.1 作为独立 USDT 成本科目只扣一次。初始 open 前，`S0` 先作为 `spot_reserved_cash` 持有，故首个 `A_t` 满足
+107:`spot_reserved_cash + M0 + B0 + E0 = C0`；初始买入后该预留现金一对一转成现货市值，开仓费和滑点另从 `B` 扣。初始永续开仓的 fee/slippage 从 futures wallet `M` 扣。`spot_reserved_cash` 只存在于初始开仓前，完成或撤销开仓后必须为零，不是第五个资本桶。
+109:后续现货买卖的本金流入/流出 `B`，其 fee/slippage 也从 `B` 扣；永续交易不交换名义本金，其 realized PnL、fee/slippage 和 funding 只进入 futures wallet。若所需账户余额不足，按 §3.2 的 `execution_fail` 撤销规则处理，不允许 `B` 或 `M` 隐式为负来完成自愿交易。
+111:`B/E → M` 只是在 sleeve 内部转账，不产生 PnL、不改变 `C0`、不得在现金与 wallet 中重复计数。`E` 只用于 §2.4 规定的事件小时保证金补款，不用于普通开仓、恢复或现货购买。
+127:对品种 `i` 的短永续持仓维护 `q_perp_i<=0`、加权平均 `entry_i`；对账户维护 USDT wallet `W`：
+133:    + cumulative_funding_received
+136:    - cumulative_liquidation_clearance_fees
+147:对每个品种，用当时完整历史 bracket 表按
+155:只携带历史 bracket id 而没有 floor/cap/mmr/cum/clearance fee 完整表不合格。
+157:每根 bar 定义为半开区间 `H_t=[t,t+1h)`，open 为 `t`，close 为 `t+1h`。在两个 bar 共用的边界，先完成前一 bar 的 close 风险检查/可能强平，再处理新边界的 funding；若 close 已清算，则 funding 数量为零。其后才允许补款和新 open 交易。唯一处理顺序如下：
+159:1. **边界 funding：** 若实际 funding timestamp 恰为 `t`，先按边界前持仓 `q_perp_i(t-)` 和结算 mark 入账：
+162:   funding_received_i,t =
+163:       -q_perp_i(t-) * mark_i,t * funding_rate_i,t
+166:   正 funding 对短仓为正收入，负 funding 原样为支出。该现金流属于刚结束的小时和刚结束的 8h interval；不得按边界后的新仓数量计算。
+167:2. **funding 后即时风险检查：** 用 `mark_i,t` 及当前完整 bracket 表重算保证金。若 `margin_balance<=maintenance`，在任何补款或自愿交易前立即进入 account-level liquidation。
+168:3. **延迟补款：** 若上根 bar close 产生 `buffer_breach` 且第 2 步未强平，在 `t` 执行预定补款。按当前 mark/bracket 计算：
+183:5. **open 后即时风险检查：** 用该 bar mark open 和交易后数量重算 bracket、保证金及维持线；若 `margin_balance<=maintenance`，立即强平。
+184:6. **小时内最坏点：** 对两个短仓同时使用各自该小时 mark high，形成保守的同步最坏向量 `m_i=mark_high_i,t`，并按该向量的合成名义重新选档。若 `margin_balance<=maintenance`，首次触发 account-level liquidation；不允许等 close 后补款。
+186:   `maintenance < margin_balance < 3*maintenance`，本小时记一次 `buffer_breach`，排定下一 bar open 补款；若 `margin_balance>=3*maintenance`，清除 breach 状态。若 close 已满足 `margin_balance<=maintenance`，在该 close 立即强平并归属本小时。
+188:`buffer_breach` 与 `liquidation` 是两级互斥终态：前者表示仍高于维持线、只能触发延迟补款；后者表示首次达到或跌破维持线、立即终止全部短永续。每条路径分别报告“至少一次 buffer breach”和“至少一次 account-level liquidation”，不得把 breach 当作 liquidation，也不得用补款后的结果抹去已发生 breach。
+190:Account-level liquidation 时：
+193:- 每腿计 regular fee、对应压力档 slippage，并按触发名义所在完整历史 bracket 的 clearance fee rate 计清算费。
+194:- realized PnL、成本与 wallet 在该检查点立即入账；这计为一个 liquidation episode，并记录受影响品种。
+195:- 现货腿保留到下一根 1H open，再全部卖出并计成本；期间方向暴露和现货 PnL 完整入账。此后路径保持 USDT 现金，不再重开。
+224:1. **基础 carry FEASIBILITY-LOCK** 只用不含 OI 触发器的 baseline 按 §5.2 判 PASS/FAIL。
+225:2. 只有 baseline PASS，才评估 OI 模块是否保留。非劣检验为同一路径“有触发器−无触发器”，`H0: ΔnetER<=-0.5%/年`，单侧 `alpha=0.05`，同步 1 周块、`B=2000`、`seed=20260614`。
+226:3. 尾部门唯一化：若 baseline 的事件期 liquidation episodes `L0>0`，要求触发器版 `L1<L0`；若 `L0=0`，要求 `L1=0`。同时要求触发器不得增加 account-level liquidation 总次数。
+247:- 事件窗内对每一笔交易分别重跑 0.30%/0.50%/1.00% 滑点压力档；fee 仍为 0.10%。清算另加历史 liquidation clearance fee，不能用普通手续费替代。
+249:- `financing=0`：全部资金属于 `C0`，无借贷。任何外部借款或补资均为协议违规。
+253:对每个 UTC 小时边界 `t` 定义检查点 `A_t`：已完成该边界实际 funding 结算及 funding 后即时强平检查，但**尚未**执行该边界的延迟补款和自愿 open 交易。bar `H_t=[t,t+1h)` 的权威净 PnL 为：
+259:NAV_A_t_raw =
+264:NAV_A_t = max(0, NAV_A_t_raw)
+265:net_pnl_H_t = NAV_A_(t+1h) - NAV_A_t
+266:r_H_t = net_pnl_H_t / C0
+269:内部 `B/E/M` 转账在 NAV 中净额为零。open 交易发生在 `A_t` 之后，因此其 fee、slippage、实现损益与随后持仓 PnL全部归属 `H_t`；`t+1h` 边界的 funding 发生在 `A_(t+1h)` 之前，因此归属 `H_t`。若 `t+1h` 同时有 funding 和新交易，funding 用交易前数量并归属 `H_t`，新交易归属下一小时。强平归属首次触发所在 `H_t`；强平后现货在下一 open 的卖出及成本归属下一小时。
+271:每个固定 UTC 8h 观测 interval 定义为：
+274:I_k = [T_k, T_k+8h)
+277:net_pnl_8h,k = Σ_{H_t subset I_k} net_pnl_H_t
+278:r_8h,k = net_pnl_8h,k / C0
+283:- `T_k` 边界 funding 已归属前一 interval；
+285:- `T_k+8h` 边界 funding 归属 `I_k`；
+286:- `T_k+8h` 的 open 交易归属下一 interval。
+288:若交易所临时增加、取消或改变 funding 时点，现金流仍按实际 timestamp 归入包含该 timestamp 的小时，并在该小时右边界入账；结算名义使用实际 timestamp 前最后一个已确认仓位。若同一小时既有非整点 funding 又发生无法排序的 intrahour liquidation/ADL，由于 1H 数据不能证明先后，该小时 `N.A.⇒FAIL`。研究观测单位继续固定为上述 UTC 8h interval，不改年化因子，不按结果重分箱。
+304:该 `perp_ledger_price_pnl` 必须等于本小时 `realized_perp_pnl + ΔUPNL`（内部转账、funding 和成本剔除后）。不相等超过 `1e-8*C0` 记账即失败，不得用平衡项静默修补。
+335:net_pnl_H =
+339:    + funding_received_H
+342:    - liquidation_clearance_fees_H
+370:net_pnl_forced_H =
+374:    + funding_received_H
+377:    - liquidation_clearance_fees_H
+387:  net_pnl_H_from_NAV
+388:  - net_pnl_H_from_attribution
+389:) <= 1e-8 * C0
+392:不满足即 `ACCOUNTING_FAIL ⇒ FEASIBILITY-LOCK FAIL`。basis、腿级 PnL、wallet realized/unrealized、事件损失均是同一权威 PnL 的互斥解释，不得二次加总。
+394:### §4.4 USDT 脱锚的计价边界
+396:策略收益以 USDT 为 numeraire，故 USDT 相对 USD 的涨跌**不进入** `C0`、NAV、funding、basis 或净收益换算；这样避免把全部 USDT 资产重复乘汇率。USDT 脱锚仍属于 venue/结算资产事件风险，必须按 §6.4 生成事件、应用事件滑点、补款限制和事件硬门，并单独报告 `USDTUSD` 最低值及脱锚幅度。报告可附 USD 购买力敏感性，但只能作为非判决附表，不能替换或叠加 USDT 权威 PnL。
+400:## §5 历史 FEASIBILITY-LOCK 验收与 1H 路径 bootstrap
+404:- 观测单位：§4.2 固定 UTC 8h interval 的组合全成本净收益。
+405:- 同步 UTC BTC/ETH 向量 moving-block bootstrap；块长 21 个 8h interval（1 周），`B=2000`，`seed=20260614`。
+406:- 点估计：`annualized_net_ER = mean(r_8h)*1095`。
+407:- 显著性：在 `H0:E[R]=0` 边界下，把组合 8h 净收益减去样本均值后重心化；对重心化序列做上述块重采样。`p=(1+#(T_b>=T_obs))/(B+1)`，单侧 `alpha=0.05`。同时报告未重心化 bootstrap 的 percentile 95% CI。
+408:- 年化 log growth 唯一公式：`mean(log1p(r_8h))*1095`。
+412:**FEASIBILITY-LOCK PASS 必须全部满足：**
+424:任一不满足即 **FEASIBILITY-LOCK FAIL**。历史 PASS 只允许使用 §0 的限定表述。
+428:**bootstrap 输入不是 8h 收盘收益。** 对每个历史 1H bar `s=[u,u+1h)` 和每个价格序列
+445:  funding rate、实际 settlement flag 及 bar 内 timestamp offset,
+447:  每个品种该历史小时生效的完整 bracket rows
+451:  USDTUSD 事件监控值,
+461:4. 完整 bracket 表按实际生效小时存在，不能只有 bracket id；
+462:5. 168h 是固定 UTC 8h interval 的整数倍。
+467:PRNG = NumPy Generator(PCG64(seed=20260614))
+474:每条路径串接 105 个块共 `17,640h`，只取前 `17,520h`。同一块内 BTC/ETH、价格模板、funding、OI、事件、USDTUSD 和制度表始终一起移动，禁止逐列独立抽样。
+480:BTC prior-close base = 100,000 USDT
+481:ETH prior-close base = 4,000 USDT
+499:funding rate、结算 flag/timestamp offset、预先生成的事件 membership、withdrawal/ADL flag 和完整 bracket 表直接从源 bar `s` 复制到合成 bar `n`。合成路径使用复制后的 event membership，不在重建价格上重新扫描 §6，避免块边界制造人工事件；真实历史直接重演仍按 §6 从原始序列机械扫描。块边界使用新块首 bar 自身的 `gap/body` 接续上一合成 close；不插值、不重置、不按源绝对价格重估 basis。若递推后 OHLC 关系不满足
+502:完整 bracket 表随源 bar 移动，但**档位不随源历史名义复制**。在合成路径每个 funding/open/high/close 检查点，按合成持仓数量乘合成 mark 得到 USDT 名义，再用该检查点携带的完整表按 §2.4 的 floor/cap 重新选 `mmr/cum/clearance_fee_rate`。若合成名义不落入任何档、表有重叠/缺口或制度字段缺失，该路径项 `N.A.⇒FAIL`。
+507:2. 在合成时钟 `2002-01-01T00:00:00Z`、即零基索引 `n=8,760`（自然数第 `8,761` 个 bar）的 open，以新的 `C0=100,000 USDT` 按当时合成 spot/perpetual open 初始化资本和持仓，所有 PnL、breach、refractory 和负债状态归零；合成价格与 OI 历史不断链。
+508:3. 后 `8,760h` 是唯一一年评价期。§5 基础 carry 风险门先在关闭 OI 模块的 baseline 上，逐小时运行 §2.4、§4 和 §6 的完整状态机；funding、补款、交易、强平、费用和 NAV 必须重新产生，不得从 8h 收益、组合 MDD或源历史强平结果推断。
+511:6. account-level liquidation 后按 §2.4 处置现货并保持现金，不得重开；一年 MDD 按 `NAV_A_t/C0` 逐小时计算。
+513:`B=2000`，统一 `seed=20260614`。报告：
+515:- `P(至少一次 buffer_breach)`、每路径 breach 小时数和补款次数；
+516:- `P(至少一次 account-level liquidation)`、各品种受影响概率及首次强平小时；
+526:两者均按 2000 条路径的最坏压力账本频率计算。任一路径无法重建完整 bracket、funding 边界、补款延迟或首次强平状态，则该分档爆仓项 `N.A.⇒FAIL`。
+530:按历史工作集 8h interval 数时间等分三段，余数依次分给前段。每段在首个可交易 open 用同一 `C0=100,000 USDT` 独立开仓，在段末最后一个 close 强制平仓并计成本；不把持仓或 PnL 跨段传递，不在段内重估参数。这样切点持仓被显式结算而非静默跨界。至少两段净 E[R]>0。
+540:| ETH Merge | Binance ETH spot + USDT-M perp | `2022-09-08T06:00:00Z` | `2022-09-22T07:00:00Z` | 围绕 Merge 时点 `2022-09-15T06:42:42Z` 前后各 168h，向外对齐完整 1H |
+541:| Terra/LUNA/UST 崩盘 | Binance BTC、ETH spot + USDT-M perp | `2022-05-09T00:00:00Z` | `2022-05-14T00:00:00Z` | 市场级冲击；不得只保留受益品种 |
+542:| 3AC/借贷连环 | Binance BTC、ETH spot + USDT-M perp | `2022-06-12T00:00:00Z` | `2022-07-01T00:00:00Z` | 从 Celsius 暂停提现起覆盖 3AC/借贷传染至 6 月末 |
+543:| FTX 暴雷 | Binance BTC、ETH spot + USDT-M perp | `2022-11-06T00:00:00Z` | `2022-11-15T00:00:00Z` | 覆盖公开挤兑至冻结窗口终点 |
+564:- 只扫描 Binance 官方 announcement archive 及执行前冻结的 BTC、ETH、USDT withdrawal-status 小时快照。
+565:- 仅当官方记录明确显示 BTC、ETH 或 USDT 提现不可用并持续至少两个完整 1H bar，才生成事件。
+568:- 事件期间不允许 `B/E` 向 futures wallet 新转入；已在 futures wallet 的保证金照常使用。该限制在逐 1H 状态机和 bootstrap 中一致执行。
+570:### §6.4 USDT 脱锚规则
+572:USDT/USD 只用于事件识别。逐 1H 计算两个 Binance index 交叉价：
+575:u_BTC,h = BTCUSD_COINM_index_close_h / BTCUSDT_USDM_index_close_h
+576:u_ETH,h = ETHUSD_COINM_index_close_h / ETHUSDT_USDM_index_close_h
+577:USDTUSD_h = median(u_BTC,h, u_ETH,h)
+578:usdt_depeg_h = abs(USDTUSD_h - 1)
+581:两个交叉价都必须存在；不得假定 `USDTUSD=1` 或结果后换用另一稳定币。事件生成规则：
+588:USDT 脱锚事件不主动平掉双腿，因为两腿及保证金均以 USDT 结算；但该窗口适用事件滑点压力、`E` 补款资格和 §6.5 事件硬门，并单列 USDT 相对 USD 的购买力变化。不得把该购买力变化再次加入 USDT PnL。
+594:每个固定或规则生成事件均按真实 1H 路径直接重演 §2.4 账本，并分别报告 0.10%/0.30%/0.50%/1.00% 滑点。任一压力档发生 account-level liquidation，或事件窗口至恢复后 24h 的 sleeve MDD>15%，则 §5 的事件硬门 FAIL。
+600:- 全部历史输入统一 cutoff `<2024-12-10`：spot、perpetual contract、mark、index、funding、OI、USDTUSD 事件源、事件公告/状态、完整保证金阶梯和清算费。
+611:- 历史 8h 序列描述性有效样本量：`n_eff=n/(1+2Σrho_k)`，ACF 截断 30 个 8h lag（10 天）。该数不把被探索污染的历史段升级为独立确认。
+613:- v4 不使用 v2 未冻结来源的“年化 5%-12%”外部先验作任何 PASS/FAIL、MDE 或上线判决，也不得执行后补选有利来源。历史身份降级和前向确认的必要性不依赖该数值。
+614:- 不显著点估计必须写“未验证”；负 funding、事件亏损、清算、ADL、USDT 脱锚事件和强平不得剔除。
+618:## §9 前向 SHADOW 真确认协议
+622:- 起点 `T0`：v4 经独立 Reviewer 书面放行、历史 baseline FEASIBILITY-LOCK PASS、OI 模块去留已经按 §3.3 冻结，且前向数据 manifest/hash 冻结后的**下一个 UTC 月首 `00:00`**。`T0` 前数据一律不得回填。
+625:- 一个完整月要求 BTC/ETH 所有必要 1H 字段和组合 8h interval 均 `>=99%` 完整、无单次连续缺口超过 8h，且所有缺口原因在结果解盲前留痕；不插值。
+626:- 最少 18 个完整前向月，且组合有效 8h intervals `n>=1620`。最多观察 24 个 UTC 日历月。
+627:- 在第一个达到“18 个完整月且 `n>=1620`”的月末只检验一次；若 24 个月结束仍未达到数据门，直接 SHADOW FAIL。停机只由预定日历和数据完整性决定，不由收益结果决定。
+632:对 `T0` 后组合 8h 全成本净收益：
+634:1. 检验统计量 `T_obs=mean(r_8h)*1095`。
+636:3. 对重心化序列做 90 个 8h interval（30 天）moving-block bootstrap，`B=10000`，`seed=20260614`。
+639:**SHADOW CONFIRMED 必须同时满足：**
+642:- [ ] 整个 shadow 期 account-level liquidation episodes = 0。
+645:任一不满足即 SHADOW FAIL；不得延长到显著、不得换 seed/块长/alpha、不得把历史 PASS 与前向 FAIL 合并为“部分确认”。重新提出假设必须新版本预登记，并只使用新版本放行后的未来数据。
+649:SHADOW CONFIRMED 经独立 Reviewer 核对后，只把策略从“历史观察级”提升为“前向确认、可申请小额真金”，不自动进入核心资本。Founder 书面批准后，小额真金 sleeve 上限冻结为：
+652:min(批准日公司可投资 NAV 的 0.5%, 10,000 USDT)
+655:真金阶段继续使用同一 venue、1.0 初始杠杆、资本比例、USDT 计价、成本和风控，不得升杠杆。任何升额、降级或核心资本上线须另立实盘协议和独立审批；不属于本预登记自动授权范围。
+661:FEASIBILITY-LOCK FAIL 或 SHADOW FAIL 后禁止：改 funding/权重/资本比例/再平衡/OI 阈值/事件窗/seed/块长后在同一数据重测；剔除负 funding 或事件；读取 Holdout“确认”失败；把不显著写成“弱 edge”或“部分成功”；把历史可行性复核冒称独立确认；以 shadow 运行时间代替固定确认门；未经新预登记和独立审批上线或升额。
+
+exec
+/bin/bash -lc 'ls -l 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md 04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json 2>/dev/null || true' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+codex
+核对结果已收敛：v4 将三项历史复核阻塞都改成了可唯一执行的账本或递推规则。关键是 `C0=100,000 USDT` 与唯一分母已冻结，小时 NAV 差成为权威 PnL，2000 条路径的价格基准、块边界递推、完整 bracket 随块移动及逐检查点重选档也都明确；未发现会改变历史复核结论的新自由度。接下来写正式裁决和任务报告。
+已完成逐条证据核对，三项均满足 CLOSED，核心重构保持完整且未发现新阻塞。
+  ✓ 核对 v4 三项剩余条件及核心重构，记录精确行号证据
+  → 形成独立盲审报告并写入 CARRY_RISK_REVIEW_v4.md
+  • 验证报告、写 TASK_INBOX 完成事件并按任务号提交
+codex
+我将新增两份文档：正式风险评审 `CARRY_RISK_REVIEW_v4.md`，以及执行审计报告 `REPORT_CARRY_RR4.md`。评审会明确 `APPROVED` 仅放行历史 FEASIBILITY-LOCK 复核，不授权读取 Holdout、消耗独立计数或上线资本。
+apply patch
+patch: completed
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..59b1a62d3e7b2d59be0a7e9e4d649d7fcdb245e4
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+@@ -0,0 +1,32 @@
++# CARRY-RR4 执行报告
++
++**任务：** Carry 预登记 v4 第四轮独立盲审  
++**日期：** 2026-06-15（Asia/Singapore）  
++**状态：** completed  
++**评审结论：** APPROVED  
++**条件闭合：** 3/3
++
++## 执行范围
++
++- 读取并审查 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 以 `CARRY_RISK_REVIEW_v3.md` 的三项遗留阻塞为对照。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/` 或 sealed 内容。
++- 未修改预登记，未运行回测、bootstrap 或实证计算。
++
++## 验收自检
++
++- [x] 资本 / USDT 计价账：CLOSED。
++- [x] 1H 合成强平路径：CLOSED。
++- [x] 交易小时 PnL 计账：CLOSED。
++- [x] 核心重构仍完整，未发现新阻塞性自由度。
++- [x] 正式评审写入 `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`。
++- [x] 结论仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。
++
++## 产出
++
++- `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`
++- `04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json`
++
++## 恢复点
++
++任务已完成，无中断恢复项。下一步由 Claude 按评审结论验收和调度。
+diff --git a/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..e77ea9752eed20782b7825be41e213cccfb91350
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+@@ -0,0 +1,48 @@
++# Delta 中性 Carry 预登记 v4 第四轮独立风险审查
++
++**任务号：** CARRY-RR4  
++**审查者：** Codex（独立 Risk Reviewer，与 v4 起草者分离）  
++**审查日期：** 2026-06-15（Asia/Singapore）  
++**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md`  
++**对照：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md`  
++**结论：** **APPROVED**  
++**v3 剩余条件闭合：** **3/3**
++
++## 审查边界
++
++- 仅审查预登记设计、公式和执行唯一性；未运行回测、收益计算、bootstrap、事件研究或参数搜索。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/`、sealed 内容或 carry 实证结果。
++- 未修改 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 裁决标尺仅为“能否放行历史 FEASIBILITY-LOCK 可行性复核”，不把历史段升级为独立确认。
++
++## 逐条裁决
++
++| # | 审查项 | 裁决 | 证据（v4 §/行） | 裁决理由 |
++|---:|---|---|---|---|
++| 1 | 资本 / USDT 计价账 | **CLOSED** | §2.1 L34-L50；§2.2 L52-L111；§4.2 L251-L288；§4.4 L394-L396；§6.4 L570-L588 | 全程唯一以 USDT 记账；`C0=100,000 USDT`，且 `C0=S0+M0+B0+E0`。80,000 配对资本与两个 10,000 现金桶只计一次，`N_i` 明确不是额外资本。现货本金流、futures wallet、内部转账、费用和滑点的落账桶已冻结。小时、8h、MDD、log growth 和年化指标均以同一个固定 `C0` 为分母。USDT/USD 只生成脱锚事件及非判决购买力附表，不进入或重复叠加权威 USDT PnL。 |
++| 2 | 1H 合成强平路径 | **CLOSED** | §2.4 L125-L198；§5.3 L426-L526 | 账户级 cross-margin 状态机逐 1H 处理 funding、维持保证金、延迟补款、open 后检查、同步 mark-high 最坏点、close 检查和首次强平。`buffer_breach` 与 `liquidation` 两级定义及报告口径分离。2000 条路径、`PCG64(seed=20260614)`、抽样顺序、固定价格基准、gap/body/OHLC 递推和块边界接续均冻结。完整历史 bracket rows 随源小时移动，并按每个合成检查点的合成名义重选 `mmr/cum/clearance_fee_rate`；无法重建即 `N.A.⇒FAIL`。 |
++| 3 | 交易小时 PnL 计账 | **CLOSED** | §2.4 L157-L195；§4.2 L251-L288；§4.3 L290-L392 | 权威总 PnL 唯一采用相邻 `A_t` 的 NAV 差。open 交易、funding、强平和强平后现货处置分别归属明确小时；8h interval 为固定 UTC 00/08/16 边界，小时 PnL 严格求和。交易小时按 pre-open/post-open 数量拆分价格 PnL，永续腿必须与 `realized_perp_pnl + ΔUPNL` 对账。常规及强平小时归因均须与 NAV 差在 `1e-8*C0` 内一致，否则 `ACCOUNTING_FAIL`，从而禁止漏计、重复计或平衡项修补。 |
++
++## 核心重构与新自由度
++
++**核心重构完整，未发现新的阻塞性自由度。**
++
++- 历史工作集仍只是 FEASIBILITY-LOCK；历史 PASS 不耗独立 Alpha 计数、不构成独立机制确认、不授权核心资本上线（§0 L11-L15）。
++- 真正确认仍只能使用 Reviewer 放行后的未来 SHADOW 数据；固定起点、样本量、一次性检验和停机规则禁止回填与 optional stopping（§9.1 L620-L628；§9.2 L630-L645）。
++- SHADOW CONFIRMED 只产生“小额真金申请资格”，不会自动下单或进入核心资本；升额和核心资本上线须另立协议和审批（§9.3 L647-L655）。
++- Holdout 即使未来由独立身份评估，也不耗独立计数、不能救回失败工作集、不能替代前向确认（§7 L598-L605）。
++- 资本计价、小时 PnL、合成路径、随机数、bracket 选择和失败处理均已冻结；未发现可由执行者结果后选择且足以改变历史 FEASIBILITY-LOCK 判决的新参数或账本分支。
++
++## 最小必改
++
++**无。** 就本轮“历史可行性复核可复现性”标尺，v3 遗留三项均已闭合。
++
++执行阶段仍必须机械落实文中已有硬门：必要输入或完整历史制度表缺失即 `N.A.⇒FAIL`；逐小时 NAV 与归因不平即 `ACCOUNTING_FAIL`；不得以实现便利修改 seed、块长、成本、事件窗、计价单位或强平顺序。这些是已冻结的执行条件，不是新的预登记修改要求。
++
++## 最终结论
++
++**APPROVED。** 允许按 v4 冻结规格开展历史 FEASIBILITY-LOCK 可行性复核。
++
++本批准不允许读取 Holdout，不消耗独立 Alpha 计数，不构成策略机制的独立确认，不授权自动下单、小额真金或核心资本上线。后续证据升级仍须满足 §9 前向 SHADOW 协议及独立治理审批。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-15
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..59b1a62d3e7b2d59be0a7e9e4d649d7fcdb245e4
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+@@ -0,0 +1,32 @@
++# CARRY-RR4 执行报告
++
++**任务：** Carry 预登记 v4 第四轮独立盲审  
++**日期：** 2026-06-15（Asia/Singapore）  
++**状态：** completed  
++**评审结论：** APPROVED  
++**条件闭合：** 3/3
++
++## 执行范围
++
++- 读取并审查 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 以 `CARRY_RISK_REVIEW_v3.md` 的三项遗留阻塞为对照。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/` 或 sealed 内容。
++- 未修改预登记，未运行回测、bootstrap 或实证计算。
++
++## 验收自检
++
++- [x] 资本 / USDT 计价账：CLOSED。
++- [x] 1H 合成强平路径：CLOSED。
++- [x] 交易小时 PnL 计账：CLOSED。
++- [x] 核心重构仍完整，未发现新阻塞性自由度。
++- [x] 正式评审写入 `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`。
++- [x] 结论仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。
++
++## 产出
++
++- `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`
++- `04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json`
++
++## 恢复点
++
++任务已完成，无中断恢复项。下一步由 Claude 按评审结论验收和调度。
+diff --git a/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..e77ea9752eed20782b7825be41e213cccfb91350
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+@@ -0,0 +1,48 @@
++# Delta 中性 Carry 预登记 v4 第四轮独立风险审查
++
++**任务号：** CARRY-RR4  
++**审查者：** Codex（独立 Risk Reviewer，与 v4 起草者分离）  
++**审查日期：** 2026-06-15（Asia/Singapore）  
++**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md`  
++**对照：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md`  
++**结论：** **APPROVED**  
++**v3 剩余条件闭合：** **3/3**
++
++## 审查边界
++
++- 仅审查预登记设计、公式和执行唯一性；未运行回测、收益计算、bootstrap、事件研究或参数搜索。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/`、sealed 内容或 carry 实证结果。
++- 未修改 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 裁决标尺仅为“能否放行历史 FEASIBILITY-LOCK 可行性复核”，不把历史段升级为独立确认。
++
++## 逐条裁决
++
++| # | 审查项 | 裁决 | 证据（v4 §/行） | 裁决理由 |
++|---:|---|---|---|---|
++| 1 | 资本 / USDT 计价账 | **CLOSED** | §2.1 L34-L50；§2.2 L52-L111；§4.2 L251-L288；§4.4 L394-L396；§6.4 L570-L588 | 全程唯一以 USDT 记账；`C0=100,000 USDT`，且 `C0=S0+M0+B0+E0`。80,000 配对资本与两个 10,000 现金桶只计一次，`N_i` 明确不是额外资本。现货本金流、futures wallet、内部转账、费用和滑点的落账桶已冻结。小时、8h、MDD、log growth 和年化指标均以同一个固定 `C0` 为分母。USDT/USD 只生成脱锚事件及非判决购买力附表，不进入或重复叠加权威 USDT PnL。 |
++| 2 | 1H 合成强平路径 | **CLOSED** | §2.4 L125-L198；§5.3 L426-L526 | 账户级 cross-margin 状态机逐 1H 处理 funding、维持保证金、延迟补款、open 后检查、同步 mark-high 最坏点、close 检查和首次强平。`buffer_breach` 与 `liquidation` 两级定义及报告口径分离。2000 条路径、`PCG64(seed=20260614)`、抽样顺序、固定价格基准、gap/body/OHLC 递推和块边界接续均冻结。完整历史 bracket rows 随源小时移动，并按每个合成检查点的合成名义重选 `mmr/cum/clearance_fee_rate`；无法重建即 `N.A.⇒FAIL`。 |
++| 3 | 交易小时 PnL 计账 | **CLOSED** | §2.4 L157-L195；§4.2 L251-L288；§4.3 L290-L392 | 权威总 PnL 唯一采用相邻 `A_t` 的 NAV 差。open 交易、funding、强平和强平后现货处置分别归属明确小时；8h interval 为固定 UTC 00/08/16 边界，小时 PnL 严格求和。交易小时按 pre-open/post-open 数量拆分价格 PnL，永续腿必须与 `realized_perp_pnl + ΔUPNL` 对账。常规及强平小时归因均须与 NAV 差在 `1e-8*C0` 内一致，否则 `ACCOUNTING_FAIL`，从而禁止漏计、重复计或平衡项修补。 |
++
++## 核心重构与新自由度
++
++**核心重构完整，未发现新的阻塞性自由度。**
++
++- 历史工作集仍只是 FEASIBILITY-LOCK；历史 PASS 不耗独立 Alpha 计数、不构成独立机制确认、不授权核心资本上线（§0 L11-L15）。
++- 真正确认仍只能使用 Reviewer 放行后的未来 SHADOW 数据；固定起点、样本量、一次性检验和停机规则禁止回填与 optional stopping（§9.1 L620-L628；§9.2 L630-L645）。
++- SHADOW CONFIRMED 只产生“小额真金申请资格”，不会自动下单或进入核心资本；升额和核心资本上线须另立协议和审批（§9.3 L647-L655）。
++- Holdout 即使未来由独立身份评估，也不耗独立计数、不能救回失败工作集、不能替代前向确认（§7 L598-L605）。
++- 资本计价、小时 PnL、合成路径、随机数、bracket 选择和失败处理均已冻结；未发现可由执行者结果后选择且足以改变历史 FEASIBILITY-LOCK 判决的新参数或账本分支。
++
++## 最小必改
++
++**无。** 就本轮“历史可行性复核可复现性”标尺，v3 遗留三项均已闭合。
++
++执行阶段仍必须机械落实文中已有硬门：必要输入或完整历史制度表缺失即 `N.A.⇒FAIL`；逐小时 NAV 与归因不平即 `ACCOUNTING_FAIL`；不得以实现便利修改 seed、块长、成本、事件窗、计价单位或强平顺序。这些是已冻结的执行条件，不是新的预登记修改要求。
++
++## 最终结论
++
++**APPROVED。** 允许按 v4 冻结规格开展历史 FEASIBILITY-LOCK 可行性复核。
++
++本批准不允许读取 Holdout，不消耗独立 Alpha 计数，不构成策略机制的独立确认，不授权自动下单、小额真金或核心资本上线。后续证据升级仍须满足 §9 前向 SHADOW 协议及独立治理审批。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-15
+
+exec
+/bin/bash -lc 'nl -ba 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+     1	# Delta 中性 Carry 预登记 v4 第四轮独立风险审查
+     2	
+     3	**任务号：** CARRY-RR4  
+     4	**审查者：** Codex（独立 Risk Reviewer，与 v4 起草者分离）  
+     5	**审查日期：** 2026-06-15（Asia/Singapore）  
+     6	**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md`  
+     7	**对照：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md`  
+     8	**结论：** **APPROVED**  
+     9	**v3 剩余条件闭合：** **3/3**
+    10	
+    11	## 审查边界
+    12	
+    13	- 仅审查预登记设计、公式和执行唯一性；未运行回测、收益计算、bootstrap、事件研究或参数搜索。
+    14	- 未读取 HOLDOUT、`01_MEMORY_CORE/`、sealed 内容或 carry 实证结果。
+    15	- 未修改 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
+    16	- 裁决标尺仅为“能否放行历史 FEASIBILITY-LOCK 可行性复核”，不把历史段升级为独立确认。
+    17	
+    18	## 逐条裁决
+    19	
+    20	| # | 审查项 | 裁决 | 证据（v4 §/行） | 裁决理由 |
+    21	|---:|---|---|---|---|
+    22	| 1 | 资本 / USDT 计价账 | **CLOSED** | §2.1 L34-L50；§2.2 L52-L111；§4.2 L251-L288；§4.4 L394-L396；§6.4 L570-L588 | 全程唯一以 USDT 记账；`C0=100,000 USDT`，且 `C0=S0+M0+B0+E0`。80,000 配对资本与两个 10,000 现金桶只计一次，`N_i` 明确不是额外资本。现货本金流、futures wallet、内部转账、费用和滑点的落账桶已冻结。小时、8h、MDD、log growth 和年化指标均以同一个固定 `C0` 为分母。USDT/USD 只生成脱锚事件及非判决购买力附表，不进入或重复叠加权威 USDT PnL。 |
+    23	| 2 | 1H 合成强平路径 | **CLOSED** | §2.4 L125-L198；§5.3 L426-L526 | 账户级 cross-margin 状态机逐 1H 处理 funding、维持保证金、延迟补款、open 后检查、同步 mark-high 最坏点、close 检查和首次强平。`buffer_breach` 与 `liquidation` 两级定义及报告口径分离。2000 条路径、`PCG64(seed=20260614)`、抽样顺序、固定价格基准、gap/body/OHLC 递推和块边界接续均冻结。完整历史 bracket rows 随源小时移动，并按每个合成检查点的合成名义重选 `mmr/cum/clearance_fee_rate`；无法重建即 `N.A.⇒FAIL`。 |
+    24	| 3 | 交易小时 PnL 计账 | **CLOSED** | §2.4 L157-L195；§4.2 L251-L288；§4.3 L290-L392 | 权威总 PnL 唯一采用相邻 `A_t` 的 NAV 差。open 交易、funding、强平和强平后现货处置分别归属明确小时；8h interval 为固定 UTC 00/08/16 边界，小时 PnL 严格求和。交易小时按 pre-open/post-open 数量拆分价格 PnL，永续腿必须与 `realized_perp_pnl + ΔUPNL` 对账。常规及强平小时归因均须与 NAV 差在 `1e-8*C0` 内一致，否则 `ACCOUNTING_FAIL`，从而禁止漏计、重复计或平衡项修补。 |
+    25	
+    26	## 核心重构与新自由度
+    27	
+    28	**核心重构完整，未发现新的阻塞性自由度。**
+    29	
+    30	- 历史工作集仍只是 FEASIBILITY-LOCK；历史 PASS 不耗独立 Alpha 计数、不构成独立机制确认、不授权核心资本上线（§0 L11-L15）。
+    31	- 真正确认仍只能使用 Reviewer 放行后的未来 SHADOW 数据；固定起点、样本量、一次性检验和停机规则禁止回填与 optional stopping（§9.1 L620-L628；§9.2 L630-L645）。
+    32	- SHADOW CONFIRMED 只产生“小额真金申请资格”，不会自动下单或进入核心资本；升额和核心资本上线须另立协议和审批（§9.3 L647-L655）。
+    33	- Holdout 即使未来由独立身份评估，也不耗独立计数、不能救回失败工作集、不能替代前向确认（§7 L598-L605）。
+    34	- 资本计价、小时 PnL、合成路径、随机数、bracket 选择和失败处理均已冻结；未发现可由执行者结果后选择且足以改变历史 FEASIBILITY-LOCK 判决的新参数或账本分支。
+    35	
+    36	## 最小必改
+    37	
+    38	**无。** 就本轮“历史可行性复核可复现性”标尺，v3 遗留三项均已闭合。
+    39	
+    40	执行阶段仍必须机械落实文中已有硬门：必要输入或完整历史制度表缺失即 `N.A.⇒FAIL`；逐小时 NAV 与归因不平即 `ACCOUNTING_FAIL`；不得以实现便利修改 seed、块长、成本、事件窗、计价单位或强平顺序。这些是已冻结的执行条件，不是新的预登记修改要求。
+    41	
+    42	## 最终结论
+    43	
+    44	**APPROVED。** 允许按 v4 冻结规格开展历史 FEASIBILITY-LOCK 可行性复核。
+    45	
+    46	本批准不允许读取 Holdout，不消耗独立 Alpha 计数，不构成策略机制的独立确认，不授权自动下单、小额真金或核心资本上线。后续证据升级仍须满足 §9 前向 SHADOW 协议及独立治理审批。
+    47	
+    48	**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-15
+
+exec
+/bin/bash -lc 'nl -ba 04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+exec
+/bin/bash -lc 'date -u +%Y-%m-%dT%H:%M:%SZ' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+2026-06-15T05:48:17Z
+
+ succeeded in 0ms:
+     1	# CARRY-RR4 执行报告
+     2	
+     3	**任务：** Carry 预登记 v4 第四轮独立盲审  
+     4	**日期：** 2026-06-15（Asia/Singapore）  
+     5	**状态：** completed  
+     6	**评审结论：** APPROVED  
+     7	**条件闭合：** 3/3
+     8	
+     9	## 执行范围
+    10	
+    11	- 读取并审查 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
+    12	- 以 `CARRY_RISK_REVIEW_v3.md` 的三项遗留阻塞为对照。
+    13	- 未读取 HOLDOUT、`01_MEMORY_CORE/` 或 sealed 内容。
+    14	- 未修改预登记，未运行回测、bootstrap 或实证计算。
+    15	
+    16	## 验收自检
+    17	
+    18	- [x] 资本 / USDT 计价账：CLOSED。
+    19	- [x] 1H 合成强平路径：CLOSED。
+    20	- [x] 交易小时 PnL 计账：CLOSED。
+    21	- [x] 核心重构仍完整，未发现新阻塞性自由度。
+    22	- [x] 正式评审写入 `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`。
+    23	- [x] 结论仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。
+    24	
+    25	## 产出
+    26	
+    27	- `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`
+    28	- `04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json`
+    29	
+    30	## 恢复点
+    31	
+    32	任务已完成，无中断恢复项。下一步由 Claude 按评审结论验收和调度。
+
+exec
+/bin/bash -lc 'git diff --check -- 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md 04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md && git status --short -- 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md 04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md 04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+?? 04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+?? 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..59b1a62d3e7b2d59be0a7e9e4d649d7fcdb245e4
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+@@ -0,0 +1,32 @@
++# CARRY-RR4 执行报告
++
++**任务：** Carry 预登记 v4 第四轮独立盲审  
++**日期：** 2026-06-15（Asia/Singapore）  
++**状态：** completed  
++**评审结论：** APPROVED  
++**条件闭合：** 3/3
++
++## 执行范围
++
++- 读取并审查 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 以 `CARRY_RISK_REVIEW_v3.md` 的三项遗留阻塞为对照。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/` 或 sealed 内容。
++- 未修改预登记，未运行回测、bootstrap 或实证计算。
++
++## 验收自检
++
++- [x] 资本 / USDT 计价账：CLOSED。
++- [x] 1H 合成强平路径：CLOSED。
++- [x] 交易小时 PnL 计账：CLOSED。
++- [x] 核心重构仍完整，未发现新阻塞性自由度。
++- [x] 正式评审写入 `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`。
++- [x] 结论仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。
++
++## 产出
++
++- `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`
++- `04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json`
++
++## 恢复点
++
++任务已完成，无中断恢复项。下一步由 Claude 按评审结论验收和调度。
+diff --git a/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..e77ea9752eed20782b7825be41e213cccfb91350
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+@@ -0,0 +1,48 @@
++# Delta 中性 Carry 预登记 v4 第四轮独立风险审查
++
++**任务号：** CARRY-RR4  
++**审查者：** Codex（独立 Risk Reviewer，与 v4 起草者分离）  
++**审查日期：** 2026-06-15（Asia/Singapore）  
++**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md`  
++**对照：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md`  
++**结论：** **APPROVED**  
++**v3 剩余条件闭合：** **3/3**
++
++## 审查边界
++
++- 仅审查预登记设计、公式和执行唯一性；未运行回测、收益计算、bootstrap、事件研究或参数搜索。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/`、sealed 内容或 carry 实证结果。
++- 未修改 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 裁决标尺仅为“能否放行历史 FEASIBILITY-LOCK 可行性复核”，不把历史段升级为独立确认。
++
++## 逐条裁决
++
++| # | 审查项 | 裁决 | 证据（v4 §/行） | 裁决理由 |
++|---:|---|---|---|---|
++| 1 | 资本 / USDT 计价账 | **CLOSED** | §2.1 L34-L50；§2.2 L52-L111；§4.2 L251-L288；§4.4 L394-L396；§6.4 L570-L588 | 全程唯一以 USDT 记账；`C0=100,000 USDT`，且 `C0=S0+M0+B0+E0`。80,000 配对资本与两个 10,000 现金桶只计一次，`N_i` 明确不是额外资本。现货本金流、futures wallet、内部转账、费用和滑点的落账桶已冻结。小时、8h、MDD、log growth 和年化指标均以同一个固定 `C0` 为分母。USDT/USD 只生成脱锚事件及非判决购买力附表，不进入或重复叠加权威 USDT PnL。 |
++| 2 | 1H 合成强平路径 | **CLOSED** | §2.4 L125-L198；§5.3 L426-L526 | 账户级 cross-margin 状态机逐 1H 处理 funding、维持保证金、延迟补款、open 后检查、同步 mark-high 最坏点、close 检查和首次强平。`buffer_breach` 与 `liquidation` 两级定义及报告口径分离。2000 条路径、`PCG64(seed=20260614)`、抽样顺序、固定价格基准、gap/body/OHLC 递推和块边界接续均冻结。完整历史 bracket rows 随源小时移动，并按每个合成检查点的合成名义重选 `mmr/cum/clearance_fee_rate`；无法重建即 `N.A.⇒FAIL`。 |
++| 3 | 交易小时 PnL 计账 | **CLOSED** | §2.4 L157-L195；§4.2 L251-L288；§4.3 L290-L392 | 权威总 PnL 唯一采用相邻 `A_t` 的 NAV 差。open 交易、funding、强平和强平后现货处置分别归属明确小时；8h interval 为固定 UTC 00/08/16 边界，小时 PnL 严格求和。交易小时按 pre-open/post-open 数量拆分价格 PnL，永续腿必须与 `realized_perp_pnl + ΔUPNL` 对账。常规及强平小时归因均须与 NAV 差在 `1e-8*C0` 内一致，否则 `ACCOUNTING_FAIL`，从而禁止漏计、重复计或平衡项修补。 |
++
++## 核心重构与新自由度
++
++**核心重构完整，未发现新的阻塞性自由度。**
++
++- 历史工作集仍只是 FEASIBILITY-LOCK；历史 PASS 不耗独立 Alpha 计数、不构成独立机制确认、不授权核心资本上线（§0 L11-L15）。
++- 真正确认仍只能使用 Reviewer 放行后的未来 SHADOW 数据；固定起点、样本量、一次性检验和停机规则禁止回填与 optional stopping（§9.1 L620-L628；§9.2 L630-L645）。
++- SHADOW CONFIRMED 只产生“小额真金申请资格”，不会自动下单或进入核心资本；升额和核心资本上线须另立协议和审批（§9.3 L647-L655）。
++- Holdout 即使未来由独立身份评估，也不耗独立计数、不能救回失败工作集、不能替代前向确认（§7 L598-L605）。
++- 资本计价、小时 PnL、合成路径、随机数、bracket 选择和失败处理均已冻结；未发现可由执行者结果后选择且足以改变历史 FEASIBILITY-LOCK 判决的新参数或账本分支。
++
++## 最小必改
++
++**无。** 就本轮“历史可行性复核可复现性”标尺，v3 遗留三项均已闭合。
++
++执行阶段仍必须机械落实文中已有硬门：必要输入或完整历史制度表缺失即 `N.A.⇒FAIL`；逐小时 NAV 与归因不平即 `ACCOUNTING_FAIL`；不得以实现便利修改 seed、块长、成本、事件窗、计价单位或强平顺序。这些是已冻结的执行条件，不是新的预登记修改要求。
++
++## 最终结论
++
++**APPROVED。** 允许按 v4 冻结规格开展历史 FEASIBILITY-LOCK 可行性复核。
++
++本批准不允许读取 Holdout，不消耗独立 Alpha 计数，不构成策略机制的独立确认，不授权自动下单、小额真金或核心资本上线。后续证据升级仍须满足 §9 前向 SHADOW 协议及独立治理审批。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-15
+
+codex
+正式报告已完成初检，行号引用与 v4 原文一致，`git diff --check` 无格式错误。现在写入调度器完成事件，随后做 JSON/schema、禁止项声明、差异范围和提交验证。
+apply patch
+patch: completed
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..59b1a62d3e7b2d59be0a7e9e4d649d7fcdb245e4
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+@@ -0,0 +1,32 @@
++# CARRY-RR4 执行报告
++
++**任务：** Carry 预登记 v4 第四轮独立盲审  
++**日期：** 2026-06-15（Asia/Singapore）  
++**状态：** completed  
++**评审结论：** APPROVED  
++**条件闭合：** 3/3
++
++## 执行范围
++
++- 读取并审查 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 以 `CARRY_RISK_REVIEW_v3.md` 的三项遗留阻塞为对照。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/` 或 sealed 内容。
++- 未修改预登记，未运行回测、bootstrap 或实证计算。
++
++## 验收自检
++
++- [x] 资本 / USDT 计价账：CLOSED。
++- [x] 1H 合成强平路径：CLOSED。
++- [x] 交易小时 PnL 计账：CLOSED。
++- [x] 核心重构仍完整，未发现新阻塞性自由度。
++- [x] 正式评审写入 `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`。
++- [x] 结论仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。
++
++## 产出
++
++- `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`
++- `04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json`
++
++## 恢复点
++
++任务已完成，无中断恢复项。下一步由 Claude 按评审结论验收和调度。
+diff --git a/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..ac931c1aeb5d000e8ed7600ef87e93ce251f1a06
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "CARRY_RR4",
++  "completed_at": "2026-06-15T05:48:17Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md",
++  "next_task": null,
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "3/3",
++  "notes": "v3 遗留的资本/USDT计价账、1H合成强平路径、交易小时PnL三项均 CLOSED；仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..e77ea9752eed20782b7825be41e213cccfb91350
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+@@ -0,0 +1,48 @@
++# Delta 中性 Carry 预登记 v4 第四轮独立风险审查
++
++**任务号：** CARRY-RR4  
++**审查者：** Codex（独立 Risk Reviewer，与 v4 起草者分离）  
++**审查日期：** 2026-06-15（Asia/Singapore）  
++**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md`  
++**对照：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md`  
++**结论：** **APPROVED**  
++**v3 剩余条件闭合：** **3/3**
++
++## 审查边界
++
++- 仅审查预登记设计、公式和执行唯一性；未运行回测、收益计算、bootstrap、事件研究或参数搜索。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/`、sealed 内容或 carry 实证结果。
++- 未修改 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 裁决标尺仅为“能否放行历史 FEASIBILITY-LOCK 可行性复核”，不把历史段升级为独立确认。
++
++## 逐条裁决
++
++| # | 审查项 | 裁决 | 证据（v4 §/行） | 裁决理由 |
++|---:|---|---|---|---|
++| 1 | 资本 / USDT 计价账 | **CLOSED** | §2.1 L34-L50；§2.2 L52-L111；§4.2 L251-L288；§4.4 L394-L396；§6.4 L570-L588 | 全程唯一以 USDT 记账；`C0=100,000 USDT`，且 `C0=S0+M0+B0+E0`。80,000 配对资本与两个 10,000 现金桶只计一次，`N_i` 明确不是额外资本。现货本金流、futures wallet、内部转账、费用和滑点的落账桶已冻结。小时、8h、MDD、log growth 和年化指标均以同一个固定 `C0` 为分母。USDT/USD 只生成脱锚事件及非判决购买力附表，不进入或重复叠加权威 USDT PnL。 |
++| 2 | 1H 合成强平路径 | **CLOSED** | §2.4 L125-L198；§5.3 L426-L526 | 账户级 cross-margin 状态机逐 1H 处理 funding、维持保证金、延迟补款、open 后检查、同步 mark-high 最坏点、close 检查和首次强平。`buffer_breach` 与 `liquidation` 两级定义及报告口径分离。2000 条路径、`PCG64(seed=20260614)`、抽样顺序、固定价格基准、gap/body/OHLC 递推和块边界接续均冻结。完整历史 bracket rows 随源小时移动，并按每个合成检查点的合成名义重选 `mmr/cum/clearance_fee_rate`；无法重建即 `N.A.⇒FAIL`。 |
++| 3 | 交易小时 PnL 计账 | **CLOSED** | §2.4 L157-L195；§4.2 L251-L288；§4.3 L290-L392 | 权威总 PnL 唯一采用相邻 `A_t` 的 NAV 差。open 交易、funding、强平和强平后现货处置分别归属明确小时；8h interval 为固定 UTC 00/08/16 边界，小时 PnL 严格求和。交易小时按 pre-open/post-open 数量拆分价格 PnL，永续腿必须与 `realized_perp_pnl + ΔUPNL` 对账。常规及强平小时归因均须与 NAV 差在 `1e-8*C0` 内一致，否则 `ACCOUNTING_FAIL`，从而禁止漏计、重复计或平衡项修补。 |
++
++## 核心重构与新自由度
++
++**核心重构完整，未发现新的阻塞性自由度。**
++
++- 历史工作集仍只是 FEASIBILITY-LOCK；历史 PASS 不耗独立 Alpha 计数、不构成独立机制确认、不授权核心资本上线（§0 L11-L15）。
++- 真正确认仍只能使用 Reviewer 放行后的未来 SHADOW 数据；固定起点、样本量、一次性检验和停机规则禁止回填与 optional stopping（§9.1 L620-L628；§9.2 L630-L645）。
++- SHADOW CONFIRMED 只产生“小额真金申请资格”，不会自动下单或进入核心资本；升额和核心资本上线须另立协议和审批（§9.3 L647-L655）。
++- Holdout 即使未来由独立身份评估，也不耗独立计数、不能救回失败工作集、不能替代前向确认（§7 L598-L605）。
++- 资本计价、小时 PnL、合成路径、随机数、bracket 选择和失败处理均已冻结；未发现可由执行者结果后选择且足以改变历史 FEASIBILITY-LOCK 判决的新参数或账本分支。
++
++## 最小必改
++
++**无。** 就本轮“历史可行性复核可复现性”标尺，v3 遗留三项均已闭合。
++
++执行阶段仍必须机械落实文中已有硬门：必要输入或完整历史制度表缺失即 `N.A.⇒FAIL`；逐小时 NAV 与归因不平即 `ACCOUNTING_FAIL`；不得以实现便利修改 seed、块长、成本、事件窗、计价单位或强平顺序。这些是已冻结的执行条件，不是新的预登记修改要求。
++
++## 最终结论
++
++**APPROVED。** 允许按 v4 冻结规格开展历史 FEASIBILITY-LOCK 可行性复核。
++
++本批准不允许读取 Holdout，不消耗独立 Alpha 计数，不构成策略机制的独立确认，不授权自动下单、小额真金或核心资本上线。后续证据升级仍须满足 §9 前向 SHADOW 协议及独立治理审批。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-15
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..59b1a62d3e7b2d59be0a7e9e4d649d7fcdb245e4
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+@@ -0,0 +1,32 @@
++# CARRY-RR4 执行报告
++
++**任务：** Carry 预登记 v4 第四轮独立盲审  
++**日期：** 2026-06-15（Asia/Singapore）  
++**状态：** completed  
++**评审结论：** APPROVED  
++**条件闭合：** 3/3
++
++## 执行范围
++
++- 读取并审查 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 以 `CARRY_RISK_REVIEW_v3.md` 的三项遗留阻塞为对照。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/` 或 sealed 内容。
++- 未修改预登记，未运行回测、bootstrap 或实证计算。
++
++## 验收自检
++
++- [x] 资本 / USDT 计价账：CLOSED。
++- [x] 1H 合成强平路径：CLOSED。
++- [x] 交易小时 PnL 计账：CLOSED。
++- [x] 核心重构仍完整，未发现新阻塞性自由度。
++- [x] 正式评审写入 `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`。
++- [x] 结论仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。
++
++## 产出
++
++- `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`
++- `04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json`
++
++## 恢复点
++
++任务已完成，无中断恢复项。下一步由 Claude 按评审结论验收和调度。
+diff --git a/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..ac931c1aeb5d000e8ed7600ef87e93ce251f1a06
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "CARRY_RR4",
++  "completed_at": "2026-06-15T05:48:17Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md",
++  "next_task": null,
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "3/3",
++  "notes": "v3 遗留的资本/USDT计价账、1H合成强平路径、交易小时PnL三项均 CLOSED；仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..e77ea9752eed20782b7825be41e213cccfb91350
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+@@ -0,0 +1,48 @@
++# Delta 中性 Carry 预登记 v4 第四轮独立风险审查
++
++**任务号：** CARRY-RR4  
++**审查者：** Codex（独立 Risk Reviewer，与 v4 起草者分离）  
++**审查日期：** 2026-06-15（Asia/Singapore）  
++**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md`  
++**对照：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md`  
++**结论：** **APPROVED**  
++**v3 剩余条件闭合：** **3/3**
++
++## 审查边界
++
++- 仅审查预登记设计、公式和执行唯一性；未运行回测、收益计算、bootstrap、事件研究或参数搜索。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/`、sealed 内容或 carry 实证结果。
++- 未修改 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 裁决标尺仅为“能否放行历史 FEASIBILITY-LOCK 可行性复核”，不把历史段升级为独立确认。
++
++## 逐条裁决
++
++| # | 审查项 | 裁决 | 证据（v4 §/行） | 裁决理由 |
++|---:|---|---|---|---|
++| 1 | 资本 / USDT 计价账 | **CLOSED** | §2.1 L34-L50；§2.2 L52-L111；§4.2 L251-L288；§4.4 L394-L396；§6.4 L570-L588 | 全程唯一以 USDT 记账；`C0=100,000 USDT`，且 `C0=S0+M0+B0+E0`。80,000 配对资本与两个 10,000 现金桶只计一次，`N_i` 明确不是额外资本。现货本金流、futures wallet、内部转账、费用和滑点的落账桶已冻结。小时、8h、MDD、log growth 和年化指标均以同一个固定 `C0` 为分母。USDT/USD 只生成脱锚事件及非判决购买力附表，不进入或重复叠加权威 USDT PnL。 |
++| 2 | 1H 合成强平路径 | **CLOSED** | §2.4 L125-L198；§5.3 L426-L526 | 账户级 cross-margin 状态机逐 1H 处理 funding、维持保证金、延迟补款、open 后检查、同步 mark-high 最坏点、close 检查和首次强平。`buffer_breach` 与 `liquidation` 两级定义及报告口径分离。2000 条路径、`PCG64(seed=20260614)`、抽样顺序、固定价格基准、gap/body/OHLC 递推和块边界接续均冻结。完整历史 bracket rows 随源小时移动，并按每个合成检查点的合成名义重选 `mmr/cum/clearance_fee_rate`；无法重建即 `N.A.⇒FAIL`。 |
++| 3 | 交易小时 PnL 计账 | **CLOSED** | §2.4 L157-L195；§4.2 L251-L288；§4.3 L290-L392 | 权威总 PnL 唯一采用相邻 `A_t` 的 NAV 差。open 交易、funding、强平和强平后现货处置分别归属明确小时；8h interval 为固定 UTC 00/08/16 边界，小时 PnL 严格求和。交易小时按 pre-open/post-open 数量拆分价格 PnL，永续腿必须与 `realized_perp_pnl + ΔUPNL` 对账。常规及强平小时归因均须与 NAV 差在 `1e-8*C0` 内一致，否则 `ACCOUNTING_FAIL`，从而禁止漏计、重复计或平衡项修补。 |
++
++## 核心重构与新自由度
++
++**核心重构完整，未发现新的阻塞性自由度。**
++
++- 历史工作集仍只是 FEASIBILITY-LOCK；历史 PASS 不耗独立 Alpha 计数、不构成独立机制确认、不授权核心资本上线（§0 L11-L15）。
++- 真正确认仍只能使用 Reviewer 放行后的未来 SHADOW 数据；固定起点、样本量、一次性检验和停机规则禁止回填与 optional stopping（§9.1 L620-L628；§9.2 L630-L645）。
++- SHADOW CONFIRMED 只产生“小额真金申请资格”，不会自动下单或进入核心资本；升额和核心资本上线须另立协议和审批（§9.3 L647-L655）。
++- Holdout 即使未来由独立身份评估，也不耗独立计数、不能救回失败工作集、不能替代前向确认（§7 L598-L605）。
++- 资本计价、小时 PnL、合成路径、随机数、bracket 选择和失败处理均已冻结；未发现可由执行者结果后选择且足以改变历史 FEASIBILITY-LOCK 判决的新参数或账本分支。
++
++## 最小必改
++
++**无。** 就本轮“历史可行性复核可复现性”标尺，v3 遗留三项均已闭合。
++
++执行阶段仍必须机械落实文中已有硬门：必要输入或完整历史制度表缺失即 `N.A.⇒FAIL`；逐小时 NAV 与归因不平即 `ACCOUNTING_FAIL`；不得以实现便利修改 seed、块长、成本、事件窗、计价单位或强平顺序。这些是已冻结的执行条件，不是新的预登记修改要求。
++
++## 最终结论
++
++**APPROVED。** 允许按 v4 冻结规格开展历史 FEASIBILITY-LOCK 可行性复核。
++
++本批准不允许读取 Holdout，不消耗独立 Alpha 计数，不构成策略机制的独立确认，不授权自动下单、小额真金或核心资本上线。后续证据升级仍须满足 §9 前向 SHADOW 协议及独立治理审批。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-15
+
+exec
+/bin/bash -lc "jq -e '.task_id == \"CARRY_RR4\" and .status == \"completed\" and .review_conclusion == \"APPROVED\" and .conditions_closed == \"3/3\" and .next_task == null' 04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ exited 2 in 0ms:
+jq: error: Could not open file 04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json: No such file or directory
+
+exec
+/bin/bash -lc "rg -n '"'^'"\\*\\*结论：\\*\\* \\*\\*APPROVED\\*\\*|\\| [123] \\|.*\\*\\*CLOSED\\*\\*|"'^'"\\*\\*无。\\*\\*|不允许读取 Holdout' 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+8:**结论：** **APPROVED**  
+22:| 1 | 资本 / USDT 计价账 | **CLOSED** | §2.1 L34-L50；§2.2 L52-L111；§4.2 L251-L288；§4.4 L394-L396；§6.4 L570-L588 | 全程唯一以 USDT 记账；`C0=100,000 USDT`，且 `C0=S0+M0+B0+E0`。80,000 配对资本与两个 10,000 现金桶只计一次，`N_i` 明确不是额外资本。现货本金流、futures wallet、内部转账、费用和滑点的落账桶已冻结。小时、8h、MDD、log growth 和年化指标均以同一个固定 `C0` 为分母。USDT/USD 只生成脱锚事件及非判决购买力附表，不进入或重复叠加权威 USDT PnL。 |
+23:| 2 | 1H 合成强平路径 | **CLOSED** | §2.4 L125-L198；§5.3 L426-L526 | 账户级 cross-margin 状态机逐 1H 处理 funding、维持保证金、延迟补款、open 后检查、同步 mark-high 最坏点、close 检查和首次强平。`buffer_breach` 与 `liquidation` 两级定义及报告口径分离。2000 条路径、`PCG64(seed=20260614)`、抽样顺序、固定价格基准、gap/body/OHLC 递推和块边界接续均冻结。完整历史 bracket rows 随源小时移动，并按每个合成检查点的合成名义重选 `mmr/cum/clearance_fee_rate`；无法重建即 `N.A.⇒FAIL`。 |
+24:| 3 | 交易小时 PnL 计账 | **CLOSED** | §2.4 L157-L195；§4.2 L251-L288；§4.3 L290-L392 | 权威总 PnL 唯一采用相邻 `A_t` 的 NAV 差。open 交易、funding、强平和强平后现货处置分别归属明确小时；8h interval 为固定 UTC 00/08/16 边界，小时 PnL 严格求和。交易小时按 pre-open/post-open 数量拆分价格 PnL，永续腿必须与 `realized_perp_pnl + ΔUPNL` 对账。常规及强平小时归因均须与 NAV 差在 `1e-8*C0` 内一致，否则 `ACCOUNTING_FAIL`，从而禁止漏计、重复计或平衡项修补。 |
+38:**无。** 就本轮“历史可行性复核可复现性”标尺，v3 遗留三项均已闭合。
+46:本批准不允许读取 Holdout，不消耗独立 Alpha 计数，不构成策略机制的独立确认，不授权自动下单、小额真金或核心资本上线。后续证据升级仍须满足 §9 前向 SHADOW 协议及独立治理审批。
+
+exec
+/bin/bash -lc 'git status --short && git diff --name-only && git diff -- 06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+ M 00_PROJECT_MANAGEMENT/OPERATING_MODEL_DESIGN_v2.md
+ M 01_MEMORY_CORE/CURRENT_STATE.md
+ M 04_AI_TEAM/CODEX_TASKS/CARRY_RR4_RUN.log
+ M 04_AI_TEAM/CODEX_TASKS/DRAFT_MASTERPLAN_RUN.log
+?? 00_PROJECT_MANAGEMENT/COMPANY_BUILD_MASTERPLAN_v1.md
+?? 04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+?? 04_AI_TEAM/TASK_INBOX/PROCESSED/CARRY_RR4_DONE.json
+?? 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+00_PROJECT_MANAGEMENT/OPERATING_MODEL_DESIGN_v2.md
+01_MEMORY_CORE/CURRENT_STATE.md
+04_AI_TEAM/CODEX_TASKS/CARRY_RR4_RUN.log
+04_AI_TEAM/CODEX_TASKS/DRAFT_MASTERPLAN_RUN.log
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..59b1a62d3e7b2d59be0a7e9e4d649d7fcdb245e4
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+@@ -0,0 +1,32 @@
++# CARRY-RR4 执行报告
++
++**任务：** Carry 预登记 v4 第四轮独立盲审  
++**日期：** 2026-06-15（Asia/Singapore）  
++**状态：** completed  
++**评审结论：** APPROVED  
++**条件闭合：** 3/3
++
++## 执行范围
++
++- 读取并审查 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 以 `CARRY_RISK_REVIEW_v3.md` 的三项遗留阻塞为对照。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/` 或 sealed 内容。
++- 未修改预登记，未运行回测、bootstrap 或实证计算。
++
++## 验收自检
++
++- [x] 资本 / USDT 计价账：CLOSED。
++- [x] 1H 合成强平路径：CLOSED。
++- [x] 交易小时 PnL 计账：CLOSED。
++- [x] 核心重构仍完整，未发现新阻塞性自由度。
++- [x] 正式评审写入 `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`。
++- [x] 结论仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。
++
++## 产出
++
++- `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`
++- `04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json`
++
++## 恢复点
++
++任务已完成，无中断恢复项。下一步由 Claude 按评审结论验收和调度。
+diff --git a/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..ac931c1aeb5d000e8ed7600ef87e93ce251f1a06
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "CARRY_RR4",
++  "completed_at": "2026-06-15T05:48:17Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md",
++  "next_task": null,
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "3/3",
++  "notes": "v3 遗留的资本/USDT计价账、1H合成强平路径、交易小时PnL三项均 CLOSED；仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..e77ea9752eed20782b7825be41e213cccfb91350
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+@@ -0,0 +1,48 @@
++# Delta 中性 Carry 预登记 v4 第四轮独立风险审查
++
++**任务号：** CARRY-RR4  
++**审查者：** Codex（独立 Risk Reviewer，与 v4 起草者分离）  
++**审查日期：** 2026-06-15（Asia/Singapore）  
++**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md`  
++**对照：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md`  
++**结论：** **APPROVED**  
++**v3 剩余条件闭合：** **3/3**
++
++## 审查边界
++
++- 仅审查预登记设计、公式和执行唯一性；未运行回测、收益计算、bootstrap、事件研究或参数搜索。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/`、sealed 内容或 carry 实证结果。
++- 未修改 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 裁决标尺仅为“能否放行历史 FEASIBILITY-LOCK 可行性复核”，不把历史段升级为独立确认。
++
++## 逐条裁决
++
++| # | 审查项 | 裁决 | 证据（v4 §/行） | 裁决理由 |
++|---:|---|---|---|---|
++| 1 | 资本 / USDT 计价账 | **CLOSED** | §2.1 L34-L50；§2.2 L52-L111；§4.2 L251-L288；§4.4 L394-L396；§6.4 L570-L588 | 全程唯一以 USDT 记账；`C0=100,000 USDT`，且 `C0=S0+M0+B0+E0`。80,000 配对资本与两个 10,000 现金桶只计一次，`N_i` 明确不是额外资本。现货本金流、futures wallet、内部转账、费用和滑点的落账桶已冻结。小时、8h、MDD、log growth 和年化指标均以同一个固定 `C0` 为分母。USDT/USD 只生成脱锚事件及非判决购买力附表，不进入或重复叠加权威 USDT PnL。 |
++| 2 | 1H 合成强平路径 | **CLOSED** | §2.4 L125-L198；§5.3 L426-L526 | 账户级 cross-margin 状态机逐 1H 处理 funding、维持保证金、延迟补款、open 后检查、同步 mark-high 最坏点、close 检查和首次强平。`buffer_breach` 与 `liquidation` 两级定义及报告口径分离。2000 条路径、`PCG64(seed=20260614)`、抽样顺序、固定价格基准、gap/body/OHLC 递推和块边界接续均冻结。完整历史 bracket rows 随源小时移动，并按每个合成检查点的合成名义重选 `mmr/cum/clearance_fee_rate`；无法重建即 `N.A.⇒FAIL`。 |
++| 3 | 交易小时 PnL 计账 | **CLOSED** | §2.4 L157-L195；§4.2 L251-L288；§4.3 L290-L392 | 权威总 PnL 唯一采用相邻 `A_t` 的 NAV 差。open 交易、funding、强平和强平后现货处置分别归属明确小时；8h interval 为固定 UTC 00/08/16 边界，小时 PnL 严格求和。交易小时按 pre-open/post-open 数量拆分价格 PnL，永续腿必须与 `realized_perp_pnl + ΔUPNL` 对账。常规及强平小时归因均须与 NAV 差在 `1e-8*C0` 内一致，否则 `ACCOUNTING_FAIL`，从而禁止漏计、重复计或平衡项修补。 |
++
++## 核心重构与新自由度
++
++**核心重构完整，未发现新的阻塞性自由度。**
++
++- 历史工作集仍只是 FEASIBILITY-LOCK；历史 PASS 不耗独立 Alpha 计数、不构成独立机制确认、不授权核心资本上线（§0 L11-L15）。
++- 真正确认仍只能使用 Reviewer 放行后的未来 SHADOW 数据；固定起点、样本量、一次性检验和停机规则禁止回填与 optional stopping（§9.1 L620-L628；§9.2 L630-L645）。
++- SHADOW CONFIRMED 只产生“小额真金申请资格”，不会自动下单或进入核心资本；升额和核心资本上线须另立协议和审批（§9.3 L647-L655）。
++- Holdout 即使未来由独立身份评估，也不耗独立计数、不能救回失败工作集、不能替代前向确认（§7 L598-L605）。
++- 资本计价、小时 PnL、合成路径、随机数、bracket 选择和失败处理均已冻结；未发现可由执行者结果后选择且足以改变历史 FEASIBILITY-LOCK 判决的新参数或账本分支。
++
++## 最小必改
++
++**无。** 就本轮“历史可行性复核可复现性”标尺，v3 遗留三项均已闭合。
++
++执行阶段仍必须机械落实文中已有硬门：必要输入或完整历史制度表缺失即 `N.A.⇒FAIL`；逐小时 NAV 与归因不平即 `ACCOUNTING_FAIL`；不得以实现便利修改 seed、块长、成本、事件窗、计价单位或强平顺序。这些是已冻结的执行条件，不是新的预登记修改要求。
++
++## 最终结论
++
++**APPROVED。** 允许按 v4 冻结规格开展历史 FEASIBILITY-LOCK 可行性复核。
++
++本批准不允许读取 Holdout，不消耗独立 Alpha 计数，不构成策略机制的独立确认，不授权自动下单、小额真金或核心资本上线。后续证据升级仍须满足 §9 前向 SHADOW 协议及独立治理审批。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-15
+
+codex
+完成事件写入后被调度器即时消费并移动到 `04_AI_TEAM/TASK_INBOX/PROCESSED/CARRY_RR4_DONE.json`，因此原路径已不存在；这是自动处理，不是写入失败。调度器同时产生了 `CURRENT_STATE.md` 等外部改动，我不会读取、修改或纳入提交，只提交本任务的评审、执行报告和已消费事件。
+exec
+/bin/bash -lc "jq -e '.task_id == \"CARRY_RR4\" and .status == \"completed\" and .review_conclusion == \"APPROVED\" and .conditions_closed == \"3/3\" and .next_task == null' 04_AI_TEAM/TASK_INBOX/PROCESSED/CARRY_RR4_DONE.json" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+true
+
+exec
+/bin/bash -lc 'nl -ba 04_AI_TEAM/TASK_INBOX/PROCESSED/CARRY_RR4_DONE.json' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+     1	{
+     2	  "task_id": "CARRY_RR4",
+     3	  "completed_at": "2026-06-15T05:48:17Z",
+     4	  "status": "completed",
+     5	  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md",
+     6	  "next_task": null,
+     7	  "review_conclusion": "APPROVED",
+     8	  "conditions_closed": "3/3",
+     9	  "notes": "v3 遗留的资本/USDT计价账、1H合成强平路径、交易小时PnL三项均 CLOSED；仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。"
+    10	}
+
+exec
+/bin/bash -lc 'git diff --no-index -- /dev/null 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md >/tmp/carry_rr4_review.diff; test $? -eq 1; git diff --no-index -- /dev/null 04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md >/tmp/carry_rr4_report.diff; test $? -eq 1; git diff --no-index -- /dev/null 04_AI_TEAM/TASK_INBOX/PROCESSED/CARRY_RR4_DONE.json >/tmp/carry_rr4_event.diff; test $? -eq 1; wc -l /tmp/carry_rr4_review.diff /tmp/carry_rr4_report.diff /tmp/carry_rr4_event.diff' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+      54 /tmp/carry_rr4_review.diff
+      38 /tmp/carry_rr4_report.diff
+      16 /tmp/carry_rr4_event.diff
+     108 total
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..59b1a62d3e7b2d59be0a7e9e4d649d7fcdb245e4
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+@@ -0,0 +1,32 @@
++# CARRY-RR4 执行报告
++
++**任务：** Carry 预登记 v4 第四轮独立盲审  
++**日期：** 2026-06-15（Asia/Singapore）  
++**状态：** completed  
++**评审结论：** APPROVED  
++**条件闭合：** 3/3
++
++## 执行范围
++
++- 读取并审查 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 以 `CARRY_RISK_REVIEW_v3.md` 的三项遗留阻塞为对照。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/` 或 sealed 内容。
++- 未修改预登记，未运行回测、bootstrap 或实证计算。
++
++## 验收自检
++
++- [x] 资本 / USDT 计价账：CLOSED。
++- [x] 1H 合成强平路径：CLOSED。
++- [x] 交易小时 PnL 计账：CLOSED。
++- [x] 核心重构仍完整，未发现新阻塞性自由度。
++- [x] 正式评审写入 `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`。
++- [x] 结论仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。
++
++## 产出
++
++- `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`
++- `04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json`
++
++## 恢复点
++
++任务已完成，无中断恢复项。下一步由 Claude 按评审结论验收和调度。
+diff --git a/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..ac931c1aeb5d000e8ed7600ef87e93ce251f1a06
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "CARRY_RR4",
++  "completed_at": "2026-06-15T05:48:17Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md",
++  "next_task": null,
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "3/3",
++  "notes": "v3 遗留的资本/USDT计价账、1H合成强平路径、交易小时PnL三项均 CLOSED；仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..e77ea9752eed20782b7825be41e213cccfb91350
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+@@ -0,0 +1,48 @@
++# Delta 中性 Carry 预登记 v4 第四轮独立风险审查
++
++**任务号：** CARRY-RR4  
++**审查者：** Codex（独立 Risk Reviewer，与 v4 起草者分离）  
++**审查日期：** 2026-06-15（Asia/Singapore）  
++**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md`  
++**对照：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md`  
++**结论：** **APPROVED**  
++**v3 剩余条件闭合：** **3/3**
++
++## 审查边界
++
++- 仅审查预登记设计、公式和执行唯一性；未运行回测、收益计算、bootstrap、事件研究或参数搜索。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/`、sealed 内容或 carry 实证结果。
++- 未修改 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 裁决标尺仅为“能否放行历史 FEASIBILITY-LOCK 可行性复核”，不把历史段升级为独立确认。
++
++## 逐条裁决
++
++| # | 审查项 | 裁决 | 证据（v4 §/行） | 裁决理由 |
++|---:|---|---|---|---|
++| 1 | 资本 / USDT 计价账 | **CLOSED** | §2.1 L34-L50；§2.2 L52-L111；§4.2 L251-L288；§4.4 L394-L396；§6.4 L570-L588 | 全程唯一以 USDT 记账；`C0=100,000 USDT`，且 `C0=S0+M0+B0+E0`。80,000 配对资本与两个 10,000 现金桶只计一次，`N_i` 明确不是额外资本。现货本金流、futures wallet、内部转账、费用和滑点的落账桶已冻结。小时、8h、MDD、log growth 和年化指标均以同一个固定 `C0` 为分母。USDT/USD 只生成脱锚事件及非判决购买力附表，不进入或重复叠加权威 USDT PnL。 |
++| 2 | 1H 合成强平路径 | **CLOSED** | §2.4 L125-L198；§5.3 L426-L526 | 账户级 cross-margin 状态机逐 1H 处理 funding、维持保证金、延迟补款、open 后检查、同步 mark-high 最坏点、close 检查和首次强平。`buffer_breach` 与 `liquidation` 两级定义及报告口径分离。2000 条路径、`PCG64(seed=20260614)`、抽样顺序、固定价格基准、gap/body/OHLC 递推和块边界接续均冻结。完整历史 bracket rows 随源小时移动，并按每个合成检查点的合成名义重选 `mmr/cum/clearance_fee_rate`；无法重建即 `N.A.⇒FAIL`。 |
++| 3 | 交易小时 PnL 计账 | **CLOSED** | §2.4 L157-L195；§4.2 L251-L288；§4.3 L290-L392 | 权威总 PnL 唯一采用相邻 `A_t` 的 NAV 差。open 交易、funding、强平和强平后现货处置分别归属明确小时；8h interval 为固定 UTC 00/08/16 边界，小时 PnL 严格求和。交易小时按 pre-open/post-open 数量拆分价格 PnL，永续腿必须与 `realized_perp_pnl + ΔUPNL` 对账。常规及强平小时归因均须与 NAV 差在 `1e-8*C0` 内一致，否则 `ACCOUNTING_FAIL`，从而禁止漏计、重复计或平衡项修补。 |
++
++## 核心重构与新自由度
++
++**核心重构完整，未发现新的阻塞性自由度。**
++
++- 历史工作集仍只是 FEASIBILITY-LOCK；历史 PASS 不耗独立 Alpha 计数、不构成独立机制确认、不授权核心资本上线（§0 L11-L15）。
++- 真正确认仍只能使用 Reviewer 放行后的未来 SHADOW 数据；固定起点、样本量、一次性检验和停机规则禁止回填与 optional stopping（§9.1 L620-L628；§9.2 L630-L645）。
++- SHADOW CONFIRMED 只产生“小额真金申请资格”，不会自动下单或进入核心资本；升额和核心资本上线须另立协议和审批（§9.3 L647-L655）。
++- Holdout 即使未来由独立身份评估，也不耗独立计数、不能救回失败工作集、不能替代前向确认（§7 L598-L605）。
++- 资本计价、小时 PnL、合成路径、随机数、bracket 选择和失败处理均已冻结；未发现可由执行者结果后选择且足以改变历史 FEASIBILITY-LOCK 判决的新参数或账本分支。
++
++## 最小必改
++
++**无。** 就本轮“历史可行性复核可复现性”标尺，v3 遗留三项均已闭合。
++
++执行阶段仍必须机械落实文中已有硬门：必要输入或完整历史制度表缺失即 `N.A.⇒FAIL`；逐小时 NAV 与归因不平即 `ACCOUNTING_FAIL`；不得以实现便利修改 seed、块长、成本、事件窗、计价单位或强平顺序。这些是已冻结的执行条件，不是新的预登记修改要求。
++
++## 最终结论
++
++**APPROVED。** 允许按 v4 冻结规格开展历史 FEASIBILITY-LOCK 可行性复核。
++
++本批准不允许读取 Holdout，不消耗独立 Alpha 计数，不构成策略机制的独立确认，不授权自动下单、小额真金或核心资本上线。后续证据升级仍须满足 §9 前向 SHADOW 协议及独立治理审批。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-15
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..59b1a62d3e7b2d59be0a7e9e4d649d7fcdb245e4
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+@@ -0,0 +1,32 @@
++# CARRY-RR4 执行报告
++
++**任务：** Carry 预登记 v4 第四轮独立盲审  
++**日期：** 2026-06-15（Asia/Singapore）  
++**状态：** completed  
++**评审结论：** APPROVED  
++**条件闭合：** 3/3
++
++## 执行范围
++
++- 读取并审查 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 以 `CARRY_RISK_REVIEW_v3.md` 的三项遗留阻塞为对照。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/` 或 sealed 内容。
++- 未修改预登记，未运行回测、bootstrap 或实证计算。
++
++## 验收自检
++
++- [x] 资本 / USDT 计价账：CLOSED。
++- [x] 1H 合成强平路径：CLOSED。
++- [x] 交易小时 PnL 计账：CLOSED。
++- [x] 核心重构仍完整，未发现新阻塞性自由度。
++- [x] 正式评审写入 `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`。
++- [x] 结论仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。
++
++## 产出
++
++- `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`
++- `04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json`
++
++## 恢复点
++
++任务已完成，无中断恢复项。下一步由 Claude 按评审结论验收和调度。
+diff --git a/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..ac931c1aeb5d000e8ed7600ef87e93ce251f1a06
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "CARRY_RR4",
++  "completed_at": "2026-06-15T05:48:17Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md",
++  "next_task": null,
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "3/3",
++  "notes": "v3 遗留的资本/USDT计价账、1H合成强平路径、交易小时PnL三项均 CLOSED；仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..e77ea9752eed20782b7825be41e213cccfb91350
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+@@ -0,0 +1,48 @@
++# Delta 中性 Carry 预登记 v4 第四轮独立风险审查
++
++**任务号：** CARRY-RR4  
++**审查者：** Codex（独立 Risk Reviewer，与 v4 起草者分离）  
++**审查日期：** 2026-06-15（Asia/Singapore）  
++**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md`  
++**对照：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md`  
++**结论：** **APPROVED**  
++**v3 剩余条件闭合：** **3/3**
++
++## 审查边界
++
++- 仅审查预登记设计、公式和执行唯一性；未运行回测、收益计算、bootstrap、事件研究或参数搜索。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/`、sealed 内容或 carry 实证结果。
++- 未修改 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 裁决标尺仅为“能否放行历史 FEASIBILITY-LOCK 可行性复核”，不把历史段升级为独立确认。
++
++## 逐条裁决
++
++| # | 审查项 | 裁决 | 证据（v4 §/行） | 裁决理由 |
++|---:|---|---|---|---|
++| 1 | 资本 / USDT 计价账 | **CLOSED** | §2.1 L34-L50；§2.2 L52-L111；§4.2 L251-L288；§4.4 L394-L396；§6.4 L570-L588 | 全程唯一以 USDT 记账；`C0=100,000 USDT`，且 `C0=S0+M0+B0+E0`。80,000 配对资本与两个 10,000 现金桶只计一次，`N_i` 明确不是额外资本。现货本金流、futures wallet、内部转账、费用和滑点的落账桶已冻结。小时、8h、MDD、log growth 和年化指标均以同一个固定 `C0` 为分母。USDT/USD 只生成脱锚事件及非判决购买力附表，不进入或重复叠加权威 USDT PnL。 |
++| 2 | 1H 合成强平路径 | **CLOSED** | §2.4 L125-L198；§5.3 L426-L526 | 账户级 cross-margin 状态机逐 1H 处理 funding、维持保证金、延迟补款、open 后检查、同步 mark-high 最坏点、close 检查和首次强平。`buffer_breach` 与 `liquidation` 两级定义及报告口径分离。2000 条路径、`PCG64(seed=20260614)`、抽样顺序、固定价格基准、gap/body/OHLC 递推和块边界接续均冻结。完整历史 bracket rows 随源小时移动，并按每个合成检查点的合成名义重选 `mmr/cum/clearance_fee_rate`；无法重建即 `N.A.⇒FAIL`。 |
++| 3 | 交易小时 PnL 计账 | **CLOSED** | §2.4 L157-L195；§4.2 L251-L288；§4.3 L290-L392 | 权威总 PnL 唯一采用相邻 `A_t` 的 NAV 差。open 交易、funding、强平和强平后现货处置分别归属明确小时；8h interval 为固定 UTC 00/08/16 边界，小时 PnL 严格求和。交易小时按 pre-open/post-open 数量拆分价格 PnL，永续腿必须与 `realized_perp_pnl + ΔUPNL` 对账。常规及强平小时归因均须与 NAV 差在 `1e-8*C0` 内一致，否则 `ACCOUNTING_FAIL`，从而禁止漏计、重复计或平衡项修补。 |
++
++## 核心重构与新自由度
++
++**核心重构完整，未发现新的阻塞性自由度。**
++
++- 历史工作集仍只是 FEASIBILITY-LOCK；历史 PASS 不耗独立 Alpha 计数、不构成独立机制确认、不授权核心资本上线（§0 L11-L15）。
++- 真正确认仍只能使用 Reviewer 放行后的未来 SHADOW 数据；固定起点、样本量、一次性检验和停机规则禁止回填与 optional stopping（§9.1 L620-L628；§9.2 L630-L645）。
++- SHADOW CONFIRMED 只产生“小额真金申请资格”，不会自动下单或进入核心资本；升额和核心资本上线须另立协议和审批（§9.3 L647-L655）。
++- Holdout 即使未来由独立身份评估，也不耗独立计数、不能救回失败工作集、不能替代前向确认（§7 L598-L605）。
++- 资本计价、小时 PnL、合成路径、随机数、bracket 选择和失败处理均已冻结；未发现可由执行者结果后选择且足以改变历史 FEASIBILITY-LOCK 判决的新参数或账本分支。
++
++## 最小必改
++
++**无。** 就本轮“历史可行性复核可复现性”标尺，v3 遗留三项均已闭合。
++
++执行阶段仍必须机械落实文中已有硬门：必要输入或完整历史制度表缺失即 `N.A.⇒FAIL`；逐小时 NAV 与归因不平即 `ACCOUNTING_FAIL`；不得以实现便利修改 seed、块长、成本、事件窗、计价单位或强平顺序。这些是已冻结的执行条件，不是新的预登记修改要求。
++
++## 最终结论
++
++**APPROVED。** 允许按 v4 冻结规格开展历史 FEASIBILITY-LOCK 可行性复核。
++
++本批准不允许读取 Holdout，不消耗独立 Alpha 计数，不构成策略机制的独立确认，不授权自动下单、小额真金或核心资本上线。后续证据升级仍须满足 §9 前向 SHADOW 协议及独立治理审批。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-15
+
+codex
+提交被环境权限阻止：`.git/index.lock` 无法创建，因为本会话对 `.git` 只有读取权限。产出文件和完成事件均已写入且可验证；我会做最后一次内容与工作区核验，并明确记录唯一未完成项是 git commit。
+exec
+/bin/bash -lc "test -f 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md && test -f 04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md && test -f 04_AI_TEAM/TASK_INBOX/PROCESSED/CARRY_RR4_DONE.json && echo 'artifacts: present'; sha256sum 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md 04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md 04_AI_TEAM/TASK_INBOX/PROCESSED/CARRY_RR4_DONE.json" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+artifacts: present
+882cb8123147422b5cf981cad53b142ffba5c45f9c185a8ff23cd86627a73eac  06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+c4b8524e1bbfb37a9167199847a44caa59390c2a45c1a6851a9ac2ebf8d2b2d9  04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+a1cd345a3af75c723ce213b51a47b90a249c9424ecc2eec5025871c3cf6bf357  04_AI_TEAM/TASK_INBOX/PROCESSED/CARRY_RR4_DONE.json
+
+exec
+/bin/bash -lc "jq -e '.task_id == \"CARRY_RR4\" and .status == \"completed\" and .review_conclusion == \"APPROVED\" and .conditions_closed == \"3/3\"' 04_AI_TEAM/TASK_INBOX/PROCESSED/CARRY_RR4_DONE.json && test \""'$(rg -c '"'\\*\\*CLOSED\\*\\*' 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md)\" -eq 3 && rg -q '"'^'"\\*\\*APPROVED。\\*\\*' 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md && echo 'decision checks: pass'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+true
+decision checks: pass
+
+exec
+/bin/bash -lc 'git status --short -- 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md 04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md 04_AI_TEAM/TASK_INBOX/PROCESSED/CARRY_RR4_DONE.json; git log -1 --oneline' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+?? 04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+?? 04_AI_TEAM/TASK_INBOX/PROCESSED/CARRY_RR4_DONE.json
+?? 06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+git: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead
+2baa1b6 采集器一行修复成功(92帧,路径B地基活);carry v4起草完成派RR4
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..59b1a62d3e7b2d59be0a7e9e4d649d7fcdb245e4
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+@@ -0,0 +1,32 @@
++# CARRY-RR4 执行报告
++
++**任务：** Carry 预登记 v4 第四轮独立盲审  
++**日期：** 2026-06-15（Asia/Singapore）  
++**状态：** completed  
++**评审结论：** APPROVED  
++**条件闭合：** 3/3
++
++## 执行范围
++
++- 读取并审查 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 以 `CARRY_RISK_REVIEW_v3.md` 的三项遗留阻塞为对照。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/` 或 sealed 内容。
++- 未修改预登记，未运行回测、bootstrap 或实证计算。
++
++## 验收自检
++
++- [x] 资本 / USDT 计价账：CLOSED。
++- [x] 1H 合成强平路径：CLOSED。
++- [x] 交易小时 PnL 计账：CLOSED。
++- [x] 核心重构仍完整，未发现新阻塞性自由度。
++- [x] 正式评审写入 `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`。
++- [x] 结论仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。
++
++## 产出
++
++- `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`
++- `04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json`
++
++## 恢复点
++
++任务已完成，无中断恢复项。下一步由 Claude 按评审结论验收和调度。
+diff --git a/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..ac931c1aeb5d000e8ed7600ef87e93ce251f1a06
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "CARRY_RR4",
++  "completed_at": "2026-06-15T05:48:17Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md",
++  "next_task": null,
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "3/3",
++  "notes": "v3 遗留的资本/USDT计价账、1H合成强平路径、交易小时PnL三项均 CLOSED；仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..e77ea9752eed20782b7825be41e213cccfb91350
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+@@ -0,0 +1,48 @@
++# Delta 中性 Carry 预登记 v4 第四轮独立风险审查
++
++**任务号：** CARRY-RR4  
++**审查者：** Codex（独立 Risk Reviewer，与 v4 起草者分离）  
++**审查日期：** 2026-06-15（Asia/Singapore）  
++**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md`  
++**对照：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md`  
++**结论：** **APPROVED**  
++**v3 剩余条件闭合：** **3/3**
++
++## 审查边界
++
++- 仅审查预登记设计、公式和执行唯一性；未运行回测、收益计算、bootstrap、事件研究或参数搜索。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/`、sealed 内容或 carry 实证结果。
++- 未修改 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 裁决标尺仅为“能否放行历史 FEASIBILITY-LOCK 可行性复核”，不把历史段升级为独立确认。
++
++## 逐条裁决
++
++| # | 审查项 | 裁决 | 证据（v4 §/行） | 裁决理由 |
++|---:|---|---|---|---|
++| 1 | 资本 / USDT 计价账 | **CLOSED** | §2.1 L34-L50；§2.2 L52-L111；§4.2 L251-L288；§4.4 L394-L396；§6.4 L570-L588 | 全程唯一以 USDT 记账；`C0=100,000 USDT`，且 `C0=S0+M0+B0+E0`。80,000 配对资本与两个 10,000 现金桶只计一次，`N_i` 明确不是额外资本。现货本金流、futures wallet、内部转账、费用和滑点的落账桶已冻结。小时、8h、MDD、log growth 和年化指标均以同一个固定 `C0` 为分母。USDT/USD 只生成脱锚事件及非判决购买力附表，不进入或重复叠加权威 USDT PnL。 |
++| 2 | 1H 合成强平路径 | **CLOSED** | §2.4 L125-L198；§5.3 L426-L526 | 账户级 cross-margin 状态机逐 1H 处理 funding、维持保证金、延迟补款、open 后检查、同步 mark-high 最坏点、close 检查和首次强平。`buffer_breach` 与 `liquidation` 两级定义及报告口径分离。2000 条路径、`PCG64(seed=20260614)`、抽样顺序、固定价格基准、gap/body/OHLC 递推和块边界接续均冻结。完整历史 bracket rows 随源小时移动，并按每个合成检查点的合成名义重选 `mmr/cum/clearance_fee_rate`；无法重建即 `N.A.⇒FAIL`。 |
++| 3 | 交易小时 PnL 计账 | **CLOSED** | §2.4 L157-L195；§4.2 L251-L288；§4.3 L290-L392 | 权威总 PnL 唯一采用相邻 `A_t` 的 NAV 差。open 交易、funding、强平和强平后现货处置分别归属明确小时；8h interval 为固定 UTC 00/08/16 边界，小时 PnL 严格求和。交易小时按 pre-open/post-open 数量拆分价格 PnL，永续腿必须与 `realized_perp_pnl + ΔUPNL` 对账。常规及强平小时归因均须与 NAV 差在 `1e-8*C0` 内一致，否则 `ACCOUNTING_FAIL`，从而禁止漏计、重复计或平衡项修补。 |
++
++## 核心重构与新自由度
++
++**核心重构完整，未发现新的阻塞性自由度。**
++
++- 历史工作集仍只是 FEASIBILITY-LOCK；历史 PASS 不耗独立 Alpha 计数、不构成独立机制确认、不授权核心资本上线（§0 L11-L15）。
++- 真正确认仍只能使用 Reviewer 放行后的未来 SHADOW 数据；固定起点、样本量、一次性检验和停机规则禁止回填与 optional stopping（§9.1 L620-L628；§9.2 L630-L645）。
++- SHADOW CONFIRMED 只产生“小额真金申请资格”，不会自动下单或进入核心资本；升额和核心资本上线须另立协议和审批（§9.3 L647-L655）。
++- Holdout 即使未来由独立身份评估，也不耗独立计数、不能救回失败工作集、不能替代前向确认（§7 L598-L605）。
++- 资本计价、小时 PnL、合成路径、随机数、bracket 选择和失败处理均已冻结；未发现可由执行者结果后选择且足以改变历史 FEASIBILITY-LOCK 判决的新参数或账本分支。
++
++## 最小必改
++
++**无。** 就本轮“历史可行性复核可复现性”标尺，v3 遗留三项均已闭合。
++
++执行阶段仍必须机械落实文中已有硬门：必要输入或完整历史制度表缺失即 `N.A.⇒FAIL`；逐小时 NAV 与归因不平即 `ACCOUNTING_FAIL`；不得以实现便利修改 seed、块长、成本、事件窗、计价单位或强平顺序。这些是已冻结的执行条件，不是新的预登记修改要求。
++
++## 最终结论
++
++**APPROVED。** 允许按 v4 冻结规格开展历史 FEASIBILITY-LOCK 可行性复核。
++
++本批准不允许读取 Holdout，不消耗独立 Alpha 计数，不构成策略机制的独立确认，不授权自动下单、小额真金或核心资本上线。后续证据升级仍须满足 §9 前向 SHADOW 协议及独立治理审批。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-15
+
+评审、执行报告、完成事件与内容验证均已完成；git 提交因沙箱对 .git 只读、无法创建 index.lock 而未能执行。
+  ✓ 核对 v4 三项剩余条件及核心重构，记录精确行号证据
+  ✓ 形成独立盲审报告并写入 CARRY_RISK_REVIEW_v4.md
+  → 验证报告、写 TASK_INBOX 完成事件并按任务号提交
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..59b1a62d3e7b2d59be0a7e9e4d649d7fcdb245e4
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+@@ -0,0 +1,32 @@
++# CARRY-RR4 执行报告
++
++**任务：** Carry 预登记 v4 第四轮独立盲审  
++**日期：** 2026-06-15（Asia/Singapore）  
++**状态：** completed  
++**评审结论：** APPROVED  
++**条件闭合：** 3/3
++
++## 执行范围
++
++- 读取并审查 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 以 `CARRY_RISK_REVIEW_v3.md` 的三项遗留阻塞为对照。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/` 或 sealed 内容。
++- 未修改预登记，未运行回测、bootstrap 或实证计算。
++
++## 验收自检
++
++- [x] 资本 / USDT 计价账：CLOSED。
++- [x] 1H 合成强平路径：CLOSED。
++- [x] 交易小时 PnL 计账：CLOSED。
++- [x] 核心重构仍完整，未发现新阻塞性自由度。
++- [x] 正式评审写入 `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`。
++- [x] 结论仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。
++
++## 产出
++
++- `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`
++- `04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json`
++
++## 恢复点
++
++任务已完成，无中断恢复项。下一步由 Claude 按评审结论验收和调度。
+diff --git a/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..ac931c1aeb5d000e8ed7600ef87e93ce251f1a06
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "CARRY_RR4",
++  "completed_at": "2026-06-15T05:48:17Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md",
++  "next_task": null,
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "3/3",
++  "notes": "v3 遗留的资本/USDT计价账、1H合成强平路径、交易小时PnL三项均 CLOSED；仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..e77ea9752eed20782b7825be41e213cccfb91350
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+@@ -0,0 +1,48 @@
++# Delta 中性 Carry 预登记 v4 第四轮独立风险审查
++
++**任务号：** CARRY-RR4  
++**审查者：** Codex（独立 Risk Reviewer，与 v4 起草者分离）  
++**审查日期：** 2026-06-15（Asia/Singapore）  
++**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md`  
++**对照：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md`  
++**结论：** **APPROVED**  
++**v3 剩余条件闭合：** **3/3**
++
++## 审查边界
++
++- 仅审查预登记设计、公式和执行唯一性；未运行回测、收益计算、bootstrap、事件研究或参数搜索。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/`、sealed 内容或 carry 实证结果。
++- 未修改 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 裁决标尺仅为“能否放行历史 FEASIBILITY-LOCK 可行性复核”，不把历史段升级为独立确认。
++
++## 逐条裁决
++
++| # | 审查项 | 裁决 | 证据（v4 §/行） | 裁决理由 |
++|---:|---|---|---|---|
++| 1 | 资本 / USDT 计价账 | **CLOSED** | §2.1 L34-L50；§2.2 L52-L111；§4.2 L251-L288；§4.4 L394-L396；§6.4 L570-L588 | 全程唯一以 USDT 记账；`C0=100,000 USDT`，且 `C0=S0+M0+B0+E0`。80,000 配对资本与两个 10,000 现金桶只计一次，`N_i` 明确不是额外资本。现货本金流、futures wallet、内部转账、费用和滑点的落账桶已冻结。小时、8h、MDD、log growth 和年化指标均以同一个固定 `C0` 为分母。USDT/USD 只生成脱锚事件及非判决购买力附表，不进入或重复叠加权威 USDT PnL。 |
++| 2 | 1H 合成强平路径 | **CLOSED** | §2.4 L125-L198；§5.3 L426-L526 | 账户级 cross-margin 状态机逐 1H 处理 funding、维持保证金、延迟补款、open 后检查、同步 mark-high 最坏点、close 检查和首次强平。`buffer_breach` 与 `liquidation` 两级定义及报告口径分离。2000 条路径、`PCG64(seed=20260614)`、抽样顺序、固定价格基准、gap/body/OHLC 递推和块边界接续均冻结。完整历史 bracket rows 随源小时移动，并按每个合成检查点的合成名义重选 `mmr/cum/clearance_fee_rate`；无法重建即 `N.A.⇒FAIL`。 |
++| 3 | 交易小时 PnL 计账 | **CLOSED** | §2.4 L157-L195；§4.2 L251-L288；§4.3 L290-L392 | 权威总 PnL 唯一采用相邻 `A_t` 的 NAV 差。open 交易、funding、强平和强平后现货处置分别归属明确小时；8h interval 为固定 UTC 00/08/16 边界，小时 PnL 严格求和。交易小时按 pre-open/post-open 数量拆分价格 PnL，永续腿必须与 `realized_perp_pnl + ΔUPNL` 对账。常规及强平小时归因均须与 NAV 差在 `1e-8*C0` 内一致，否则 `ACCOUNTING_FAIL`，从而禁止漏计、重复计或平衡项修补。 |
++
++## 核心重构与新自由度
++
++**核心重构完整，未发现新的阻塞性自由度。**
++
++- 历史工作集仍只是 FEASIBILITY-LOCK；历史 PASS 不耗独立 Alpha 计数、不构成独立机制确认、不授权核心资本上线（§0 L11-L15）。
++- 真正确认仍只能使用 Reviewer 放行后的未来 SHADOW 数据；固定起点、样本量、一次性检验和停机规则禁止回填与 optional stopping（§9.1 L620-L628；§9.2 L630-L645）。
++- SHADOW CONFIRMED 只产生“小额真金申请资格”，不会自动下单或进入核心资本；升额和核心资本上线须另立协议和审批（§9.3 L647-L655）。
++- Holdout 即使未来由独立身份评估，也不耗独立计数、不能救回失败工作集、不能替代前向确认（§7 L598-L605）。
++- 资本计价、小时 PnL、合成路径、随机数、bracket 选择和失败处理均已冻结；未发现可由执行者结果后选择且足以改变历史 FEASIBILITY-LOCK 判决的新参数或账本分支。
++
++## 最小必改
++
++**无。** 就本轮“历史可行性复核可复现性”标尺，v3 遗留三项均已闭合。
++
++执行阶段仍必须机械落实文中已有硬门：必要输入或完整历史制度表缺失即 `N.A.⇒FAIL`；逐小时 NAV 与归因不平即 `ACCOUNTING_FAIL`；不得以实现便利修改 seed、块长、成本、事件窗、计价单位或强平顺序。这些是已冻结的执行条件，不是新的预登记修改要求。
++
++## 最终结论
++
++**APPROVED。** 允许按 v4 冻结规格开展历史 FEASIBILITY-LOCK 可行性复核。
++
++本批准不允许读取 Holdout，不消耗独立 Alpha 计数，不构成策略机制的独立确认，不授权自动下单、小额真金或核心资本上线。后续证据升级仍须满足 §9 前向 SHADOW 协议及独立治理审批。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-15
+
+codex
+结论：**APPROVED，3/3 CLOSED**。无最小必改，可放行历史 FEASIBILITY-LOCK；不耗独立计数、不授权上线。
+
+产出：
+- [正式评审](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md)
+- [执行报告](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md)
+- 完成事件已被调度器移入 `TASK_INBOX/PROCESSED/`。
+
+内容与 JSON 校验通过。Git commit 未完成：沙箱对 `.git` 只读，无法创建 `index.lock`。
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..59b1a62d3e7b2d59be0a7e9e4d649d7fcdb245e4
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md
+@@ -0,0 +1,32 @@
++# CARRY-RR4 执行报告
++
++**任务：** Carry 预登记 v4 第四轮独立盲审  
++**日期：** 2026-06-15（Asia/Singapore）  
++**状态：** completed  
++**评审结论：** APPROVED  
++**条件闭合：** 3/3
++
++## 执行范围
++
++- 读取并审查 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 以 `CARRY_RISK_REVIEW_v3.md` 的三项遗留阻塞为对照。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/` 或 sealed 内容。
++- 未修改预登记，未运行回测、bootstrap 或实证计算。
++
++## 验收自检
++
++- [x] 资本 / USDT 计价账：CLOSED。
++- [x] 1H 合成强平路径：CLOSED。
++- [x] 交易小时 PnL 计账：CLOSED。
++- [x] 核心重构仍完整，未发现新阻塞性自由度。
++- [x] 正式评审写入 `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`。
++- [x] 结论仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。
++
++## 产出
++
++- `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md`
++- `04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json`
++
++## 恢复点
++
++任务已完成，无中断恢复项。下一步由 Claude 按评审结论验收和调度。
+diff --git a/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..ac931c1aeb5d000e8ed7600ef87e93ce251f1a06
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/CARRY_RR4_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "CARRY_RR4",
++  "completed_at": "2026-06-15T05:48:17Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md",
++  "next_task": null,
++  "review_conclusion": "APPROVED",
++  "conditions_closed": "3/3",
++  "notes": "v3 遗留的资本/USDT计价账、1H合成强平路径、交易小时PnL三项均 CLOSED；仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。"
++}
+diff --git a/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..e77ea9752eed20782b7825be41e213cccfb91350
+--- /dev/null
++++ b/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md
+@@ -0,0 +1,48 @@
++# Delta 中性 Carry 预登记 v4 第四轮独立风险审查
++
++**任务号：** CARRY-RR4  
++**审查者：** Codex（独立 Risk Reviewer，与 v4 起草者分离）  
++**审查日期：** 2026-06-15（Asia/Singapore）  
++**审查对象：** `06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md`  
++**对照：** `06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v3.md`  
++**结论：** **APPROVED**  
++**v3 剩余条件闭合：** **3/3**
++
++## 审查边界
++
++- 仅审查预登记设计、公式和执行唯一性；未运行回测、收益计算、bootstrap、事件研究或参数搜索。
++- 未读取 HOLDOUT、`01_MEMORY_CORE/`、sealed 内容或 carry 实证结果。
++- 未修改 `CARRY_DELTA_NEUTRAL_PREREG_v4.md`。
++- 裁决标尺仅为“能否放行历史 FEASIBILITY-LOCK 可行性复核”，不把历史段升级为独立确认。
++
++## 逐条裁决
++
++| # | 审查项 | 裁决 | 证据（v4 §/行） | 裁决理由 |
++|---:|---|---|---|---|
++| 1 | 资本 / USDT 计价账 | **CLOSED** | §2.1 L34-L50；§2.2 L52-L111；§4.2 L251-L288；§4.4 L394-L396；§6.4 L570-L588 | 全程唯一以 USDT 记账；`C0=100,000 USDT`，且 `C0=S0+M0+B0+E0`。80,000 配对资本与两个 10,000 现金桶只计一次，`N_i` 明确不是额外资本。现货本金流、futures wallet、内部转账、费用和滑点的落账桶已冻结。小时、8h、MDD、log growth 和年化指标均以同一个固定 `C0` 为分母。USDT/USD 只生成脱锚事件及非判决购买力附表，不进入或重复叠加权威 USDT PnL。 |
++| 2 | 1H 合成强平路径 | **CLOSED** | §2.4 L125-L198；§5.3 L426-L526 | 账户级 cross-margin 状态机逐 1H 处理 funding、维持保证金、延迟补款、open 后检查、同步 mark-high 最坏点、close 检查和首次强平。`buffer_breach` 与 `liquidation` 两级定义及报告口径分离。2000 条路径、`PCG64(seed=20260614)`、抽样顺序、固定价格基准、gap/body/OHLC 递推和块边界接续均冻结。完整历史 bracket rows 随源小时移动，并按每个合成检查点的合成名义重选 `mmr/cum/clearance_fee_rate`；无法重建即 `N.A.⇒FAIL`。 |
++| 3 | 交易小时 PnL 计账 | **CLOSED** | §2.4 L157-L195；§4.2 L251-L288；§4.3 L290-L392 | 权威总 PnL 唯一采用相邻 `A_t` 的 NAV 差。open 交易、funding、强平和强平后现货处置分别归属明确小时；8h interval 为固定 UTC 00/08/16 边界，小时 PnL 严格求和。交易小时按 pre-open/post-open 数量拆分价格 PnL，永续腿必须与 `realized_perp_pnl + ΔUPNL` 对账。常规及强平小时归因均须与 NAV 差在 `1e-8*C0` 内一致，否则 `ACCOUNTING_FAIL`，从而禁止漏计、重复计或平衡项修补。 |
++
++## 核心重构与新自由度
++
++**核心重构完整，未发现新的阻塞性自由度。**
++
++- 历史工作集仍只是 FEASIBILITY-LOCK；历史 PASS 不耗独立 Alpha 计数、不构成独立机制确认、不授权核心资本上线（§0 L11-L15）。
++- 真正确认仍只能使用 Reviewer 放行后的未来 SHADOW 数据；固定起点、样本量、一次性检验和停机规则禁止回填与 optional stopping（§9.1 L620-L628；§9.2 L630-L645）。
++- SHADOW CONFIRMED 只产生“小额真金申请资格”，不会自动下单或进入核心资本；升额和核心资本上线须另立协议和审批（§9.3 L647-L655）。
++- Holdout 即使未来由独立身份评估，也不耗独立计数、不能救回失败工作集、不能替代前向确认（§7 L598-L605）。
++- 资本计价、小时 PnL、合成路径、随机数、bracket 选择和失败处理均已冻结；未发现可由执行者结果后选择且足以改变历史 FEASIBILITY-LOCK 判决的新参数或账本分支。
++
++## 最小必改
++
++**无。** 就本轮“历史可行性复核可复现性”标尺，v3 遗留三项均已闭合。
++
++执行阶段仍必须机械落实文中已有硬门：必要输入或完整历史制度表缺失即 `N.A.⇒FAIL`；逐小时 NAV 与归因不平即 `ACCOUNTING_FAIL`；不得以实现便利修改 seed、块长、成本、事件窗、计价单位或强平顺序。这些是已冻结的执行条件，不是新的预登记修改要求。
++
++## 最终结论
++
++**APPROVED。** 允许按 v4 冻结规格开展历史 FEASIBILITY-LOCK 可行性复核。
++
++本批准不允许读取 Holdout，不消耗独立 Alpha 计数，不构成策略机制的独立确认，不授权自动下单、小额真金或核心资本上线。后续证据升级仍须满足 §9 前向 SHADOW 协议及独立治理审批。
++
++**审查员签字：** Codex / Independent Risk Reviewer / 2026-06-15
+
+tokens used
+64,861
+结论：**APPROVED，3/3 CLOSED**。无最小必改，可放行历史 FEASIBILITY-LOCK；不耗独立计数、不授权上线。
+
+产出：
+- [正式评审](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/06_RESEARCH/PREREGISTRATIONS/CARRY_RISK_REVIEW_v4.md)
+- [执行报告](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md)
+- 完成事件已被调度器移入 `TASK_INBOX/PROCESSED/`。
+
+内容与 JSON 校验通过。Git commit 未完成：沙箱对 `.git` 只读，无法创建 `index.lock`。

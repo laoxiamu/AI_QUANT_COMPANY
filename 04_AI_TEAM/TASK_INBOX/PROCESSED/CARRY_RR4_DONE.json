@@ -1,0 +1,10 @@
+{
+  "task_id": "CARRY_RR4",
+  "completed_at": "2026-06-15T05:48:17Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_RR4.md",
+  "next_task": null,
+  "review_conclusion": "APPROVED",
+  "conditions_closed": "3/3",
+  "notes": "v3 遗留的资本/USDT计价账、1H合成强平路径、交易小时PnL三项均 CLOSED；仅放行历史 FEASIBILITY-LOCK，不耗独立计数、不授权上线。"
+}
