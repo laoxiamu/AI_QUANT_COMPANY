@@ -2086,3 +2086,2204 @@ systemctl is-active aiquant-liq-collector.service
 for svc in danted.service v4-proxy.service; do printf '%s=' \""'$svc"; systemctl is-active "$svc" || true; done
 [ "$after" -gt "$before" ]
 REMOTE' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+codex
+持续性复验正在计时，采集器保持运行；当前不做任何其他远端操作。完成后我会用起止行数差作为 `frames_after` 的最终依据。
+codex
+复验窗口已过半。前一轮已确认文件增长和 side 字段，这一轮只验证数据流不是启动瞬时现象。
+ succeeded in 125045ms:
+=== sustained growth ===
+before_utc=2026-06-15T00:42:58Z before_rows=62
+after_utc=2026-06-15T00:44:58Z after_rows=92
+delta=30
+=== recent post-fix messages ===
+[connected] 2026-06-13T09:43:04.787737+00:00 wss://fstream.binance.com/ws/!forceOrder@arr
+[connected] 2026-06-15T00:38:32.263426+00:00 wss://fstream.binance.com/market/ws/!forceOrder@arr
+[message] 2026-06-15T00:38:32.830360+00:00 count= 1
+[message] 2026-06-15T00:38:39.442301+00:00 count= 2
+[message] 2026-06-15T00:39:05.586781+00:00 count= 3
+=== service and protected services ===
+active
+danted.service=active
+v4-proxy.service=inactive
+
+exec
+/bin/bash -lc "date -u +'%Y-%m-%dT%H:%M:%SZ' && git diff -- 06_RESEARCH/CODE/liquidation_collector.py && git status --short --untracked-files=all" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+2026-06-15T00:45:18Z
+ M 04_AI_TEAM/CODEX_TASKS/CARRY_V4_DRAFT_RUN.log
+ M 04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL_RUN.log
+ M 06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md
+
+codex
+持续复验通过：`00:42:58Z` 的 62 行在 `00:44:58Z` 增至 92 行，2 分钟新增 30 帧，服务仍 active。现在只写三项本地交付：同步规范脚本同一 URL 行、审计报告、完成事件；现有其他改动和 run log 均不触碰、不暂存。
+apply patch
+patch: completed
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/06_RESEARCH/CODE/liquidation_collector.py
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..edd06d6d966fd2622dca6a7cb8d6d8813bf3628f
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+@@ -0,0 +1,140 @@
++# REPORT_FIX_COLLECTOR_URL
++
++## 结论
++
++- 任务状态：`completed`
++- 修复结果：`fixed=yes`
++- 根因：Binance futures WS 路由迁移；旧 `/ws/` 路由握手后不再推送 `forceOrder`
++- 新 URL：`wss://fstream.binance.com/market/ws/!forceOrder@arr`
++- 回滚：未触发
++- REST 备选：未启用
++
++## 1. 修复前证据
++
++远端文件：
++
++`/opt/ai_quant_liq_collector/liquidation_collector.py`
++
++修复前 SHA-256：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++修复前 URL：
++
++```python
++WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++```
++
++`logs/collector.log` 从 2026-06-13T10:43:04Z 至
++2026-06-14T23:43:04Z 的小时 heartbeat 均为：
++
++```text
++today_rows= 0 process_messages= 0 last_message_utc= None
++```
++
++修复前没有 `data/LIQUIDATIONS/liq_*.jsonl`。
++
++## 2. 变更与备份
++
++备份已创建：
++
++```text
++/opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615
++```
++
++备份 SHA-256 与修复前文件一致：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++`diff -u` 确认远端仅改一行：
++
++```diff
++-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
++```
++
++修复后 SHA-256：
++
++```text
++1bd580965527d6884f0fe4e151d48e7f69cf7153d8e1207282ec145fdbf80a36
++```
++
++本地规范脚本 `06_RESEARCH/CODE/liquidation_collector.py` 同步了相同的一行，
++其余逻辑未改。
++
++## 3. 重启与实时验收
++
++执行：
++
++```text
++systemctl restart aiquant-liq-collector.service
++```
++
++重启后：
++
++```text
++ActiveEnterTimestamp=Mon 2026-06-15 08:38:31 CST
++MainPID=4039584
++active
++```
++
++日志在首秒内收到消息：
++
++```text
++[connected] 2026-06-15T00:38:32.263426+00:00 wss://fstream.binance.com/market/ws/!forceOrder@arr
++[message] 2026-06-15T00:38:32.830360+00:00 count= 1
++[message] 2026-06-15T00:38:39.442301+00:00 count= 2
++[message] 2026-06-15T00:39:05.586781+00:00 count= 3
++```
++
++`[message] count=1` 直接证明进程内消息计数大于 0。现有程序只在每小时
++heartbeat 输出 `process_messages=` 字面量，因此在不得修改其余逻辑的约束下，
++2-3 分钟验收使用同一 `_message_count` 的 `[message] count>0` 证据。
++
++首次检查时文件从 10 行增至 11 行；持续性复验：
++
++```text
++2026-06-15T00:42:58Z rows=62
++2026-06-15T00:44:58Z rows=92
++delta=30
++```
++
++验收时 `frames_after=92`。
++
++数据文件：
++
++```text
++/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260615.jsonl
++```
++
++样本首行：
++
++```json
++{"e":"forceOrder","E":1781483912792,"o":{"s":"ETHUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.023","p":"1713.87","ap":"1720.61","X":"FILLED","l":"0.023","z":"0.023","T":1781483911784},"recv_ts":1781483912830}
++```
++
++解析确认：
++
++```text
++event=forceOrder
++symbol=ETHUSDT
++o.S=SELL
++```
++
++## 4. 安全与验收自检
++
++- [x] 创建指定 `.bak.20260615` 备份。
++- [x] 远端仅替换 `WS_URL` 一行。
++- [x] 仅重启 `aiquant-liq-collector.service`。
++- [x] 2-3 分钟内出现 `[message]` 且进程消息计数大于 0。
++- [x] UTC 当日 JSONL 创建并持续增长。
++- [x] 样本包含 `o.S` side 字段。
++- [x] `danted.service` 始终为 `active`，未操作。
++- [x] `v4-proxy.service` 检查前后均为 `inactive`，未操作。
++- [x] 未读取 Holdout，未改预登记，未引入依赖。
++- [x] 报告和提交不含密码、API key 或代理凭据。
++- [x] run log 不纳入本任务提交。
+diff --git a/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d9469f5bd002e4f99d49ae351340970fd65621a
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "FIX_COLLECTOR_URL",
++  "completed_at": "2026-06-15T00:45:18Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md",
++  "next_task": null,
++  "fixed": "yes",
++  "frames_after": 92,
++  "notes": "Backed up the collector, changed only WS_URL to the Binance /market route, restarted aiquant-liq-collector, and verified immediate messages plus JSONL growth from 62 to 92 rows in 120 seconds. First sample contains o.S=SELL. No rollback required."
++}
+diff --git a/06_RESEARCH/CODE/liquidation_collector.py b/06_RESEARCH/CODE/liquidation_collector.py
+index 6e74abc32340964c9386b6d2781906bd193e1edf..d1e56b01cae90fcc7e05ff8a8c9fc116a5f163d3
+--- a/06_RESEARCH/CODE/liquidation_collector.py
++++ b/06_RESEARCH/CODE/liquidation_collector.py
+@@ -12,7 +12,7 @@
+ 
+ import websocket  # websocket-client
+ 
+-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "DATA", "LIQUIDATIONS")
+ os.makedirs(OUT_DIR, exist_ok=True)
+ 
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..edd06d6d966fd2622dca6a7cb8d6d8813bf3628f
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+@@ -0,0 +1,140 @@
++# REPORT_FIX_COLLECTOR_URL
++
++## 结论
++
++- 任务状态：`completed`
++- 修复结果：`fixed=yes`
++- 根因：Binance futures WS 路由迁移；旧 `/ws/` 路由握手后不再推送 `forceOrder`
++- 新 URL：`wss://fstream.binance.com/market/ws/!forceOrder@arr`
++- 回滚：未触发
++- REST 备选：未启用
++
++## 1. 修复前证据
++
++远端文件：
++
++`/opt/ai_quant_liq_collector/liquidation_collector.py`
++
++修复前 SHA-256：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++修复前 URL：
++
++```python
++WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++```
++
++`logs/collector.log` 从 2026-06-13T10:43:04Z 至
++2026-06-14T23:43:04Z 的小时 heartbeat 均为：
++
++```text
++today_rows= 0 process_messages= 0 last_message_utc= None
++```
++
++修复前没有 `data/LIQUIDATIONS/liq_*.jsonl`。
++
++## 2. 变更与备份
++
++备份已创建：
++
++```text
++/opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615
++```
++
++备份 SHA-256 与修复前文件一致：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++`diff -u` 确认远端仅改一行：
++
++```diff
++-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
++```
++
++修复后 SHA-256：
++
++```text
++1bd580965527d6884f0fe4e151d48e7f69cf7153d8e1207282ec145fdbf80a36
++```
++
++本地规范脚本 `06_RESEARCH/CODE/liquidation_collector.py` 同步了相同的一行，
++其余逻辑未改。
++
++## 3. 重启与实时验收
++
++执行：
++
++```text
++systemctl restart aiquant-liq-collector.service
++```
++
++重启后：
++
++```text
++ActiveEnterTimestamp=Mon 2026-06-15 08:38:31 CST
++MainPID=4039584
++active
++```
++
++日志在首秒内收到消息：
++
++```text
++[connected] 2026-06-15T00:38:32.263426+00:00 wss://fstream.binance.com/market/ws/!forceOrder@arr
++[message] 2026-06-15T00:38:32.830360+00:00 count= 1
++[message] 2026-06-15T00:38:39.442301+00:00 count= 2
++[message] 2026-06-15T00:39:05.586781+00:00 count= 3
++```
++
++`[message] count=1` 直接证明进程内消息计数大于 0。现有程序只在每小时
++heartbeat 输出 `process_messages=` 字面量，因此在不得修改其余逻辑的约束下，
++2-3 分钟验收使用同一 `_message_count` 的 `[message] count>0` 证据。
++
++首次检查时文件从 10 行增至 11 行；持续性复验：
++
++```text
++2026-06-15T00:42:58Z rows=62
++2026-06-15T00:44:58Z rows=92
++delta=30
++```
++
++验收时 `frames_after=92`。
++
++数据文件：
++
++```text
++/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260615.jsonl
++```
++
++样本首行：
++
++```json
++{"e":"forceOrder","E":1781483912792,"o":{"s":"ETHUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.023","p":"1713.87","ap":"1720.61","X":"FILLED","l":"0.023","z":"0.023","T":1781483911784},"recv_ts":1781483912830}
++```
++
++解析确认：
++
++```text
++event=forceOrder
++symbol=ETHUSDT
++o.S=SELL
++```
++
++## 4. 安全与验收自检
++
++- [x] 创建指定 `.bak.20260615` 备份。
++- [x] 远端仅替换 `WS_URL` 一行。
++- [x] 仅重启 `aiquant-liq-collector.service`。
++- [x] 2-3 分钟内出现 `[message]` 且进程消息计数大于 0。
++- [x] UTC 当日 JSONL 创建并持续增长。
++- [x] 样本包含 `o.S` side 字段。
++- [x] `danted.service` 始终为 `active`，未操作。
++- [x] `v4-proxy.service` 检查前后均为 `inactive`，未操作。
++- [x] 未读取 Holdout，未改预登记，未引入依赖。
++- [x] 报告和提交不含密码、API key 或代理凭据。
++- [x] run log 不纳入本任务提交。
+diff --git a/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d9469f5bd002e4f99d49ae351340970fd65621a
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "FIX_COLLECTOR_URL",
++  "completed_at": "2026-06-15T00:45:18Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md",
++  "next_task": null,
++  "fixed": "yes",
++  "frames_after": 92,
++  "notes": "Backed up the collector, changed only WS_URL to the Binance /market route, restarted aiquant-liq-collector, and verified immediate messages plus JSONL growth from 62 to 92 rows in 120 seconds. First sample contains o.S=SELL. No rollback required."
++}
+diff --git a/06_RESEARCH/CODE/liquidation_collector.py b/06_RESEARCH/CODE/liquidation_collector.py
+index 6e74abc32340964c9386b6d2781906bd193e1edf..d1e56b01cae90fcc7e05ff8a8c9fc116a5f163d3
+--- a/06_RESEARCH/CODE/liquidation_collector.py
++++ b/06_RESEARCH/CODE/liquidation_collector.py
+@@ -12,7 +12,7 @@
+ 
+ import websocket  # websocket-client
+ 
+-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "DATA", "LIQUIDATIONS")
+ os.makedirs(OUT_DIR, exist_ok=True)
+ 
+
+exec
+/bin/bash -lc "python3 - <<'PY'
+import json
+from pathlib import Path
+root = Path('.')
+code = root / '06_RESEARCH/CODE/liquidation_collector.py'
+compile(code.read_text(encoding='utf-8'), str(code), 'exec')
+done = json.loads((root / '04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json').read_text(encoding='utf-8'))
+assert done['task_id'] == 'FIX_COLLECTOR_URL'
+assert done['fixed'] == 'yes'
+assert done['frames_after'] == 92
+text = code.read_text(encoding='utf-8')
+assert text.count('wss://fstream.binance.com/market/ws/"'!forceOrder@arr'"') == 1
+assert 'wss://fstream.binance.com/ws/"'!forceOrder@arr'"' not in text
+print('local artifact checks: PASS')
+PY
+
+git diff --check -- 06_RESEARCH/CODE/liquidation_collector.py 04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md 04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+Traceback (most recent call last):
+  File "<stdin>", line 6, in <module>
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 546, in read_text
+    return PathBase.read_text(self, encoding, errors, newline)
+           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_abc.py", line 632, in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:
+         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.13/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json'
+
+exec
+/bin/bash -lc 'rg -n "sshpass|sg_pass|BEGIN .*PRIVATE KEY|AKIA[0-9A-Z]{16}|password[[:space:]]*[:=]" 04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md 04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json 06_RESEARCH/CODE/liquidation_collector.py || true' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+rg: 04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json: No such file or directory (os error 2)
+
+exec
+/bin/bash -lc 'git diff -- 06_RESEARCH/CODE/liquidation_collector.py 04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md 04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json && git status --short --untracked-files=all' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+diff --git a/06_RESEARCH/CODE/liquidation_collector.py b/06_RESEARCH/CODE/liquidation_collector.py
+index 6e74abc..d1e56b0 100644
+--- a/06_RESEARCH/CODE/liquidation_collector.py
++++ b/06_RESEARCH/CODE/liquidation_collector.py
+@@ -12,7 +12,7 @@ import json, time, os, datetime, threading
+ 
+ import websocket  # websocket-client
+ 
+-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "DATA", "LIQUIDATIONS")
+ os.makedirs(OUT_DIR, exist_ok=True)
+ 
+ M 04_AI_TEAM/CODEX_TASKS/CARRY_V4_DRAFT_RUN.log
+ M 04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL_RUN.log
+ M 06_RESEARCH/CODE/liquidation_collector.py
+ M 06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md
+?? 04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_V4_DRAFT.md
+?? 04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+?? 04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..edd06d6d966fd2622dca6a7cb8d6d8813bf3628f
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+@@ -0,0 +1,140 @@
++# REPORT_FIX_COLLECTOR_URL
++
++## 结论
++
++- 任务状态：`completed`
++- 修复结果：`fixed=yes`
++- 根因：Binance futures WS 路由迁移；旧 `/ws/` 路由握手后不再推送 `forceOrder`
++- 新 URL：`wss://fstream.binance.com/market/ws/!forceOrder@arr`
++- 回滚：未触发
++- REST 备选：未启用
++
++## 1. 修复前证据
++
++远端文件：
++
++`/opt/ai_quant_liq_collector/liquidation_collector.py`
++
++修复前 SHA-256：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++修复前 URL：
++
++```python
++WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++```
++
++`logs/collector.log` 从 2026-06-13T10:43:04Z 至
++2026-06-14T23:43:04Z 的小时 heartbeat 均为：
++
++```text
++today_rows= 0 process_messages= 0 last_message_utc= None
++```
++
++修复前没有 `data/LIQUIDATIONS/liq_*.jsonl`。
++
++## 2. 变更与备份
++
++备份已创建：
++
++```text
++/opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615
++```
++
++备份 SHA-256 与修复前文件一致：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++`diff -u` 确认远端仅改一行：
++
++```diff
++-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
++```
++
++修复后 SHA-256：
++
++```text
++1bd580965527d6884f0fe4e151d48e7f69cf7153d8e1207282ec145fdbf80a36
++```
++
++本地规范脚本 `06_RESEARCH/CODE/liquidation_collector.py` 同步了相同的一行，
++其余逻辑未改。
++
++## 3. 重启与实时验收
++
++执行：
++
++```text
++systemctl restart aiquant-liq-collector.service
++```
++
++重启后：
++
++```text
++ActiveEnterTimestamp=Mon 2026-06-15 08:38:31 CST
++MainPID=4039584
++active
++```
++
++日志在首秒内收到消息：
++
++```text
++[connected] 2026-06-15T00:38:32.263426+00:00 wss://fstream.binance.com/market/ws/!forceOrder@arr
++[message] 2026-06-15T00:38:32.830360+00:00 count= 1
++[message] 2026-06-15T00:38:39.442301+00:00 count= 2
++[message] 2026-06-15T00:39:05.586781+00:00 count= 3
++```
++
++`[message] count=1` 直接证明进程内消息计数大于 0。现有程序只在每小时
++heartbeat 输出 `process_messages=` 字面量，因此在不得修改其余逻辑的约束下，
++2-3 分钟验收使用同一 `_message_count` 的 `[message] count>0` 证据。
++
++首次检查时文件从 10 行增至 11 行；持续性复验：
++
++```text
++2026-06-15T00:42:58Z rows=62
++2026-06-15T00:44:58Z rows=92
++delta=30
++```
++
++验收时 `frames_after=92`。
++
++数据文件：
++
++```text
++/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260615.jsonl
++```
++
++样本首行：
++
++```json
++{"e":"forceOrder","E":1781483912792,"o":{"s":"ETHUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.023","p":"1713.87","ap":"1720.61","X":"FILLED","l":"0.023","z":"0.023","T":1781483911784},"recv_ts":1781483912830}
++```
++
++解析确认：
++
++```text
++event=forceOrder
++symbol=ETHUSDT
++o.S=SELL
++```
++
++## 4. 安全与验收自检
++
++- [x] 创建指定 `.bak.20260615` 备份。
++- [x] 远端仅替换 `WS_URL` 一行。
++- [x] 仅重启 `aiquant-liq-collector.service`。
++- [x] 2-3 分钟内出现 `[message]` 且进程消息计数大于 0。
++- [x] UTC 当日 JSONL 创建并持续增长。
++- [x] 样本包含 `o.S` side 字段。
++- [x] `danted.service` 始终为 `active`，未操作。
++- [x] `v4-proxy.service` 检查前后均为 `inactive`，未操作。
++- [x] 未读取 Holdout，未改预登记，未引入依赖。
++- [x] 报告和提交不含密码、API key 或代理凭据。
++- [x] run log 不纳入本任务提交。
+diff --git a/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d9469f5bd002e4f99d49ae351340970fd65621a
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "FIX_COLLECTOR_URL",
++  "completed_at": "2026-06-15T00:45:18Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md",
++  "next_task": null,
++  "fixed": "yes",
++  "frames_after": 92,
++  "notes": "Backed up the collector, changed only WS_URL to the Binance /market route, restarted aiquant-liq-collector, and verified immediate messages plus JSONL growth from 62 to 92 rows in 120 seconds. First sample contains o.S=SELL. No rollback required."
++}
+diff --git a/06_RESEARCH/CODE/liquidation_collector.py b/06_RESEARCH/CODE/liquidation_collector.py
+index 6e74abc32340964c9386b6d2781906bd193e1edf..d1e56b01cae90fcc7e05ff8a8c9fc116a5f163d3
+--- a/06_RESEARCH/CODE/liquidation_collector.py
++++ b/06_RESEARCH/CODE/liquidation_collector.py
+@@ -12,7 +12,7 @@
+ 
+ import websocket  # websocket-client
+ 
+-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "DATA", "LIQUIDATIONS")
+ os.makedirs(OUT_DIR, exist_ok=True)
+ 
+
+codex
+完成事件写入后被 Claude 调度器立即消费并移动到 `TASK_INBOX/PROCESSED/`，内容仍在；这是外部调度行为，不是文件丢失。我会按实际路径校验并纳入提交，不重复制造第二个完成事件。刚才本地校验因仍按原路径读取而失败，现已定位原因。
+exec
+/bin/bash -lc "cat 04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json && sed -n '1,280p' 04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+{
+  "task_id": "FIX_COLLECTOR_URL",
+  "completed_at": "2026-06-15T00:45:18Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md",
+  "next_task": null,
+  "fixed": "yes",
+  "frames_after": 92,
+  "notes": "Backed up the collector, changed only WS_URL to the Binance /market route, restarted aiquant-liq-collector, and verified immediate messages plus JSONL growth from 62 to 92 rows in 120 seconds. First sample contains o.S=SELL. No rollback required."
+}
+# REPORT_FIX_COLLECTOR_URL
+
+## 结论
+
+- 任务状态：`completed`
+- 修复结果：`fixed=yes`
+- 根因：Binance futures WS 路由迁移；旧 `/ws/` 路由握手后不再推送 `forceOrder`
+- 新 URL：`wss://fstream.binance.com/market/ws/!forceOrder@arr`
+- 回滚：未触发
+- REST 备选：未启用
+
+## 1. 修复前证据
+
+远端文件：
+
+`/opt/ai_quant_liq_collector/liquidation_collector.py`
+
+修复前 SHA-256：
+
+```text
+0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
+```
+
+修复前 URL：
+
+```python
+WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+```
+
+`logs/collector.log` 从 2026-06-13T10:43:04Z 至
+2026-06-14T23:43:04Z 的小时 heartbeat 均为：
+
+```text
+today_rows= 0 process_messages= 0 last_message_utc= None
+```
+
+修复前没有 `data/LIQUIDATIONS/liq_*.jsonl`。
+
+## 2. 变更与备份
+
+备份已创建：
+
+```text
+/opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615
+```
+
+备份 SHA-256 与修复前文件一致：
+
+```text
+0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
+```
+
+`diff -u` 确认远端仅改一行：
+
+```diff
+-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+```
+
+修复后 SHA-256：
+
+```text
+1bd580965527d6884f0fe4e151d48e7f69cf7153d8e1207282ec145fdbf80a36
+```
+
+本地规范脚本 `06_RESEARCH/CODE/liquidation_collector.py` 同步了相同的一行，
+其余逻辑未改。
+
+## 3. 重启与实时验收
+
+执行：
+
+```text
+systemctl restart aiquant-liq-collector.service
+```
+
+重启后：
+
+```text
+ActiveEnterTimestamp=Mon 2026-06-15 08:38:31 CST
+MainPID=4039584
+active
+```
+
+日志在首秒内收到消息：
+
+```text
+[connected] 2026-06-15T00:38:32.263426+00:00 wss://fstream.binance.com/market/ws/!forceOrder@arr
+[message] 2026-06-15T00:38:32.830360+00:00 count= 1
+[message] 2026-06-15T00:38:39.442301+00:00 count= 2
+[message] 2026-06-15T00:39:05.586781+00:00 count= 3
+```
+
+`[message] count=1` 直接证明进程内消息计数大于 0。现有程序只在每小时
+heartbeat 输出 `process_messages=` 字面量，因此在不得修改其余逻辑的约束下，
+2-3 分钟验收使用同一 `_message_count` 的 `[message] count>0` 证据。
+
+首次检查时文件从 10 行增至 11 行；持续性复验：
+
+```text
+2026-06-15T00:42:58Z rows=62
+2026-06-15T00:44:58Z rows=92
+delta=30
+```
+
+验收时 `frames_after=92`。
+
+数据文件：
+
+```text
+/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260615.jsonl
+```
+
+样本首行：
+
+```json
+{"e":"forceOrder","E":1781483912792,"o":{"s":"ETHUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.023","p":"1713.87","ap":"1720.61","X":"FILLED","l":"0.023","z":"0.023","T":1781483911784},"recv_ts":1781483912830}
+```
+
+解析确认：
+
+```text
+event=forceOrder
+symbol=ETHUSDT
+o.S=SELL
+```
+
+## 4. 安全与验收自检
+
+- [x] 创建指定 `.bak.20260615` 备份。
+- [x] 远端仅替换 `WS_URL` 一行。
+- [x] 仅重启 `aiquant-liq-collector.service`。
+- [x] 2-3 分钟内出现 `[message]` 且进程消息计数大于 0。
+- [x] UTC 当日 JSONL 创建并持续增长。
+- [x] 样本包含 `o.S` side 字段。
+- [x] `danted.service` 始终为 `active`，未操作。
+- [x] `v4-proxy.service` 检查前后均为 `inactive`，未操作。
+- [x] 未读取 Holdout，未改预登记，未引入依赖。
+- [x] 报告和提交不含密码、API key 或代理凭据。
+- [x] run log 不纳入本任务提交。
+
+exec
+/bin/bash -lc 'rg -n "sshpass|sg_pass|BEGIN .*PRIVATE KEY|AKIA[0-9A-Z]{16}|password[[:space:]]*[:=]" 04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md 04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json 06_RESEARCH/CODE/liquidation_collector.py || true' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+exec
+/bin/bash -lc "python3 - <<'PY'
+import json
+from pathlib import Path
+root = Path('.')
+code = root / '06_RESEARCH/CODE/liquidation_collector.py'
+compile(code.read_text(encoding='utf-8'), str(code), 'exec')
+done_path = root / '04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json'
+done = json.loads(done_path.read_text(encoding='utf-8'))
+assert done['task_id'] == 'FIX_COLLECTOR_URL'
+assert done['fixed'] == 'yes'
+assert done['frames_after'] == 92
+text = code.read_text(encoding='utf-8')
+assert text.count('wss://fstream.binance.com/market/ws/"'!forceOrder@arr'"') == 1
+assert 'wss://fstream.binance.com/ws/"'!forceOrder@arr'"' not in text
+print('local artifact checks: PASS')
+PY
+
+git diff --check -- 06_RESEARCH/CODE/liquidation_collector.py 04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md 04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+local artifact checks: PASS
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..edd06d6d966fd2622dca6a7cb8d6d8813bf3628f
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+@@ -0,0 +1,140 @@
++# REPORT_FIX_COLLECTOR_URL
++
++## 结论
++
++- 任务状态：`completed`
++- 修复结果：`fixed=yes`
++- 根因：Binance futures WS 路由迁移；旧 `/ws/` 路由握手后不再推送 `forceOrder`
++- 新 URL：`wss://fstream.binance.com/market/ws/!forceOrder@arr`
++- 回滚：未触发
++- REST 备选：未启用
++
++## 1. 修复前证据
++
++远端文件：
++
++`/opt/ai_quant_liq_collector/liquidation_collector.py`
++
++修复前 SHA-256：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++修复前 URL：
++
++```python
++WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++```
++
++`logs/collector.log` 从 2026-06-13T10:43:04Z 至
++2026-06-14T23:43:04Z 的小时 heartbeat 均为：
++
++```text
++today_rows= 0 process_messages= 0 last_message_utc= None
++```
++
++修复前没有 `data/LIQUIDATIONS/liq_*.jsonl`。
++
++## 2. 变更与备份
++
++备份已创建：
++
++```text
++/opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615
++```
++
++备份 SHA-256 与修复前文件一致：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++`diff -u` 确认远端仅改一行：
++
++```diff
++-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
++```
++
++修复后 SHA-256：
++
++```text
++1bd580965527d6884f0fe4e151d48e7f69cf7153d8e1207282ec145fdbf80a36
++```
++
++本地规范脚本 `06_RESEARCH/CODE/liquidation_collector.py` 同步了相同的一行，
++其余逻辑未改。
++
++## 3. 重启与实时验收
++
++执行：
++
++```text
++systemctl restart aiquant-liq-collector.service
++```
++
++重启后：
++
++```text
++ActiveEnterTimestamp=Mon 2026-06-15 08:38:31 CST
++MainPID=4039584
++active
++```
++
++日志在首秒内收到消息：
++
++```text
++[connected] 2026-06-15T00:38:32.263426+00:00 wss://fstream.binance.com/market/ws/!forceOrder@arr
++[message] 2026-06-15T00:38:32.830360+00:00 count= 1
++[message] 2026-06-15T00:38:39.442301+00:00 count= 2
++[message] 2026-06-15T00:39:05.586781+00:00 count= 3
++```
++
++`[message] count=1` 直接证明进程内消息计数大于 0。现有程序只在每小时
++heartbeat 输出 `process_messages=` 字面量，因此在不得修改其余逻辑的约束下，
++2-3 分钟验收使用同一 `_message_count` 的 `[message] count>0` 证据。
++
++首次检查时文件从 10 行增至 11 行；持续性复验：
++
++```text
++2026-06-15T00:42:58Z rows=62
++2026-06-15T00:44:58Z rows=92
++delta=30
++```
++
++验收时 `frames_after=92`。
++
++数据文件：
++
++```text
++/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260615.jsonl
++```
++
++样本首行：
++
++```json
++{"e":"forceOrder","E":1781483912792,"o":{"s":"ETHUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.023","p":"1713.87","ap":"1720.61","X":"FILLED","l":"0.023","z":"0.023","T":1781483911784},"recv_ts":1781483912830}
++```
++
++解析确认：
++
++```text
++event=forceOrder
++symbol=ETHUSDT
++o.S=SELL
++```
++
++## 4. 安全与验收自检
++
++- [x] 创建指定 `.bak.20260615` 备份。
++- [x] 远端仅替换 `WS_URL` 一行。
++- [x] 仅重启 `aiquant-liq-collector.service`。
++- [x] 2-3 分钟内出现 `[message]` 且进程消息计数大于 0。
++- [x] UTC 当日 JSONL 创建并持续增长。
++- [x] 样本包含 `o.S` side 字段。
++- [x] `danted.service` 始终为 `active`，未操作。
++- [x] `v4-proxy.service` 检查前后均为 `inactive`，未操作。
++- [x] 未读取 Holdout，未改预登记，未引入依赖。
++- [x] 报告和提交不含密码、API key 或代理凭据。
++- [x] run log 不纳入本任务提交。
+diff --git a/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d9469f5bd002e4f99d49ae351340970fd65621a
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "FIX_COLLECTOR_URL",
++  "completed_at": "2026-06-15T00:45:18Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md",
++  "next_task": null,
++  "fixed": "yes",
++  "frames_after": 92,
++  "notes": "Backed up the collector, changed only WS_URL to the Binance /market route, restarted aiquant-liq-collector, and verified immediate messages plus JSONL growth from 62 to 92 rows in 120 seconds. First sample contains o.S=SELL. No rollback required."
++}
+diff --git a/06_RESEARCH/CODE/liquidation_collector.py b/06_RESEARCH/CODE/liquidation_collector.py
+index 6e74abc32340964c9386b6d2781906bd193e1edf..d1e56b01cae90fcc7e05ff8a8c9fc116a5f163d3
+--- a/06_RESEARCH/CODE/liquidation_collector.py
++++ b/06_RESEARCH/CODE/liquidation_collector.py
+@@ -12,7 +12,7 @@
+ 
+ import websocket  # websocket-client
+ 
+-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "DATA", "LIQUIDATIONS")
+ os.makedirs(OUT_DIR, exist_ok=True)
+ 
+
+exec
+/bin/bash -lc 'sshpass -p "$(cat ~/.aiquant_sealed/sg_pass)" ssh -o StrictHostKeyChecking=no root@43.160.200.224 '"'bash -s' <<'REMOTE'
+set -euo pipefail
+file=/opt/ai_quant_liq_collector/liquidation_collector.py
+backup="'${file}.bak.20260615
+log=/opt/ai_quant_liq_collector/logs/collector.log
+data=/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_$(date -u +%Y%m%d).jsonl
+printf '"'%s\\n' '=== fresh final verification ==='
+date -u +'%Y-%m-%dT%H:%M:%SZ'
+systemctl is-active aiquant-liq-collector.service
+grep -n '"'^WS_URL[[:space:]]*='"' \""'$file"
+test -f "$backup"
+printf '"'changed_lines='; diff -U0 \""'$backup" "$file" | grep -cE '"'"'^[+-][''^+-]'"' || true
+printf 'rows='; wc -l < \""'$data"
+printf '"'message_lines='; grep -c '"'^'"\\[message\\]' \""'$log"
+printf '"'%s\\n' 'latest_messages:'
+grep '"'^'"\\[message\\]' \""'$log" | tail -n 3
+printf '"'first_o.S='
+python3 - \""'$data" <<'"'PY'
+import json, sys
+with open(sys.argv[1], encoding='utf-8') as f:
+    print(json.loads(f.readline())['o']['S'])
+PY
+printf '%s\\n' 'protected_services:'
+for svc in danted.service v4-proxy.service; do printf '%s=' \""'$svc"; systemctl is-active "$svc" || true; done
+cmp -s <(sed '"'s|wss://fstream.binance.com/market/ws/"'!forceOrder@arr|wss://fstream.binance.com/ws/!forceOrder@arr|'"' \""'$file") "$backup"
+REMOTE' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..edd06d6d966fd2622dca6a7cb8d6d8813bf3628f
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+@@ -0,0 +1,140 @@
++# REPORT_FIX_COLLECTOR_URL
++
++## 结论
++
++- 任务状态：`completed`
++- 修复结果：`fixed=yes`
++- 根因：Binance futures WS 路由迁移；旧 `/ws/` 路由握手后不再推送 `forceOrder`
++- 新 URL：`wss://fstream.binance.com/market/ws/!forceOrder@arr`
++- 回滚：未触发
++- REST 备选：未启用
++
++## 1. 修复前证据
++
++远端文件：
++
++`/opt/ai_quant_liq_collector/liquidation_collector.py`
++
++修复前 SHA-256：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++修复前 URL：
++
++```python
++WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++```
++
++`logs/collector.log` 从 2026-06-13T10:43:04Z 至
++2026-06-14T23:43:04Z 的小时 heartbeat 均为：
++
++```text
++today_rows= 0 process_messages= 0 last_message_utc= None
++```
++
++修复前没有 `data/LIQUIDATIONS/liq_*.jsonl`。
++
++## 2. 变更与备份
++
++备份已创建：
++
++```text
++/opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615
++```
++
++备份 SHA-256 与修复前文件一致：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++`diff -u` 确认远端仅改一行：
++
++```diff
++-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
++```
++
++修复后 SHA-256：
++
++```text
++1bd580965527d6884f0fe4e151d48e7f69cf7153d8e1207282ec145fdbf80a36
++```
++
++本地规范脚本 `06_RESEARCH/CODE/liquidation_collector.py` 同步了相同的一行，
++其余逻辑未改。
++
++## 3. 重启与实时验收
++
++执行：
++
++```text
++systemctl restart aiquant-liq-collector.service
++```
++
++重启后：
++
++```text
++ActiveEnterTimestamp=Mon 2026-06-15 08:38:31 CST
++MainPID=4039584
++active
++```
++
++日志在首秒内收到消息：
++
++```text
++[connected] 2026-06-15T00:38:32.263426+00:00 wss://fstream.binance.com/market/ws/!forceOrder@arr
++[message] 2026-06-15T00:38:32.830360+00:00 count= 1
++[message] 2026-06-15T00:38:39.442301+00:00 count= 2
++[message] 2026-06-15T00:39:05.586781+00:00 count= 3
++```
++
++`[message] count=1` 直接证明进程内消息计数大于 0。现有程序只在每小时
++heartbeat 输出 `process_messages=` 字面量，因此在不得修改其余逻辑的约束下，
++2-3 分钟验收使用同一 `_message_count` 的 `[message] count>0` 证据。
++
++首次检查时文件从 10 行增至 11 行；持续性复验：
++
++```text
++2026-06-15T00:42:58Z rows=62
++2026-06-15T00:44:58Z rows=92
++delta=30
++```
++
++验收时 `frames_after=92`。
++
++数据文件：
++
++```text
++/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260615.jsonl
++```
++
++样本首行：
++
++```json
++{"e":"forceOrder","E":1781483912792,"o":{"s":"ETHUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.023","p":"1713.87","ap":"1720.61","X":"FILLED","l":"0.023","z":"0.023","T":1781483911784},"recv_ts":1781483912830}
++```
++
++解析确认：
++
++```text
++event=forceOrder
++symbol=ETHUSDT
++o.S=SELL
++```
++
++## 4. 安全与验收自检
++
++- [x] 创建指定 `.bak.20260615` 备份。
++- [x] 远端仅替换 `WS_URL` 一行。
++- [x] 仅重启 `aiquant-liq-collector.service`。
++- [x] 2-3 分钟内出现 `[message]` 且进程消息计数大于 0。
++- [x] UTC 当日 JSONL 创建并持续增长。
++- [x] 样本包含 `o.S` side 字段。
++- [x] `danted.service` 始终为 `active`，未操作。
++- [x] `v4-proxy.service` 检查前后均为 `inactive`，未操作。
++- [x] 未读取 Holdout，未改预登记，未引入依赖。
++- [x] 报告和提交不含密码、API key 或代理凭据。
++- [x] run log 不纳入本任务提交。
+diff --git a/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d9469f5bd002e4f99d49ae351340970fd65621a
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "FIX_COLLECTOR_URL",
++  "completed_at": "2026-06-15T00:45:18Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md",
++  "next_task": null,
++  "fixed": "yes",
++  "frames_after": 92,
++  "notes": "Backed up the collector, changed only WS_URL to the Binance /market route, restarted aiquant-liq-collector, and verified immediate messages plus JSONL growth from 62 to 92 rows in 120 seconds. First sample contains o.S=SELL. No rollback required."
++}
+diff --git a/06_RESEARCH/CODE/liquidation_collector.py b/06_RESEARCH/CODE/liquidation_collector.py
+index 6e74abc32340964c9386b6d2781906bd193e1edf..d1e56b01cae90fcc7e05ff8a8c9fc116a5f163d3
+--- a/06_RESEARCH/CODE/liquidation_collector.py
++++ b/06_RESEARCH/CODE/liquidation_collector.py
+@@ -12,7 +12,7 @@
+ 
+ import websocket  # websocket-client
+ 
+-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "DATA", "LIQUIDATIONS")
+ os.makedirs(OUT_DIR, exist_ok=True)
+ 
+
+ succeeded in 3623ms:
+=== fresh final verification ===
+2026-06-15T00:47:16Z
+active
+15:WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+changed_lines=2
+rows=136
+message_lines=4
+latest_messages:
+[message] 2026-06-15T00:38:39.442301+00:00 count= 2
+[message] 2026-06-15T00:39:05.586781+00:00 count= 3
+[message] 2026-06-15T00:45:35.635003+00:00 count= 100
+first_o.S=SELL
+protected_services:
+danted.service=active
+v4-proxy.service=inactive
+
+codex
+最终远端复验时间 `2026-06-15T00:47:16Z`：服务 active，数据已到 136 行，日志出现 `count=100`，备份还原比较证明除 URL 替换外无其他差异。接下来只暂存本任务的规范脚本、报告和已消费的完成事件，并提交 `FIX_COLLECTOR_URL` commit。
+exec
+/bin/bash -lc "git add -- 06_RESEARCH/CODE/liquidation_collector.py 04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md 04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json
+
+git diff --cached --check
+
+git diff --cached --stat
+
+git diff --cached --name-status
+
+git diff --cached -- 06_RESEARCH/CODE/liquidation_collector.py 04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json | sed -n '1,240p'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+ 04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md | 140 +++++++++++++++++++++
+ .../PROCESSED/FIX_COLLECTOR_URL_DONE.json          |  10 ++
+ 06_RESEARCH/CODE/liquidation_collector.py          |   2 +-
+ 3 files changed, 151 insertions(+), 1 deletion(-)
+A	04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+A	04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json
+M	06_RESEARCH/CODE/liquidation_collector.py
+diff --git a/04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json b/04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json
+new file mode 100644
+index 0000000..1d9469f
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "FIX_COLLECTOR_URL",
++  "completed_at": "2026-06-15T00:45:18Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md",
++  "next_task": null,
++  "fixed": "yes",
++  "frames_after": 92,
++  "notes": "Backed up the collector, changed only WS_URL to the Binance /market route, restarted aiquant-liq-collector, and verified immediate messages plus JSONL growth from 62 to 92 rows in 120 seconds. First sample contains o.S=SELL. No rollback required."
++}
+diff --git a/06_RESEARCH/CODE/liquidation_collector.py b/06_RESEARCH/CODE/liquidation_collector.py
+index 6e74abc..d1e56b0 100644
+--- a/06_RESEARCH/CODE/liquidation_collector.py
++++ b/06_RESEARCH/CODE/liquidation_collector.py
+@@ -12,7 +12,7 @@ import json, time, os, datetime, threading
+ 
+ import websocket  # websocket-client
+ 
+-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "DATA", "LIQUIDATIONS")
+ os.makedirs(OUT_DIR, exist_ok=True)
+ 
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..edd06d6d966fd2622dca6a7cb8d6d8813bf3628f
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+@@ -0,0 +1,140 @@
++# REPORT_FIX_COLLECTOR_URL
++
++## 结论
++
++- 任务状态：`completed`
++- 修复结果：`fixed=yes`
++- 根因：Binance futures WS 路由迁移；旧 `/ws/` 路由握手后不再推送 `forceOrder`
++- 新 URL：`wss://fstream.binance.com/market/ws/!forceOrder@arr`
++- 回滚：未触发
++- REST 备选：未启用
++
++## 1. 修复前证据
++
++远端文件：
++
++`/opt/ai_quant_liq_collector/liquidation_collector.py`
++
++修复前 SHA-256：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++修复前 URL：
++
++```python
++WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++```
++
++`logs/collector.log` 从 2026-06-13T10:43:04Z 至
++2026-06-14T23:43:04Z 的小时 heartbeat 均为：
++
++```text
++today_rows= 0 process_messages= 0 last_message_utc= None
++```
++
++修复前没有 `data/LIQUIDATIONS/liq_*.jsonl`。
++
++## 2. 变更与备份
++
++备份已创建：
++
++```text
++/opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615
++```
++
++备份 SHA-256 与修复前文件一致：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++`diff -u` 确认远端仅改一行：
++
++```diff
++-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
++```
++
++修复后 SHA-256：
++
++```text
++1bd580965527d6884f0fe4e151d48e7f69cf7153d8e1207282ec145fdbf80a36
++```
++
++本地规范脚本 `06_RESEARCH/CODE/liquidation_collector.py` 同步了相同的一行，
++其余逻辑未改。
++
++## 3. 重启与实时验收
++
++执行：
++
++```text
++systemctl restart aiquant-liq-collector.service
++```
++
++重启后：
++
++```text
++ActiveEnterTimestamp=Mon 2026-06-15 08:38:31 CST
++MainPID=4039584
++active
++```
++
++日志在首秒内收到消息：
++
++```text
++[connected] 2026-06-15T00:38:32.263426+00:00 wss://fstream.binance.com/market/ws/!forceOrder@arr
++[message] 2026-06-15T00:38:32.830360+00:00 count= 1
++[message] 2026-06-15T00:38:39.442301+00:00 count= 2
++[message] 2026-06-15T00:39:05.586781+00:00 count= 3
++```
++
++`[message] count=1` 直接证明进程内消息计数大于 0。现有程序只在每小时
++heartbeat 输出 `process_messages=` 字面量，因此在不得修改其余逻辑的约束下，
++2-3 分钟验收使用同一 `_message_count` 的 `[message] count>0` 证据。
++
++首次检查时文件从 10 行增至 11 行；持续性复验：
++
++```text
++2026-06-15T00:42:58Z rows=62
++2026-06-15T00:44:58Z rows=92
++delta=30
++```
++
++验收时 `frames_after=92`。
++
++数据文件：
++
++```text
++/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260615.jsonl
++```
++
++样本首行：
++
++```json
++{"e":"forceOrder","E":1781483912792,"o":{"s":"ETHUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.023","p":"1713.87","ap":"1720.61","X":"FILLED","l":"0.023","z":"0.023","T":1781483911784},"recv_ts":1781483912830}
++```
++
++解析确认：
++
++```text
++event=forceOrder
++symbol=ETHUSDT
++o.S=SELL
++```
++
++## 4. 安全与验收自检
++
++- [x] 创建指定 `.bak.20260615` 备份。
++- [x] 远端仅替换 `WS_URL` 一行。
++- [x] 仅重启 `aiquant-liq-collector.service`。
++- [x] 2-3 分钟内出现 `[message]` 且进程消息计数大于 0。
++- [x] UTC 当日 JSONL 创建并持续增长。
++- [x] 样本包含 `o.S` side 字段。
++- [x] `danted.service` 始终为 `active`，未操作。
++- [x] `v4-proxy.service` 检查前后均为 `inactive`，未操作。
++- [x] 未读取 Holdout，未改预登记，未引入依赖。
++- [x] 报告和提交不含密码、API key 或代理凭据。
++- [x] run log 不纳入本任务提交。
+diff --git a/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d9469f5bd002e4f99d49ae351340970fd65621a
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "FIX_COLLECTOR_URL",
++  "completed_at": "2026-06-15T00:45:18Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md",
++  "next_task": null,
++  "fixed": "yes",
++  "frames_after": 92,
++  "notes": "Backed up the collector, changed only WS_URL to the Binance /market route, restarted aiquant-liq-collector, and verified immediate messages plus JSONL growth from 62 to 92 rows in 120 seconds. First sample contains o.S=SELL. No rollback required."
++}
+diff --git a/06_RESEARCH/CODE/liquidation_collector.py b/06_RESEARCH/CODE/liquidation_collector.py
+index 6e74abc32340964c9386b6d2781906bd193e1edf..d1e56b01cae90fcc7e05ff8a8c9fc116a5f163d3
+--- a/06_RESEARCH/CODE/liquidation_collector.py
++++ b/06_RESEARCH/CODE/liquidation_collector.py
+@@ -12,7 +12,7 @@
+ 
+ import websocket  # websocket-client
+ 
+-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "DATA", "LIQUIDATIONS")
+ os.makedirs(OUT_DIR, exist_ok=True)
+ 
+
+exec
+/bin/bash -lc 'git commit -m "FIX_COLLECTOR_URL: migrate Binance WS route"' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 106ms:
+[master bb438fe] FIX_COLLECTOR_URL: migrate Binance WS route
+ 3 files changed, 151 insertions(+), 1 deletion(-)
+ create mode 100644 04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+ create mode 100644 04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json
+
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..edd06d6d966fd2622dca6a7cb8d6d8813bf3628f
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+@@ -0,0 +1,140 @@
++# REPORT_FIX_COLLECTOR_URL
++
++## 结论
++
++- 任务状态：`completed`
++- 修复结果：`fixed=yes`
++- 根因：Binance futures WS 路由迁移；旧 `/ws/` 路由握手后不再推送 `forceOrder`
++- 新 URL：`wss://fstream.binance.com/market/ws/!forceOrder@arr`
++- 回滚：未触发
++- REST 备选：未启用
++
++## 1. 修复前证据
++
++远端文件：
++
++`/opt/ai_quant_liq_collector/liquidation_collector.py`
++
++修复前 SHA-256：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++修复前 URL：
++
++```python
++WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++```
++
++`logs/collector.log` 从 2026-06-13T10:43:04Z 至
++2026-06-14T23:43:04Z 的小时 heartbeat 均为：
++
++```text
++today_rows= 0 process_messages= 0 last_message_utc= None
++```
++
++修复前没有 `data/LIQUIDATIONS/liq_*.jsonl`。
++
++## 2. 变更与备份
++
++备份已创建：
++
++```text
++/opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615
++```
++
++备份 SHA-256 与修复前文件一致：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++`diff -u` 确认远端仅改一行：
++
++```diff
++-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
++```
++
++修复后 SHA-256：
++
++```text
++1bd580965527d6884f0fe4e151d48e7f69cf7153d8e1207282ec145fdbf80a36
++```
++
++本地规范脚本 `06_RESEARCH/CODE/liquidation_collector.py` 同步了相同的一行，
++其余逻辑未改。
++
++## 3. 重启与实时验收
++
++执行：
++
++```text
++systemctl restart aiquant-liq-collector.service
++```
++
++重启后：
++
++```text
++ActiveEnterTimestamp=Mon 2026-06-15 08:38:31 CST
++MainPID=4039584
++active
++```
++
++日志在首秒内收到消息：
++
++```text
++[connected] 2026-06-15T00:38:32.263426+00:00 wss://fstream.binance.com/market/ws/!forceOrder@arr
++[message] 2026-06-15T00:38:32.830360+00:00 count= 1
++[message] 2026-06-15T00:38:39.442301+00:00 count= 2
++[message] 2026-06-15T00:39:05.586781+00:00 count= 3
++```
++
++`[message] count=1` 直接证明进程内消息计数大于 0。现有程序只在每小时
++heartbeat 输出 `process_messages=` 字面量，因此在不得修改其余逻辑的约束下，
++2-3 分钟验收使用同一 `_message_count` 的 `[message] count>0` 证据。
++
++首次检查时文件从 10 行增至 11 行；持续性复验：
++
++```text
++2026-06-15T00:42:58Z rows=62
++2026-06-15T00:44:58Z rows=92
++delta=30
++```
++
++验收时 `frames_after=92`。
++
++数据文件：
++
++```text
++/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260615.jsonl
++```
++
++样本首行：
++
++```json
++{"e":"forceOrder","E":1781483912792,"o":{"s":"ETHUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.023","p":"1713.87","ap":"1720.61","X":"FILLED","l":"0.023","z":"0.023","T":1781483911784},"recv_ts":1781483912830}
++```
++
++解析确认：
++
++```text
++event=forceOrder
++symbol=ETHUSDT
++o.S=SELL
++```
++
++## 4. 安全与验收自检
++
++- [x] 创建指定 `.bak.20260615` 备份。
++- [x] 远端仅替换 `WS_URL` 一行。
++- [x] 仅重启 `aiquant-liq-collector.service`。
++- [x] 2-3 分钟内出现 `[message]` 且进程消息计数大于 0。
++- [x] UTC 当日 JSONL 创建并持续增长。
++- [x] 样本包含 `o.S` side 字段。
++- [x] `danted.service` 始终为 `active`，未操作。
++- [x] `v4-proxy.service` 检查前后均为 `inactive`，未操作。
++- [x] 未读取 Holdout，未改预登记，未引入依赖。
++- [x] 报告和提交不含密码、API key 或代理凭据。
++- [x] run log 不纳入本任务提交。
+diff --git a/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d9469f5bd002e4f99d49ae351340970fd65621a
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "FIX_COLLECTOR_URL",
++  "completed_at": "2026-06-15T00:45:18Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md",
++  "next_task": null,
++  "fixed": "yes",
++  "frames_after": 92,
++  "notes": "Backed up the collector, changed only WS_URL to the Binance /market route, restarted aiquant-liq-collector, and verified immediate messages plus JSONL growth from 62 to 92 rows in 120 seconds. First sample contains o.S=SELL. No rollback required."
++}
+diff --git a/06_RESEARCH/CODE/liquidation_collector.py b/06_RESEARCH/CODE/liquidation_collector.py
+index 6e74abc32340964c9386b6d2781906bd193e1edf..d1e56b01cae90fcc7e05ff8a8c9fc116a5f163d3
+--- a/06_RESEARCH/CODE/liquidation_collector.py
++++ b/06_RESEARCH/CODE/liquidation_collector.py
+@@ -12,7 +12,7 @@
+ 
+ import websocket  # websocket-client
+ 
+-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "DATA", "LIQUIDATIONS")
+ os.makedirs(OUT_DIR, exist_ok=True)
+ 
+
+exec
+/bin/bash -lc 'git show --stat --oneline --decorate --no-renames HEAD && git status --short --untracked-files=all && git diff-tree --no-commit-id --name-only -r HEAD' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+bb438fe (HEAD -> master) FIX_COLLECTOR_URL: migrate Binance WS route
+ 04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md | 140 +++++++++++++++++++++
+ .../PROCESSED/FIX_COLLECTOR_URL_DONE.json          |  10 ++
+ 06_RESEARCH/CODE/liquidation_collector.py          |   2 +-
+ 3 files changed, 151 insertions(+), 1 deletion(-)
+ M 04_AI_TEAM/CODEX_TASKS/CARRY_V4_DRAFT_RUN.log
+ M 04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL_RUN.log
+ M 06_RESEARCH/PREREGISTRATIONS/CARRY_DELTA_NEUTRAL_PREREG_v4.md
+?? 04_AI_TEAM/CODEX_TASKS/REPORT_CARRY_V4_DRAFT.md
+?? 04_AI_TEAM/TASK_INBOX/PROCESSED/CARRY_V4_DRAFT_DONE.json
+04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json
+06_RESEARCH/CODE/liquidation_collector.py
+
+exec
+/bin/bash -lc 'sshpass -p "$(cat ~/.aiquant_sealed/sg_pass)" ssh -o StrictHostKeyChecking=no root@43.160.200.224 '"'bash -s' <<'REMOTE'
+set -euo pipefail
+file=/opt/ai_quant_liq_collector/liquidation_collector.py
+data=/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_"'$(date -u +%Y%m%d).jsonl
+date -u +'"'%Y-%m-%dT%H:%M:%SZ'
+systemctl is-active aiquant-liq-collector.service
+grep '"'^WS_URL[[:space:]]*='"' \""'$file"
+printf '"'rows='; wc -l < \""'$data"
+printf '"'last_message='; grep '"'^'"\\[message\\]' /opt/ai_quant_liq_collector/logs/collector.log | tail -n 1
+REMOTE" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..edd06d6d966fd2622dca6a7cb8d6d8813bf3628f
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+@@ -0,0 +1,140 @@
++# REPORT_FIX_COLLECTOR_URL
++
++## 结论
++
++- 任务状态：`completed`
++- 修复结果：`fixed=yes`
++- 根因：Binance futures WS 路由迁移；旧 `/ws/` 路由握手后不再推送 `forceOrder`
++- 新 URL：`wss://fstream.binance.com/market/ws/!forceOrder@arr`
++- 回滚：未触发
++- REST 备选：未启用
++
++## 1. 修复前证据
++
++远端文件：
++
++`/opt/ai_quant_liq_collector/liquidation_collector.py`
++
++修复前 SHA-256：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++修复前 URL：
++
++```python
++WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++```
++
++`logs/collector.log` 从 2026-06-13T10:43:04Z 至
++2026-06-14T23:43:04Z 的小时 heartbeat 均为：
++
++```text
++today_rows= 0 process_messages= 0 last_message_utc= None
++```
++
++修复前没有 `data/LIQUIDATIONS/liq_*.jsonl`。
++
++## 2. 变更与备份
++
++备份已创建：
++
++```text
++/opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615
++```
++
++备份 SHA-256 与修复前文件一致：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++`diff -u` 确认远端仅改一行：
++
++```diff
++-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
++```
++
++修复后 SHA-256：
++
++```text
++1bd580965527d6884f0fe4e151d48e7f69cf7153d8e1207282ec145fdbf80a36
++```
++
++本地规范脚本 `06_RESEARCH/CODE/liquidation_collector.py` 同步了相同的一行，
++其余逻辑未改。
++
++## 3. 重启与实时验收
++
++执行：
++
++```text
++systemctl restart aiquant-liq-collector.service
++```
++
++重启后：
++
++```text
++ActiveEnterTimestamp=Mon 2026-06-15 08:38:31 CST
++MainPID=4039584
++active
++```
++
++日志在首秒内收到消息：
++
++```text
++[connected] 2026-06-15T00:38:32.263426+00:00 wss://fstream.binance.com/market/ws/!forceOrder@arr
++[message] 2026-06-15T00:38:32.830360+00:00 count= 1
++[message] 2026-06-15T00:38:39.442301+00:00 count= 2
++[message] 2026-06-15T00:39:05.586781+00:00 count= 3
++```
++
++`[message] count=1` 直接证明进程内消息计数大于 0。现有程序只在每小时
++heartbeat 输出 `process_messages=` 字面量，因此在不得修改其余逻辑的约束下，
++2-3 分钟验收使用同一 `_message_count` 的 `[message] count>0` 证据。
++
++首次检查时文件从 10 行增至 11 行；持续性复验：
++
++```text
++2026-06-15T00:42:58Z rows=62
++2026-06-15T00:44:58Z rows=92
++delta=30
++```
++
++验收时 `frames_after=92`。
++
++数据文件：
++
++```text
++/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260615.jsonl
++```
++
++样本首行：
++
++```json
++{"e":"forceOrder","E":1781483912792,"o":{"s":"ETHUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.023","p":"1713.87","ap":"1720.61","X":"FILLED","l":"0.023","z":"0.023","T":1781483911784},"recv_ts":1781483912830}
++```
++
++解析确认：
++
++```text
++event=forceOrder
++symbol=ETHUSDT
++o.S=SELL
++```
++
++## 4. 安全与验收自检
++
++- [x] 创建指定 `.bak.20260615` 备份。
++- [x] 远端仅替换 `WS_URL` 一行。
++- [x] 仅重启 `aiquant-liq-collector.service`。
++- [x] 2-3 分钟内出现 `[message]` 且进程消息计数大于 0。
++- [x] UTC 当日 JSONL 创建并持续增长。
++- [x] 样本包含 `o.S` side 字段。
++- [x] `danted.service` 始终为 `active`，未操作。
++- [x] `v4-proxy.service` 检查前后均为 `inactive`，未操作。
++- [x] 未读取 Holdout，未改预登记，未引入依赖。
++- [x] 报告和提交不含密码、API key 或代理凭据。
++- [x] run log 不纳入本任务提交。
+diff --git a/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d9469f5bd002e4f99d49ae351340970fd65621a
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "FIX_COLLECTOR_URL",
++  "completed_at": "2026-06-15T00:45:18Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md",
++  "next_task": null,
++  "fixed": "yes",
++  "frames_after": 92,
++  "notes": "Backed up the collector, changed only WS_URL to the Binance /market route, restarted aiquant-liq-collector, and verified immediate messages plus JSONL growth from 62 to 92 rows in 120 seconds. First sample contains o.S=SELL. No rollback required."
++}
+diff --git a/06_RESEARCH/CODE/liquidation_collector.py b/06_RESEARCH/CODE/liquidation_collector.py
+index 6e74abc32340964c9386b6d2781906bd193e1edf..d1e56b01cae90fcc7e05ff8a8c9fc116a5f163d3
+--- a/06_RESEARCH/CODE/liquidation_collector.py
++++ b/06_RESEARCH/CODE/liquidation_collector.py
+@@ -12,7 +12,7 @@
+ 
+ import websocket  # websocket-client
+ 
+-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "DATA", "LIQUIDATIONS")
+ os.makedirs(OUT_DIR, exist_ok=True)
+ 
+
+ succeeded in 3417ms:
+2026-06-15T00:47:57Z
+active
+WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+rows=149
+last_message=[message] 2026-06-15T00:45:35.635003+00:00 count= 100
+
+远端修复、持续收帧验证、本地同步、报告、完成事件和任务 commit 均已完成；最终远端复验服务 active 且 JSONL 149 行。
+  ✓ 检查本地任务上下文、git 状态与报告惯例
+  ✓ 远端确认旧 URL、服务状态和修复前症状
+  ✓ 备份并仅替换 WS_URL，重启 collector
+  ✓ 轮询验证消息、计数、数据文件增长及 side 字段
+  ✓ 写报告与 TASK_INBOX，检查 diff 并提交任务 commit
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..edd06d6d966fd2622dca6a7cb8d6d8813bf3628f
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+@@ -0,0 +1,140 @@
++# REPORT_FIX_COLLECTOR_URL
++
++## 结论
++
++- 任务状态：`completed`
++- 修复结果：`fixed=yes`
++- 根因：Binance futures WS 路由迁移；旧 `/ws/` 路由握手后不再推送 `forceOrder`
++- 新 URL：`wss://fstream.binance.com/market/ws/!forceOrder@arr`
++- 回滚：未触发
++- REST 备选：未启用
++
++## 1. 修复前证据
++
++远端文件：
++
++`/opt/ai_quant_liq_collector/liquidation_collector.py`
++
++修复前 SHA-256：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++修复前 URL：
++
++```python
++WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++```
++
++`logs/collector.log` 从 2026-06-13T10:43:04Z 至
++2026-06-14T23:43:04Z 的小时 heartbeat 均为：
++
++```text
++today_rows= 0 process_messages= 0 last_message_utc= None
++```
++
++修复前没有 `data/LIQUIDATIONS/liq_*.jsonl`。
++
++## 2. 变更与备份
++
++备份已创建：
++
++```text
++/opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615
++```
++
++备份 SHA-256 与修复前文件一致：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++`diff -u` 确认远端仅改一行：
++
++```diff
++-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
++```
++
++修复后 SHA-256：
++
++```text
++1bd580965527d6884f0fe4e151d48e7f69cf7153d8e1207282ec145fdbf80a36
++```
++
++本地规范脚本 `06_RESEARCH/CODE/liquidation_collector.py` 同步了相同的一行，
++其余逻辑未改。
++
++## 3. 重启与实时验收
++
++执行：
++
++```text
++systemctl restart aiquant-liq-collector.service
++```
++
++重启后：
++
++```text
++ActiveEnterTimestamp=Mon 2026-06-15 08:38:31 CST
++MainPID=4039584
++active
++```
++
++日志在首秒内收到消息：
++
++```text
++[connected] 2026-06-15T00:38:32.263426+00:00 wss://fstream.binance.com/market/ws/!forceOrder@arr
++[message] 2026-06-15T00:38:32.830360+00:00 count= 1
++[message] 2026-06-15T00:38:39.442301+00:00 count= 2
++[message] 2026-06-15T00:39:05.586781+00:00 count= 3
++```
++
++`[message] count=1` 直接证明进程内消息计数大于 0。现有程序只在每小时
++heartbeat 输出 `process_messages=` 字面量，因此在不得修改其余逻辑的约束下，
++2-3 分钟验收使用同一 `_message_count` 的 `[message] count>0` 证据。
++
++首次检查时文件从 10 行增至 11 行；持续性复验：
++
++```text
++2026-06-15T00:42:58Z rows=62
++2026-06-15T00:44:58Z rows=92
++delta=30
++```
++
++验收时 `frames_after=92`。
++
++数据文件：
++
++```text
++/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260615.jsonl
++```
++
++样本首行：
++
++```json
++{"e":"forceOrder","E":1781483912792,"o":{"s":"ETHUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.023","p":"1713.87","ap":"1720.61","X":"FILLED","l":"0.023","z":"0.023","T":1781483911784},"recv_ts":1781483912830}
++```
++
++解析确认：
++
++```text
++event=forceOrder
++symbol=ETHUSDT
++o.S=SELL
++```
++
++## 4. 安全与验收自检
++
++- [x] 创建指定 `.bak.20260615` 备份。
++- [x] 远端仅替换 `WS_URL` 一行。
++- [x] 仅重启 `aiquant-liq-collector.service`。
++- [x] 2-3 分钟内出现 `[message]` 且进程消息计数大于 0。
++- [x] UTC 当日 JSONL 创建并持续增长。
++- [x] 样本包含 `o.S` side 字段。
++- [x] `danted.service` 始终为 `active`，未操作。
++- [x] `v4-proxy.service` 检查前后均为 `inactive`，未操作。
++- [x] 未读取 Holdout，未改预登记，未引入依赖。
++- [x] 报告和提交不含密码、API key 或代理凭据。
++- [x] run log 不纳入本任务提交。
+diff --git a/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d9469f5bd002e4f99d49ae351340970fd65621a
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "FIX_COLLECTOR_URL",
++  "completed_at": "2026-06-15T00:45:18Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md",
++  "next_task": null,
++  "fixed": "yes",
++  "frames_after": 92,
++  "notes": "Backed up the collector, changed only WS_URL to the Binance /market route, restarted aiquant-liq-collector, and verified immediate messages plus JSONL growth from 62 to 92 rows in 120 seconds. First sample contains o.S=SELL. No rollback required."
++}
+diff --git a/06_RESEARCH/CODE/liquidation_collector.py b/06_RESEARCH/CODE/liquidation_collector.py
+index 6e74abc32340964c9386b6d2781906bd193e1edf..d1e56b01cae90fcc7e05ff8a8c9fc116a5f163d3
+--- a/06_RESEARCH/CODE/liquidation_collector.py
++++ b/06_RESEARCH/CODE/liquidation_collector.py
+@@ -12,7 +12,7 @@
+ 
+ import websocket  # websocket-client
+ 
+-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "DATA", "LIQUIDATIONS")
+ os.makedirs(OUT_DIR, exist_ok=True)
+ 
+
+codex
+已完成并提交 `bb438fe`。
+
+- 新路由生效，collector active。
+- 2 分钟内 JSONL `62 → 92` 行，最终复验 149 行。
+- 日志已见 `[message] count=100`，首行含 `o.S=SELL`。
+- `danted` 未动；`v4-proxy` 原本 inactive，未操作。
+- 报告：[REPORT_FIX_COLLECTOR_URL.md](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md)
+- 完成事件已被调度器移至 [PROCESSED/FIX_COLLECTOR_URL_DONE.json](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json)。
+- 其他工作区改动未纳入提交。
+diff --git a/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..edd06d6d966fd2622dca6a7cb8d6d8813bf3628f
+--- /dev/null
++++ b/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md
+@@ -0,0 +1,140 @@
++# REPORT_FIX_COLLECTOR_URL
++
++## 结论
++
++- 任务状态：`completed`
++- 修复结果：`fixed=yes`
++- 根因：Binance futures WS 路由迁移；旧 `/ws/` 路由握手后不再推送 `forceOrder`
++- 新 URL：`wss://fstream.binance.com/market/ws/!forceOrder@arr`
++- 回滚：未触发
++- REST 备选：未启用
++
++## 1. 修复前证据
++
++远端文件：
++
++`/opt/ai_quant_liq_collector/liquidation_collector.py`
++
++修复前 SHA-256：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++修复前 URL：
++
++```python
++WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++```
++
++`logs/collector.log` 从 2026-06-13T10:43:04Z 至
++2026-06-14T23:43:04Z 的小时 heartbeat 均为：
++
++```text
++today_rows= 0 process_messages= 0 last_message_utc= None
++```
++
++修复前没有 `data/LIQUIDATIONS/liq_*.jsonl`。
++
++## 2. 变更与备份
++
++备份已创建：
++
++```text
++/opt/ai_quant_liq_collector/liquidation_collector.py.bak.20260615
++```
++
++备份 SHA-256 与修复前文件一致：
++
++```text
++0c2db657ee4bbf0a9e66ff383c9ac30b1dfd39ecf070c3cf916e4008e3251c7c
++```
++
++`diff -u` 确认远端仅改一行：
++
++```diff
++-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
++```
++
++修复后 SHA-256：
++
++```text
++1bd580965527d6884f0fe4e151d48e7f69cf7153d8e1207282ec145fdbf80a36
++```
++
++本地规范脚本 `06_RESEARCH/CODE/liquidation_collector.py` 同步了相同的一行，
++其余逻辑未改。
++
++## 3. 重启与实时验收
++
++执行：
++
++```text
++systemctl restart aiquant-liq-collector.service
++```
++
++重启后：
++
++```text
++ActiveEnterTimestamp=Mon 2026-06-15 08:38:31 CST
++MainPID=4039584
++active
++```
++
++日志在首秒内收到消息：
++
++```text
++[connected] 2026-06-15T00:38:32.263426+00:00 wss://fstream.binance.com/market/ws/!forceOrder@arr
++[message] 2026-06-15T00:38:32.830360+00:00 count= 1
++[message] 2026-06-15T00:38:39.442301+00:00 count= 2
++[message] 2026-06-15T00:39:05.586781+00:00 count= 3
++```
++
++`[message] count=1` 直接证明进程内消息计数大于 0。现有程序只在每小时
++heartbeat 输出 `process_messages=` 字面量，因此在不得修改其余逻辑的约束下，
++2-3 分钟验收使用同一 `_message_count` 的 `[message] count>0` 证据。
++
++首次检查时文件从 10 行增至 11 行；持续性复验：
++
++```text
++2026-06-15T00:42:58Z rows=62
++2026-06-15T00:44:58Z rows=92
++delta=30
++```
++
++验收时 `frames_after=92`。
++
++数据文件：
++
++```text
++/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260615.jsonl
++```
++
++样本首行：
++
++```json
++{"e":"forceOrder","E":1781483912792,"o":{"s":"ETHUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.023","p":"1713.87","ap":"1720.61","X":"FILLED","l":"0.023","z":"0.023","T":1781483911784},"recv_ts":1781483912830}
++```
++
++解析确认：
++
++```text
++event=forceOrder
++symbol=ETHUSDT
++o.S=SELL
++```
++
++## 4. 安全与验收自检
++
++- [x] 创建指定 `.bak.20260615` 备份。
++- [x] 远端仅替换 `WS_URL` 一行。
++- [x] 仅重启 `aiquant-liq-collector.service`。
++- [x] 2-3 分钟内出现 `[message]` 且进程消息计数大于 0。
++- [x] UTC 当日 JSONL 创建并持续增长。
++- [x] 样本包含 `o.S` side 字段。
++- [x] `danted.service` 始终为 `active`，未操作。
++- [x] `v4-proxy.service` 检查前后均为 `inactive`，未操作。
++- [x] 未读取 Holdout，未改预登记，未引入依赖。
++- [x] 报告和提交不含密码、API key 或代理凭据。
++- [x] run log 不纳入本任务提交。
+diff --git a/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d9469f5bd002e4f99d49ae351340970fd65621a
+--- /dev/null
++++ b/04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json
+@@ -0,0 +1,10 @@
++{
++  "task_id": "FIX_COLLECTOR_URL",
++  "completed_at": "2026-06-15T00:45:18Z",
++  "status": "completed",
++  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md",
++  "next_task": null,
++  "fixed": "yes",
++  "frames_after": 92,
++  "notes": "Backed up the collector, changed only WS_URL to the Binance /market route, restarted aiquant-liq-collector, and verified immediate messages plus JSONL growth from 62 to 92 rows in 120 seconds. First sample contains o.S=SELL. No rollback required."
++}
+diff --git a/06_RESEARCH/CODE/liquidation_collector.py b/06_RESEARCH/CODE/liquidation_collector.py
+index 6e74abc32340964c9386b6d2781906bd193e1edf..d1e56b01cae90fcc7e05ff8a8c9fc116a5f163d3
+--- a/06_RESEARCH/CODE/liquidation_collector.py
++++ b/06_RESEARCH/CODE/liquidation_collector.py
+@@ -12,7 +12,7 @@
+ 
+ import websocket  # websocket-client
+ 
+-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
++WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+ OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "DATA", "LIQUIDATIONS")
+ os.makedirs(OUT_DIR, exist_ok=True)
+ 
+
+tokens used
+82,948
+已完成并提交 `bb438fe`。
+
+- 新路由生效，collector active。
+- 2 分钟内 JSONL `62 → 92` 行，最终复验 149 行。
+- 日志已见 `[message] count=100`，首行含 `o.S=SELL`。
+- `danted` 未动；`v4-proxy` 原本 inactive，未操作。
+- 报告：[REPORT_FIX_COLLECTOR_URL.md](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md)
+- 完成事件已被调度器移至 [PROCESSED/FIX_COLLECTOR_URL_DONE.json](/Users/yaomingyu/Documents/AI_QUANT_COMPANY/04_AI_TEAM/TASK_INBOX/PROCESSED/FIX_COLLECTOR_URL_DONE.json)。
+- 其他工作区改动未纳入提交。

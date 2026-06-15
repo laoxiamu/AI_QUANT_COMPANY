@@ -41,7 +41,7 @@
 | 现货成交 | Binance Spot 次一根 1H kline open |
 | 永续信号/归因 | Binance USD-M 合约 1H kline close；成交用次一根合约 1H kline open |
 | 保证金/权威永续 MTM/强平 | Binance USD-M mark price 1H OHLC；mark 不作现货成交价 |
-| basis 归因 | 同一 UTC 1H 的 `spot close - perpetual contract close`；不得用 mark 代替经济 basis，mark 与 contract 的差额按 §4.2 单列 |
+| basis 归因 | 同一 UTC 1H 的 `spot close - perpetual contract close`；不得用 mark 代替经济 basis，mark 与 contract 的差额按 §4.3 单列 |
 | funding | Binance 实际 funding rate、实际结算时间、结算时 mark 和结算前短腿数量 |
 | OI | Binance USD-M `sumOpenInterestValue`，5M 数据每小时取最后一个有效值；不前填 |
 | 维持保证金 | 对应历史时点的 Binance 完整 leverage bracket 表（floor/cap/mmr/cum）和 liquidation clearance fee rate |
@@ -103,7 +103,10 @@ q_spot_i,0 + q_perp_i,0 = 0
 | 事件备用现金 `E0` | `10,000 USDT` | 是 | 否 |
 | **合计** | **`100,000 USDT`** | **唯一一次** | **无额外资本** |
 
-所有交易使用未加滑点的 market open 作为参考成交价，滑点按 §4.1 作为独立 USDT 成本科目只扣一次。初始现货开仓的 fee/slippage 从 `B` 扣；初始永续开仓的 fee/slippage 从 futures wallet `M` 扣。后续现货买卖的本金流入/流出 `B`，其 fee/slippage 也从 `B` 扣；永续交易不交换名义本金，其 realized PnL、fee/slippage 和 funding 只进入 futures wallet。若所需账户余额不足，按 §3.2 的 `execution_fail` 撤销规则处理，不允许 `B` 或 `M` 隐式为负来完成自愿交易。
+所有交易使用未加滑点的 market open 作为参考成交价，滑点按 §4.1 作为独立 USDT 成本科目只扣一次。初始 open 前，`S0` 先作为 `spot_reserved_cash` 持有，故首个 `A_t` 满足
+`spot_reserved_cash + M0 + B0 + E0 = C0`；初始买入后该预留现金一对一转成现货市值，开仓费和滑点另从 `B` 扣。初始永续开仓的 fee/slippage 从 futures wallet `M` 扣。`spot_reserved_cash` 只存在于初始开仓前，完成或撤销开仓后必须为零，不是第五个资本桶。
+
+后续现货买卖的本金流入/流出 `B`，其 fee/slippage 也从 `B` 扣；永续交易不交换名义本金，其 realized PnL、fee/slippage 和 funding 只进入 futures wallet。若所需账户余额不足，按 §3.2 的 `execution_fail` 撤销规则处理，不允许 `B` 或 `M` 隐式为负来完成自愿交易。
 
 `B/E → M` 只是在 sleeve 内部转账，不产生 PnL、不改变 `C0`、不得在现金与 wallet 中重复计数。`E` 只用于 §2.4 规定的事件小时保证金补款，不用于普通开仓、恢复或现货购买。
 
@@ -151,7 +154,7 @@ maintenance(m) = Σ_i maintenance_i(m)
 
 只携带历史 bracket id 而没有 floor/cap/mmr/cum/clearance fee 完整表不合格。
 
-每根 bar 定义为半开区间 `H_t=[t,t+1h)`，open 为 `t`，close 为 `t+1h`。唯一处理顺序如下：
+每根 bar 定义为半开区间 `H_t=[t,t+1h)`，open 为 `t`，close 为 `t+1h`。在两个 bar 共用的边界，先完成前一 bar 的 close 风险检查/可能强平，再处理新边界的 funding；若 close 已清算，则 funding 数量为零。其后才允许补款和新 open 交易。唯一处理顺序如下：
 
 1. **边界 funding：** 若实际 funding timestamp 恰为 `t`，先按边界前持仓 `q_perp_i(t-)` 和结算 mark 入账：
 
@@ -190,7 +193,7 @@ Account-level liquidation 时：
 - 每腿计 regular fee、对应压力档 slippage，并按触发名义所在完整历史 bracket 的 clearance fee rate 计清算费。
 - realized PnL、成本与 wallet 在该检查点立即入账；这计为一个 liquidation episode，并记录受影响品种。
 - 现货腿保留到下一根 1H open，再全部卖出并计成本；期间方向暴露和现货 PnL 完整入账。此后路径保持 USDT 现金，不再重开。
-- 若清算后 `W_raw<0`，令 `bankruptcy_liability=max(0,-W_raw)`、账面 `W=0`，并在 sleeve NAV 中作为外部负债扣除；负债的建立只计一次。后续用现货卖出所得偿还负债只是资产与负债同时减少，不产生第二次 PnL。若 sleeve 原始权益 `<=0`，净值记零并成为吸收态。
+- 若清算后 `W_raw<0`，令 `bankruptcy_liability=max(0,-W_raw)`、账面 `W=0`，并在 sleeve NAV 中作为外部负债扣除。该操作只是把负 wallet 重分类为负债；损失已经包含在清算 realized PnL 和费用中，不能再记一笔 bankruptcy PnL。后续用现货卖出所得偿还负债只是资产与负债同时减少，不产生第二次 PnL。若 sleeve 原始权益 `<=0`，净值记零并成为吸收态。
 
 ADL 只在 Binance 官方市场/账户执行记录能证明该小时发生时入账：按实际减仓数量和执行价替代普通平仓；缺少执行数量或价格则该事件项 `N.A.⇒FAIL`。提现暂停不改变 MTM，但按 §6.3 阻止暂停期内 `B/E` 跨账户转入；已在 futures wallet 的资金仍可用。
 
@@ -255,7 +258,8 @@ futures_equity_A_t = W_t + Σ_i q_perp_i(t-) * (mark_i,t - entry_i,t)
 
 NAV_A_t_raw =
     spot_value_A_t + futures_equity_A_t
-    + B_t + E_t - bankruptcy_liability_t
+    + spot_reserved_cash_t + B_t + E_t
+    - bankruptcy_liability_t
 
 NAV_A_t = max(0, NAV_A_t_raw)
 net_pnl_H_t = NAV_A_(t+1h) - NAV_A_t
@@ -281,11 +285,11 @@ r_8h,k = net_pnl_8h,k / C0
 - `T_k+8h` 边界 funding 归属 `I_k`；
 - `T_k+8h` 的 open 交易归属下一 interval。
 
-若交易所临时增加、取消或改变 funding 时点，现金流仍按实际 timestamp 进入其结束的小时；研究观测单位继续固定为上述 UTC 8h interval，不改年化因子，不按结果重分箱。
+若交易所临时增加、取消或改变 funding 时点，现金流仍按实际 timestamp 归入包含该 timestamp 的小时，并在该小时右边界入账；结算名义使用实际 timestamp 前最后一个已确认仓位。若同一小时既有非整点 funding 又发生无法排序的 intrahour liquidation/ADL，由于 1H 数据不能证明先后，该小时 `N.A.⇒FAIL`。研究观测单位继续固定为上述 UTC 8h interval，不改年化因子，不按结果重分箱。
 
 ### §4.3 腿级对账与机制归因
 
-权威总收益只取 §4.2 的 NAV 差。为审计 open 改仓小时，另计算下列严格求和的腿级价格 PnL。令 `q^-` 为 `t` open 交易前数量、`q^+` 为交易后数量；若小时内强平，则把强平检查点作为额外分段，逐段使用“段前数量 × 参考价变化”后求和。无小时内强平时：
+权威总收益只取 §4.2 的 NAV 差。为审计 open 改仓小时，另计算下列严格求和的腿级价格 PnL。令 `q^-` 为 `t` open 交易前数量、`q^+` 为交易后数量。无小时内强平时：
 
 ```text
 spot_price_pnl_i,H =
@@ -336,11 +340,45 @@ net_pnl_H =
     - spot_fees_H - futures_fees_H
     - spot_slippage_H - futures_slippage_H
     - liquidation_clearance_fees_H
-    - ADL_loss_H
-    - bankruptcy_loss_H
+    - ADL_cash_charge_H
 ```
 
-其中 `bankruptcy_loss_H` 只等于本小时新增 `bankruptcy_liability`，现货卖出偿债时不得再扣。发生小时内强平/ADL 时，上述 basis、contract leg 和 mark adjustment 按实际检查点切成多个时间段，以每段开始时持仓和实际执行参考价计算；分段和必须与 NAV 差一致。
+`ADL_cash_charge_H` 只允许记录官方账单中独立于执行价的额外现金扣款；ADL 执行数量和执行价本身进入 `perp_ledger_price_pnl`，不得再记为 `ADL_cash_charge`。`bankruptcy_liability` 是负 wallet 重分类，不是额外 PnL 科目。
+
+若在 bar open 或 close 强平，仍使用上式对应边界价格。若在小时内 mark high 触发强平/ADL，由于没有同一触发时刻的可审计 spot 与 perpetual contract 成交价，归因唯一改为：
+
+```text
+preopen_basis_pnl =
+    paired_qty^- *
+    [(S_open-S_prev_close) - (F_open-F_prev_close)]
+
+preopen_contract_residual =
+    q_spot^-*(S_open-S_prev_close)
+    + q_perp^-*(F_open-F_prev_close)
+    - preopen_basis_pnl
+
+forced_segment_pnl =
+    本小时实际 spot_price_pnl
+    + 本小时实际 perp_ledger_price_pnl
+    - preopen_basis_pnl
+    - preopen_contract_residual
+```
+
+`forced_segment_pnl` 是公开列示的强制执行段价格损益，不再拆成 basis 或方向项；不得用插值构造触发时刻 spot 价格。该小时不用常规整小时 basis 公式，唯一归因为：
+
+```text
+net_pnl_forced_H =
+    preopen_basis_pnl
+    + preopen_contract_residual
+    + forced_segment_pnl
+    + funding_received_H
+    - all_fees_H
+    - all_slippage_H
+    - liquidation_clearance_fees_H
+    - ADL_cash_charge_H
+```
+
+分段和仍必须与 NAV 差一致。
 
 逐小时强制检查：
 
@@ -408,7 +446,8 @@ X_s = {
   OI 缺失标记,
   每个品种该历史小时生效的完整 bracket rows
     [floor, cap, mmr, cum, clearance_fee_rate],
-  event / withdrawal / ADL flags,
+  由真实历史序列预先按 §6 机械生成的 event membership,
+  withdrawal / ADL flags,
   USDTUSD 事件监控值,
   data-availability flags
 }
@@ -457,7 +496,7 @@ mark_low_n  = mark_open_n * mark_low_ratio_s
 OI_n        = OI_n-1 * oi_ratio_s
 ```
 
-funding rate、结算 flag/timestamp offset、事件 flag、withdrawal/ADL flag 和完整 bracket 表直接从源 bar `s` 复制到合成 bar `n`。块边界使用新块首 bar 自身的 `gap/body` 接续上一合成 close；不插值、不重置、不按源绝对价格重估 basis。若递推后 OHLC 关系不满足
+funding rate、结算 flag/timestamp offset、预先生成的事件 membership、withdrawal/ADL flag 和完整 bracket 表直接从源 bar `s` 复制到合成 bar `n`。合成路径使用复制后的 event membership，不在重建价格上重新扫描 §6，避免块边界制造人工事件；真实历史直接重演仍按 §6 从原始序列机械扫描。块边界使用新块首 bar 自身的 `gap/body` 接续上一合成 close；不插值、不重置、不按源绝对价格重估 basis。若递推后 OHLC 关系不满足
 `high>=max(open,close)` 或 `low<=min(open,close)`，该源模板不合格并在抽样前剔除；不得执行后修正。
 
 完整 bracket 表随源 bar 移动，但**档位不随源历史名义复制**。在合成路径每个 funding/open/high/close 检查点，按合成持仓数量乘合成 mark 得到 USDT 名义，再用该检查点携带的完整表按 §2.4 的 floor/cap 重新选 `mmr/cum/clearance_fee_rate`。若合成名义不落入任何档、表有重叠/缺口或制度字段缺失，该路径项 `N.A.⇒FAIL`。
@@ -465,7 +504,7 @@ funding rate、结算 flag/timestamp offset、事件 flag、withdrawal/ADL flag 
 路径运行规则：
 
 1. 前 `8,760h` 只作 OI 365 日滚动窗口 warm-up；不计评价收益。
-2. 在合成时钟 `2002-01-01T00:00:00Z` 对应的第 `8,761` 个小时 open，以新的 `C0=100,000 USDT` 按当时合成 spot/perpetual open 初始化资本和持仓，所有 PnL、breach、refractory 和负债状态归零；合成价格与 OI 历史不断链。
+2. 在合成时钟 `2002-01-01T00:00:00Z`、即零基索引 `n=8,760`（自然数第 `8,761` 个 bar）的 open，以新的 `C0=100,000 USDT` 按当时合成 spot/perpetual open 初始化资本和持仓，所有 PnL、breach、refractory 和负债状态归零；合成价格与 OI 历史不断链。
 3. 后 `8,760h` 是唯一一年评价期。§5 基础 carry 风险门先在关闭 OI 模块的 baseline 上，逐小时运行 §2.4、§4 和 §6 的完整状态机；funding、补款、交易、强平、费用和 NAV 必须重新产生，不得从 8h 收益、组合 MDD或源历史强平结果推断。
 4. 只有 baseline PASS 后，才在完全相同的 2000 条路径及抽样索引上另跑开启 §3 的配对版本。
 5. 每条路径分别运行基准滑点及三个事件压力滑点账本。若路径含 §6 事件小时，只替换事件小时内发生交易的滑点；该路径的风险统计取四个账本中的最坏值。
