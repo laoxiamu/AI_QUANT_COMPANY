@@ -1,0 +1,10 @@
+{
+  "task_id": "FIX_COLLECTOR_URL",
+  "completed_at": "2026-06-15T00:45:18Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR_URL.md",
+  "next_task": null,
+  "fixed": "yes",
+  "frames_after": 92,
+  "notes": "Backed up the collector, changed only WS_URL to the Binance /market route, restarted aiquant-liq-collector, and verified immediate messages plus JSONL growth from 62 to 92 rows in 120 seconds. First sample contains o.S=SELL. No rollback required."
+}

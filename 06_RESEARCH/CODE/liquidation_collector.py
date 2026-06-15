@@ -12,7 +12,7 @@ import json, time, os, datetime, threading
 
 import websocket  # websocket-client
 
-WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
 OUT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "DATA", "LIQUIDATIONS")
 os.makedirs(OUT_DIR, exist_ok=True)
 
