@@ -1,0 +1,1551 @@
+Reading additional input from stdin...
+2026-06-15T00:31:46.875528Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+OpenAI Codex v0.139.0
+--------
+workdir: /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019ec8b1-0cbe-7bf2-a33f-3d39623a681a
+--------
+user
+# FIX-COLLECTOR-URL：采集器一行修复（Binance WS 路由迁移，已查实）
+
+**调用：** `--sandbox danger-full-access`（需 SSH）。
+**已查实根因（VERIFY-V462）：** 非IP封锁；Binance 2026-04-23 WS 路由迁移。旧 `wss://fstream.binance.com/ws/!forceOrder@arr`→0帧；新 `wss://fstream.binance.com/market/ws/!forceOrder@arr`→立即收帧（同机已验 3 帧）。
+**SSH：** `sshpass -p "$(cat ~/.aiquant_sealed/sg_pass)" ssh -o StrictHostKeyChecking=no root@43.160.200.224 "<cmd>"`。**禁浏览器。红线：danted/v4-proxy 不能停；只动 aiquant-liq-collector。**
+
+## 任务
+1. 备份 `/opt/ai_quant_liq_collector/liquidation_collector.py` 为 `.bak.20260615`。
+2. 把 `WS_URL` 从 `wss://fstream.binance.com/ws/!forceOrder@arr` 改为 `wss://fstream.binance.com/market/ws/!forceOrder@arr`（仅改这一行；其余逻辑不动）。
+3. `systemctl restart aiquant-liq-collector`。
+4. **验证**：2-3 分钟内 collector.log 出现 `[message]`、`process_messages>0`、`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_YYYYMMDD.jsonl` 出现且行数增长；贴日志+样本首行证据（确认含 `o.S` side 字段）。
+5. 若新路由仍 0 帧→回滚 .bak，报告并改用 VERIFY-V462 的 REST 方案备选（`/fapi/v1` futures REST 轮询强平/OI）。
+
+## 安全：**不要把任何 API key / 密码写入报告或 commit**；若 run 日志混入服务器上无关服务的凭据，脱敏，且该 run 日志不纳入 git。
+## 完成写 `04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json`(task_id=FIX_COLLECTOR_URL,fixed=yes/no,frames_after=N,notes)。报告 `REPORT_FIX_COLLECTOR_URL.md`。
+2026-06-15T00:31:52.043669Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Client(HttpRequest(HttpRequest("http/request failed: error sending request for url (https://chatgpt.com/backend-api/wham/apps)")))
+2026-06-15T00:31:53.361373Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: tls handshake eof, url: wss://chatgpt.com/backend-api/codex/responses
+2026-06-15T00:31:58.960273Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: tls handshake eof, url: wss://chatgpt.com/backend-api/codex/responses
+2026-06-15T00:32:04.193280Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: tls handshake eof, url: wss://chatgpt.com/backend-api/codex/responses
+ERROR: Reconnecting... 2/5
+2026-06-15T00:32:09.573884Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: tls handshake eof, url: wss://chatgpt.com/backend-api/codex/responses
+ERROR: Reconnecting... 3/5
+2026-06-15T00:32:15.391883Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: tls handshake eof, url: wss://chatgpt.com/backend-api/codex/responses
+ERROR: Reconnecting... 4/5
+2026-06-15T00:32:22.124632Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: tls handshake eof, url: wss://chatgpt.com/backend-api/codex/responses
+ERROR: Reconnecting... 5/5
+2026-06-15T00:32:30.066306Z ERROR codex_api::endpoint::responses_websocket: failed to connect to websocket: IO error: tls handshake eof, url: wss://chatgpt.com/backend-api/codex/responses
+2026-06-15T00:32:59.048618Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+exec
+/bin/bash -lc 'cat /Users/yaomingyu/.codex/skills/using-superpowers/SKILL.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+---
+name: using-superpowers
+description: Use when starting any conversation - establishes how to find and use skills, requiring Skill tool invocation before ANY response including clarifying questions
+---
+
+<SUBAGENT-STOP>
+If you were dispatched as a subagent to execute a specific task, skip this skill.
+</SUBAGENT-STOP>
+
+<EXTREMELY-IMPORTANT>
+If you think there is even a 1% chance a skill might apply to what you are doing, you ABSOLUTELY MUST invoke the skill.
+
+IF A SKILL APPLIES TO YOUR TASK, YOU DO NOT HAVE A CHOICE. YOU MUST USE IT.
+
+This is not negotiable. This is not optional. You cannot rationalize your way out of this.
+</EXTREMELY-IMPORTANT>
+
+## Instruction Priority
+
+Superpowers skills override default system prompt behavior, but **user instructions always take precedence**:
+
+1. **User's explicit instructions** (CLAUDE.md, GEMINI.md, AGENTS.md, direct requests) — highest priority
+2. **Superpowers skills** — override default system behavior where they conflict
+3. **Default system prompt** — lowest priority
+
+If CLAUDE.md, GEMINI.md, or AGENTS.md says "don't use TDD" and a skill says "always use TDD," follow the user's instructions. The user is in control.
+
+## How to Access Skills
+
+**In Claude Code:** Use the `Skill` tool. When you invoke a skill, its content is loaded and presented to you—follow it directly. Never use the Read tool on skill files.
+
+**In Copilot CLI:** Use the `skill` tool. Skills are auto-discovered from installed plugins. The `skill` tool works the same as Claude Code's `Skill` tool.
+
+**In Gemini CLI:** Skills activate via the `activate_skill` tool. Gemini loads skill metadata at session start and activates the full content on demand.
+
+**In other environments:** Check your platform's documentation for how skills are loaded.
+
+## Platform Adaptation
+
+Skills use Claude Code tool names. Non-CC platforms: see `references/copilot-tools.md` (Copilot CLI), `references/codex-tools.md` (Codex) for tool equivalents. Gemini CLI users get the tool mapping loaded automatically via GEMINI.md.
+
+# Using Skills
+
+## The Rule
+
+**Invoke relevant or requested skills BEFORE any response or action.** Even a 1% chance a skill might apply means that you should invoke the skill to check. If an invoked skill turns out to be wrong for the situation, you don't need to use it.
+
+```dot
+digraph skill_flow {
+    "User message received" [shape=doublecircle];
+    "About to EnterPlanMode?" [shape=doublecircle];
+    "Already brainstormed?" [shape=diamond];
+    "Invoke brainstorming skill" [shape=box];
+    "Might any skill apply?" [shape=diamond];
+    "Invoke Skill tool" [shape=box];
+    "Announce: 'Using [skill] to [purpose]'" [shape=box];
+    "Has checklist?" [shape=diamond];
+    "Create TodoWrite todo per item" [shape=box];
+    "Follow skill exactly" [shape=box];
+    "Respond (including clarifications)" [shape=doublecircle];
+
+    "About to EnterPlanMode?" -> "Already brainstormed?";
+    "Already brainstormed?" -> "Invoke brainstorming skill" [label="no"];
+    "Already brainstormed?" -> "Might any skill apply?" [label="yes"];
+    "Invoke brainstorming skill" -> "Might any skill apply?";
+
+    "User message received" -> "Might any skill apply?";
+    "Might any skill apply?" -> "Invoke Skill tool" [label="yes, even 1%"];
+    "Might any skill apply?" -> "Respond (including clarifications)" [label="definitely not"];
+    "Invoke Skill tool" -> "Announce: 'Using [skill] to [purpose]'";
+    "Announce: 'Using [skill] to [purpose]'" -> "Has checklist?";
+    "Has checklist?" -> "Create TodoWrite todo per item" [label="yes"];
+    "Has checklist?" -> "Follow skill exactly" [label="no"];
+    "Create TodoWrite todo per item" -> "Follow skill exactly";
+}
+```
+
+## Red Flags
+
+These thoughts mean STOP—you're rationalizing:
+
+| Thought | Reality |
+|---------|---------|
+| "This is just a simple question" | Questions are tasks. Check for skills. |
+| "I need more context first" | Skill check comes BEFORE clarifying questions. |
+| "Let me explore the codebase first" | Skills tell you HOW to explore. Check first. |
+| "I can check git/files quickly" | Files lack conversation context. Check for skills. |
+| "Let me gather information first" | Skills tell you HOW to gather information. |
+| "This doesn't need a formal skill" | If a skill exists, use it. |
+| "I remember this skill" | Skills evolve. Read current version. |
+| "This doesn't count as a task" | Action = task. Check for skills. |
+| "The skill is overkill" | Simple things become complex. Use it. |
+| "I'll just do this one thing first" | Check BEFORE doing anything. |
+| "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
+| "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
+
+## Skill Priority
+
+When multiple skills could apply, use this order:
+
+1. **Process skills first** (brainstorming, debugging) - these determine HOW to approach the task
+2. **Implementation skills second** (frontend-design, mcp-builder) - these guide execution
+
+"Let's build X" → brainstorming first, then implementation skills.
+"Fix this bug" → debugging first, then domain-specific skills.
+
+## Skill Types
+
+**Rigid** (TDD, debugging): Follow exactly. Don't adapt away discipline.
+
+**Flexible** (patterns): Adapt principles to context.
+
+The skill itself tells you which.
+
+## User Instructions
+
+Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
+
+exec
+/bin/bash -lc 'cat /Users/yaomingyu/.codex/skills/brainstorming/SKILL.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+---
+name: brainstorming
+description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation."
+---
+
+# Brainstorming Ideas Into Designs
+
+Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
+
+Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
+
+<HARD-GATE>
+Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
+</HARD-GATE>
+
+## Anti-Pattern: "This Is Too Simple To Need A Design"
+
+Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+
+## Checklist
+
+You MUST create a task for each of these items and complete them in order:
+
+1. **Explore project context** — check files, docs, recent commits
+2. **Offer visual companion** (if topic will involve visual questions) — this is its own message, not combined with a clarifying question. See the Visual Companion section below.
+3. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
+4. **Propose 2-3 approaches** — with trade-offs and your recommendation
+5. **Present design** — in sections scaled to their complexity, get user approval after each section
+6. **Write design doc** — save to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` and commit
+7. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
+8. **User reviews written spec** — ask user to review the spec file before proceeding
+9. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+
+## Process Flow
+
+```dot
+digraph brainstorming {
+    "Explore project context" [shape=box];
+    "Visual questions ahead?" [shape=diamond];
+    "Offer Visual Companion\n(own message, no other content)" [shape=box];
+    "Ask clarifying questions" [shape=box];
+    "Propose 2-3 approaches" [shape=box];
+    "Present design sections" [shape=box];
+    "User approves design?" [shape=diamond];
+    "Write design doc" [shape=box];
+    "Spec self-review\n(fix inline)" [shape=box];
+    "User reviews spec?" [shape=diamond];
+    "Invoke writing-plans skill" [shape=doublecircle];
+
+    "Explore project context" -> "Visual questions ahead?";
+    "Visual questions ahead?" -> "Offer Visual Companion\n(own message, no other content)" [label="yes"];
+    "Visual questions ahead?" -> "Ask clarifying questions" [label="no"];
+    "Offer Visual Companion\n(own message, no other content)" -> "Ask clarifying questions";
+    "Ask clarifying questions" -> "Propose 2-3 approaches";
+    "Propose 2-3 approaches" -> "Present design sections";
+    "Present design sections" -> "User approves design?";
+    "User approves design?" -> "Present design sections" [label="no, revise"];
+    "User approves design?" -> "Write design doc" [label="yes"];
+    "Write design doc" -> "Spec self-review\n(fix inline)";
+    "Spec self-review\n(fix inline)" -> "User reviews spec?";
+    "User reviews spec?" -> "Write design doc" [label="changes requested"];
+    "User reviews spec?" -> "Invoke writing-plans skill" [label="approved"];
+}
+```
+
+**The terminal state is invoking writing-plans.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is writing-plans.
+
+## The Process
+
+**Understanding the idea:**
+
+- Check out the current project state first (files, docs, recent commits)
+- Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
+- If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec → plan → implementation cycle.
+- For appropriately-scoped projects, ask questions one at a time to refine the idea
+- Prefer multiple choice questions when possible, but open-ended is fine too
+- Only one question per message - if a topic needs more exploration, break it into multiple questions
+- Focus on understanding: purpose, constraints, success criteria
+
+**Exploring approaches:**
+
+- Propose 2-3 different approaches with trade-offs
+- Present options conversationally with your recommendation and reasoning
+- Lead with your recommended option and explain why
+
+**Presenting the design:**
+
+- Once you believe you understand what you're building, present the design
+- Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
+- Ask after each section whether it looks right so far
+- Cover: architecture, components, data flow, error handling, testing
+- Be ready to go back and clarify if something doesn't make sense
+
+**Design for isolation and clarity:**
+
+- Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
+- For each unit, you should be able to answer: what does it do, how do you use it, and what does it depend on?
+- Can someone understand what a unit does without reading its internals? Can you change the internals without breaking consumers? If not, the boundaries need work.
+- Smaller, well-bounded units are also easier for you to work with - you reason better about code you can hold in context at once, and your edits are more reliable when files are focused. When a file grows large, that's often a signal that it's doing too much.
+
+**Working in existing codebases:**
+
+- Explore the current structure before proposing changes. Follow existing patterns.
+- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design - the way a good developer improves code they're working in.
+- Don't propose unrelated refactoring. Stay focused on what serves the current goal.
+
+## After the Design
+
+**Documentation:**
+
+- Write the validated design (spec) to `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
+  - (User preferences for spec location override this default)
+- Use elements-of-style:writing-clearly-and-concisely skill if available
+- Commit the design document to git
+
+**Spec Self-Review:**
+After writing the spec document, look at it with fresh eyes:
+
+1. **Placeholder scan:** Any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
+2. **Internal consistency:** Do any sections contradict each other? Does the architecture match the feature descriptions?
+3. **Scope check:** Is this focused enough for a single implementation plan, or does it need decomposition?
+4. **Ambiguity check:** Could any requirement be interpreted two different ways? If so, pick one and make it explicit.
+
+Fix any issues inline. No need to re-review — just fix and move on.
+
+**User Review Gate:**
+After the spec review loop passes, ask the user to review the written spec before proceeding:
+
+> "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
+
+Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
+
+**Implementation:**
+
+- Invoke the writing-plans skill to create a detailed implementation plan
+- Do NOT invoke any other skill. writing-plans is the next step.
+
+## Key Principles
+
+- **One question at a time** - Don't overwhelm with multiple questions
+- **Multiple choice preferred** - Easier to answer than open-ended when possible
+- **YAGNI ruthlessly** - Remove unnecessary features from all designs
+- **Explore alternatives** - Always propose 2-3 approaches before settling
+- **Incremental validation** - Present design, get approval before moving on
+- **Be flexible** - Go back and clarify when something doesn't make sense
+
+## Visual Companion
+
+A browser-based companion for showing mockups, diagrams, and visual options during brainstorming. Available as a tool — not a mode. Accepting the companion means it's available for questions that benefit from visual treatment; it does NOT mean every question goes through the browser.
+
+**Offering the companion:** When you anticipate that upcoming questions will involve visual content (mockups, layouts, diagrams), offer it once for consent:
+> "Some of what we're working on might be easier to explain if I can show it to you in a web browser. I can put together mockups, diagrams, comparisons, and other visuals as we go. This feature is still new and can be token-intensive. Want to try it? (Requires opening a local URL)"
+
+**This offer MUST be its own message.** Do not combine it with clarifying questions, context summaries, or any other content. The message should contain ONLY the offer above and nothing else. Wait for the user's response before continuing. If they decline, proceed with text-only brainstorming.
+
+**Per-question decision:** Even after the user accepts, decide FOR EACH QUESTION whether to use the browser or the terminal. The test: **would the user understand this better by seeing it than reading it?**
+
+- **Use the browser** for content that IS visual — mockups, wireframes, layout comparisons, architecture diagrams, side-by-side visual designs
+- **Use the terminal** for content that is text — requirements questions, conceptual choices, tradeoff lists, A/B/C/D text options, scope decisions
+
+A question about a UI topic is not automatically a visual question. "What does personality mean in this context?" is a conceptual question — use the terminal. "Which wizard layout works better?" is a visual question — use the browser.
+
+If they agree to the companion, read the detailed guide before proceeding:
+`skills/brainstorming/visual-companion.md`
+
+exec
+/bin/bash -lc 'cat /Users/yaomingyu/.codex/skills/systematic-debugging/SKILL.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+exec
+/bin/bash -lc 'cat /Users/yaomingyu/.codex/skills/verification-before-completion/SKILL.md' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+---
+name: verification-before-completion
+description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always
+---
+
+# Verification Before Completion
+
+## Overview
+
+Claiming work is complete without verification is dishonesty, not efficiency.
+
+**Core principle:** Evidence before claims, always.
+
+**Violating the letter of this rule is violating the spirit of this rule.**
+
+## The Iron Law
+
+```
+NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
+```
+
+If you haven't run the verification command in this message, you cannot claim it passes.
+
+## The Gate Function
+
+```
+BEFORE claiming any status or expressing satisfaction:
+
+1. IDENTIFY: What command proves this claim?
+2. RUN: Execute the FULL command (fresh, complete)
+3. READ: Full output, check exit code, count failures
+4. VERIFY: Does output confirm the claim?
+   - If NO: State actual status with evidence
+   - If YES: State claim WITH evidence
+5. ONLY THEN: Make the claim
+
+Skip any step = lying, not verifying
+```
+
+## Common Failures
+
+| Claim | Requires | Not Sufficient |
+|-------|----------|----------------|
+| Tests pass | Test command output: 0 failures | Previous run, "should pass" |
+| Linter clean | Linter output: 0 errors | Partial check, extrapolation |
+| Build succeeds | Build command: exit 0 | Linter passing, logs look good |
+| Bug fixed | Test original symptom: passes | Code changed, assumed fixed |
+| Regression test works | Red-green cycle verified | Test passes once |
+| Agent completed | VCS diff shows changes | Agent reports "success" |
+| Requirements met | Line-by-line checklist | Tests passing |
+
+## Red Flags - STOP
+
+- Using "should", "probably", "seems to"
+- Expressing satisfaction before verification ("Great!", "Perfect!", "Done!", etc.)
+- About to commit/push/PR without verification
+- Trusting agent success reports
+- Relying on partial verification
+- Thinking "just this once"
+- Tired and wanting work over
+- **ANY wording implying success without having run verification**
+
+## Rationalization Prevention
+
+| Excuse | Reality |
+|--------|---------|
+| "Should work now" | RUN the verification |
+| "I'm confident" | Confidence ≠ evidence |
+| "Just this once" | No exceptions |
+| "Linter passed" | Linter ≠ compiler |
+| "Agent said success" | Verify independently |
+| "I'm tired" | Exhaustion ≠ excuse |
+| "Partial check is enough" | Partial proves nothing |
+| "Different words so rule doesn't apply" | Spirit over letter |
+
+## Key Patterns
+
+**Tests:**
+```
+✅ [Run test command] [See: 34/34 pass] "All tests pass"
+❌ "Should pass now" / "Looks correct"
+```
+
+**Regression tests (TDD Red-Green):**
+```
+✅ Write → Run (pass) → Revert fix → Run (MUST FAIL) → Restore → Run (pass)
+❌ "I've written a regression test" (without red-green verification)
+```
+
+**Build:**
+```
+✅ [Run build] [See: exit 0] "Build passes"
+❌ "Linter passed" (linter doesn't check compilation)
+```
+
+**Requirements:**
+```
+✅ Re-read plan → Create checklist → Verify each → Report gaps or completion
+❌ "Tests pass, phase complete"
+```
+
+**Agent delegation:**
+```
+✅ Agent reports success → Check VCS diff → Verify changes → Report actual state
+❌ Trust agent report
+```
+
+## Why This Matters
+
+From 24 failure memories:
+- your human partner said "I don't believe you" - trust broken
+- Undefined functions shipped - would crash
+- Missing requirements shipped - incomplete features
+- Time wasted on false completion → redirect → rework
+- Violates: "Honesty is a core value. If you lie, you'll be replaced."
+
+## When To Apply
+
+**ALWAYS before:**
+- ANY variation of success/completion claims
+- ANY expression of satisfaction
+- ANY positive statement about work state
+- Committing, PR creation, task completion
+- Moving to next task
+- Delegating to agents
+
+**Rule applies to:**
+- Exact phrases
+- Paraphrases and synonyms
+- Implications of success
+- ANY communication suggesting completion/correctness
+
+## The Bottom Line
+
+**No shortcuts for verification.**
+
+Run the command. Read the output. THEN claim the result.
+
+This is non-negotiable.
+
+ succeeded in 0ms:
+---
+name: systematic-debugging
+description: Use when encountering any bug, test failure, or unexpected behavior, before proposing fixes
+---
+
+# Systematic Debugging
+
+## Overview
+
+Random fixes waste time and create new bugs. Quick patches mask underlying issues.
+
+**Core principle:** ALWAYS find root cause before attempting fixes. Symptom fixes are failure.
+
+**Violating the letter of this process is violating the spirit of debugging.**
+
+## The Iron Law
+
+```
+NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST
+```
+
+If you haven't completed Phase 1, you cannot propose fixes.
+
+## When to Use
+
+Use for ANY technical issue:
+- Test failures
+- Bugs in production
+- Unexpected behavior
+- Performance problems
+- Build failures
+- Integration issues
+
+**Use this ESPECIALLY when:**
+- Under time pressure (emergencies make guessing tempting)
+- "Just one quick fix" seems obvious
+- You've already tried multiple fixes
+- Previous fix didn't work
+- You don't fully understand the issue
+
+**Don't skip when:**
+- Issue seems simple (simple bugs have root causes too)
+- You're in a hurry (rushing guarantees rework)
+- Manager wants it fixed NOW (systematic is faster than thrashing)
+
+## The Four Phases
+
+You MUST complete each phase before proceeding to the next.
+
+### Phase 1: Root Cause Investigation
+
+**BEFORE attempting ANY fix:**
+
+1. **Read Error Messages Carefully**
+   - Don't skip past errors or warnings
+   - They often contain the exact solution
+   - Read stack traces completely
+   - Note line numbers, file paths, error codes
+
+2. **Reproduce Consistently**
+   - Can you trigger it reliably?
+   - What are the exact steps?
+   - Does it happen every time?
+   - If not reproducible → gather more data, don't guess
+
+3. **Check Recent Changes**
+   - What changed that could cause this?
+   - Git diff, recent commits
+   - New dependencies, config changes
+   - Environmental differences
+
+4. **Gather Evidence in Multi-Component Systems**
+
+   **WHEN system has multiple components (CI → build → signing, API → service → database):**
+
+   **BEFORE proposing fixes, add diagnostic instrumentation:**
+   ```
+   For EACH component boundary:
+     - Log what data enters component
+     - Log what data exits component
+     - Verify environment/config propagation
+     - Check state at each layer
+
+   Run once to gather evidence showing WHERE it breaks
+   THEN analyze evidence to identify failing component
+   THEN investigate that specific component
+   ```
+
+   **Example (multi-layer system):**
+   ```bash
+   # Layer 1: Workflow
+   echo "=== Secrets available in workflow: ==="
+   echo "IDENTITY: ${IDENTITY:+SET}${IDENTITY:-UNSET}"
+
+   # Layer 2: Build script
+   echo "=== Env vars in build script: ==="
+   env | grep IDENTITY || echo "IDENTITY not in environment"
+
+   # Layer 3: Signing script
+   echo "=== Keychain state: ==="
+   security list-keychains
+   security find-identity -v
+
+   # Layer 4: Actual signing
+   codesign --sign "$IDENTITY" --verbose=4 "$APP"
+   ```
+
+   **This reveals:** Which layer fails (secrets → workflow ✓, workflow → build ✗)
+
+5. **Trace Data Flow**
+
+   **WHEN error is deep in call stack:**
+
+   See `root-cause-tracing.md` in this directory for the complete backward tracing technique.
+
+   **Quick version:**
+   - Where does bad value originate?
+   - What called this with bad value?
+   - Keep tracing up until you find the source
+   - Fix at source, not at symptom
+
+### Phase 2: Pattern Analysis
+
+**Find the pattern before fixing:**
+
+1. **Find Working Examples**
+   - Locate similar working code in same codebase
+   - What works that's similar to what's broken?
+
+2. **Compare Against References**
+   - If implementing pattern, read reference implementation COMPLETELY
+   - Don't skim - read every line
+   - Understand the pattern fully before applying
+
+3. **Identify Differences**
+   - What's different between working and broken?
+   - List every difference, however small
+   - Don't assume "that can't matter"
+
+4. **Understand Dependencies**
+   - What other components does this need?
+   - What settings, config, environment?
+   - What assumptions does it make?
+
+### Phase 3: Hypothesis and Testing
+
+**Scientific method:**
+
+1. **Form Single Hypothesis**
+   - State clearly: "I think X is the root cause because Y"
+   - Write it down
+   - Be specific, not vague
+
+2. **Test Minimally**
+   - Make the SMALLEST possible change to test hypothesis
+   - One variable at a time
+   - Don't fix multiple things at once
+
+3. **Verify Before Continuing**
+   - Did it work? Yes → Phase 4
+   - Didn't work? Form NEW hypothesis
+   - DON'T add more fixes on top
+
+4. **When You Don't Know**
+   - Say "I don't understand X"
+   - Don't pretend to know
+   - Ask for help
+   - Research more
+
+### Phase 4: Implementation
+
+**Fix the root cause, not the symptom:**
+
+1. **Create Failing Test Case**
+   - Simplest possible reproduction
+   - Automated test if possible
+   - One-off test script if no framework
+   - MUST have before fixing
+   - Use the `superpowers:test-driven-development` skill for writing proper failing tests
+
+2. **Implement Single Fix**
+   - Address the root cause identified
+   - ONE change at a time
+   - No "while I'm here" improvements
+   - No bundled refactoring
+
+3. **Verify Fix**
+   - Test passes now?
+   - No other tests broken?
+   - Issue actually resolved?
+
+4. **If Fix Doesn't Work**
+   - STOP
+   - Count: How many fixes have you tried?
+   - If < 3: Return to Phase 1, re-analyze with new information
+   - **If ≥ 3: STOP and question the architecture (step 5 below)**
+   - DON'T attempt Fix #4 without architectural discussion
+
+5. **If 3+ Fixes Failed: Question Architecture**
+
+   **Pattern indicating architectural problem:**
+   - Each fix reveals new shared state/coupling/problem in different place
+   - Fixes require "massive refactoring" to implement
+   - Each fix creates new symptoms elsewhere
+
+   **STOP and question fundamentals:**
+   - Is this pattern fundamentally sound?
+   - Are we "sticking with it through sheer inertia"?
+   - Should we refactor architecture vs. continue fixing symptoms?
+
+   **Discuss with your human partner before attempting more fixes**
+
+   This is NOT a failed hypothesis - this is a wrong architecture.
+
+## Red Flags - STOP and Follow Process
+
+If you catch yourself thinking:
+- "Quick fix for now, investigate later"
+- "Just try changing X and see if it works"
+- "Add multiple changes, run tests"
+- "Skip the test, I'll manually verify"
+- "It's probably X, let me fix that"
+- "I don't fully understand but this might work"
+- "Pattern says X but I'll adapt it differently"
+- "Here are the main problems: [lists fixes without investigation]"
+- Proposing solutions before tracing data flow
+- **"One more fix attempt" (when already tried 2+)**
+- **Each fix reveals new problem in different place**
+
+**ALL of these mean: STOP. Return to Phase 1.**
+
+**If 3+ fixes failed:** Question the architecture (see Phase 4.5)
+
+## your human partner's Signals You're Doing It Wrong
+
+**Watch for these redirections:**
+- "Is that not happening?" - You assumed without verifying
+- "Will it show us...?" - You should have added evidence gathering
+- "Stop guessing" - You're proposing fixes without understanding
+- "Ultrathink this" - Question fundamentals, not just symptoms
+- "We're stuck?" (frustrated) - Your approach isn't working
+
+**When you see these:** STOP. Return to Phase 1.
+
+## Common Rationalizations
+
+| Excuse | Reality |
+|--------|---------|
+| "Issue is simple, don't need process" | Simple issues have root causes too. Process is fast for simple bugs. |
+| "Emergency, no time for process" | Systematic debugging is FASTER than guess-and-check thrashing. |
+| "Just try this first, then investigate" | First fix sets the pattern. Do it right from the start. |
+| "I'll write test after confirming fix works" | Untested fixes don't stick. Test first proves it. |
+| "Multiple fixes at once saves time" | Can't isolate what worked. Causes new bugs. |
+| "Reference too long, I'll adapt the pattern" | Partial understanding guarantees bugs. Read it completely. |
+| "I see the problem, let me fix it" | Seeing symptoms ≠ understanding root cause. |
+| "One more fix attempt" (after 2+ failures) | 3+ failures = architectural problem. Question pattern, don't fix again. |
+
+## Quick Reference
+
+| Phase | Key Activities | Success Criteria |
+|-------|---------------|------------------|
+| **1. Root Cause** | Read errors, reproduce, check changes, gather evidence | Understand WHAT and WHY |
+| **2. Pattern** | Find working examples, compare | Identify differences |
+| **3. Hypothesis** | Form theory, test minimally | Confirmed or new hypothesis |
+| **4. Implementation** | Create test, fix, verify | Bug resolved, tests pass |
+
+## When Process Reveals "No Root Cause"
+
+If systematic investigation reveals issue is truly environmental, timing-dependent, or external:
+
+1. You've completed the process
+2. Document what you investigated
+3. Implement appropriate handling (retry, timeout, error message)
+4. Add monitoring/logging for future investigation
+
+**But:** 95% of "no root cause" cases are incomplete investigation.
+
+## Supporting Techniques
+
+These techniques are part of systematic debugging and available in this directory:
+
+- **`root-cause-tracing.md`** - Trace bugs backward through call stack to find original trigger
+- **`defense-in-depth.md`** - Add validation at multiple layers after finding root cause
+- **`condition-based-waiting.md`** - Replace arbitrary timeouts with condition polling
+
+**Related skills:**
+- **superpowers:test-driven-development** - For creating failing test case (Phase 4, Step 1)
+- **superpowers:verification-before-completion** - Verify fix worked before claiming success
+
+## Real-World Impact
+
+From debugging sessions:
+- Systematic approach: 15-30 minutes to fix
+- Random fixes approach: 2-3 hours of thrashing
+- First-time fix rate: 95% vs 40%
+- New bugs introduced: Near zero vs common
+
+2026-06-15T00:33:22.808872Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+codex
+我会按 `systematic-debugging` 与 `verification-before-completion` 执行：先远端确认当前 URL、服务和 0 帧症状，再只改指定一行并用新鲜日志与数据增长证据验收。任务规格已明确限定设计和回滚路径，因此不扩展范围，也不使用浏览器。
+  → 检查本地任务上下文、git 状态与报告惯例
+  • 远端确认旧 URL、服务状态和修复前症状
+  • 备份并仅替换 WS_URL，重启 collector
+  • 轮询验证消息、计数、数据文件增长及 side 字段
+  • 写报告与 TASK_INBOX，检查 diff 并提交任务 commit
+2026-06-15T00:33:41.958473Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+exec
+/bin/bash -lc 'git status --short && git log -5 --oneline' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+ M 01_MEMORY_CORE/CURRENT_STATE.md
+ M 04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log
+?? 04_AI_TEAM/CODEX_TASKS/CARRY_V4_DRAFT.md
+?? 04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL.md
+?? 04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL_RUN.log
+93ee01c VERIFY_V462: 核实币安数据源并定位WS路由迁移
+abe0bb0 派Codex核实历史v4.6.2币安数据源(可能推翻Binance封IP结论);记§1c⑩核实项
+9fe4e70 carry v3起草完成(闭RR2六项)派CARRY-RR3三轮盲审;采集器确认Binance futures WS对SG+住宅IP全封(Coinbase可收),路径B采集延后
+8a95652 state-sync修复:CURRENT_STATE §在途/§1b/§1c/§4/§等待Founder全量回写(A-1 Dead+carry主线v3);纠正摘要比权威源新的倒置
+e94c3e0 FIX-COLLECTOR-V2 report unavailable Binance WS exits
+
+exec
+/bin/bash -lc 'test -f AGENTS.md && cat AGENTS.md || true' in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+
+
+# AGENTS.md — AI Quant Company（Codex 实现会话指令）
+
+## 角色
+你是本项目的实现工程师（Codex），对交付代码与报告的**正确性、可复现性、可审计性**负责。判断与方向由 Claude（主理人/CTO）负责，但你有**专业异议义务**：发现任务书的研究方向/方法有问题，先暂停并书面提异议，不机械执行（DEC-057）。
+
+## 任务执行前强制自查（七问精简版）
+①任务在验证什么机制？②任务书的验收标准是否可量化？③有无更便宜的等效实现？④是否会触碰禁止项（见下）？任一答不出 → 先问 Claude，不要猜。
+
+## 研究铁律（Research Protocol v1.2 + v1.3 增补件，冲突以 v1.3 为准）
+1. 单变量原则；预登记后禁改假设；结论诚实（禁"有一定效果"类模糊话）。
+2. 成本完整：手续费 0.1%/边 + 滑点 0.1%（保守）+ 真实 funding。**事件类策略必须加报滑点 0.3/0.5/1.0% 压力档**（v1.3 §二）。
+3. 验收四件套（v1.3 §一）：E[R]>0 / 赢亏比≥1.5 / 分档爆仓概率（块bootstrap，seed预登记）/ 年化log增长>0 且分年正期望占多数。旧门槛（Sharpe>1、MaxDD<25%、Expectancy>1.0）作废。
+4. WF 硬门槛；Holdout 物理封存、**任何情况下不得读取**；事件研究按 v1.3 §四（episode<300 用池化+单调性，禁60/20/20三分）。
+5. 阈值/分位数一律滚动或扩张窗口计算，**禁全样本分位（前视）**。
+
+## 工程纪律
+- 库纪律（DEC-061）：Triple Barrier/Purged CV/统计校验等一律**自实现为可审计小函数**；MLFinPy 等仅作参考，不引硬依赖。
+- 持仓/状态以 DB 或文件为权威，禁内存字典（V4 事故根因）。
+- 输出三件套：CODE（可复跑脚本+固定seed）/ RESULTS（结论md）/ CODEX_TASKS 执行报告（含验收标准逐条自检）。
+- 数据：只读 06_RESEARCH/DATA/；产出写 06_RESEARCH/CODE/output/；UTC 时间戳。
+- git：每任务完成 commit，message 带任务号。
+
+## 禁止项
+碰 Holdout｜改预登记文档｜简化成本模型｜全样本分位｜引入不可审计黑箱依赖｜把失败结果写成"部分成功"｜超任务书范围"顺手优化"。
+
+## 历史文件处理原则（2026-06-14，与 CLAUDE.md 保持一致）
+历史文件（03_RAW_INBOX/、旧版项目方案、ChatGPT/DeepSeek 导出文件）**只做参考，禁止不分析直接继承或作为设计依据**。唯一可以直接采用历史内容的情况：综合判断它真的优于任务书指定的独立设计。任务书已经过 Claude 独立分析，Codex 按任务书规格执行，不擅自从历史文件引入未经 Claude 评估的设计。
+
+## 任务中断状态记录（§1b 机制，2026-06-14）
+如果 Codex 任务被 Founder 主动打断（或 Codex 自行判断需要暂停等待 Claude 确认），在停止前必须在任务报告文件里注明：已完成哪些步骤、剩余哪些步骤、恢复需要什么前提。Claude 会同步更新 `01_MEMORY_CORE/CURRENT_STATE.md §1b`，下一个会话可以从 §1b 找到恢复点。
+
+## 专业异议升级路径（补充，2026-06-14）
+发现任务书研究方向/实现方式有问题时：
+1. 在报告文件开头写明"**[专业异议]**"标记，说明发现的问题和替代建议
+2. 暂停执行有疑问的部分（其余可继续）
+3. 不需要等 Founder，Claude 看到后处理——这就是 Claude↔Codex 讨论链路的使用方式
+
+## 任务完成通知（TASK_INBOX 协议，2026-06-14）
+每个任务完成的**最后一步**，必须写入完成事件记录（让 Claude 调度器知道你完成了）：
+
+```python
+import json, datetime, pathlib
+inbox = pathlib.Path("04_AI_TEAM/TASK_INBOX")
+inbox.mkdir(exist_ok=True)
+done = {
+    "task_id": "TASK_ID",      # 填实际任务号，如 D1/D2/E1 等
+    "completed_at": datetime.datetime.utcnow().isoformat() + "Z",
+    "status": "completed",     # completed / blocked / failed
+    "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_TASK_ID.md",
+    "next_task": "D2",         # 任务书中指定的下一步（如无则写 null）
+    "notes": "简要说明完成情况或阻塞原因"
+}
+(inbox / f"{done['task_id']}_DONE.json").write_text(json.dumps(done, ensure_ascii=False, indent=2))
+```
+
+若任务书没有明确 next_task，写 `"next_task": null`，由 Claude 在验收时判断。
+
+## 交接
+完成后报告写入 04_AI_TEAM/CODEX_TASKS/REPORT_[任务号].md，并写入 TASK_INBOX（见上方协议）；等 Claude 验收；验收不过按退回意见修，不抗辩成本与工期以外的验收标准。
+
+exec
+/bin/bash -lc "find 04_AI_TEAM/CODEX_TASKS -maxdepth 1 -type f -name 'REPORT_*.md' | sort | tail -5 && find 04_AI_TEAM/TASK_INBOX -maxdepth 1 -type f -name '*_DONE.json' | sort | tail -5" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+04_AI_TEAM/CODEX_TASKS/REPORT_TSMOM_DUAL_ENGINE.md
+04_AI_TEAM/CODEX_TASKS/REPORT_TSMOM_EXPANSION_DATA.md
+04_AI_TEAM/CODEX_TASKS/REPORT_UNIVERSE_PIT.md
+04_AI_TEAM/CODEX_TASKS/REPORT_V5_DESIGN_EXTRACTION_POST_0510.md
+04_AI_TEAM/CODEX_TASKS/REPORT_VERIFY_V462.md
+
+exec
+/bin/bash -lc "rg -n \"VERIFY-V462|FIX_COLLECTOR_URL|liq-collector|forceOrder\" 04_AI_TEAM 01_MEMORY_CORE 06_RESEARCH --glob '"'!06_RESEARCH/DATA/**'"'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+ succeeded in 0ms:
+01_MEMORY_CORE/CURRENT_STATE.md:21:| **§1c 对话级建议暂存区** | **制度说明（DEC-073）**：本栏捕获对话中Claude提出但尚未落入§4的建议。Founder确认→升入§4/DECISION_LOG；Founder否决→清除；未响应=下次开局必提。**本轮新增（2026-06-14深夜，Founder委托CTO自主推进期间）：**①**[✅Claude执行完毕]** D2/A1-RR验收+专业透镜：两线均"需返工"属**正确返工**；D2 BLOCKED根因=D1"35/35完成"实为**数据不达用途**(下的contract klines非mark-price、缺真实funding、DEC-070四过滤无证据)→**过程教训：完成计数≠达用途，验收门须查数据适用性**(风险E反例修正)。②**[✅Claude执行完毕]** A-1预登记v2亲自主导改写(`A1_CASCADE_REBOUND_PREREG_v2.md`)，逐条闭合Reviewer十项(方向代理过滤/唯一主horizon=48h/cluster块bootstrap/refractory episode/A-2 P95 overlap/80%power MDE/两级门/现金零基准硬门/物理Holdout封存/闭合decision table)；**Codex三轮闭环**：v2盲审NOT APPROVED(仅闭2/10)→CTO据五项必改起草**v3**(`..._v3.md`:纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单8H读数P95/沙箱外真权限Holdout)→**A1-RR3第三轮盲审运行中(PID 8335)**,特别要求判定剩余阻塞是否=历史样本不可约识别上限。③**[✅已决→DEC-075:暂缓优先A-1]** TSMOM universe扩展(D1v2+D2)**未执行**——CTO判断：扩样本是D级候选(Founder未批)+只解决DD不解决TSMOM核心"无可行定仓"+DEC-070两过滤需外部数据历史不可得，**强行连夜重采=风险D局部修补搜索**。**推荐：A-1优先级高于universe扩展**。DEC070审计(`20260614_dec070_filter_audit.md`)：2可算过滤器下Tier1-clean 20/35、watch 10/35、排除5/35(AXS/FTM/ICX高跳动/低流动);**审计抛专业异议——本地CSV只存base volume非quote volume(ADTV亦不精确)+float市值比/OI市值比需外部历史数据(Binance OI REST仅近1月)**,数据成本叠加,**强化暂缓**:若Founder坚持闭环TSMOM需先投入补quote volume+外部supply/mcap/OI,性价比低于A-1。④**[✅Claude执行完毕]** 跨对话回收(扫23会话)：唯一含在途未存工作的"外部调研(Sweep形态线)"——其做空测试**已在其他会话独立完成并封账**(v4多头"全维度无一可部署"、v5做空已失败,DEC 2026-06-06)，**无孤儿决策丢失**；工作区沙箱故障根因=claude-code-vm 2.1.170下载循环失败,Desktop Commander为正确通道。⑤**[议程·rule8]** A-1历史方向识别结构性局限→**前向强平数据路径**：历史A-1无真实强平名义额(采集器2026-06-13起前向)，v2只能用价格代理；最强验证仍需前向真实强平数据3-6月——把已部署采集器与A-1直接挂钩,是采集器首个明确alpha用途。⑥**[✅已决→DEC-075]** A-1两段式路径+universe暂缓**已经Founder"按推荐继续"确认,升格DEC-075**(③⑥出本栏)。**当前推进(2026-06-15)**：**路径A**=A-1预登记已迭代到**v5**(`..._v5.md`)。盲审进度:RR4判v4闭2/5(功效治理+family CLOSED),余4项判"文字与算法冻结、不要求达机制确证严格度"→v5逐条闭(§7改"A-2非重叠关联硬门"/circular半开网格`[t1,tn+1h)`+offset截断/Spearman改配对bootstrap对ρ居中真检验ρ=0/WF唯一切点中点+按实际足迹purge/AES-256-GCM+密钥独立principal+负向测试留命令退出码)→**A1-RR5第五轮盲审=✅APPROVED(4/4全闭,`A1_RISK_REVIEW_v5.md`)**!五轮收敛(10→2/10→0/5→2/5→4/4)。放行边界:仅关联结论/不耗独立计数/不晋级策略;**执行前须先AES-256-GCM Holdout封存+负向权限测试**。**[⚠️待Founder知会后派发]** 按预登记铁律,跑Tier A事件研究(封Holdout+出A-1生死判决)须Founder知会+主会话人工派发,故CTO停在放行点未自动跑;**路径B**=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器原始forceOrder含side方向字段已核实=首个alpha用途;就绪门=候选n达功效门→另立预登记走硬门耗计数;待数据累积3-6月,低成本并行不阻塞)。**⑥已闭（2026-06-15）**：A-1 Tier A 已跑 → **FAILED**(48h Holm p=0.32) → A-1独立回弹 **Dead**(墓园+机会地图);PB1脚手架完成。**⑦[已升格→§4]** carry升主线:v1→RR1→v2→RR2(2/8重构获认)→v3起草中;已入§4执行序与机会地图,非悬空建议。**⑧[已记]** 采集器查实零采集(Binance限云IP)→工具链已纠正;Codex网络认知更正(网络活用danger-full-access)。**⑨[环境·待Founder]** VM下载/DC断联:downloads.claude.ai走双跳拉不动53MB二进制,Founder已加Clash单跳规则但下载仍truncate(2核跳板带宽不足),Founder选C忍着(不阻塞research,A-1/carry均nohup扛断)。网络拓扑已记忆([[network-proxy-topology]])。**⑩[核实项·已派Codex]** Founder线索:服务器有历史v4.6.2(数据源也是币安,疑v4-strategy-runner)。**若v4.6.2能正常取币安数据→可能推翻"Binance封本IP"结论**(我只测了futures公共WS forceOrder,v4.6.2或用REST/现货/不同端点/鉴权)。已派`VERIFY_V462`(Codex danger-full-access)核实其数据源+对照,出修采集器正路。**本栏其余无悬空建议（carry在§4,A-1在墓园,采集器在工具链）。**|
+01_MEMORY_CORE/CURRENT_STATE.md:35:| 强平采集器 | ⚠️ **实为零采集（2026-06-14 查实，纠正旧"生产运行中"假状态）**：service active 但 22h `process_messages=0`。根因=**Binance 对腾讯云SG服务器IP的WS行情流限制**（REST fapi HTTP200正常，但 aggTrade/forceOrder WS 握手OPEN后0帧——云IP被限推送）。**非代码bug**（ping+重连正常）。教训=信了"service active"未验真实数据流（风险E/A）。**根因查实（2026-06-15 VERIFY-V462，纠正先前"封IP"误判）**：**非IP封锁，是Binance 2026-04-23 WS路由迁移**。旧URL`wss://fstream.binance.com/ws/!forceOrder@arr`→0帧；**新路由`/market/ws/!forceOrder@arr`→立即收帧**（同机对照+历史v4.6.2 REST直连可用佐证）。**修法极简=改WS_URL路径,无需鉴权/代理**(Codex修复+验证中)。OI/funding改用REST(`/fapi/v1/openInterest`,`/futures/data/openInterestHist`,`/fapi/v1/fundingRate`)。修好后采集器即可正常攒数→路径B免费期权激活 |
+01_MEMORY_CORE/BOOT_BRIEF.md:28:- 采集器 ✅ 已部署，`aiquant-liq-collector.service` 运行中。**当前无 Founder 阻塞项。**
+01_MEMORY_CORE/BOOT_BRIEF.md:32:- **A-1预登记CTO亲自三轮闭环**：v2（闭2/10）→**v3**（逐条闭五项必改：纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单读数P95/沙箱外真权限Holdout）。**A-1两段式路径已由Founder"按推荐继续"确认→DEC-075**（A-1两段式+universe暂缓优先A-1）。**路径A**(历史关联快筛)=预登记经**五轮盲审v1→v5,RR5=✅APPROVED(4/4)**!Tier A严格=关联门(不声称机制/不耗独立计数/不晋级);功效门`PROTOCOL_v1.4_A1SCREEN_ADDENDUM`留痕豁免;AES-256-GCM加密Holdout。**放行待Founder一句"跑"→主会话派发**(先Holdout封存+负向权限测试,再Codex只读work跑事件研究出A-1关联生死判决)。**路径B**(前向真实强平数据机制确证)=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器forceOrder含side方向字段=首个alpha用途,待就绪门,低成本并行)。**DECISION_LOG最新=DEC-075**。
+06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md:13:| 强平方向 | 无数据，用 `6h OI↓+负收益` 代理（混入主动减仓/宏观普跌/普通反转） | **采集器原始 forceOrder `o.S` 字段**：`SELL`=多头强平=真实卖压；`BUY`=空头强平=买压。**方向真实可识别** |
+06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md:18:**采集器现状（已核实）：** `aiquant-liq-collector.service` 在腾讯云 SG VM 运行，订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`（全币种强平流），**持久化完整原始 JSON（JSONL）** 到 `/opt/ai_quant_liq_collector/data/LIQUIDATIONS/`。原始消息含 `o.s`(symbol)/`o.S`(side)/`o.p`(price)/`o.q`(qty)/`o.ap`(avg price)/`o.T`(time)——方向与规模字段齐全。
+04_AI_TEAM/TASK_INBOX/PROCESSED/VERIFY_V462_DONE.json:11:  "fix_path": "Change liquidation collector WS_URL to wss://fstream.binance.com/market/ws/!forceOrder@arr; no API key or proxy required. Use /fapi/v1/openInterest, /futures/data/openInterestHist, and /fapi/v1/fundingRate for OI/funding REST data.",
+04_AI_TEAM/TASK_INBOX/PROCESSED/VERIFY_V462_DONE.json:12:  "notes": "v4.6.2 historically fetched Binance futures REST through 2026-06-13T08:46:06Z but is currently stopped. Same-host differential probe: legacy unrouted aggTrade/forceOrder opened with 0 frames; routed /market endpoints returned 3 frames immediately. Root cause is Binance's 2026-04-23 WS route migration, not an IP ban. Production was not modified."
+06_RESEARCH/RESULTS/20260615_pb1_harness_selftest.md:8:- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/REPORT_DEPLOY_COLLECTOR_VM.md:11:- 服务名：`aiquant-liq-collector.service`
+04_AI_TEAM/CODEX_TASKS/REPORT_DEPLOY_COLLECTOR_VM.md:47:- `systemctl status aiquant-liq-collector.service` 显示 `Active: active (running)`
+04_AI_TEAM/CODEX_TASKS/REPORT_DEPLOY_COLLECTOR_VM.md:49:- 日志出现 `[connected] ... wss://fstream.binance.com/ws/!forceOrder@arr`
+04_AI_TEAM/CODEX_TASKS/REPORT_DEPLOY_COLLECTOR_VM.md:58:systemctl status aiquant-liq-collector.service --no-pager -l
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN.log:16:**问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN.log:22:- 只动 `aiquant-liq-collector.service` 与 `/opt/ai_quant_liq_collector/`。改前先 `systemctl list-units --state=running | grep -E 'danted|v4-proxy'` 确认在跑。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN.log:26:2. **先取证**：在服务器用采集器同款 `websocket` 库写个 ~30s 自测，连 `!forceOrder@arr`，确认能否收到帧（区分"代码 bug" vs "stream/网络问题"）。Binance forceOrder 是稀疏流但全市场每分钟应有多帧。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN.log:32:4. 重启服务 `systemctl restart aiquant-liq-collector`，**验证 2 分钟内 `process_messages>0` 且 LIQUIDATIONS 下出现当日 .jsonl 且行数增长**；贴日志证据。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_BINANCE_SOURCE.md:1:# VERIFY-V462：核实历史 v4.6.2 的币安数据源（可能推翻"Binance封本IP"结论）
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_BINANCE_SOURCE.md:5:**关键疑问：** 我（Claude）此前测得 `wss://fstream.binance.com/ws/!forceOrder@arr`（**futures 公共WS**）经 SG直连+住宅代理均握手后0帧，据此判"Binance 封本IP"。**但若 v4.6.2 能正常从币安取数，说明该结论过宽**——v4.6.2 可能用的是币安 REST / 现货WS / 不同 futures 端点 / 带鉴权 / 经某代理，那才是修采集器的正路。**本任务核实之，勿想当然。**
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_BINANCE_SOURCE.md:13:4. **关键对照**：在服务器上用 v4.6.2 的**同款方法/端点**做一次最小取数测试（如它用 REST 则 curl 其端点、用某 WS 则连该 WS 计帧），与我们采集器的 `fstream forceOrder WS` 对照——**区分"Binance 封整个IP" vs "只是某些 futures 公共WS端点/方式不通"**。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:17:**已诊断（Claude 2026-06-14，勿重复推翻，可验证）：** 采集器代码健康（run_forever 含 ping_interval=180 + 重连）。但腾讯云SG服务器(43.160.200.224)上：REST `fapi/v1/ping` HTTP200 正常；**WS `wss://fstream.binance.com/ws/...` 握手 OPEN 成功但 0 帧**（aggTrade 20s/forceOrder 25s 均 0 帧，forceOrder OPEN 后立即 CLOSE）→ **Binance 不向该云IP推送行情流**（数据中心IP限制）。故 22h `process_messages=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:19:**服务器红线：** danted.service/v4-proxy.service **绝不能停**；只动 aiquant-liq-collector 与 /opt/ai_quant_liq_collector/。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:25:   - 用 websocket-client 经该 SOCKS5 连 `!forceOrder@arr`（`http_proxy_host/port + proxy_type='socks5h' + http_proxy_auth`），测 30s 是否有帧。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1505:| **§1c 对话级建议暂存区** | **制度说明（DEC-073）**：本栏捕获对话中Claude提出但尚未落入§4的建议。Founder确认→升入§4/DECISION_LOG；Founder否决→清除；未响应=下次开局必提。**本轮新增（2026-06-14深夜，Founder委托CTO自主推进期间）：**①**[✅Claude执行完毕]** D2/A1-RR验收+专业透镜：两线均"需返工"属**正确返工**；D2 BLOCKED根因=D1"35/35完成"实为**数据不达用途**(下的contract klines非mark-price、缺真实funding、DEC-070四过滤无证据)→**过程教训：完成计数≠达用途，验收门须查数据适用性**(风险E反例修正)。②**[✅Claude执行完毕]** A-1预登记v2亲自主导改写(`A1_CASCADE_REBOUND_PREREG_v2.md`)，逐条闭合Reviewer十项(方向代理过滤/唯一主horizon=48h/cluster块bootstrap/refractory episode/A-2 P95 overlap/80%power MDE/两级门/现金零基准硬门/物理Holdout封存/闭合decision table)；**Codex三轮闭环**：v2盲审NOT APPROVED(仅闭2/10)→CTO据五项必改起草**v3**(`..._v3.md`:纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单8H读数P95/沙箱外真权限Holdout)→**A1-RR3第三轮盲审运行中(PID 8335)**,特别要求判定剩余阻塞是否=历史样本不可约识别上限。③**[✅已决→DEC-075:暂缓优先A-1]** TSMOM universe扩展(D1v2+D2)**未执行**——CTO判断：扩样本是D级候选(Founder未批)+只解决DD不解决TSMOM核心"无可行定仓"+DEC-070两过滤需外部数据历史不可得，**强行连夜重采=风险D局部修补搜索**。**推荐：A-1优先级高于universe扩展**。DEC070审计(`20260614_dec070_filter_audit.md`)：2可算过滤器下Tier1-clean 20/35、watch 10/35、排除5/35(AXS/FTM/ICX高跳动/低流动);**审计抛专业异议——本地CSV只存base volume非quote volume(ADTV亦不精确)+float市值比/OI市值比需外部历史数据(Binance OI REST仅近1月)**,数据成本叠加,**强化暂缓**:若Founder坚持闭环TSMOM需先投入补quote volume+外部supply/mcap/OI,性价比低于A-1。④**[✅Claude执行完毕]** 跨对话回收(扫23会话)：唯一含在途未存工作的"外部调研(Sweep形态线)"——其做空测试**已在其他会话独立完成并封账**(v4多头"全维度无一可部署"、v5做空已失败,DEC 2026-06-06)，**无孤儿决策丢失**；工作区沙箱故障根因=claude-code-vm 2.1.170下载循环失败,Desktop Commander为正确通道。⑤**[议程·rule8]** A-1历史方向识别结构性局限→**前向强平数据路径**：历史A-1无真实强平名义额(采集器2026-06-13起前向)，v2只能用价格代理；最强验证仍需前向真实强平数据3-6月——把已部署采集器与A-1直接挂钩,是采集器首个明确alpha用途。⑥**[✅已决→DEC-075]** A-1两段式路径+universe暂缓**已经Founder"按推荐继续"确认,升格DEC-075**(③⑥出本栏)。**当前推进(2026-06-15)**：**路径A**=A-1预登记已迭代到**v5**(`..._v5.md`)。盲审进度:RR4判v4闭2/5(功效治理+family CLOSED),余4项判"文字与算法冻结、不要求达机制确证严格度"→v5逐条闭(§7改"A-2非重叠关联硬门"/circular半开网格`[t1,tn+1h)`+offset截断/Spearman改配对bootstrap对ρ居中真检验ρ=0/WF唯一切点中点+按实际足迹purge/AES-256-GCM+密钥独立principal+负向测试留命令退出码)→**A1-RR5第五轮盲审=✅APPROVED(4/4全闭,`A1_RISK_REVIEW_v5.md`)**!五轮收敛(10→2/10→0/5→2/5→4/4)。放行边界:仅关联结论/不耗独立计数/不晋级策略;**执行前须先AES-256-GCM Holdout封存+负向权限测试**。**[⚠️待Founder知会后派发]** 按预登记铁律,跑Tier A事件研究(封Holdout+出A-1生死判决)须Founder知会+主会话人工派发,故CTO停在放行点未自动跑;**路径B**=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器原始forceOrder含side方向字段已核实=首个alpha用途;就绪门=候选n达功效门→另立预登记走硬门耗计数;待数据累积3-6月,低成本并行不阻塞)。**恢复点(2026-06-15最新)**:Founder已GO。**两Codex活并行运行中**:①A1_TIERA=A-1 Tier A历史关联快筛执行(按v5两阶段custodian/executor,已写13单测全过+自审,PID见A1_TIERA_RUN.log)→出关联生死判决;②PB1=路径B强平解析器+就绪门计数器(自包含工具)。**网络根因已查实**:downloads.claude.ai命中`claude.ai,默认组`走双跳商家代理→VM大二进制(claude.app.tar.zst 2.1.170)拉不动→Claude.app 172%CPU热循环挤断DC/MCP。**修复待Founder**:Clash加`DOMAIN,downloads.claude.ai,新加坡跳板`(单跳)置于claude.ai规则前+重启Claude。网络拓扑已记忆([[network-proxy-topology]])。SSH采集器宿主无免密钥(路径B拉真实数据待凭据)。|
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1519:| 强平采集器 | ⚠️ **实为零采集（2026-06-14 查实，纠正旧"生产运行中"假状态）**：service active 但 22h `process_messages=0`。根因=**Binance 对腾讯云SG服务器IP的WS行情流限制**（REST fapi HTTP200正常，但 aggTrade/forceOrder WS 握手OPEN后0帧——云IP被限推送）。**非代码bug**（ping+重连正常）。教训=信了"service active"未验真实数据流（风险E/A）。**修复=路径B重启时把采集器WS走住宅代理(商家代理)或换允许IP**；当前路径B休眠→**暂不修**。双审计P0-1销项前提（"已验真实数据帧"）实为一瞬窗口，不成立 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1540:**已诊断（Claude 2026-06-14，勿重复推翻，可验证）：** 采集器代码健康（run_forever 含 ping_interval=180 + 重连）。但腾讯云SG服务器(43.160.200.224)上：REST `fapi/v1/ping` HTTP200 正常；**WS `wss://fstream.binance.com/ws/...` 握手 OPEN 成功但 0 帧**（aggTrade 20s/forceOrder 25s 均 0 帧，forceOrder OPEN 后立即 CLOSE）→ **Binance 不向该云IP推送行情流**（数据中心IP限制）。故 22h `process_messages=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1542:**服务器红线：** danted.service/v4-proxy.service **绝不能停**；只动 aiquant-liq-collector 与 /opt/ai_quant_liq_collector/。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1548:   - 用 websocket-client 经该 SOCKS5 连 `!forceOrder@arr`（`http_proxy_host/port + proxy_type='socks5h' + http_proxy_auth`），测 30s 是否有帧。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1605:5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1613:/bin/bash -lc "sed -n '1,320p' 06_RESEARCH/CODE/liquidation_collector.py; printf '%s\\n' '--- local service references ---'; rg -n \"aiquant-liq-collector|liquidation_collector|process_messages|LIQUIDATIONS|websocket\" 04_AI_TEAM 06_RESEARCH 08_DEPLOYMENT 09_OPERATIONS -g '"'!*.log'"' | sed -n '1,260p'; printf '%s\\n' '--- existing run log tail ---'; tail -n 160 04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1629:WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1683:06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md:18:**采集器现状（已核实）：** `aiquant-liq-collector.service` 在腾讯云 SG VM 运行，订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`（全币种强平流），**持久化完整原始 JSON（JSONL）** 到 `/opt/ai_quant_liq_collector/data/LIQUIDATIONS/`。原始消息含 `o.s`(symbol)/`o.S`(side)/`o.p`(price)/`o.q`(qty)/`o.ap`(avg price)/`o.T`(time)——方向与规模字段齐全。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1687:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:3:**问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1688:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:10:- 只动 `aiquant-liq-collector.service` 与 `/opt/ai_quant_liq_collector/`。改前先 `systemctl list-units --state=running | grep -E 'danted|v4-proxy'` 确认在跑。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1690:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:14:2. **先取证**：在服务器用采集器同款 `websocket` 库写个 ~30s 自测，连 `!forceOrder@arr`，确认能否收到帧（区分"代码 bug" vs "stream/网络问题"）。Binance forceOrder 是稀疏流但全市场每分钟应有多帧。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1691:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:20:4. 重启服务 `systemctl restart aiquant-liq-collector`，**验证 2 分钟内 `process_messages>0` 且 LIQUIDATIONS 下出现当日 .jsonl 且行数增长**；贴日志证据。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1698:04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR.md:52:5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1710:04_AI_TEAM/CODEX_TASKS/REPORT_DEPLOY_COLLECTOR_VM.md:11:- 服务名：`aiquant-liq-collector.service`
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1714:04_AI_TEAM/CODEX_TASKS/REPORT_DEPLOY_COLLECTOR_VM.md:47:- `systemctl status aiquant-liq-collector.service` 显示 `Active: active (running)`
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1715:04_AI_TEAM/CODEX_TASKS/REPORT_DEPLOY_COLLECTOR_VM.md:58:systemctl status aiquant-liq-collector.service --no-pager -l
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1742:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:4:**已诊断（Claude 2026-06-14，勿重复推翻，可验证）：** 采集器代码健康（run_forever 含 ping_interval=180 + 重连）。但腾讯云SG服务器(43.160.200.224)上：REST `fapi/v1/ping` HTTP200 正常；**WS `wss://fstream.binance.com/ws/...` 握手 OPEN 成功但 0 帧**（aggTrade 20s/forceOrder 25s 均 0 帧，forceOrder OPEN 后立即 CLOSE）→ **Binance 不向该云IP推送行情流**（数据中心IP限制）。故 22h `process_messages=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1743:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:6:**服务器红线：** danted.service/v4-proxy.service **绝不能停**；只动 aiquant-liq-collector 与 /opt/ai_quant_liq_collector/。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1745:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:12:   - 用 websocket-client 经该 SOCKS5 连 `!forceOrder@arr`（`http_proxy_host/port + proxy_type='socks5h' + http_proxy_auth`），测 30s 是否有帧。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1747:04_AI_TEAM/CODEX_TASKS/E2_SYSTEM_ARCHITECTURE.md:71:- 组件：Binance API 实时行情、`aiquant-liq-collector.service`（已部署）、PostgreSQL（计划）、订单执行（限价优先/市价熔断）
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1748:04_AI_TEAM/CODEX_TASKS/PB1_LIQ_PARSER_HARNESS.md:3:**定位：** 路径B（前向真实强平数据机制确证，见 `06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md`）第一步的**离线工具**。采集器在腾讯云SG VM 持久化完整 Binance `!forceOrder@arr` 原始 JSONL。本任务**不依赖能否 SSH**：用合成 + 任何本地样本把解析器与就绪门计数器写好并单测，待能拉到真实 LIQUIDATIONS 后直接指向真实路径运行。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1852:| **§1c 对话级建议暂存区** | **制度说明（DEC-073）**：本栏捕获对话中Claude提出但尚未落入§4的建议。Founder确认→升入§4/DECISION_LOG；Founder否决→清除；未响应=下次开局必提。**本轮新增（2026-06-14深夜，Founder委托CTO自主推进期间）：**①**[✅Claude执行完毕]** D2/A1-RR验收+专业透镜：两线均"需返工"属**正确返工**；D2 BLOCKED根因=D1"35/35完成"实为**数据不达用途**(下的contract klines非mark-price、缺真实funding、DEC-070四过滤无证据)→**过程教训：完成计数≠达用途，验收门须查数据适用性**(风险E反例修正)。②**[✅Claude执行完毕]** A-1预登记v2亲自主导改写(`A1_CASCADE_REBOUND_PREREG_v2.md`)，逐条闭合Reviewer十项(方向代理过滤/唯一主horizon=48h/cluster块bootstrap/refractory episode/A-2 P95 overlap/80%power MDE/两级门/现金零基准硬门/物理Holdout封存/闭合decision table)；**Codex三轮闭环**：v2盲审NOT APPROVED(仅闭2/10)→CTO据五项必改起草**v3**(`..._v3.md`:纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单8H读数P95/沙箱外真权限Holdout)→**A1-RR3第三轮盲审运行中(PID 8335)**,特别要求判定剩余阻塞是否=历史样本不可约识别上限。③**[✅已决→DEC-075:暂缓优先A-1]** TSMOM universe扩展(D1v2+D2)**未执行**——CTO判断：扩样本是D级候选(Founder未批)+只解决DD不解决TSMOM核心"无可行定仓"+DEC-070两过滤需外部数据历史不可得，**强行连夜重采=风险D局部修补搜索**。**推荐：A-1优先级高于universe扩展**。DEC070审计(`20260614_dec070_filter_audit.md`)：2可算过滤器下Tier1-clean 20/35、watch 10/35、排除5/35(AXS/FTM/ICX高跳动/低流动);**审计抛专业异议——本地CSV只存base volume非quote volume(ADTV亦不精确)+float市值比/OI市值比需外部历史数据(Binance OI REST仅近1月)**,数据成本叠加,**强化暂缓**:若Founder坚持闭环TSMOM需先投入补quote volume+外部supply/mcap/OI,性价比低于A-1。④**[✅Claude执行完毕]** 跨对话回收(扫23会话)：唯一含在途未存工作的"外部调研(Sweep形态线)"——其做空测试**已在其他会话独立完成并封账**(v4多头"全维度无一可部署"、v5做空已失败,DEC 2026-06-06)，**无孤儿决策丢失**；工作区沙箱故障根因=claude-code-vm 2.1.170下载循环失败,Desktop Commander为正确通道。⑤**[议程·rule8]** A-1历史方向识别结构性局限→**前向强平数据路径**：历史A-1无真实强平名义额(采集器2026-06-13起前向)，v2只能用价格代理；最强验证仍需前向真实强平数据3-6月——把已部署采集器与A-1直接挂钩,是采集器首个明确alpha用途。⑥**[✅已决→DEC-075]** A-1两段式路径+universe暂缓**已经Founder"按推荐继续"确认,升格DEC-075**(③⑥出本栏)。**当前推进(2026-06-15)**：**路径A**=A-1预登记已迭代到**v5**(`..._v5.md`)。盲审进度:RR4判v4闭2/5(功效治理+family CLOSED),余4项判"文字与算法冻结、不要求达机制确证严格度"→v5逐条闭(§7改"A-2非重叠关联硬门"/circular半开网格`[t1,tn+1h)`+offset截断/Spearman改配对bootstrap对ρ居中真检验ρ=0/WF唯一切点中点+按实际足迹purge/AES-256-GCM+密钥独立principal+负向测试留命令退出码)→**A1-RR5第五轮盲审=✅APPROVED(4/4全闭,`A1_RISK_REVIEW_v5.md`)**!五轮收敛(10→2/10→0/5→2/5→4/4)。放行边界:仅关联结论/不耗独立计数/不晋级策略;**执行前须先AES-256-GCM Holdout封存+负向权限测试**。**[⚠️待Founder知会后派发]** 按预登记铁律,跑Tier A事件研究(封Holdout+出A-1生死判决)须Founder知会+主会话人工派发,故CTO停在放行点未自动跑;**路径B**=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器原始forceOrder含side方向字段已核实=首个alpha用途;就绪门=候选n达功效门→另立预登记走硬门耗计数;待数据累积3-6月,低成本并行不阻塞)。**恢复点(2026-06-15最新)**:Founder已GO。**两Codex活并行运行中**:①A1_TIERA=A-1 Tier A历史关联快筛执行(按v5两阶段custodian/executor,已写13单测全过+自审,PID见A1_TIERA_RUN.log)→出关联生死判决;②PB1=路径B强平解析器+就绪门计数器(自包含工具)。**网络根因已查实**:downloads.claude.ai命中`claude.ai,默认组`走双跳商家代理→VM大二进制(claude.app.tar.zst 2.1.170)拉不动→Claude.app 172%CPU热循环挤断DC/MCP。**修复待Founder**:Clash加`DOMAIN,downloads.claude.ai,新加坡跳板`(单跳)置于claude.ai规则前+重启Claude。网络拓扑已记忆([[network-proxy-topology]])。SSH采集器宿主无免密钥(路径B拉真实数据待凭据)。|
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1866:| 强平采集器 | ⚠️ **实为零采集（2026-06-14 查实，纠正旧"生产运行中"假状态）**：service active 但 22h `process_messages=0`。根因=**Binance 对腾讯云SG服务器IP的WS行情流限制**（REST fapi HTTP200正常，但 aggTrade/forceOrder WS 握手OPEN后0帧——云IP被限推送）。**非代码bug**（ping+重连正常）。教训=信了"service active"未验真实数据流（风险E/A）。**修复=路径B重启时把采集器WS走住宅代理(商家代理)或换允许IP**；当前路径B休眠→**暂不修**。双审计P0-1销项前提（"已验真实数据帧"）实为一瞬窗口，不成立 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1887:**已诊断（Claude 2026-06-14，勿重复推翻，可验证）：** 采集器代码健康（run_forever 含 ping_interval=180 + 重连）。但腾讯云SG服务器(43.160.200.224)上：REST `fapi/v1/ping` HTTP200 正常；**WS `wss://fstream.binance.com/ws/...` 握手 OPEN 成功但 0 帧**（aggTrade 20s/forceOrder 25s 均 0 帧，forceOrder OPEN 后立即 CLOSE）→ **Binance 不向该云IP推送行情流**（数据中心IP限制）。故 22h `process_messages=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1889:**服务器红线：** danted.service/v4-proxy.service **绝不能停**；只动 aiquant-liq-collector 与 /opt/ai_quant_liq_collector/。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1895:   - 用 websocket-client 经该 SOCKS5 连 `!forceOrder@arr`（`http_proxy_host/port + proxy_type='socks5h' + http_proxy_auth`），测 30s 是否有帧。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1952:5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1984:/bin/bash -lc 'env -u ALL_PROXY -u all_proxy -u HTTP_PROXY -u http_proxy -u HTTPS_PROXY -u https_proxy sshpass -f "$HOME/.aiquant_sealed/sg_pass" ssh -F /dev/null -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@43.160.200.224 '"'printf \"ssh_ok\\n\"; systemctl is-active danted.service; systemctl is-active v4-proxy.service; systemctl is-active aiquant-liq-collector.service; python3 -c \"import websocket; print(websocket.__version__)\"; stat -c \"%n %s %y\" /opt/ai_quant_liq_collector/liquidation_collector.py; systemctl cat aiquant-liq-collector.service --no-pager'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2015:+**已诊断（Claude 2026-06-14，勿重复推翻，可验证）：** 采集器代码健康（run_forever 含 ping_interval=180 + 重连）。但腾讯云SG服务器(43.160.200.224)上：REST `fapi/v1/ping` HTTP200 正常；**WS `wss://fstream.binance.com/ws/...` 握手 OPEN 成功但 0 帧**（aggTrade 20s/forceOrder 25s 均 0 帧，forceOrder OPEN 后立即 CLOSE）→ **Binance 不向该云IP推送行情流**（数据中心IP限制）。故 22h `process_messages=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2017:+**服务器红线：** danted.service/v4-proxy.service **绝不能停**；只动 aiquant-liq-collector 与 /opt/ai_quant_liq_collector/。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2023:+   - 用 websocket-client 经该 SOCKS5 连 `!forceOrder@arr`（`http_proxy_host/port + proxy_type='socks5h' + http_proxy_auth`），测 30s 是否有帧。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2242:# /etc/systemd/system/aiquant-liq-collector.service
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2263:SSH 已恢复。现场有一项必须记录的既有异常：`danted.service=active`，但 `v4-proxy.service=inactive`；本会话没有停止它，且按红线不会启动、重启或修改该服务。`aiquant-liq-collector` 当前 active，远端 `websocket-client=1.7.0`，下一步只读采集器现场并做直连/住宅出口探针。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2281:/bin/bash -lc 'env -u ALL_PROXY -u all_proxy -u HTTP_PROXY -u http_proxy -u HTTPS_PROXY -u https_proxy sshpass -f "$HOME/.aiquant_sealed/sg_pass" ssh -F /dev/null -o StrictHostKeyChecking=no root@43.160.200.224 '"'printf \"%s\\n\" \"--- collector source ---\"; sed -n \"1,340p\" /opt/ai_quant_liq_collector/liquidation_collector.py; printf \"%s\\n\" \"--- latest log ---\"; tail -n 120 /opt/ai_quant_liq_collector/logs/collector.log; printf \"%s\\n\" \"--- data files/counts ---\"; find /opt/ai_quant_liq_collector/data/LIQUIDATIONS -maxdepth 1 -type f -name \"liq_*.jsonl\" -printf \"%f %s bytes\\n\" 2>/dev/null | sort; find /opt/ai_quant_liq_collector/data/LIQUIDATIONS -maxdepth 1 -type f -name \"liq_*.jsonl\" -exec wc -l {} + 2>/dev/null || true; printf \"%s\\n\" \"--- process ---\"; systemctl show aiquant-liq-collector.service -p ActiveState -p SubState -p MainPID -p ExecMainStartTimestamp -p NRestarts'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2300:WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2390:[connected] 2026-06-13T09:43:04.787737+00:00 wss://fstream.binance.com/ws/!forceOrder@arr
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2435:/bin/bash -lc 'env -u ALL_PROXY -u all_proxy -u HTTP_PROXY -u http_proxy -u HTTPS_PROXY -u https_proxy sshpass -f "$HOME/.aiquant_sealed/sg_pass" ssh -F /dev/null -o StrictHostKeyChecking=no root@43.160.200.224 '"'set -u; umask 077; c="'$(mktemp); trap '"'\\''rm -f \""'$c"'"'\\'' EXIT; cat > \""'$c"; IFS=" " read -r proto host port user pass < "$c" || true; test "$proto" = socks5 || { echo "resi_forceorder credential_parse_failed"; exit 2; }; export RESI_HOST="$host" RESI_PORT="$port" RESI_USER="$user" RESI_PASS="$pass"; env no_proxy= NO_PROXY= python3 -c '"'\\''import os,time,websocket; u=\"wss://fstream.binance.com/ws/"'!forceOrder@arr"; n=0; opened=False; err=""; t=time.time();
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2523:/bin/bash -lc 'env -u ALL_PROXY -u all_proxy -u HTTP_PROXY -u http_proxy -u HTTPS_PROXY -u https_proxy sshpass -f "$HOME/.aiquant_sealed/sg_pass" ssh -F /dev/null -o StrictHostKeyChecking=no root@43.160.200.224 '"'set -u; umask 077; c="'$(mktemp); trap '"'\\''rm -f \""'$c"'"'\\'' EXIT; cat > \""'$c"; IFS=" " read -r proto host port user pass < "$c" || true; export RESI_HOST="$host" RESI_PORT="$port" RESI_USER="$user" RESI_PASS="$pass"; env no_proxy= NO_PROXY= PYTHONPATH=/opt/ai_quant_liq_collector/.deps python3 -c '"'\\''import os,time,websocket; u=\"wss://fstream.binance.com/ws/"'!forceOrder@arr"; n=0; opened=False; err=""; t=time.time();
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2549:住宅代理确实完成了 WS 握手，但 Binance 两条流仍为零帧：`aggTrade 20s=0`、`forceOrder 30s=0`。这否定“只要换到该住宅出口就恢复”的假设；我会再证明流量确实经过不同出口并用非 Binance WS 验证代理能传帧，然后只读盘点现有跳板配置，避免把代理库或客户端误判成 Binance 结果。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2634:01_MEMORY_CORE/CURRENT_STATE.md:21:| **§1c 对话级建议暂存区** | **制度说明（DEC-073）**：本栏捕获对话中Claude提出但尚未落入§4的建议。Founder确认→升入§4/DECISION_LOG；Founder否决→清除；未响应=下次开局必提。**本轮新增（2026-06-14深夜，Founder委托CTO自主推进期间）：**①**[✅Claude执行完毕]** D2/A1-RR验收+专业透镜：两线均"需返工"属**正确返工**；D2 BLOCKED根因=D1"35/35完成"实为**数据不达用途**(下的contract klines非mark-price、缺真实funding、DEC-070四过滤无证据)→**过程教训：完成计数≠达用途，验收门须查数据适用性**(风险E反例修正)。②**[✅Claude执行完毕]** A-1预登记v2亲自主导改写(`A1_CASCADE_REBOUND_PREREG_v2.md`)，逐条闭合Reviewer十项(方向代理过滤/唯一主horizon=48h/cluster块bootstrap/refractory episode/A-2 P95 overlap/80%power MDE/两级门/现金零基准硬门/物理Holdout封存/闭合decision table)；**Codex三轮闭环**：v2盲审NOT APPROVED(仅闭2/10)→CTO据五项必改起草**v3**(`..._v3.md`:纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单8H读数P95/沙箱外真权限Holdout)→**A1-RR3第三轮盲审运行中(PID 8335)**,特别要求判定剩余阻塞是否=历史样本不可约识别上限。③**[✅已决→DEC-075:暂缓优先A-1]** TSMOM universe扩展(D1v2+D2)**未执行**——CTO判断：扩样本是D级候选(Founder未批)+只解决DD不解决TSMOM核心"无可行定仓"+DEC-070两过滤需外部数据历史不可得，**强行连夜重采=风险D局部修补搜索**。**推荐：A-1优先级高于universe扩展**。DEC070审计(`20260614_dec070_filter_audit.md`)：2可算过滤器下Tier1-clean 20/35、watch 10/35、排除5/35(AXS/FTM/ICX高跳动/低流动);**审计抛专业异议——本地CSV只存base volume非quote volume(ADTV亦不精确)+float市值比/OI市值比需外部历史数据(Binance OI REST仅近1月)**,数据成本叠加,**强化暂缓**:若Founder坚持闭环TSMOM需先投入补quote volume+外部supply/mcap/OI,性价比低于A-1。④**[✅Claude执行完毕]** 跨对话回收(扫23会话)：唯一含在途未存工作的"外部调研(Sweep形态线)"——其做空测试**已在其他会话独立完成并封账**(v4多头"全维度无一可部署"、v5做空已失败,DEC 2026-06-06)，**无孤儿决策丢失**；工作区沙箱故障根因=claude-code-vm 2.1.170下载循环失败,Desktop Commander为正确通道。⑤**[议程·rule8]** A-1历史方向识别结构性局限→**前向强平数据路径**：历史A-1无真实强平名义额(采集器2026-06-13起前向)，v2只能用价格代理；最强验证仍需前向真实强平数据3-6月——把已部署采集器与A-1直接挂钩,是采集器首个明确alpha用途。⑥**[✅已决→DEC-075]** A-1两段式路径+universe暂缓**已经Founder"按推荐继续"确认,升格DEC-075**(③⑥出本栏)。**当前推进(2026-06-15)**：**路径A**=A-1预登记已迭代到**v5**(`..._v5.md`)。盲审进度:RR4判v4闭2/5(功效治理+family CLOSED),余4项判"文字与算法冻结、不要求达机制确证严格度"→v5逐条闭(§7改"A-2非重叠关联硬门"/circular半开网格`[t1,tn+1h)`+offset截断/Spearman改配对bootstrap对ρ居中真检验ρ=0/WF唯一切点中点+按实际足迹purge/AES-256-GCM+密钥独立principal+负向测试留命令退出码)→**A1-RR5第五轮盲审=✅APPROVED(4/4全闭,`A1_RISK_REVIEW_v5.md`)**!五轮收敛(10→2/10→0/5→2/5→4/4)。放行边界:仅关联结论/不耗独立计数/不晋级策略;**执行前须先AES-256-GCM Holdout封存+负向权限测试**。**[⚠️待Founder知会后派发]** 按预登记铁律,跑Tier A事件研究(封Holdout+出A-1生死判决)须Founder知会+主会话人工派发,故CTO停在放行点未自动跑;**路径B**=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器原始forceOrder含side方向字段已核实=首个alpha用途;就绪门=候选n达功效门→另立预登记走硬门耗计数;待数据累积3-6月,低成本并行不阻塞)。**恢复点(2026-06-15最新)**:Founder已GO。**两Codex活并行运行中**:①A1_TIERA=A-1 Tier A历史关联快筛执行(按v5两阶段custodian/executor,已写13单测全过+自审,PID见A1_TIERA_RUN.log)→出关联生死判决;②PB1=路径B强平解析器+就绪门计数器(自包含工具)。**网络根因已查实**:downloads.claude.ai命中`claude.ai,默认组`走双跳商家代理→VM大二进制(claude.app.tar.zst 2.1.170)拉不动→Claude.app 172%CPU热循环挤断DC/MCP。**修复待Founder**:Clash加`DOMAIN,downloads.claude.ai,新加坡跳板`(单跳)置于claude.ai规则前+重启Claude。网络拓扑已记忆([[network-proxy-topology]])。SSH采集器宿主无免密钥(路径B拉真实数据待凭据)。|
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2642:01_MEMORY_CORE/CURRENT_STATE.md:35:| 强平采集器 | ⚠️ **实为零采集（2026-06-14 查实，纠正旧"生产运行中"假状态）**：service active 但 22h `process_messages=0`。根因=**Binance 对腾讯云SG服务器IP的WS行情流限制**（REST fapi HTTP200正常，但 aggTrade/forceOrder WS 握手OPEN后0帧——云IP被限推送）。**非代码bug**（ping+重连正常）。教训=信了"service active"未验真实数据流（风险E/A）。**修复=路径B重启时把采集器WS走住宅代理(商家代理)或换允许IP**；当前路径B休眠→**暂不修**。双审计P0-1销项前提（"已验真实数据帧"）实为一瞬窗口，不成立 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2661:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:10:- 只动 `aiquant-liq-collector.service` 与 `/opt/ai_quant_liq_collector/`。改前先 `systemctl list-units --state=running | grep -E 'danted|v4-proxy'` 确认在跑。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2683:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md-4-**已诊断（Claude 2026-06-14，勿重复推翻，可验证）：** 采集器代码健康（run_forever 含 ping_interval=180 + 重连）。但腾讯云SG服务器(43.160.200.224)上：REST `fapi/v1/ping` HTTP200 正常；**WS `wss://fstream.binance.com/ws/...` 握手 OPEN 成功但 0 帧**（aggTrade 20s/forceOrder 25s 均 0 帧，forceOrder OPEN 后立即 CLOSE）→ **Binance 不向该云IP推送行情流**（数据中心IP限制）。故 22h `process_messages=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2685:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:6:**服务器红线：** danted.service/v4-proxy.service **绝不能停**；只动 aiquant-liq-collector 与 /opt/ai_quant_liq_collector/。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2691:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:12:   - 用 websocket-client 经该 SOCKS5 连 `!forceOrder@arr`（`http_proxy_host/port + proxy_type='socks5h' + http_proxy_auth`），测 30s 是否有帧。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2745:/bin/bash -lc 'env -u ALL_PROXY -u all_proxy -u HTTP_PROXY -u http_proxy -u HTTPS_PROXY -u https_proxy sshpass -f "$HOME/.aiquant_sealed/sg_pass" ssh -F /dev/null -o StrictHostKeyChecking=no root@43.160.200.224 '"'set -eu; rm -rf /opt/ai_quant_liq_collector/.deps; printf \"%s\\n\" \"--- final remote state ---\"; systemctl is-active danted.service; systemctl is-active v4-proxy.service || true; systemctl is-active aiquant-liq-collector.service; systemctl show aiquant-liq-collector.service -p MainPID -p NRestarts -p ActiveState -p SubState; stat -c \"collector_mtime=%y size=%s\" /opt/ai_quant_liq_collector/liquidation_collector.py; test "'! -e /opt/ai_quant_liq_collector/.deps && echo probe_deps_removed=yes; test ! -e /opt/ai_quant_liq_collector/liquidation_collector.py.bak && echo backup_created=no; n=$(find /opt/ai_quant_liq_collector/data/LIQUIDATIONS -maxdepth 1 -type f -name "liq_*.jsonl" -exec cat {} + 2>/dev/null | wc -l); echo jsonl_total_rows=$n; tail -n 3 /opt/ai_quant_liq_collector/logs/collector.log'"'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2808:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2828:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2848:+- `aiquant-liq-collector.service`：`active/running`，PID 未变，`NRestarts=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2865:-5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2867:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2928:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2948:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2968:+- `aiquant-liq-collector.service`：`active/running`，PID 未变，`NRestarts=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2985:-5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2987:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3067:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3087:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3107:+- `aiquant-liq-collector.service`：`active/running`，PID 未变，`NRestarts=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3124:-5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3126:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3183:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3203:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3223:+- `aiquant-liq-collector.service`：`active/running`，PID 未变，`NRestarts=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3240:-5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3242:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3296:30:| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3383:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3403:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3423:+- `aiquant-liq-collector.service`：`active/running`，PID 未变，`NRestarts=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3440:-5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3442:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3511:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3531:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3551:+- `aiquant-liq-collector.service`：`active/running`，PID 未变，`NRestarts=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3568:-5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3570:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3886:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3906:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3926:+- `aiquant-liq-collector.service`：`active/running`，PID 未变，`NRestarts=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3943:-5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3945:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4018:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4038:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4058:+- `aiquant-liq-collector.service`：`active/running`，PID 未变，`NRestarts=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4075:-5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4077:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4138:/bin/bash -lc 'env -u ALL_PROXY -u all_proxy -u HTTP_PROXY -u http_proxy -u HTTPS_PROXY -u https_proxy sshpass -f "$HOME/.aiquant_sealed/sg_pass" ssh -F /dev/null -o StrictHostKeyChecking=no root@43.160.200.224 '"'printf \"danted=%s\\n\" \""'$(systemctl is-active danted.service)"; printf "v4_proxy=%s'"\\n\" \""'$(systemctl is-active v4-proxy.service || true)"; printf "collector=%s'"\\n\" \""'$(systemctl is-active aiquant-liq-collector.service)"; systemctl show aiquant-liq-collector.service -p MainPID -p NRestarts; stat -c "collector_mtime=%y size=%s" /opt/ai_quant_liq_collector/liquidation_collector.py; test ! -e /opt/ai_quant_liq_collector/.deps && echo probe_deps_removed=yes; n=$(find /opt/ai_quant_liq_collector/data/LIQUIDATIONS -maxdepth 1 -type f -name "liq_*.jsonl" -exec cat {} + 2>/dev/null | wc -l); echo jsonl_total_rows=$n'"'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4173:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4193:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4213:+- `aiquant-liq-collector.service`：`active/running`，PID 未变，`NRestarts=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4230:-5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4232:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4309:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4329:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4349:+- `aiquant-liq-collector.service`：`active/running`，PID 未变，`NRestarts=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4366:-5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4368:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4441:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4461:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4481:+- `aiquant-liq-collector.service`：`active/running`，PID 未变，`NRestarts=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4498:-5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4500:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+06_RESEARCH/CODE/liquidation_collector.py:15:WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+04_AI_TEAM/CODEX_TASKS/DEPLOY_COLLECTOR_VM.md:57:WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+04_AI_TEAM/CODEX_TASKS/DEPLOY_COLLECTOR_VM.md:138:sudo tee /etc/systemd/system/liq-collector.service << EOF
+04_AI_TEAM/CODEX_TASKS/DEPLOY_COLLECTOR_VM.md:169:sudo systemctl enable liq-collector
+04_AI_TEAM/CODEX_TASKS/DEPLOY_COLLECTOR_VM.md:170:sudo systemctl start liq-collector
+04_AI_TEAM/CODEX_TASKS/DEPLOY_COLLECTOR_VM.md:172:sudo systemctl status liq-collector
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL_RUN.log:18:**已查实根因（VERIFY-V462）：** 非IP封锁；Binance 2026-04-23 WS 路由迁移。旧 `wss://fstream.binance.com/ws/!forceOrder@arr`→0帧；新 `wss://fstream.binance.com/market/ws/!forceOrder@arr`→立即收帧（同机已验 3 帧）。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL_RUN.log:19:**SSH：** `sshpass -p "$(cat ~/.aiquant_sealed/sg_pass)" ssh -o StrictHostKeyChecking=no root@43.160.200.224 "<cmd>"`。**禁浏览器。红线：danted/v4-proxy 不能停；只动 aiquant-liq-collector。**
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL_RUN.log:23:2. 把 `WS_URL` 从 `wss://fstream.binance.com/ws/!forceOrder@arr` 改为 `wss://fstream.binance.com/market/ws/!forceOrder@arr`（仅改这一行；其余逻辑不动）。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL_RUN.log:24:3. `systemctl restart aiquant-liq-collector`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL_RUN.log:26:5. 若新路由仍 0 帧→回滚 .bak，报告并改用 VERIFY-V462 的 REST 方案备选（`/fapi/v1` futures REST 轮询强平/OI）。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL_RUN.log:29:## 完成写 `04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json`(task_id=FIX_COLLECTOR_URL,fixed=yes/no,frames_after=N,notes)。报告 `REPORT_FIX_COLLECTOR_URL.md`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL_RUN.log:790:?? 04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL.md
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL_RUN.log:791:?? 04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL_RUN.log
+04_AI_TEAM/CODEX_TASKS/CARRY_SCAFFOLD_RUN.log:1368:- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/CARRY_SCAFFOLD_RUN.log:1662:        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:16:**问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:23:- 只动 `aiquant-liq-collector.service` 与 `/opt/ai_quant_liq_collector/`。改前先 `systemctl list-units --state=running | grep -E 'danted|v4-proxy'` 确认在跑。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:27:2. **先取证**：在服务器用采集器同款 `websocket` 库写个 ~30s 自测，连 `!forceOrder@arr`，确认能否收到帧（区分"代码 bug" vs "stream/网络问题"）。Binance forceOrder 是稀疏流但全市场每分钟应有多帧。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:33:4. 重启服务 `systemctl restart aiquant-liq-collector`，**验证 2 分钟内 `process_messages>0` 且 LIQUIDATIONS 下出现当日 .jsonl 且行数增长**；贴日志证据。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1309:**问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1316:- 只动 `aiquant-liq-collector.service` 与 `/opt/ai_quant_liq_collector/`。改前先 `systemctl list-units --state=running | grep -E 'danted|v4-proxy'` 确认在跑。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1320:2. **先取证**：在服务器用采集器同款 `websocket` 库写个 ~30s 自测，连 `!forceOrder@arr`，确认能否收到帧（区分"代码 bug" vs "stream/网络问题"）。Binance forceOrder 是稀疏流但全市场每分钟应有多帧。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1326:4. 重启服务 `systemctl restart aiquant-liq-collector`，**验证 2 分钟内 `process_messages>0` 且 LIQUIDATIONS 下出现当日 .jsonl 且行数增长**；贴日志证据。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1411:**问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1418:- 只动 `aiquant-liq-collector.service` 与 `/opt/ai_quant_liq_collector/`。改前先 `systemctl list-units --state=running | grep -E 'danted|v4-proxy'` 确认在跑。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1422:2. **先取证**：在服务器用采集器同款 `websocket` 库写个 ~30s 自测，连 `!forceOrder@arr`，确认能否收到帧（区分"代码 bug" vs "stream/网络问题"）。Binance forceOrder 是稀疏流但全市场每分钟应有多帧。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1428:4. 重启服务 `systemctl restart aiquant-liq-collector`，**验证 2 分钟内 `process_messages>0` 且 LIQUIDATIONS 下出现当日 .jsonl 且行数增长**；贴日志证据。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1666: **问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1836:+5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1928:+5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:2012:5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:2110:+5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:2186:+5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:2301:+5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:2399:+5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:2492:+5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:2592:+5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:2707:+5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:2788:5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:2892:+5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:2993:+5. 重启 `aiquant-liq-collector.service`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:4:**已诊断（Claude 2026-06-14，勿重复推翻，可验证）：** 采集器代码健康（run_forever 含 ping_interval=180 + 重连）。但腾讯云SG服务器(43.160.200.224)上：REST `fapi/v1/ping` HTTP200 正常；**WS `wss://fstream.binance.com/ws/...` 握手 OPEN 成功但 0 帧**（aggTrade 20s/forceOrder 25s 均 0 帧，forceOrder OPEN 后立即 CLOSE）→ **Binance 不向该云IP推送行情流**（数据中心IP限制）。故 22h `process_messages=0`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:6:**服务器红线：** danted.service/v4-proxy.service **绝不能停**；只动 aiquant-liq-collector 与 /opt/ai_quant_liq_collector/。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:12:   - 用 websocket-client 经该 SOCKS5 连 `!forceOrder@arr`（`http_proxy_host/port + proxy_type='socks5h' + http_proxy_auth`），测 30s 是否有帧。
+04_AI_TEAM/CODEX_TASKS/PB1_LIQ_PARSER_HARNESS.md:3:**定位：** 路径B（前向真实强平数据机制确证，见 `06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md`）第一步的**离线工具**。采集器在腾讯云SG VM 持久化完整 Binance `!forceOrder@arr` 原始 JSONL。本任务**不依赖能否 SSH**：用合成 + 任何本地样本把解析器与就绪门计数器写好并单测，待能拉到真实 LIQUIDATIONS 后直接指向真实路径运行。
+04_AI_TEAM/CODEX_TASKS/PB1_LIQ_PARSER_HARNESS.md:7:## 背景：Binance forceOrder 原始消息 schema
+04_AI_TEAM/CODEX_TASKS/PB1_LIQ_PARSER_HARNESS.md:8:单条强平消息形如 `{"e":"forceOrder","E":<eventMs>,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.014","p":"...","ap":"<avgPrice>","X":"FILLED","T":<tradeMs>,...}}`。
+04_AI_TEAM/CODEX_TASKS/E2_SYSTEM_ARCHITECTURE.md:71:- 组件：Binance API 实时行情、`aiquant-liq-collector.service`（已部署）、PostgreSQL（计划）、订单执行（限价优先/市价熔断）
+04_AI_TEAM/CODEX_TASKS/REPORT_VERIFY_V462.md:17:| `wss://fstream.binance.com/ws/!forceOrder@arr` | 15 秒 | 握手成功，0 帧 |
+04_AI_TEAM/CODEX_TASKS/REPORT_VERIFY_V462.md:18:| `wss://fstream.binance.com/market/ws/!forceOrder@arr` | 2.649 秒 | 3 帧 |
+04_AI_TEAM/CODEX_TASKS/REPORT_VERIFY_V462.md:96:- `/market`：`aggTrade`、ticker、kline、mark price、`forceOrder`
+04_AI_TEAM/CODEX_TASKS/REPORT_VERIFY_V462.md:99:未带路由的旧连接只会收到 `/public` 类 stream；`aggTrade` 和 `forceOrder`
+04_AI_TEAM/CODEX_TASKS/REPORT_VERIFY_V462.md:113:WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+04_AI_TEAM/CODEX_TASKS/REPORT_VERIFY_V462.md:122:新路由消息仍是顶层 `forceOrder` 对象，现有原始 JSONL 写入和
+04_AI_TEAM/CODEX_TASKS/REPORT_VERIFY_V462.md:128:2. 改为 `/market/ws/!forceOrder@arr` 后重启采集器。
+04_AI_TEAM/CODEX_TASKS/REPORT_VERIFY_V462.md:132:OI/funding 可直接使用上述公共 REST 端点。`GET /fapi/v1/forceOrders`
+04_AI_TEAM/CODEX_TASKS/REPORT_VERIFY_V462.md:134:`!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/A1_RR4_RUN.log:470:    13	| 强平方向 | 无数据，用 `6h OI↓+负收益` 代理（混入主动减仓/宏观普跌/普通反转） | **采集器原始 forceOrder `o.S` 字段**：`SELL`=多头强平=真实卖压；`BUY`=空头强平=买压。**方向真实可识别** |
+04_AI_TEAM/CODEX_TASKS/A1_RR4_RUN.log:475:    18	**采集器现状（已核实）：** `aiquant-liq-collector.service` 在腾讯云 SG VM 运行，订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`（全币种强平流），**持久化完整原始 JSON（JSONL）** 到 `/opt/ai_quant_liq_collector/data/LIQUIDATIONS/`。原始消息含 `o.s`(symbol)/`o.S`(side)/`o.p`(price)/`o.q`(qty)/`o.ap`(avg price)/`o.T`(time)——方向与规模字段齐全。
+04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR.md:18:2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR.md:30:| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR.md:43:- `aiquant-liq-collector.service`：`active/running`，PID 未变，`NRestarts=0`。
+04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR.md:51:1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL.md:4:**已查实根因（VERIFY-V462）：** 非IP封锁；Binance 2026-04-23 WS 路由迁移。旧 `wss://fstream.binance.com/ws/!forceOrder@arr`→0帧；新 `wss://fstream.binance.com/market/ws/!forceOrder@arr`→立即收帧（同机已验 3 帧）。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL.md:5:**SSH：** `sshpass -p "$(cat ~/.aiquant_sealed/sg_pass)" ssh -o StrictHostKeyChecking=no root@43.160.200.224 "<cmd>"`。**禁浏览器。红线：danted/v4-proxy 不能停；只动 aiquant-liq-collector。**
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL.md:9:2. 把 `WS_URL` 从 `wss://fstream.binance.com/ws/!forceOrder@arr` 改为 `wss://fstream.binance.com/market/ws/!forceOrder@arr`（仅改这一行；其余逻辑不动）。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL.md:10:3. `systemctl restart aiquant-liq-collector`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL.md:12:5. 若新路由仍 0 帧→回滚 .bak，报告并改用 VERIFY-V462 的 REST 方案备选（`/fapi/v1` futures REST 轮询强平/OI）。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_URL.md:15:## 完成写 `04_AI_TEAM/TASK_INBOX/FIX_COLLECTOR_URL_DONE.json`(task_id=FIX_COLLECTOR_URL,fixed=yes/no,frames_after=N,notes)。报告 `REPORT_FIX_COLLECTOR_URL.md`。
+06_RESEARCH/CODE/forward_liq/liq_parser.py:2:"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+06_RESEARCH/CODE/forward_liq/liq_parser.py:56:    """A JSON value is not a usable Binance forceOrder message."""
+06_RESEARCH/CODE/forward_liq/liq_parser.py:100:    """Validate and normalize one decoded forceOrder payload."""
+06_RESEARCH/CODE/forward_liq/liq_parser.py:103:    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:3:**问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:10:- 只动 `aiquant-liq-collector.service` 与 `/opt/ai_quant_liq_collector/`。改前先 `systemctl list-units --state=running | grep -E 'danted|v4-proxy'` 确认在跑。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:14:2. **先取证**：在服务器用采集器同款 `websocket` 库写个 ~30s 自测，连 `!forceOrder@arr`，确认能否收到帧（区分"代码 bug" vs "stream/网络问题"）。Binance forceOrder 是稀疏流但全市场每分钟应有多帧。
+04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:20:4. 重启服务 `systemctl restart aiquant-liq-collector`，**验证 2 分钟内 `process_messages>0` 且 LIQUIDATIONS 下出现当日 .jsonl 且行数增长**；贴日志证据。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:14:# VERIFY-V462：核实历史 v4.6.2 的币安数据源（可能推翻"Binance封本IP"结论）
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:18:**关键疑问：** 我（Claude）此前测得 `wss://fstream.binance.com/ws/!forceOrder@arr`（**futures 公共WS**）经 SG直连+住宅代理均握手后0帧，据此判"Binance 封本IP"。**但若 v4.6.2 能正常从币安取数，说明该结论过宽**——v4.6.2 可能用的是币安 REST / 现货WS / 不同 futures 端点 / 带鉴权 / 经某代理，那才是修采集器的正路。**本任务核实之，勿想当然。**
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:26:4. **关键对照**：在服务器上用 v4.6.2 的**同款方法/端点**做一次最小取数测试（如它用 REST 则 curl 其端点、用某 WS 则连该 WS 计帧），与我们采集器的 `fstream forceOrder WS` 对照——**区分"Binance 封整个IP" vs "只是某些 futures 公共WS端点/方式不通"**。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:575:  • 执行同款端点最小测试并对照 forceOrder WS
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:767:| **§1c 对话级建议暂存区** | **制度说明（DEC-073）**：本栏捕获对话中Claude提出但尚未落入§4的建议。Founder确认→升入§4/DECISION_LOG；Founder否决→清除；未响应=下次开局必提。**本轮新增（2026-06-14深夜，Founder委托CTO自主推进期间）：**①**[✅Claude执行完毕]** D2/A1-RR验收+专业透镜：两线均"需返工"属**正确返工**；D2 BLOCKED根因=D1"35/35完成"实为**数据不达用途**(下的contract klines非mark-price、缺真实funding、DEC-070四过滤无证据)→**过程教训：完成计数≠达用途，验收门须查数据适用性**(风险E反例修正)。②**[✅Claude执行完毕]** A-1预登记v2亲自主导改写(`A1_CASCADE_REBOUND_PREREG_v2.md`)，逐条闭合Reviewer十项(方向代理过滤/唯一主horizon=48h/cluster块bootstrap/refractory episode/A-2 P95 overlap/80%power MDE/两级门/现金零基准硬门/物理Holdout封存/闭合decision table)；**Codex三轮闭环**：v2盲审NOT APPROVED(仅闭2/10)→CTO据五项必改起草**v3**(`..._v3.md`:纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单8H读数P95/沙箱外真权限Holdout)→**A1-RR3第三轮盲审运行中(PID 8335)**,特别要求判定剩余阻塞是否=历史样本不可约识别上限。③**[✅已决→DEC-075:暂缓优先A-1]** TSMOM universe扩展(D1v2+D2)**未执行**——CTO判断：扩样本是D级候选(Founder未批)+只解决DD不解决TSMOM核心"无可行定仓"+DEC-070两过滤需外部数据历史不可得，**强行连夜重采=风险D局部修补搜索**。**推荐：A-1优先级高于universe扩展**。DEC070审计(`20260614_dec070_filter_audit.md`)：2可算过滤器下Tier1-clean 20/35、watch 10/35、排除5/35(AXS/FTM/ICX高跳动/低流动);**审计抛专业异议——本地CSV只存base volume非quote volume(ADTV亦不精确)+float市值比/OI市值比需外部历史数据(Binance OI REST仅近1月)**,数据成本叠加,**强化暂缓**:若Founder坚持闭环TSMOM需先投入补quote volume+外部supply/mcap/OI,性价比低于A-1。④**[✅Claude执行完毕]** 跨对话回收(扫23会话)：唯一含在途未存工作的"外部调研(Sweep形态线)"——其做空测试**已在其他会话独立完成并封账**(v4多头"全维度无一可部署"、v5做空已失败,DEC 2026-06-06)，**无孤儿决策丢失**；工作区沙箱故障根因=claude-code-vm 2.1.170下载循环失败,Desktop Commander为正确通道。⑤**[议程·rule8]** A-1历史方向识别结构性局限→**前向强平数据路径**：历史A-1无真实强平名义额(采集器2026-06-13起前向)，v2只能用价格代理；最强验证仍需前向真实强平数据3-6月——把已部署采集器与A-1直接挂钩,是采集器首个明确alpha用途。⑥**[✅已决→DEC-075]** A-1两段式路径+universe暂缓**已经Founder"按推荐继续"确认,升格DEC-075**(③⑥出本栏)。**当前推进(2026-06-15)**：**路径A**=A-1预登记已迭代到**v5**(`..._v5.md`)。盲审进度:RR4判v4闭2/5(功效治理+family CLOSED),余4项判"文字与算法冻结、不要求达机制确证严格度"→v5逐条闭(§7改"A-2非重叠关联硬门"/circular半开网格`[t1,tn+1h)`+offset截断/Spearman改配对bootstrap对ρ居中真检验ρ=0/WF唯一切点中点+按实际足迹purge/AES-256-GCM+密钥独立principal+负向测试留命令退出码)→**A1-RR5第五轮盲审=✅APPROVED(4/4全闭,`A1_RISK_REVIEW_v5.md`)**!五轮收敛(10→2/10→0/5→2/5→4/4)。放行边界:仅关联结论/不耗独立计数/不晋级策略;**执行前须先AES-256-GCM Holdout封存+负向权限测试**。**[⚠️待Founder知会后派发]** 按预登记铁律,跑Tier A事件研究(封Holdout+出A-1生死判决)须Founder知会+主会话人工派发,故CTO停在放行点未自动跑;**路径B**=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器原始forceOrder含side方向字段已核实=首个alpha用途;就绪门=候选n达功效门→另立预登记走硬门耗计数;待数据累积3-6月,低成本并行不阻塞)。**⑥已闭（2026-06-15）**：A-1 Tier A 已跑 → **FAILED**(48h Holm p=0.32) → A-1独立回弹 **Dead**(墓园+机会地图);PB1脚手架完成。**⑦[已升格→§4]** carry升主线:v1→RR1→v2→RR2(2/8重构获认)→v3起草中;已入§4执行序与机会地图,非悬空建议。**⑧[已记]** 采集器查实零采集(Binance限云IP)→工具链已纠正;Codex网络认知更正(网络活用danger-full-access)。**⑨[环境·待Founder]** VM下载/DC断联:downloads.claude.ai走双跳拉不动53MB二进制,Founder已加Clash单跳规则但下载仍truncate(2核跳板带宽不足),Founder选C忍着(不阻塞research,A-1/carry均nohup扛断)。网络拓扑已记忆([[network-proxy-topology]])。**⑩[核实项·已派Codex]** Founder线索:服务器有历史v4.6.2(数据源也是币安,疑v4-strategy-runner)。**若v4.6.2能正常取币安数据→可能推翻"Binance封本IP"结论**(我只测了futures公共WS forceOrder,v4.6.2或用REST/现货/不同端点/鉴权)。已派`VERIFY_V462`(Codex danger-full-access)核实其数据源+对照,出修采集器正路。**本栏其余无悬空建议（carry在§4,A-1在墓园,采集器在工具链）。**|
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:781:| 强平采集器 | ⚠️ **实为零采集（2026-06-14 查实，纠正旧"生产运行中"假状态）**：service active 但 22h `process_messages=0`。根因=**Binance 对腾讯云SG服务器IP的WS行情流限制**（REST fapi HTTP200正常，但 aggTrade/forceOrder WS 握手OPEN后0帧——云IP被限推送）。**非代码bug**（ping+重连正常）。教训=信了"service active"未验真实数据流（风险E/A）。**修复试过失败（2026-06-15 Codex danger-full-access 实测）**：Binance futures WS 经 SG直连 + 经住宅代理**均握手后0帧**，但住宅出口能正常收 Coinbase WS 帧→**Binance futures WS 对这些IP全封**（非客户端/SOCKS故障）。**现有基建拿不到Binance强平流**；需换非封锁IP托管 或 第三方强平数据源。路径B休眠→**确认延后,不阻塞**。双审计P0-1销项前提（"已验真实数据帧"）实为一瞬窗口,不成立 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:802:/bin/bash -lc "printf '%s\\n' '--- root constraints ---'; find .. -name AGENTS.md -o -name CLAUDE.md | sort; printf '%s\\n' '--- task references ---'; rg -n --hidden -S \"VERIFY[-_ ]?V462|v4\\.6\\.2|forceOrder|v4-strategy-runner|v4-proxy\" 01_MEMORY_CORE 04_AI_TEAM 06_RESEARCH 2>/dev/null | head -300" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:804:01_MEMORY_CORE/BOOT_BRIEF.md:32:- **A-1预登记CTO亲自三轮闭环**：v2（闭2/10）→**v3**（逐条闭五项必改：纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单读数P95/沙箱外真权限Holdout）。**A-1两段式路径已由Founder"按推荐继续"确认→DEC-075**（A-1两段式+universe暂缓优先A-1）。**路径A**(历史关联快筛)=预登记经**五轮盲审v1→v5,RR5=✅APPROVED(4/4)**!Tier A严格=关联门(不声称机制/不耗独立计数/不晋级);功效门`PROTOCOL_v1.4_A1SCREEN_ADDENDUM`留痕豁免;AES-256-GCM加密Holdout。**放行待Founder一句"跑"→主会话派发**(先Holdout封存+负向权限测试,再Codex只读work跑事件研究出A-1关联生死判决)。**路径B**(前向真实强平数据机制确证)=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器forceOrder含side方向字段=首个alpha用途,待就绪门,低成本并行)。**DECISION_LOG最新=DEC-075**。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:805:01_MEMORY_CORE/CURRENT_STATE.md:21:| **§1c 对话级建议暂存区** | **制度说明（DEC-073）**：本栏捕获对话中Claude提出但尚未落入§4的建议。Founder确认→升入§4/DECISION_LOG；Founder否决→清除；未响应=下次开局必提。**本轮新增（2026-06-14深夜，Founder委托CTO自主推进期间）：**①**[✅Claude执行完毕]** D2/A1-RR验收+专业透镜：两线均"需返工"属**正确返工**；D2 BLOCKED根因=D1"35/35完成"实为**数据不达用途**(下的contract klines非mark-price、缺真实funding、DEC-070四过滤无证据)→**过程教训：完成计数≠达用途，验收门须查数据适用性**(风险E反例修正)。②**[✅Claude执行完毕]** A-1预登记v2亲自主导改写(`A1_CASCADE_REBOUND_PREREG_v2.md`)，逐条闭合Reviewer十项(方向代理过滤/唯一主horizon=48h/cluster块bootstrap/refractory episode/A-2 P95 overlap/80%power MDE/两级门/现金零基准硬门/物理Holdout封存/闭合decision table)；**Codex三轮闭环**：v2盲审NOT APPROVED(仅闭2/10)→CTO据五项必改起草**v3**(`..._v3.md`:纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单8H读数P95/沙箱外真权限Holdout)→**A1-RR3第三轮盲审运行中(PID 8335)**,特别要求判定剩余阻塞是否=历史样本不可约识别上限。③**[✅已决→DEC-075:暂缓优先A-1]** TSMOM universe扩展(D1v2+D2)**未执行**——CTO判断：扩样本是D级候选(Founder未批)+只解决DD不解决TSMOM核心"无可行定仓"+DEC-070两过滤需外部数据历史不可得，**强行连夜重采=风险D局部修补搜索**。**推荐：A-1优先级高于universe扩展**。DEC070审计(`20260614_dec070_filter_audit.md`)：2可算过滤器下Tier1-clean 20/35、watch 10/35、排除5/35(AXS/FTM/ICX高跳动/低流动);**审计抛专业异议——本地CSV只存base volume非quote volume(ADTV亦不精确)+float市值比/OI市值比需外部历史数据(Binance OI REST仅近1月)**,数据成本叠加,**强化暂缓**:若Founder坚持闭环TSMOM需先投入补quote volume+外部supply/mcap/OI,性价比低于A-1。④**[✅Claude执行完毕]** 跨对话回收(扫23会话)：唯一含在途未存工作的"外部调研(Sweep形态线)"——其做空测试**已在其他会话独立完成并封账**(v4多头"全维度无一可部署"、v5做空已失败,DEC 2026-06-06)，**无孤儿决策丢失**；工作区沙箱故障根因=claude-code-vm 2.1.170下载循环失败,Desktop Commander为正确通道。⑤**[议程·rule8]** A-1历史方向识别结构性局限→**前向强平数据路径**：历史A-1无真实强平名义额(采集器2026-06-13起前向)，v2只能用价格代理；最强验证仍需前向真实强平数据3-6月——把已部署采集器与A-1直接挂钩,是采集器首个明确alpha用途。⑥**[✅已决→DEC-075]** A-1两段式路径+universe暂缓**已经Founder"按推荐继续"确认,升格DEC-075**(③⑥出本栏)。**当前推进(2026-06-15)**：**路径A**=A-1预登记已迭代到**v5**(`..._v5.md`)。盲审进度:RR4判v4闭2/5(功效治理+family CLOSED),余4项判"文字与算法冻结、不要求达机制确证严格度"→v5逐条闭(§7改"A-2非重叠关联硬门"/circular半开网格`[t1,tn+1h)`+offset截断/Spearman改配对bootstrap对ρ居中真检验ρ=0/WF唯一切点中点+按实际足迹purge/AES-256-GCM+密钥独立principal+负向测试留命令退出码)→**A1-RR5第五轮盲审=✅APPROVED(4/4全闭,`A1_RISK_REVIEW_v5.md`)**!五轮收敛(10→2/10→0/5→2/5→4/4)。放行边界:仅关联结论/不耗独立计数/不晋级策略;**执行前须先AES-256-GCM Holdout封存+负向权限测试**。**[⚠️待Founder知会后派发]** 按预登记铁律,跑Tier A事件研究(封Holdout+出A-1生死判决)须Founder知会+主会话人工派发,故CTO停在放行点未自动跑;**路径B**=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器原始forceOrder含side方向字段已核实=首个alpha用途;就绪门=候选n达功效门→另立预登记走硬门耗计数;待数据累积3-6月,低成本并行不阻塞)。**⑥已闭（2026-06-15）**：A-1 Tier A 已跑 → **FAILED**(48h Holm p=0.32) → A-1独立回弹 **Dead**(墓园+机会地图);PB1脚手架完成。**⑦[已升格→§4]** carry升主线:v1→RR1→v2→RR2(2/8重构获认)→v3起草中;已入§4执行序与机会地图,非悬空建议。**⑧[已记]** 采集器查实零采集(Binance限云IP)→工具链已纠正;Codex网络认知更正(网络活用danger-full-access)。**⑨[环境·待Founder]** VM下载/DC断联:downloads.claude.ai走双跳拉不动53MB二进制,Founder已加Clash单跳规则但下载仍truncate(2核跳板带宽不足),Founder选C忍着(不阻塞research,A-1/carry均nohup扛断)。网络拓扑已记忆([[network-proxy-topology]])。**⑩[核实项·已派Codex]** Founder线索:服务器有历史v4.6.2(数据源也是币安,疑v4-strategy-runner)。**若v4.6.2能正常取币安数据→可能推翻"Binance封本IP"结论**(我只测了futures公共WS forceOrder,v4.6.2或用REST/现货/不同端点/鉴权)。已派`VERIFY_V462`(Codex danger-full-access)核实其数据源+对照,出修采集器正路。**本栏其余无悬空建议（carry在§4,A-1在墓园,采集器在工具链）。**|
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:806:01_MEMORY_CORE/CURRENT_STATE.md:35:| 强平采集器 | ⚠️ **实为零采集（2026-06-14 查实，纠正旧"生产运行中"假状态）**：service active 但 22h `process_messages=0`。根因=**Binance 对腾讯云SG服务器IP的WS行情流限制**（REST fapi HTTP200正常，但 aggTrade/forceOrder WS 握手OPEN后0帧——云IP被限推送）。**非代码bug**（ping+重连正常）。教训=信了"service active"未验真实数据流（风险E/A）。**修复试过失败（2026-06-15 Codex danger-full-access 实测）**：Binance futures WS 经 SG直连 + 经住宅代理**均握手后0帧**，但住宅出口能正常收 Coinbase WS 帧→**Binance futures WS 对这些IP全封**（非客户端/SOCKS故障）。**现有基建拿不到Binance强平流**；需换非封锁IP托管 或 第三方强平数据源。路径B休眠→**确认延后,不阻塞**。双审计P0-1销项前提（"已验真实数据帧"）实为一瞬窗口,不成立 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:808:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN.log:16:**问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:810:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN.log:22:- 只动 `aiquant-liq-collector.service` 与 `/opt/ai_quant_liq_collector/`。改前先 `systemctl list-units --state=running | grep -E 'danted|v4-proxy'` 确认在跑。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:811:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN.log:26:2. **先取证**：在服务器用采集器同款 `websocket` 库写个 ~30s 自测，连 `!forceOrder@arr`，确认能否收到帧（区分"代码 bug" vs "stream/网络问题"）。Binance forceOrder 是稀疏流但全市场每分钟应有多帧。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:815:06_RESEARCH/RESULTS/20260615_pb1_harness_selftest.md:8:- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:816:06_RESEARCH/CODE/liquidation_collector.py:15:WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:817:06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md:13:| 强平方向 | 无数据，用 `6h OI↓+负收益` 代理（混入主动减仓/宏观普跌/普通反转） | **采集器原始 forceOrder `o.S` 字段**：`SELL`=多头强平=真实卖压；`BUY`=空头强平=买压。**方向真实可识别** |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:818:06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md:18:**采集器现状（已核实）：** `aiquant-liq-collector.service` 在腾讯云 SG VM 运行，订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`（全币种强平流），**持久化完整原始 JSON（JSONL）** 到 `/opt/ai_quant_liq_collector/data/LIQUIDATIONS/`。原始消息含 `o.s`(symbol)/`o.S`(side)/`o.p`(price)/`o.q`(qty)/`o.ap`(avg price)/`o.T`(time)——方向与规模字段齐全。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:819:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:3:**问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:821:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:10:- 只动 `aiquant-liq-collector.service` 与 `/opt/ai_quant_liq_collector/`。改前先 `systemctl list-units --state=running | grep -E 'danted|v4-proxy'` 确认在跑。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:822:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:14:2. **先取证**：在服务器用采集器同款 `websocket` 库写个 ~30s 自测，连 `!forceOrder@arr`，确认能否收到帧（区分"代码 bug" vs "stream/网络问题"）。Binance forceOrder 是稀疏流但全市场每分钟应有多帧。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:823:06_RESEARCH/CODE/forward_liq/liq_parser.py:2:"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:824:06_RESEARCH/CODE/forward_liq/liq_parser.py:56:    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:825:06_RESEARCH/CODE/forward_liq/liq_parser.py:100:    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:826:06_RESEARCH/CODE/forward_liq/liq_parser.py:103:    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:827:06_RESEARCH/CODE/forward_liq/tests/test_forward_event_counter.py:32:        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:828:06_RESEARCH/CODE/forward_liq/tests/test_liq_parser.py:26:        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:829:04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:14:# VERIFY-V462：核实历史 v4.6.2 的币安数据源（可能推翻"Binance封本IP"结论）
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:831:04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:18:**关键疑问：** 我（Claude）此前测得 `wss://fstream.binance.com/ws/!forceOrder@arr`（**futures 公共WS**）经 SG直连+住宅代理均握手后0帧，据此判"Binance 封本IP"。**但若 v4.6.2 能正常从币安取数，说明该结论过宽**——v4.6.2 可能用的是币安 REST / 现货WS / 不同 futures 端点 / 带鉴权 / 经某代理，那才是修采集器的正路。**本任务核实之，勿想当然。**
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:834:04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:26:4. **关键对照**：在服务器上用 v4.6.2 的**同款方法/端点**做一次最小取数测试（如它用 REST 则 curl 其端点、用某 WS 则连该 WS 计帧），与我们采集器的 `fstream forceOrder WS` 对照——**区分"Binance 封整个IP" vs "只是某些 futures 公共WS端点/方式不通"**。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:839:04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:575:  • 执行同款端点最小测试并对照 forceOrder WS
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:844:04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:767:| **§1c 对话级建议暂存区** | **制度说明（DEC-073）**：本栏捕获对话中Claude提出但尚未落入§4的建议。Founder确认→升入§4/DECISION_LOG；Founder否决→清除；未响应=下次开局必提。**本轮新增（2026-06-14深夜，Founder委托CTO自主推进期间）：**①**[✅Claude执行完毕]** D2/A1-RR验收+专业透镜：两线均"需返工"属**正确返工**；D2 BLOCKED根因=D1"35/35完成"实为**数据不达用途**(下的contract klines非mark-price、缺真实funding、DEC-070四过滤无证据)→**过程教训：完成计数≠达用途，验收门须查数据适用性**(风险E反例修正)。②**[✅Claude执行完毕]** A-1预登记v2亲自主导改写(`A1_CASCADE_REBOUND_PREREG_v2.md`)，逐条闭合Reviewer十项(方向代理过滤/唯一主horizon=48h/cluster块bootstrap/refractory episode/A-2 P95 overlap/80%power MDE/两级门/现金零基准硬门/物理Holdout封存/闭合decision table)；**Codex三轮闭环**：v2盲审NOT APPROVED(仅闭2/10)→CTO据五项必改起草**v3**(`..._v3.md`:纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单8H读数P95/沙箱外真权限Holdout)→**A1-RR3第三轮盲审运行中(PID 8335)**,特别要求判定剩余阻塞是否=历史样本不可约识别上限。③**[✅已决→DEC-075:暂缓优先A-1]** TSMOM universe扩展(D1v2+D2)**未执行**——CTO判断：扩样本是D级候选(Founder未批)+只解决DD不解决TSMOM核心"无可行定仓"+DEC-070两过滤需外部数据历史不可得，**强行连夜重采=风险D局部修补搜索**。**推荐：A-1优先级高于universe扩展**。DEC070审计(`20260614_dec070_filter_audit.md`)：2可算过滤器下Tier1-clean 20/35、watch 10/35、排除5/35(AXS/FTM/ICX高跳动/低流动);**审计抛专业异议——本地CSV只存base volume非quote volume(ADTV亦不精确)+float市值比/OI市值比需外部历史数据(Binance OI REST仅近1月)**,数据成本叠加,**强化暂缓**:若Founder坚持闭环TSMOM需先投入补quote volume+外部supply/mcap/OI,性价比低于A-1。④**[✅Claude执行完毕]** 跨对话回收(扫23会话)：唯一含在途未存工作的"外部调研(Sweep形态线)"——其做空测试**已在其他会话独立完成并封账**(v4多头"全维度无一可部署"、v5做空已失败,DEC 2026-06-06)，**无孤儿决策丢失**；工作区沙箱故障根因=claude-code-vm 2.1.170下载循环失败,Desktop Commander为正确通道。⑤**[议程·rule8]** A-1历史方向识别结构性局限→**前向强平数据路径**：历史A-1无真实强平名义额(采集器2026-06-13起前向)，v2只能用价格代理；最强验证仍需前向真实强平数据3-6月——把已部署采集器与A-1直接挂钩,是采集器首个明确alpha用途。⑥**[✅已决→DEC-075]** A-1两段式路径+universe暂缓**已经Founder"按推荐继续"确认,升格DEC-075**(③⑥出本栏)。**当前推进(2026-06-15)**：**路径A**=A-1预登记已迭代到**v5**(`..._v5.md`)。盲审进度:RR4判v4闭2/5(功效治理+family CLOSED),余4项判"文字与算法冻结、不要求达机制确证严格度"→v5逐条闭(§7改"A-2非重叠关联硬门"/circular半开网格`[t1,tn+1h)`+offset截断/Spearman改配对bootstrap对ρ居中真检验ρ=0/WF唯一切点中点+按实际足迹purge/AES-256-GCM+密钥独立principal+负向测试留命令退出码)→**A1-RR5第五轮盲审=✅APPROVED(4/4全闭,`A1_RISK_REVIEW_v5.md`)**!五轮收敛(10→2/10→0/5→2/5→4/4)。放行边界:仅关联结论/不耗独立计数/不晋级策略;**执行前须先AES-256-GCM Holdout封存+负向权限测试**。**[⚠️待Founder知会后派发]** 按预登记铁律,跑Tier A事件研究(封Holdout+出A-1生死判决)须Founder知会+主会话人工派发,故CTO停在放行点未自动跑;**路径B**=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器原始forceOrder含side方向字段已核实=首个alpha用途;就绪门=候选n达功效门→另立预登记走硬门耗计数;待数据累积3-6月,低成本并行不阻塞)。**⑥已闭（2026-06-15）**：A-1 Tier A 已跑 → **FAILED**(48h Holm p=0.32) → A-1独立回弹 **Dead**(墓园+机会地图);PB1脚手架完成。**⑦[已升格→§4]** carry升主线:v1→RR1→v2→RR2(2/8重构获认)→v3起草中;已入§4执行序与机会地图,非悬空建议。**⑧[已记]** 采集器查实零采集(Binance限云IP)→工具链已纠正;Codex网络认知更正(网络活用danger-full-access)。**⑨[环境·待Founder]** VM下载/DC断联:downloads.claude.ai走双跳拉不动53MB二进制,Founder已加Clash单跳规则但下载仍truncate(2核跳板带宽不足),Founder选C忍着(不阻塞research,A-1/carry均nohup扛断)。网络拓扑已记忆([[network-proxy-topology]])。**⑩[核实项·已派Codex]** Founder线索:服务器有历史v4.6.2(数据源也是币安,疑v4-strategy-runner)。**若v4.6.2能正常取币安数据→可能推翻"Binance封本IP"结论**(我只测了futures公共WS forceOrder,v4.6.2或用REST/现货/不同端点/鉴权)。已派`VERIFY_V462`(Codex danger-full-access)核实其数据源+对照,出修采集器正路。**本栏其余无悬空建议（carry在§4,A-1在墓园,采集器在工具链）。**|
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:845:04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:781:| 强平采集器 | ⚠️ **实为零采集（2026-06-14 查实，纠正旧"生产运行中"假状态）**：service active 但 22h `process_messages=0`。根因=**Binance 对腾讯云SG服务器IP的WS行情流限制**（REST fapi HTTP200正常，但 aggTrade/forceOrder WS 握手OPEN后0帧——云IP被限推送）。**非代码bug**（ping+重连正常）。教训=信了"service active"未验真实数据流（风险E/A）。**修复试过失败（2026-06-15 Codex danger-full-access 实测）**：Binance futures WS 经 SG直连 + 经住宅代理**均握手后0帧**，但住宅出口能正常收 Coinbase WS 帧→**Binance futures WS 对这些IP全封**（非客户端/SOCKS故障）。**现有基建拿不到Binance强平流**；需换非封锁IP托管 或 第三方强平数据源。路径B休眠→**确认延后,不阻塞**。双审计P0-1销项前提（"已验真实数据帧"）实为一瞬窗口,不成立 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:847:04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:802:/bin/bash -lc "printf '%s\\n' '--- root constraints ---'; find .. -name AGENTS.md -o -name CLAUDE.md | sort; printf '%s\\n' '--- task references ---'; rg -n --hidden -S \"VERIFY[-_ ]?V462|v4\\.6\\.2|forceOrder|v4-strategy-runner|v4-proxy\" 01_MEMORY_CORE 04_AI_TEAM 06_RESEARCH 2>/dev/null | head -300" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:848:04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR.md:18:2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:849:04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR.md:30:| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:851:04_AI_TEAM/CODEX_TASKS/REPORT_FIX_COLLECTOR.md:51:1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:854:04_AI_TEAM/CODEX_TASKS/REPORT_DEPLOY_COLLECTOR_VM.md:49:- 日志出现 `[connected] ... wss://fstream.binance.com/ws/!forceOrder@arr`
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:855:04_AI_TEAM/CODEX_TASKS/VERIFY_V462_BINANCE_SOURCE.md:1:# VERIFY-V462：核实历史 v4.6.2 的币安数据源（可能推翻"Binance封本IP"结论）
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:857:04_AI_TEAM/CODEX_TASKS/VERIFY_V462_BINANCE_SOURCE.md:5:**关键疑问：** 我（Claude）此前测得 `wss://fstream.binance.com/ws/!forceOrder@arr`（**futures 公共WS**）经 SG直连+住宅代理均握手后0帧，据此判"Binance 封本IP"。**但若 v4.6.2 能正常从币安取数，说明该结论过宽**——v4.6.2 可能用的是币安 REST / 现货WS / 不同 futures 端点 / 带鉴权 / 经某代理，那才是修采集器的正路。**本任务核实之，勿想当然。**
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:860:04_AI_TEAM/CODEX_TASKS/VERIFY_V462_BINANCE_SOURCE.md:13:4. **关键对照**：在服务器上用 v4.6.2 的**同款方法/端点**做一次最小取数测试（如它用 REST 则 curl 其端点、用某 WS 则连该 WS 计帧），与我们采集器的 `fstream forceOrder WS` 对照——**区分"Binance 封整个IP" vs "只是某些 futures 公共WS端点/方式不通"**。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:863:04_AI_TEAM/CODEX_TASKS/DEPLOY_COLLECTOR_VM.md:57:WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:864:04_AI_TEAM/CODEX_TASKS/REPORT_P1_03_DATA_RECON_OI.md:88:`forceOrders` 均无文件，metrics 字段中也不包含清算量。交易 API 在当前
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:865:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:16:**问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:867:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:23:- 只动 `aiquant-liq-collector.service` 与 `/opt/ai_quant_liq_collector/`。改前先 `systemctl list-units --state=running | grep -E 'danted|v4-proxy'` 确认在跑。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:868:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:27:2. **先取证**：在服务器用采集器同款 `websocket` 库写个 ~30s 自测，连 `!forceOrder@arr`，确认能否收到帧（区分"代码 bug" vs "stream/网络问题"）。Binance forceOrder 是稀疏流但全市场每分钟应有多帧。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:869:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1309:**问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:871:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1316:- 只动 `aiquant-liq-collector.service` 与 `/opt/ai_quant_liq_collector/`。改前先 `systemctl list-units --state=running | grep -E 'danted|v4-proxy'` 确认在跑。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:872:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1320:2. **先取证**：在服务器用采集器同款 `websocket` 库写个 ~30s 自测，连 `!forceOrder@arr`，确认能否收到帧（区分"代码 bug" vs "stream/网络问题"）。Binance forceOrder 是稀疏流但全市场每分钟应有多帧。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:873:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1411:**问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:875:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1418:- 只动 `aiquant-liq-collector.service` 与 `/opt/ai_quant_liq_collector/`。改前先 `systemctl list-units --state=running | grep -E 'danted|v4-proxy'` 确认在跑。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:876:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1422:2. **先取证**：在服务器用采集器同款 `websocket` 库写个 ~30s 自测，连 `!forceOrder@arr`，确认能否收到帧（区分"代码 bug" vs "stream/网络问题"）。Binance forceOrder 是稀疏流但全市场每分钟应有多帧。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:877:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_RUN2.log:1666: **问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:918:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:4:**已诊断（Claude 2026-06-14，勿重复推翻，可验证）：** 采集器代码健康（run_forever 含 ping_interval=180 + 重连）。但腾讯云SG服务器(43.160.200.224)上：REST `fapi/v1/ping` HTTP200 正常；**WS `wss://fstream.binance.com/ws/...` 握手 OPEN 成功但 0 帧**（aggTrade 20s/forceOrder 25s 均 0 帧，forceOrder OPEN 后立即 CLOSE）→ **Binance 不向该云IP推送行情流**（数据中心IP限制）。故 22h `process_messages=0`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:919:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:6:**服务器红线：** danted.service/v4-proxy.service **绝不能停**；只动 aiquant-liq-collector 与 /opt/ai_quant_liq_collector/。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:920:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:12:   - 用 websocket-client 经该 SOCKS5 连 `!forceOrder@arr`（`http_proxy_host/port + proxy_type='socks5h' + http_proxy_auth`），测 30s 是否有帧。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:921:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:17:**已诊断（Claude 2026-06-14，勿重复推翻，可验证）：** 采集器代码健康（run_forever 含 ping_interval=180 + 重连）。但腾讯云SG服务器(43.160.200.224)上：REST `fapi/v1/ping` HTTP200 正常；**WS `wss://fstream.binance.com/ws/...` 握手 OPEN 成功但 0 帧**（aggTrade 20s/forceOrder 25s 均 0 帧，forceOrder OPEN 后立即 CLOSE）→ **Binance 不向该云IP推送行情流**（数据中心IP限制）。故 22h `process_messages=0`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:922:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:19:**服务器红线：** danted.service/v4-proxy.service **绝不能停**；只动 aiquant-liq-collector 与 /opt/ai_quant_liq_collector/。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:923:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:25:   - 用 websocket-client 经该 SOCKS5 连 `!forceOrder@arr`（`http_proxy_host/port + proxy_type='socks5h' + http_proxy_auth`），测 30s 是否有帧。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:924:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1505:| **§1c 对话级建议暂存区** | **制度说明（DEC-073）**：本栏捕获对话中Claude提出但尚未落入§4的建议。Founder确认→升入§4/DECISION_LOG；Founder否决→清除；未响应=下次开局必提。**本轮新增（2026-06-14深夜，Founder委托CTO自主推进期间）：**①**[✅Claude执行完毕]** D2/A1-RR验收+专业透镜：两线均"需返工"属**正确返工**；D2 BLOCKED根因=D1"35/35完成"实为**数据不达用途**(下的contract klines非mark-price、缺真实funding、DEC-070四过滤无证据)→**过程教训：完成计数≠达用途，验收门须查数据适用性**(风险E反例修正)。②**[✅Claude执行完毕]** A-1预登记v2亲自主导改写(`A1_CASCADE_REBOUND_PREREG_v2.md`)，逐条闭合Reviewer十项(方向代理过滤/唯一主horizon=48h/cluster块bootstrap/refractory episode/A-2 P95 overlap/80%power MDE/两级门/现金零基准硬门/物理Holdout封存/闭合decision table)；**Codex三轮闭环**：v2盲审NOT APPROVED(仅闭2/10)→CTO据五项必改起草**v3**(`..._v3.md`:纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单8H读数P95/沙箱外真权限Holdout)→**A1-RR3第三轮盲审运行中(PID 8335)**,特别要求判定剩余阻塞是否=历史样本不可约识别上限。③**[✅已决→DEC-075:暂缓优先A-1]** TSMOM universe扩展(D1v2+D2)**未执行**——CTO判断：扩样本是D级候选(Founder未批)+只解决DD不解决TSMOM核心"无可行定仓"+DEC-070两过滤需外部数据历史不可得，**强行连夜重采=风险D局部修补搜索**。**推荐：A-1优先级高于universe扩展**。DEC070审计(`20260614_dec070_filter_audit.md`)：2可算过滤器下Tier1-clean 20/35、watch 10/35、排除5/35(AXS/FTM/ICX高跳动/低流动);**审计抛专业异议——本地CSV只存base volume非quote volume(ADTV亦不精确)+float市值比/OI市值比需外部历史数据(Binance OI REST仅近1月)**,数据成本叠加,**强化暂缓**:若Founder坚持闭环TSMOM需先投入补quote volume+外部supply/mcap/OI,性价比低于A-1。④**[✅Claude执行完毕]** 跨对话回收(扫23会话)：唯一含在途未存工作的"外部调研(Sweep形态线)"——其做空测试**已在其他会话独立完成并封账**(v4多头"全维度无一可部署"、v5做空已失败,DEC 2026-06-06)，**无孤儿决策丢失**；工作区沙箱故障根因=claude-code-vm 2.1.170下载循环失败,Desktop Commander为正确通道。⑤**[议程·rule8]** A-1历史方向识别结构性局限→**前向强平数据路径**：历史A-1无真实强平名义额(采集器2026-06-13起前向)，v2只能用价格代理；最强验证仍需前向真实强平数据3-6月——把已部署采集器与A-1直接挂钩,是采集器首个明确alpha用途。⑥**[✅已决→DEC-075]** A-1两段式路径+universe暂缓**已经Founder"按推荐继续"确认,升格DEC-075**(③⑥出本栏)。**当前推进(2026-06-15)**：**路径A**=A-1预登记已迭代到**v5**(`..._v5.md`)。盲审进度:RR4判v4闭2/5(功效治理+family CLOSED),余4项判"文字与算法冻结、不要求达机制确证严格度"→v5逐条闭(§7改"A-2非重叠关联硬门"/circular半开网格`[t1,tn+1h)`+offset截断/Spearman改配对bootstrap对ρ居中真检验ρ=0/WF唯一切点中点+按实际足迹purge/AES-256-GCM+密钥独立principal+负向测试留命令退出码)→**A1-RR5第五轮盲审=✅APPROVED(4/4全闭,`A1_RISK_REVIEW_v5.md`)**!五轮收敛(10→2/10→0/5→2/5→4/4)。放行边界:仅关联结论/不耗独立计数/不晋级策略;**执行前须先AES-256-GCM Holdout封存+负向权限测试**。**[⚠️待Founder知会后派发]** 按预登记铁律,跑Tier A事件研究(封Holdout+出A-1生死判决)须Founder知会+主会话人工派发,故CTO停在放行点未自动跑;**路径B**=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器原始forceOrder含side方向字段已核实=首个alpha用途;就绪门=候选n达功效门→另立预登记走硬门耗计数;待数据累积3-6月,低成本并行不阻塞)。**恢复点(2026-06-15最新)**:Founder已GO。**两Codex活并行运行中**:①A1_TIERA=A-1 Tier A历史关联快筛执行(按v5两阶段custodian/executor,已写13单测全过+自审,PID见A1_TIERA_RUN.log)→出关联生死判决;②PB1=路径B强平解析器+就绪门计数器(自包含工具)。**网络根因已查实**:downloads.claude.ai命中`claude.ai,默认组`走双跳商家代理→VM大二进制(claude.app.tar.zst 2.1.170)拉不动→Claude.app 172%CPU热循环挤断DC/MCP。**修复待Founder**:Clash加`DOMAIN,downloads.claude.ai,新加坡跳板`(单跳)置于claude.ai规则前+重启Claude。网络拓扑已记忆([[network-proxy-topology]])。SSH采集器宿主无免密钥(路径B拉真实数据待凭据)。|
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:925:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1519:| 强平采集器 | ⚠️ **实为零采集（2026-06-14 查实，纠正旧"生产运行中"假状态）**：service active 但 22h `process_messages=0`。根因=**Binance 对腾讯云SG服务器IP的WS行情流限制**（REST fapi HTTP200正常，但 aggTrade/forceOrder WS 握手OPEN后0帧——云IP被限推送）。**非代码bug**（ping+重连正常）。教训=信了"service active"未验真实数据流（风险E/A）。**修复=路径B重启时把采集器WS走住宅代理(商家代理)或换允许IP**；当前路径B休眠→**暂不修**。双审计P0-1销项前提（"已验真实数据帧"）实为一瞬窗口，不成立 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:927:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1540:**已诊断（Claude 2026-06-14，勿重复推翻，可验证）：** 采集器代码健康（run_forever 含 ping_interval=180 + 重连）。但腾讯云SG服务器(43.160.200.224)上：REST `fapi/v1/ping` HTTP200 正常；**WS `wss://fstream.binance.com/ws/...` 握手 OPEN 成功但 0 帧**（aggTrade 20s/forceOrder 25s 均 0 帧，forceOrder OPEN 后立即 CLOSE）→ **Binance 不向该云IP推送行情流**（数据中心IP限制）。故 22h `process_messages=0`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:928:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1542:**服务器红线：** danted.service/v4-proxy.service **绝不能停**；只动 aiquant-liq-collector 与 /opt/ai_quant_liq_collector/。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:929:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1548:   - 用 websocket-client 经该 SOCKS5 连 `!forceOrder@arr`（`http_proxy_host/port + proxy_type='socks5h' + http_proxy_auth`），测 30s 是否有帧。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:932:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1629:WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:933:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1683:06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md:18:**采集器现状（已核实）：** `aiquant-liq-collector.service` 在腾讯云 SG VM 运行，订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`（全币种强平流），**持久化完整原始 JSON（JSONL）** 到 `/opt/ai_quant_liq_collector/data/LIQUIDATIONS/`。原始消息含 `o.s`(symbol)/`o.S`(side)/`o.p`(price)/`o.q`(qty)/`o.ap`(avg price)/`o.T`(time)——方向与规模字段齐全。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:934:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1687:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:3:**问题（已诊断）：** 腾讯云SG VM 上 `aiquant-liq-collector.service` 显示 active，但 22 小时 `process_messages=0 / last_message_utc=None`，`/opt/ai_quant_liq_collector/data/LIQUIDATIONS/` 无任何 .jsonl。日志只有一条 `[connected]`（2026-06-13T09:43 UTC），之后无 `[message]`、无 `ws error`、无 `ws closed`——**连上一次后静默假死，0 帧**。采集器用 `import websocket`（websocket-client 同步库），订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:935:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1688:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:10:- 只动 `aiquant-liq-collector.service` 与 `/opt/ai_quant_liq_collector/`。改前先 `systemctl list-units --state=running | grep -E 'danted|v4-proxy'` 确认在跑。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:936:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1690:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:14:2. **先取证**：在服务器用采集器同款 `websocket` 库写个 ~30s 自测，连 `!forceOrder@arr`，确认能否收到帧（区分"代码 bug" vs "stream/网络问题"）。Binance forceOrder 是稀疏流但全市场每分钟应有多帧。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:937:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1742:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:4:**已诊断（Claude 2026-06-14，勿重复推翻，可验证）：** 采集器代码健康（run_forever 含 ping_interval=180 + 重连）。但腾讯云SG服务器(43.160.200.224)上：REST `fapi/v1/ping` HTTP200 正常；**WS `wss://fstream.binance.com/ws/...` 握手 OPEN 成功但 0 帧**（aggTrade 20s/forceOrder 25s 均 0 帧，forceOrder OPEN 后立即 CLOSE）→ **Binance 不向该云IP推送行情流**（数据中心IP限制）。故 22h `process_messages=0`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:938:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1743:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:6:**服务器红线：** danted.service/v4-proxy.service **绝不能停**；只动 aiquant-liq-collector 与 /opt/ai_quant_liq_collector/。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:939:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1745:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:12:   - 用 websocket-client 经该 SOCKS5 连 `!forceOrder@arr`（`http_proxy_host/port + proxy_type='socks5h' + http_proxy_auth`），测 30s 是否有帧。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:940:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1748:04_AI_TEAM/CODEX_TASKS/PB1_LIQ_PARSER_HARNESS.md:3:**定位：** 路径B（前向真实强平数据机制确证，见 `06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md`）第一步的**离线工具**。采集器在腾讯云SG VM 持久化完整 Binance `!forceOrder@arr` 原始 JSONL。本任务**不依赖能否 SSH**：用合成 + 任何本地样本把解析器与就绪门计数器写好并单测，待能拉到真实 LIQUIDATIONS 后直接指向真实路径运行。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:941:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1852:| **§1c 对话级建议暂存区** | **制度说明（DEC-073）**：本栏捕获对话中Claude提出但尚未落入§4的建议。Founder确认→升入§4/DECISION_LOG；Founder否决→清除；未响应=下次开局必提。**本轮新增（2026-06-14深夜，Founder委托CTO自主推进期间）：**①**[✅Claude执行完毕]** D2/A1-RR验收+专业透镜：两线均"需返工"属**正确返工**；D2 BLOCKED根因=D1"35/35完成"实为**数据不达用途**(下的contract klines非mark-price、缺真实funding、DEC-070四过滤无证据)→**过程教训：完成计数≠达用途，验收门须查数据适用性**(风险E反例修正)。②**[✅Claude执行完毕]** A-1预登记v2亲自主导改写(`A1_CASCADE_REBOUND_PREREG_v2.md`)，逐条闭合Reviewer十项(方向代理过滤/唯一主horizon=48h/cluster块bootstrap/refractory episode/A-2 P95 overlap/80%power MDE/两级门/现金零基准硬门/物理Holdout封存/闭合decision table)；**Codex三轮闭环**：v2盲审NOT APPROVED(仅闭2/10)→CTO据五项必改起草**v3**(`..._v3.md`:纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单8H读数P95/沙箱外真权限Holdout)→**A1-RR3第三轮盲审运行中(PID 8335)**,特别要求判定剩余阻塞是否=历史样本不可约识别上限。③**[✅已决→DEC-075:暂缓优先A-1]** TSMOM universe扩展(D1v2+D2)**未执行**——CTO判断：扩样本是D级候选(Founder未批)+只解决DD不解决TSMOM核心"无可行定仓"+DEC-070两过滤需外部数据历史不可得，**强行连夜重采=风险D局部修补搜索**。**推荐：A-1优先级高于universe扩展**。DEC070审计(`20260614_dec070_filter_audit.md`)：2可算过滤器下Tier1-clean 20/35、watch 10/35、排除5/35(AXS/FTM/ICX高跳动/低流动);**审计抛专业异议——本地CSV只存base volume非quote volume(ADTV亦不精确)+float市值比/OI市值比需外部历史数据(Binance OI REST仅近1月)**,数据成本叠加,**强化暂缓**:若Founder坚持闭环TSMOM需先投入补quote volume+外部supply/mcap/OI,性价比低于A-1。④**[✅Claude执行完毕]** 跨对话回收(扫23会话)：唯一含在途未存工作的"外部调研(Sweep形态线)"——其做空测试**已在其他会话独立完成并封账**(v4多头"全维度无一可部署"、v5做空已失败,DEC 2026-06-06)，**无孤儿决策丢失**；工作区沙箱故障根因=claude-code-vm 2.1.170下载循环失败,Desktop Commander为正确通道。⑤**[议程·rule8]** A-1历史方向识别结构性局限→**前向强平数据路径**：历史A-1无真实强平名义额(采集器2026-06-13起前向)，v2只能用价格代理；最强验证仍需前向真实强平数据3-6月——把已部署采集器与A-1直接挂钩,是采集器首个明确alpha用途。⑥**[✅已决→DEC-075]** A-1两段式路径+universe暂缓**已经Founder"按推荐继续"确认,升格DEC-075**(③⑥出本栏)。**当前推进(2026-06-15)**：**路径A**=A-1预登记已迭代到**v5**(`..._v5.md`)。盲审进度:RR4判v4闭2/5(功效治理+family CLOSED),余4项判"文字与算法冻结、不要求达机制确证严格度"→v5逐条闭(§7改"A-2非重叠关联硬门"/circular半开网格`[t1,tn+1h)`+offset截断/Spearman改配对bootstrap对ρ居中真检验ρ=0/WF唯一切点中点+按实际足迹purge/AES-256-GCM+密钥独立principal+负向测试留命令退出码)→**A1-RR5第五轮盲审=✅APPROVED(4/4全闭,`A1_RISK_REVIEW_v5.md`)**!五轮收敛(10→2/10→0/5→2/5→4/4)。放行边界:仅关联结论/不耗独立计数/不晋级策略;**执行前须先AES-256-GCM Holdout封存+负向权限测试**。**[⚠️待Founder知会后派发]** 按预登记铁律,跑Tier A事件研究(封Holdout+出A-1生死判决)须Founder知会+主会话人工派发,故CTO停在放行点未自动跑;**路径B**=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器原始forceOrder含side方向字段已核实=首个alpha用途;就绪门=候选n达功效门→另立预登记走硬门耗计数;待数据累积3-6月,低成本并行不阻塞)。**恢复点(2026-06-15最新)**:Founder已GO。**两Codex活并行运行中**:①A1_TIERA=A-1 Tier A历史关联快筛执行(按v5两阶段custodian/executor,已写13单测全过+自审,PID见A1_TIERA_RUN.log)→出关联生死判决;②PB1=路径B强平解析器+就绪门计数器(自包含工具)。**网络根因已查实**:downloads.claude.ai命中`claude.ai,默认组`走双跳商家代理→VM大二进制(claude.app.tar.zst 2.1.170)拉不动→Claude.app 172%CPU热循环挤断DC/MCP。**修复待Founder**:Clash加`DOMAIN,downloads.claude.ai,新加坡跳板`(单跳)置于claude.ai规则前+重启Claude。网络拓扑已记忆([[network-proxy-topology]])。SSH采集器宿主无免密钥(路径B拉真实数据待凭据)。|
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:942:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1866:| 强平采集器 | ⚠️ **实为零采集（2026-06-14 查实，纠正旧"生产运行中"假状态）**：service active 但 22h `process_messages=0`。根因=**Binance 对腾讯云SG服务器IP的WS行情流限制**（REST fapi HTTP200正常，但 aggTrade/forceOrder WS 握手OPEN后0帧——云IP被限推送）。**非代码bug**（ping+重连正常）。教训=信了"service active"未验真实数据流（风险E/A）。**修复=路径B重启时把采集器WS走住宅代理(商家代理)或换允许IP**；当前路径B休眠→**暂不修**。双审计P0-1销项前提（"已验真实数据帧"）实为一瞬窗口，不成立 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:944:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1887:**已诊断（Claude 2026-06-14，勿重复推翻，可验证）：** 采集器代码健康（run_forever 含 ping_interval=180 + 重连）。但腾讯云SG服务器(43.160.200.224)上：REST `fapi/v1/ping` HTTP200 正常；**WS `wss://fstream.binance.com/ws/...` 握手 OPEN 成功但 0 帧**（aggTrade 20s/forceOrder 25s 均 0 帧，forceOrder OPEN 后立即 CLOSE）→ **Binance 不向该云IP推送行情流**（数据中心IP限制）。故 22h `process_messages=0`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:945:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1889:**服务器红线：** danted.service/v4-proxy.service **绝不能停**；只动 aiquant-liq-collector 与 /opt/ai_quant_liq_collector/。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:946:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1895:   - 用 websocket-client 经该 SOCKS5 连 `!forceOrder@arr`（`http_proxy_host/port + proxy_type='socks5h' + http_proxy_auth`），测 30s 是否有帧。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:949:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:1984:/bin/bash -lc 'env -u ALL_PROXY -u all_proxy -u HTTP_PROXY -u http_proxy -u HTTPS_PROXY -u https_proxy sshpass -f "$HOME/.aiquant_sealed/sg_pass" ssh -F /dev/null -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@43.160.200.224 '"'printf \"ssh_ok\\n\"; systemctl is-active danted.service; systemctl is-active v4-proxy.service; systemctl is-active aiquant-liq-collector.service; python3 -c \"import websocket; print(websocket.__version__)\"; stat -c \"%n %s %y\" /opt/ai_quant_liq_collector/liquidation_collector.py; systemctl cat aiquant-liq-collector.service --no-pager'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:950:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2015:+**已诊断（Claude 2026-06-14，勿重复推翻，可验证）：** 采集器代码健康（run_forever 含 ping_interval=180 + 重连）。但腾讯云SG服务器(43.160.200.224)上：REST `fapi/v1/ping` HTTP200 正常；**WS `wss://fstream.binance.com/ws/...` 握手 OPEN 成功但 0 帧**（aggTrade 20s/forceOrder 25s 均 0 帧，forceOrder OPEN 后立即 CLOSE）→ **Binance 不向该云IP推送行情流**（数据中心IP限制）。故 22h `process_messages=0`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:951:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2017:+**服务器红线：** danted.service/v4-proxy.service **绝不能停**；只动 aiquant-liq-collector 与 /opt/ai_quant_liq_collector/。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:952:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2023:+   - 用 websocket-client 经该 SOCKS5 连 `!forceOrder@arr`（`http_proxy_host/port + proxy_type='socks5h' + http_proxy_auth`），测 30s 是否有帧。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:953:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2263:SSH 已恢复。现场有一项必须记录的既有异常：`danted.service=active`，但 `v4-proxy.service=inactive`；本会话没有停止它，且按红线不会启动、重启或修改该服务。`aiquant-liq-collector` 当前 active，远端 `websocket-client=1.7.0`，下一步只读采集器现场并做直连/住宅出口探针。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:955:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2300:WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:956:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2390:[connected] 2026-06-13T09:43:04.787737+00:00 wss://fstream.binance.com/ws/!forceOrder@arr
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:957:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2435:/bin/bash -lc 'env -u ALL_PROXY -u all_proxy -u HTTP_PROXY -u http_proxy -u HTTPS_PROXY -u https_proxy sshpass -f "$HOME/.aiquant_sealed/sg_pass" ssh -F /dev/null -o StrictHostKeyChecking=no root@43.160.200.224 '"'set -u; umask 077; c="'$(mktemp); trap '"'\\''rm -f \""'$c"'"'\\'' EXIT; cat > \""'$c"; IFS=" " read -r proto host port user pass < "$c" || true; test "$proto" = socks5 || { echo "resi_forceorder credential_parse_failed"; exit 2; }; export RESI_HOST="$host" RESI_PORT="$port" RESI_USER="$user" RESI_PASS="$pass"; env no_proxy= NO_PROXY= python3 -c '"'\\''import os,time,websocket; u=\"wss://fstream.binance.com/ws/"'!forceOrder@arr"; n=0; opened=False; err=""; t=time.time();
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:958:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2523:/bin/bash -lc 'env -u ALL_PROXY -u all_proxy -u HTTP_PROXY -u http_proxy -u HTTPS_PROXY -u https_proxy sshpass -f "$HOME/.aiquant_sealed/sg_pass" ssh -F /dev/null -o StrictHostKeyChecking=no root@43.160.200.224 '"'set -u; umask 077; c="'$(mktemp); trap '"'\\''rm -f \""'$c"'"'\\'' EXIT; cat > \""'$c"; IFS=" " read -r proto host port user pass < "$c" || true; export RESI_HOST="$host" RESI_PORT="$port" RESI_USER="$user" RESI_PASS="$pass"; env no_proxy= NO_PROXY= PYTHONPATH=/opt/ai_quant_liq_collector/.deps python3 -c '"'\\''import os,time,websocket; u=\"wss://fstream.binance.com/ws/"'!forceOrder@arr"; n=0; opened=False; err=""; t=time.time();
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:959:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2549:住宅代理确实完成了 WS 握手，但 Binance 两条流仍为零帧：`aggTrade 20s=0`、`forceOrder 30s=0`。这否定“只要换到该住宅出口就恢复”的假设；我会再证明流量确实经过不同出口并用非 Binance WS 验证代理能传帧，然后只读盘点现有跳板配置，避免把代理库或客户端误判成 Binance 结果。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:964:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2634:01_MEMORY_CORE/CURRENT_STATE.md:21:| **§1c 对话级建议暂存区** | **制度说明（DEC-073）**：本栏捕获对话中Claude提出但尚未落入§4的建议。Founder确认→升入§4/DECISION_LOG；Founder否决→清除；未响应=下次开局必提。**本轮新增（2026-06-14深夜，Founder委托CTO自主推进期间）：**①**[✅Claude执行完毕]** D2/A1-RR验收+专业透镜：两线均"需返工"属**正确返工**；D2 BLOCKED根因=D1"35/35完成"实为**数据不达用途**(下的contract klines非mark-price、缺真实funding、DEC-070四过滤无证据)→**过程教训：完成计数≠达用途，验收门须查数据适用性**(风险E反例修正)。②**[✅Claude执行完毕]** A-1预登记v2亲自主导改写(`A1_CASCADE_REBOUND_PREREG_v2.md`)，逐条闭合Reviewer十项(方向代理过滤/唯一主horizon=48h/cluster块bootstrap/refractory episode/A-2 P95 overlap/80%power MDE/两级门/现金零基准硬门/物理Holdout封存/闭合decision table)；**Codex三轮闭环**：v2盲审NOT APPROVED(仅闭2/10)→CTO据五项必改起草**v3**(`..._v3.md`:纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单8H读数P95/沙箱外真权限Holdout)→**A1-RR3第三轮盲审运行中(PID 8335)**,特别要求判定剩余阻塞是否=历史样本不可约识别上限。③**[✅已决→DEC-075:暂缓优先A-1]** TSMOM universe扩展(D1v2+D2)**未执行**——CTO判断：扩样本是D级候选(Founder未批)+只解决DD不解决TSMOM核心"无可行定仓"+DEC-070两过滤需外部数据历史不可得，**强行连夜重采=风险D局部修补搜索**。**推荐：A-1优先级高于universe扩展**。DEC070审计(`20260614_dec070_filter_audit.md`)：2可算过滤器下Tier1-clean 20/35、watch 10/35、排除5/35(AXS/FTM/ICX高跳动/低流动);**审计抛专业异议——本地CSV只存base volume非quote volume(ADTV亦不精确)+float市值比/OI市值比需外部历史数据(Binance OI REST仅近1月)**,数据成本叠加,**强化暂缓**:若Founder坚持闭环TSMOM需先投入补quote volume+外部supply/mcap/OI,性价比低于A-1。④**[✅Claude执行完毕]** 跨对话回收(扫23会话)：唯一含在途未存工作的"外部调研(Sweep形态线)"——其做空测试**已在其他会话独立完成并封账**(v4多头"全维度无一可部署"、v5做空已失败,DEC 2026-06-06)，**无孤儿决策丢失**；工作区沙箱故障根因=claude-code-vm 2.1.170下载循环失败,Desktop Commander为正确通道。⑤**[议程·rule8]** A-1历史方向识别结构性局限→**前向强平数据路径**：历史A-1无真实强平名义额(采集器2026-06-13起前向)，v2只能用价格代理；最强验证仍需前向真实强平数据3-6月——把已部署采集器与A-1直接挂钩,是采集器首个明确alpha用途。⑥**[✅已决→DEC-075]** A-1两段式路径+universe暂缓**已经Founder"按推荐继续"确认,升格DEC-075**(③⑥出本栏)。**当前推进(2026-06-15)**：**路径A**=A-1预登记已迭代到**v5**(`..._v5.md`)。盲审进度:RR4判v4闭2/5(功效治理+family CLOSED),余4项判"文字与算法冻结、不要求达机制确证严格度"→v5逐条闭(§7改"A-2非重叠关联硬门"/circular半开网格`[t1,tn+1h)`+offset截断/Spearman改配对bootstrap对ρ居中真检验ρ=0/WF唯一切点中点+按实际足迹purge/AES-256-GCM+密钥独立principal+负向测试留命令退出码)→**A1-RR5第五轮盲审=✅APPROVED(4/4全闭,`A1_RISK_REVIEW_v5.md`)**!五轮收敛(10→2/10→0/5→2/5→4/4)。放行边界:仅关联结论/不耗独立计数/不晋级策略;**执行前须先AES-256-GCM Holdout封存+负向权限测试**。**[⚠️待Founder知会后派发]** 按预登记铁律,跑Tier A事件研究(封Holdout+出A-1生死判决)须Founder知会+主会话人工派发,故CTO停在放行点未自动跑;**路径B**=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器原始forceOrder含side方向字段已核实=首个alpha用途;就绪门=候选n达功效门→另立预登记走硬门耗计数;待数据累积3-6月,低成本并行不阻塞)。**恢复点(2026-06-15最新)**:Founder已GO。**两Codex活并行运行中**:①A1_TIERA=A-1 Tier A历史关联快筛执行(按v5两阶段custodian/executor,已写13单测全过+自审,PID见A1_TIERA_RUN.log)→出关联生死判决;②PB1=路径B强平解析器+就绪门计数器(自包含工具)。**网络根因已查实**:downloads.claude.ai命中`claude.ai,默认组`走双跳商家代理→VM大二进制(claude.app.tar.zst 2.1.170)拉不动→Claude.app 172%CPU热循环挤断DC/MCP。**修复待Founder**:Clash加`DOMAIN,downloads.claude.ai,新加坡跳板`(单跳)置于claude.ai规则前+重启Claude。网络拓扑已记忆([[network-proxy-topology]])。SSH采集器宿主无免密钥(路径B拉真实数据待凭据)。|
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:965:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2642:01_MEMORY_CORE/CURRENT_STATE.md:35:| 强平采集器 | ⚠️ **实为零采集（2026-06-14 查实，纠正旧"生产运行中"假状态）**：service active 但 22h `process_messages=0`。根因=**Binance 对腾讯云SG服务器IP的WS行情流限制**（REST fapi HTTP200正常，但 aggTrade/forceOrder WS 握手OPEN后0帧——云IP被限推送）。**非代码bug**（ping+重连正常）。教训=信了"service active"未验真实数据流（风险E/A）。**修复=路径B重启时把采集器WS走住宅代理(商家代理)或换允许IP**；当前路径B休眠→**暂不修**。双审计P0-1销项前提（"已验真实数据帧"）实为一瞬窗口，不成立 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:968:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2661:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR.md:10:- 只动 `aiquant-liq-collector.service` 与 `/opt/ai_quant_liq_collector/`。改前先 `systemctl list-units --state=running | grep -E 'danted|v4-proxy'` 确认在跑。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:971:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2683:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md-4-**已诊断（Claude 2026-06-14，勿重复推翻，可验证）：** 采集器代码健康（run_forever 含 ping_interval=180 + 重连）。但腾讯云SG服务器(43.160.200.224)上：REST `fapi/v1/ping` HTTP200 正常；**WS `wss://fstream.binance.com/ws/...` 握手 OPEN 成功但 0 帧**（aggTrade 20s/forceOrder 25s 均 0 帧，forceOrder OPEN 后立即 CLOSE）→ **Binance 不向该云IP推送行情流**（数据中心IP限制）。故 22h `process_messages=0`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:972:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2685:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:6:**服务器红线：** danted.service/v4-proxy.service **绝不能停**；只动 aiquant-liq-collector 与 /opt/ai_quant_liq_collector/。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:973:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2691:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2.md:12:   - 用 websocket-client 经该 SOCKS5 连 `!forceOrder@arr`（`http_proxy_host/port + proxy_type='socks5h' + http_proxy_auth`），测 30s 是否有帧。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:976:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2745:/bin/bash -lc 'env -u ALL_PROXY -u all_proxy -u HTTP_PROXY -u http_proxy -u HTTPS_PROXY -u https_proxy sshpass -f "$HOME/.aiquant_sealed/sg_pass" ssh -F /dev/null -o StrictHostKeyChecking=no root@43.160.200.224 '"'set -eu; rm -rf /opt/ai_quant_liq_collector/.deps; printf \"%s\\n\" \"--- final remote state ---\"; systemctl is-active danted.service; systemctl is-active v4-proxy.service || true; systemctl is-active aiquant-liq-collector.service; systemctl show aiquant-liq-collector.service -p MainPID -p NRestarts -p ActiveState -p SubState; stat -c \"collector_mtime=%y size=%s\" /opt/ai_quant_liq_collector/liquidation_collector.py; test "'! -e /opt/ai_quant_liq_collector/.deps && echo probe_deps_removed=yes; test ! -e /opt/ai_quant_liq_collector/liquidation_collector.py.bak && echo backup_created=no; n=$(find /opt/ai_quant_liq_collector/data/LIQUIDATIONS -maxdepth 1 -type f -name "liq_*.jsonl" -exec cat {} + 2>/dev/null | wc -l); echo jsonl_total_rows=$n; tail -n 3 /opt/ai_quant_liq_collector/logs/collector.log'"'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:978:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2808:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:979:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2828:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:982:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2867:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:984:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2928:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:985:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2948:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:988:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:2987:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:990:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3067:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:991:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3087:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:994:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3126:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:996:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3183:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:997:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3203:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1000:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3242:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1001:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3296:30:| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1003:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3383:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1004:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3403:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1007:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3442:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1009:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3511:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1010:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3531:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1013:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3570:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1015:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3886:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1016:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3906:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1019:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:3945:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1021:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4018:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1022:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4038:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1025:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4077:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1026:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4138:/bin/bash -lc 'env -u ALL_PROXY -u all_proxy -u HTTP_PROXY -u http_proxy -u HTTPS_PROXY -u https_proxy sshpass -f "$HOME/.aiquant_sealed/sg_pass" ssh -F /dev/null -o StrictHostKeyChecking=no root@43.160.200.224 '"'printf \"danted=%s\\n\" \""'$(systemctl is-active danted.service)"; printf "v4_proxy=%s'"\\n\" \""'$(systemctl is-active v4-proxy.service || true)"; printf "collector=%s'"\\n\" \""'$(systemctl is-active aiquant-liq-collector.service)"; systemctl show aiquant-liq-collector.service -p MainPID -p NRestarts; stat -c "collector_mtime=%y size=%s" /opt/ai_quant_liq_collector/liquidation_collector.py; test ! -e /opt/ai_quant_liq_collector/.deps && echo probe_deps_removed=yes; n=$(find /opt/ai_quant_liq_collector/data/LIQUIDATIONS -maxdepth 1 -type f -name "liq_*.jsonl" -exec cat {} + 2>/dev/null | wc -l); echo jsonl_total_rows=$n'"'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1028:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4173:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1029:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4193:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1032:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4232:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1034:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4309:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1035:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4329:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1038:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4368:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1041:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4441:+2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1042:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4461:+| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1045:04_AI_TEAM/CODEX_TASKS/FIX_COLLECTOR_V2_RUN.log:4500:+1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1047:04_AI_TEAM/CODEX_TASKS/A1_RR4_RUN.log:470:    13	| 强平方向 | 无数据，用 `6h OI↓+负收益` 代理（混入主动减仓/宏观普跌/普通反转） | **采集器原始 forceOrder `o.S` 字段**：`SELL`=多头强平=真实卖压；`BUY`=空头强平=买压。**方向真实可识别** |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1048:04_AI_TEAM/CODEX_TASKS/A1_RR4_RUN.log:475:    18	**采集器现状（已核实）：** `aiquant-liq-collector.service` 在腾讯云 SG VM 运行，订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`（全币种强平流），**持久化完整原始 JSON（JSONL）** 到 `/opt/ai_quant_liq_collector/data/LIQUIDATIONS/`。原始消息含 `o.s`(symbol)/`o.S`(side)/`o.p`(price)/`o.q`(qty)/`o.ap`(avg price)/`o.T`(time)——方向与规模字段齐全。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1049:04_AI_TEAM/CODEX_TASKS/CARRY_SCAFFOLD_RUN.log:1368:- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1050:04_AI_TEAM/CODEX_TASKS/CARRY_SCAFFOLD_RUN.log:1662:        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1051:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:16:**定位：** 路径B（前向真实强平数据机制确证，见 `06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md`）第一步的**离线工具**。采集器在腾讯云SG VM 持久化完整 Binance `!forceOrder@arr` 原始 JSONL。本任务**不依赖能否 SSH**：用合成 + 任何本地样本把解析器与就绪门计数器写好并单测，待能拉到真实 LIQUIDATIONS 后直接指向真实路径运行。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1052:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:20:## 背景：Binance forceOrder 原始消息 schema
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1053:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:21:单条强平消息形如 `{"e":"forceOrder","E":<eventMs>,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.014","p":"...","ap":"<avgPrice>","X":"FILLED","T":<tradeMs>,...}}`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1054:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:90:| 强平方向 | 无数据，用 `6h OI↓+负收益` 代理（混入主动减仓/宏观普跌/普通反转） | **采集器原始 forceOrder `o.S` 字段**：`SELL`=多头强平=真实卖压；`BUY`=空头强平=买压。**方向真实可识别** |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1055:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:95:**采集器现状（已核实）：** `aiquant-liq-collector.service` 在腾讯云 SG VM 运行，订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`（全币种强平流），**持久化完整原始 JSON（JSONL）** 到 `/opt/ai_quant_liq_collector/data/LIQUIDATIONS/`。原始消息含 `o.s`(symbol)/`o.S`(side)/`o.p`(price)/`o.q`(qty)/`o.ap`(avg price)/`o.T`(time)——方向与规模字段齐全。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1056:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:286:**定位：** 路径B（前向真实强平数据机制确证，见 `06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md`）第一步的**离线工具**。采集器在腾讯云SG VM 持久化完整 Binance `!forceOrder@arr` 原始 JSONL。本任务**不依赖能否 SSH**：用合成 + 任何本地样本把解析器与就绪门计数器写好并单测，待能拉到真实 LIQUIDATIONS 后直接指向真实路径运行。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1057:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:290:## 背景：Binance forceOrder 原始消息 schema
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1058:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:291:单条强平消息形如 `{"e":"forceOrder","E":<eventMs>,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.014","p":"...","ap":"<avgPrice>","X":"FILLED","T":<tradeMs>,...}}`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1059:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:1070:**定位：** 路径B（前向真实强平数据机制确证，见 `06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md`）第一步的**离线工具**。采集器在腾讯云SG VM 持久化完整 Binance `!forceOrder@arr` 原始 JSONL。本任务**不依赖能否 SSH**：用合成 + 任何本地样本把解析器与就绪门计数器写好并单测，待能拉到真实 LIQUIDATIONS 后直接指向真实路径运行。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1060:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:1074:## 背景：Binance forceOrder 原始消息 schema
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1061:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:1075:单条强平消息形如 `{"e":"forceOrder","E":<eventMs>,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.014","p":"...","ap":"<avgPrice>","X":"FILLED","T":<tradeMs>,...}}`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1062:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:1144:| 强平方向 | 无数据，用 `6h OI↓+负收益` 代理（混入主动减仓/宏观普跌/普通反转） | **采集器原始 forceOrder `o.S` 字段**：`SELL`=多头强平=真实卖压；`BUY`=空头强平=买压。**方向真实可识别** |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1063:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:1149:**采集器现状（已核实）：** `aiquant-liq-collector.service` 在腾讯云 SG VM 运行，订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`（全币种强平流），**持久化完整原始 JSON（JSONL）** 到 `/opt/ai_quant_liq_collector/data/LIQUIDATIONS/`。原始消息含 `o.s`(symbol)/`o.S`(side)/`o.p`(price)/`o.q`(qty)/`o.ap`(avg price)/`o.T`(time)——方向与规模字段齐全。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1064:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:2358:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1065:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:2411:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1066:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:2448:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1067:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:2451:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1068:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:2611:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1069:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:2730:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1070:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:3313:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1071:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:3366:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1072:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:3403:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1073:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:3406:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1074:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:3566:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1075:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:3685:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1076:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:4278:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1077:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:4331:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1078:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:4368:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1079:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:4371:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1080:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:4531:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1081:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:4650:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1082:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5241:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1083:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5294:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1084:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5331:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1085:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5334:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1086:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5494:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1087:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5613:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1088:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5804:     2	"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1089:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5857:    55	    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1090:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5894:    92	    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1091:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5897:    95	    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1092:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:6938:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1093:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:6991:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1094:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:7028:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1095:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:7031:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1096:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:7191:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1097:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:7310:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1098:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:7902:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1099:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:7956:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1100:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:8000:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1101:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:8003:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1102:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:8162:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1103:04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:8281:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1110:# VERIFY-V462：核实历史 v4.6.2 的币安数据源（可能推翻"Binance封本IP"结论）
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1114:**关键疑问：** 我（Claude）此前测得 `wss://fstream.binance.com/ws/!forceOrder@arr`（**futures 公共WS**）经 SG直连+住宅代理均握手后0帧，据此判"Binance 封本IP"。**但若 v4.6.2 能正常从币安取数，说明该结论过宽**——v4.6.2 可能用的是币安 REST / 现货WS / 不同 futures 端点 / 带鉴权 / 经某代理，那才是修采集器的正路。**本任务核实之，勿想当然。**
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1122:4. **关键对照**：在服务器上用 v4.6.2 的**同款方法/端点**做一次最小取数测试（如它用 REST 则 curl 其端点、用某 WS 则连该 WS 计帧），与我们采集器的 `fstream forceOrder WS` 对照——**区分"Binance 封整个IP" vs "只是某些 futures 公共WS端点/方式不通"**。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1145:2. 验收标准：住宅代理 `!forceOrder@arr` 30 秒有帧；接入后 2 分钟内 `process_messages > 0` 且当日 JSONL 行数增长。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1157:| 住宅 SOCKS5 | `!forceOrder@arr`，30 秒 | 握手成功，`0` 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1170:- `aiquant-liq-collector.service`：`active/running`，PID 未变，`NRestarts=0`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1178:1. 将采集器迁移到先经 30 秒 Binance `aggTrade` 实测有帧的非云住宅网络，再部署 `forceOrder` 采集。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1278:+# VERIFY-V462：核实历史 v4.6.2 的币安数据源（可能推翻"Binance封本IP"结论）
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1282:+**关键疑问：** 我（Claude）此前测得 `wss://fstream.binance.com/ws/!forceOrder@arr`（**futures 公共WS**）经 SG直连+住宅代理均握手后0帧，据此判"Binance 封本IP"。**但若 v4.6.2 能正常从币安取数，说明该结论过宽**——v4.6.2 可能用的是币安 REST / 现货WS / 不同 futures 端点 / 带鉴权 / 经某代理，那才是修采集器的正路。**本任务核实之，勿想当然。**
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1290:+4. **关键对照**：在服务器上用 v4.6.2 的**同款方法/端点**做一次最小取数测试（如它用 REST 则 curl 其端点、用某 WS 则连该 WS 计帧），与我们采集器的 `fstream forceOrder WS` 对照——**区分"Binance 封整个IP" vs "只是某些 futures 公共WS端点/方式不通"**。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1480:  • 执行同款端点最小测试并对照 forceOrder WS
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:1488:/bin/bash -lc 'env -u ALL_PROXY -u all_proxy -u HTTP_PROXY -u http_proxy -u HTTPS_PROXY -u https_proxy sshpass -f "$HOME/.aiquant_sealed/sg_pass" ssh -F /dev/null -o StrictHostKeyChecking=no root@43.160.200.224 '"'echo \"=== ENDPOINT REFERENCES ===\"; grep -RInE --exclude=\"*.log\" --exclude=\"*.db*\" --exclude=\"*.sqlite*\" --exclude=\"*.pyc\" \"binance|fapi|fstream|stream\\.binance|api\\.binance|websocket|requests\\.|aiohttp|ccxt|proxy|socks|API_KEY|SECRET|openInterest|funding|forceOrder|aggTrade|ticker|klines\" /opt/v4 2>/dev/null | sed -E \"s/((api[_-]?key|secret|password|token)[[:space:]]*[:=][[:space:]]*)["'^,[:space:]'"\\\"'\\''}]+/\\1[REDACTED]/Ig\" | head -500; echo \"=== IMPORTS ===\"; grep -RInE --include=\"*.py\" \""'^(from|import) " /opt/v4 2>/dev/null | head -400'"'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:3632:3. Binance 限制的是行情 WS 数据面而非整个 IP，预测 REST 成功而 `fstream` 的 `aggTrade/forceOrder` 仍零帧。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:3641:  • 执行同款端点最小测试并对照 forceOrder WS
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:3874:web search: site:developers.binance.com/docs/derivatives/usds-margined-futures market data open interest history funding rate liquidation order streams forceOrder
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:3880:官方 2026 版 Binance 文档给出了决定性线索：futures WS 在 `2026-04-23` 后拆成 `/public`、`/market`、`/private` 路由；`aggTrade` 和 `forceOrder` 属于 `/market`。旧地址 `wss://fstream.binance.com/ws/...` 会握手成功，但这些 stream 不再推送。这与现场“OPEN 后 0 帧”完全一致，我正用旧/新 URL 做同机差分测试。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:3882:/bin/bash -lc 'env -u ALL_PROXY -u all_proxy -u HTTP_PROXY -u http_proxy -u HTTPS_PROXY -u https_proxy sshpass -f "$HOME/.aiquant_sealed/sg_pass" ssh -F /dev/null -o StrictHostKeyChecking=no root@43.160.200.224 '"'echo \"=== COLLECTOR UNIT ===\"; systemctl cat aiquant-liq-collector.service; echo \"=== PYTHON MODULE ===\"; python3 -c \"import websocket; print(websocket.__version__, websocket.__file__)\" 2>&1; for p in /opt/ai_quant_liq_collector/venv/bin/python /opt/ai_quant_liq_collector/.venv/bin/python; do if [ -x \""'$p" ]; then echo "python=$p"; "$p" -c "import websocket; print(websocket.__version__, websocket.__file__)" 2>&1; fi; done'"'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:3885:# /etc/systemd/system/aiquant-liq-collector.service
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:3918:    (\"legacy_forceorder\", \"wss://fstream.binance.com/ws/"'!forceOrder@arr", 15, 3),
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:3919:    ("routed_market_forceorder", "wss://fstream.binance.com/market/ws/!forceOrder@arr", 45, 3),
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:3977:{"elapsed_s": 15.341, "error": null, "frames": 0, "name": "legacy_forceorder", "opened": true, "samples": [], "url": "wss://fstream.binance.com/ws/!forceOrder@arr"}
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:3978:{"elapsed_s": 2.649, "error": null, "frames": 3, "name": "routed_market_forceorder", "opened": true, "samples": [{"event": "forceOrder", "event_time": 1781444915384, "symbol": "VELVETUSDT"}, {"event": "forceOrder", "event_time": 1781444916700, "symbol": "HUSDT"}, {"event": "forceOrder", "event_time": 1781444917546, "symbol": "BEATUSDT"}], "url": "wss://fstream.binance.com/market/ws/!forceOrder@arr"}
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:3982:差分结果已经定案：同一台 SG、同一 `websocket-client 1.7.0`，旧 `aggTrade` 10 秒 0 帧、旧 `forceOrder` 15 秒 0 帧；加 `/market` 后 `aggTrade` 1.1 秒 3 帧、`forceOrder` 2.6 秒 3 帧。根因是 Binance 2026-04-23 的 WS 路由迁移，不是 IP 封锁。接下来只读核对采集器改动范围和现有消息处理兼容性，然后写报告与完成事件。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:3988:  ✓ 执行同款端点最小测试并对照 forceOrder WS
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:3992:/bin/bash -lc "sed -n '1,240p' 06_RESEARCH/CODE/liquidation_collector.py; sha256sum 06_RESEARCH/CODE/liquidation_collector.py; rg -n \"WS_URL|forceOrder|on_message|jsonl|process_messages\" 06_RESEARCH/CODE/liquidation_collector.py 06_RESEARCH/CODE/forward_liq/liq_parser.py" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4008:WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4056:06_RESEARCH/CODE/liquidation_collector.py:15:WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4060:06_RESEARCH/CODE/forward_liq/liq_parser.py:2:"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4061:06_RESEARCH/CODE/forward_liq/liq_parser.py:56:    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4062:06_RESEARCH/CODE/forward_liq/liq_parser.py:100:    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4063:06_RESEARCH/CODE/forward_liq/liq_parser.py:103:    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4069:/bin/bash -lc 'env -u ALL_PROXY -u all_proxy -u HTTP_PROXY -u http_proxy -u HTTPS_PROXY -u https_proxy sshpass -f "$HOME/.aiquant_sealed/sg_pass" ssh -F /dev/null -o StrictHostKeyChecking=no root@43.160.200.224 '"'echo \"=== FINAL SERVICE STATE ===\"; for u in danted.service v4-proxy.service v4-strategy-runner.service aiquant-liq-collector.service; do printf \"%s active=\" \""'$u"; systemctl is-active "$u" 2>/dev/null || true; printf "%s enabled=" "$u"; systemctl is-enabled "$u" 2>/dev/null || true; done; echo "=== COLLECTOR HEARTBEAT ==="; tail -80 /opt/ai_quant_liq_collector/logs/collector.log | grep -E "connected|heartbeat|message|error|closed" | tail -30; echo "=== PROCESSES ==="; ps -eo pid,lstart,etime,args | grep -E "[s]trategy_runner.py|[l]iquidation_collector.py"'"'" in /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4088:    15	WS_URL = "wss://fstream.binance.com/ws/!forceOrder@arr"
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4190:aiquant-liq-collector.service active=active
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4191:aiquant-liq-collector.service enabled=enabled
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4193:[connected] 2026-06-13T09:43:04.787737+00:00 wss://fstream.binance.com/ws/!forceOrder@arr
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4258:+| `wss://fstream.binance.com/ws/!forceOrder@arr` | 15 秒 | 握手成功，0 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4259:+| `wss://fstream.binance.com/market/ws/!forceOrder@arr` | 2.649 秒 | 3 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4337:+- `/market`：`aggTrade`、ticker、kline、mark price、`forceOrder`
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4340:+未带路由的旧连接只会收到 `/public` 类 stream；`aggTrade` 和 `forceOrder`
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4354:+WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4363:+新路由消息仍是顶层 `forceOrder` 对象，现有原始 JSONL 写入和
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4369:+2. 改为 `/market/ws/!forceOrder@arr` 后重启采集器。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4373:+OI/funding 可直接使用上述公共 REST 端点。`GET /fapi/v1/forceOrders`
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4375:+`!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4404:+  "fix_path": "Change liquidation collector WS_URL to wss://fstream.binance.com/market/ws/!forceOrder@arr; no API key or proxy required. Use /fapi/v1/openInterest, /futures/data/openInterestHist, and /fapi/v1/fundingRate for OI/funding REST data.",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4405:+  "notes": "v4.6.2 historically fetched Binance futures REST through 2026-06-13T08:46:06Z but is currently stopped. Same-host differential probe: legacy unrouted aggTrade/forceOrder opened with 0 frames; routed /market endpoints returned 3 frames immediately. Root cause is Binance's 2026-04-23 WS route migration, not an IP ban. Production was not modified."
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4430:+| `wss://fstream.binance.com/ws/!forceOrder@arr` | 15 秒 | 握手成功，0 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4431:+| `wss://fstream.binance.com/market/ws/!forceOrder@arr` | 2.649 秒 | 3 帧 |
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4509:+- `/market`：`aggTrade`、ticker、kline、mark price、`forceOrder`
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4512:+未带路由的旧连接只会收到 `/public` 类 stream；`aggTrade` 和 `forceOrder`
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4526:+WS_URL = "wss://fstream.binance.com/market/ws/!forceOrder@arr"
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4535:+新路由消息仍是顶层 `forceOrder` 对象，现有原始 JSONL 写入和
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4541:+2. 改为 `/market/ws/!forceOrder@arr` 后重启采集器。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4545:+OI/funding 可直接使用上述公共 REST 端点。`GET /fapi/v1/forceOrders`
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4547:+`!forceOrder@arr`。
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4576:+  "fix_path": "Change liquidation collector WS_URL to wss://fstream.binance.com/market/ws/!forceOrder@arr; no API key or proxy required. Use /fapi/v1/openInterest, /futures/data/openInterestHist, and /fapi/v1/fundingRate for OI/funding REST data.",
+04_AI_TEAM/CODEX_TASKS/VERIFY_V462_RUN.log:4577:+  "notes": "v4.6.2 historically fetched Binance futures REST through 2026-06-13T08:46:06Z but is currently stopped. Same-host differential probe: legacy unrouted aggTrade/forceOrder opened with 0 frames; routed /market endpoints returned 3 frames immediately. Root cause is Binance's 2026-04-23 WS route migration, not an IP ban. Production was not modified."
+06_RESEARCH/CODE/forward_liq/tests/test_forward_event_counter.py:32:        "e": "forceOrder",
+06_RESEARCH/CODE/forward_liq/tests/test_liq_parser.py:26:        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/REPORT_P1_03_DATA_RECON_OI.md:88:`forceOrders` 均无文件，metrics 字段中也不包含清算量。交易 API 在当前
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:16:**定位：** 路径B（前向真实强平数据机制确证，见 `06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md`）第一步的**离线工具**。采集器在腾讯云SG VM 持久化完整 Binance `!forceOrder@arr` 原始 JSONL。本任务**不依赖能否 SSH**：用合成 + 任何本地样本把解析器与就绪门计数器写好并单测，待能拉到真实 LIQUIDATIONS 后直接指向真实路径运行。
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:20:## 背景：Binance forceOrder 原始消息 schema
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:21:单条强平消息形如 `{"e":"forceOrder","E":<eventMs>,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.014","p":"...","ap":"<avgPrice>","X":"FILLED","T":<tradeMs>,...}}`。
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:90:| 强平方向 | 无数据，用 `6h OI↓+负收益` 代理（混入主动减仓/宏观普跌/普通反转） | **采集器原始 forceOrder `o.S` 字段**：`SELL`=多头强平=真实卖压；`BUY`=空头强平=买压。**方向真实可识别** |
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:95:**采集器现状（已核实）：** `aiquant-liq-collector.service` 在腾讯云 SG VM 运行，订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`（全币种强平流），**持久化完整原始 JSON（JSONL）** 到 `/opt/ai_quant_liq_collector/data/LIQUIDATIONS/`。原始消息含 `o.s`(symbol)/`o.S`(side)/`o.p`(price)/`o.q`(qty)/`o.ap`(avg price)/`o.T`(time)——方向与规模字段齐全。
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:286:**定位：** 路径B（前向真实强平数据机制确证，见 `06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md`）第一步的**离线工具**。采集器在腾讯云SG VM 持久化完整 Binance `!forceOrder@arr` 原始 JSONL。本任务**不依赖能否 SSH**：用合成 + 任何本地样本把解析器与就绪门计数器写好并单测，待能拉到真实 LIQUIDATIONS 后直接指向真实路径运行。
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:290:## 背景：Binance forceOrder 原始消息 schema
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:291:单条强平消息形如 `{"e":"forceOrder","E":<eventMs>,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.014","p":"...","ap":"<avgPrice>","X":"FILLED","T":<tradeMs>,...}}`。
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:1070:**定位：** 路径B（前向真实强平数据机制确证，见 `06_RESEARCH/PREREGISTRATIONS/A1_FORWARD_LIQUIDATION_PATH.md`）第一步的**离线工具**。采集器在腾讯云SG VM 持久化完整 Binance `!forceOrder@arr` 原始 JSONL。本任务**不依赖能否 SSH**：用合成 + 任何本地样本把解析器与就绪门计数器写好并单测，待能拉到真实 LIQUIDATIONS 后直接指向真实路径运行。
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:1074:## 背景：Binance forceOrder 原始消息 schema
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:1075:单条强平消息形如 `{"e":"forceOrder","E":<eventMs>,"o":{"s":"BTCUSDT","S":"SELL","o":"LIMIT","f":"IOC","q":"0.014","p":"...","ap":"<avgPrice>","X":"FILLED","T":<tradeMs>,...}}`。
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:1144:| 强平方向 | 无数据，用 `6h OI↓+负收益` 代理（混入主动减仓/宏观普跌/普通反转） | **采集器原始 forceOrder `o.S` 字段**：`SELL`=多头强平=真实卖压；`BUY`=空头强平=买压。**方向真实可识别** |
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:1149:**采集器现状（已核实）：** `aiquant-liq-collector.service` 在腾讯云 SG VM 运行，订阅 `wss://fstream.binance.com/ws/!forceOrder@arr`（全币种强平流），**持久化完整原始 JSON（JSONL）** 到 `/opt/ai_quant_liq_collector/data/LIQUIDATIONS/`。原始消息含 `o.s`(symbol)/`o.S`(side)/`o.p`(price)/`o.q`(qty)/`o.ap`(avg price)/`o.T`(time)——方向与规模字段齐全。
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:2358:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:2411:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:2448:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:2451:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:2611:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:2730:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:3313:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:3366:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:3403:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:3406:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:3566:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:3685:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:4278:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:4331:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:4368:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:4371:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:4531:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:4650:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5241:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5294:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5331:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5334:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5494:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5613:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5804:     2	"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5857:    55	    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5894:    92	    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:5897:    95	    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:6938:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:6991:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:7028:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:7031:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:7191:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:7310:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:7902:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:7956:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:8000:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:8003:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:8162:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:8281:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:8865:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:8919:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:8963:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:8966:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:9125:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:9244:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:9831:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:9885:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:9929:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:9932:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:10092:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:10227:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:10811:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:10865:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:10909:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:10912:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:11072:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:11207:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:11801:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:11855:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:11899:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:11902:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:12062:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:12197:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:12790:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:12844:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:12888:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:12891:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:13051:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:13186:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:13836:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:13890:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:13934:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:13937:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:14097:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:14232:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:14347:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:14955:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:15009:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:15053:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:15056:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:15216:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:15351:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:15466:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:16079:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:16133:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:16177:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:16180:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:16340:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:16475:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:16590:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:17232:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:17286:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:17330:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:17333:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:17493:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:17628:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:17743:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:18360:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:18414:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:18458:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:18461:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:18621:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:18756:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:18871:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:19006:- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:19698:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:19752:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:19796:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:19799:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:19959:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:20094:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:20209:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:20820:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:20874:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:20918:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:20921:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:21081:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:21216:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:21331:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:21937:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:21991:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:22035:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:22038:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:22198:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:22333:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:22448:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:23056:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:23110:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:23154:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:23157:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:23317:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:23452:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:23567:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:24185:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:24239:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:24283:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:24286:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:24446:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:24583:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:24698:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:25310:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:25364:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:25408:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:25411:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:25571:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:25708:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:25823:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:26463:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:26517:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:26561:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:26564:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:26724:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:26861:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:26976:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:27596:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:27650:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:27694:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:27697:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:27857:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:27994:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:28109:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:28721:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:28775:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:28819:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:28822:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:28982:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:29119:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:29234:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:29855:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:29909:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:29953:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:29956:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:30116:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:30253:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:30368:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:30988:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:31042:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:31086:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:31089:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:31249:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:31386:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:31501:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:32139:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:32193:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:32237:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:32240:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:32400:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:32537:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:32652:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:33287:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:33341:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:33385:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:33388:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:33548:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:33685:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:33800:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:34441:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:34495:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:34539:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:34542:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:34702:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:34839:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:34954:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:35601:+"""Parse Binance forceOrder JSONL into a normalized UTC DataFrame."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:35655:+    """A JSON value is not a usable Binance forceOrder message."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:35699:+    """Validate and normalize one decoded forceOrder payload."""
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:35702:+    if payload.get("e") != "forceOrder":
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:35862:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:35999:+        "e": "forceOrder",
+04_AI_TEAM/CODEX_TASKS/PB1_RUN.log:36114:+- `liq_parser.py`：逐行解析 Binance `forceOrder` JSONL，输出 UTC
+
