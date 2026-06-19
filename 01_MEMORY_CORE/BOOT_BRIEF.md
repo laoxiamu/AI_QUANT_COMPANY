@@ -1,5 +1,8 @@
 # BOOT_BRIEF —— 精简启动简报（新对话先读这一份，省 token）
 
+> WARN 2026-06-19 重启：先读 `01_MEMORY_CORE/HANDOFF_RESTART_2026-06-19.md`（审计后方向已重校准:借力最小闭环/实盘NO-GO/6月目标重定）再读本文件。
+
+
 **性质：** 派生摘要，非权威源（当前焦点=`CURRENT_STATE.md`；详细任务=`PROJECT_TASK_PLAN.md`；决策=`DECISION_LOG.md`）。预算 ≤60 行。
 **最后更新：** 2026-06-15（公司总图与单一任务计划建立；carry v4 已获 RR4 APPROVED，进入历史 FEASIBILITY-LOCK）
 
