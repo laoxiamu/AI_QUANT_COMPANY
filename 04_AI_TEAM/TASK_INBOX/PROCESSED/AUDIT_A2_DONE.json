@@ -1,0 +1,22 @@
+{
+  "task_id": "AUDIT-A2",
+  "completed_at": "2026-06-19T10:58:00Z",
+  "status": "completed",
+  "output_file": "00_PROJECT_MANAGEMENT/STAGE_AUDITS/AUDIT_2026-06-15_A2.md",
+  "verdict_summary": "Phase 2 safety principles are mostly right, but the build should be reduced to a minimal paper trading kernel. PostgreSQL and Decision Gateway are necessary; premature Track B AI, full five-layer production framing, and self-built execution/data infrastructure are the main overdesign risks. Data quality and infrastructure reliability are the hidden largest risk.",
+  "top_findings": [
+    "Data quality is a fatal risk: contract vs mark klines, missing real funding, base vs quote volume, and WS zero-frame incidents already blocked or invalidated work.",
+    "PostgreSQL as authoritative state is not overdesign after the Ghost Position incident; the missing part is the minimal schema, reconciliation, and restore evidence.",
+    "Decision Gateway should be self-owned as a thin risk policy seam, but exchange connectivity, order retry, and replay/live execution should be benchmarked against NautilusTrader/Freqtrade before self-building.",
+    "Track B AI analysis is correctly isolated but too early for the critical path; it should be deferred until paper ledger, monitoring, and reconciliation are stable.",
+    "Binance forceOrder is a snapshot proxy, not full liquidation tape; A-1 forward path must not claim complete real liquidation notional without third-party validation."
+  ],
+  "better_alternatives": [
+    "Phase 2 minimal paper kernel: Market Data Contract + Trading Ledger Kernel + Deterministic Strategy Adapter + Decision Gateway + Paper Exchange + Reconciliation.",
+    "Run a 3-5 day spike comparing NautilusTrader, Freqtrade, and a self-built thin kernel using the same simplified carry workflow.",
+    "Add DATA_CONTRACT.yaml and data_contract_check.py before any strategy runner.",
+    "Use third-party historical data trial for liquidations, derivative ticker, funding, OI, mark/index to cross-check official/self-collected data.",
+    "Move AI Pre-Execution Analyst behind a 14-day paper zero-difference gate; keep only offline reporting before then."
+  ],
+  "notes": "No Holdout read. Only the A2 audit report and this completion event were created."
+}
