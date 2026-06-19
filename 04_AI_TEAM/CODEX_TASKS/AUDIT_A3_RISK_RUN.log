@@ -1,0 +1,24 @@
+Reading additional input from stdin...
+OpenAI Codex v0.139.0
+--------
+workdir: /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: high
+reasoning summaries: none
+session id: 019edf89-6ae9-7b80-9ef9-1cb94ea85869
+--------
+user
+# AUDIT-A3：风控 + 资本 + 合规 + 运营（生存棱镜）
+
+先读 `04_AI_TEAM/CODEX_TASKS/AUDIT_CHARTER.md` 并遵守其全部规则。你的棱镜=**别亏光、别出事、能持续运营**。
+
+## 必审（质疑根本+提更优方案）
+1. **风控框架**：两层资本(核心受保护/围栏可归零)、DEC-063/069、爆仓概率门、定仓"认亏%"、杠杆=输出非输入、DEC-015本金阶梯——**有没有能真亏钱的漏洞**？最大问题：**实时风控只有规则、无代码**，实盘前这是致命缺口吗？给出最小可行实时风控方案。
+2. **资本与账务**：3万本金/两层架构/证据等级解锁——配置合理吗？账务/对账/PnL/出入金/税务=未建，**这些在小额实盘时能临时手工扛过吗，还是必须先建**？
+3. **合规与对手方风险（项目可能低估）**：交易所对手方风险(FTX类暴雷)、KYC/出入金/税务(中国身份+境外交易所)、账户被封/提现冻结、API key 安全。**这些非市场风险有没有被认真对待**？给出务实的对手方分散/资金安全/合规底线建议。
+4. **运营**：实盘后每天谁接告警/接管/复账/恢复(总图点的"无人负责"接口)、AI Pre-Execution Analyst(Track B)权限边界。最小可行运营方案。
+5. **致命盲点**：最可能让项目"非因策略失败而是因风控/运营/合规出事"归零的点是什么？
+2026-06-19T10:59:46.883646Z ERROR rmcp::transport::worker: worker quit with fatal: Transport channel closed, when Client(HttpRequest(HttpRequest("http/request failed: error sending request for url (https://chatgpt.com/backend-api/wham/apps)")))

@@ -1,0 +1,23 @@
+Reading additional input from stdin...
+2026-06-19T10:59:48.487041Z ERROR codex_models_manager::manager: failed to refresh available models: timeout waiting for child process to exit
+OpenAI Codex v0.139.0
+--------
+workdir: /Users/yaomingyu/Documents/AI_QUANT_COMPANY
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR]
+reasoning effort: high
+reasoning summaries: none
+session id: 019edf89-7687-7563-b6e8-9a38e0943849
+--------
+user
+# AUDIT-A2：系统架构 + 工程 + 数据基础设施（系统棱镜）
+
+先读 `04_AI_TEAM/CODEX_TASKS/AUDIT_CHARTER.md` 并遵守其全部规则。你的棱镜=**要建的东西对不对、能不能可靠跑起来**。
+
+## 必审（质疑根本+提更优方案）
+1. **架构方向**：Phase 2 蓝图 Track A(确定性执行5层)+Track B(AI分析)、PostgreSQL唯一权威、决策网关——架构**是否右量级**？对 3万本金/单 Founder，这套是不是**过度设计**？**自建 vs 采用现成框架/平台**（如成熟回测/执行框架、交易所官方SDK、开源量化栈 nautilus/freqtrade/vectorbt 生态）哪个更省、更可靠？哪些模块根本不该自己写。
+2. **工程实践**：测试/可复现/seed冻结/Codex任务分解/DR评审——质量够吗？有没有"每个策略在循环E重复自建订单/状态/风控/监控/账务"的重复建设风险（总图已点出）？平台抽离做到了吗？
+3. **数据与基础设施可靠性（今晚暴露很多）**：采集器(WS路由迁移踩坑/曾零采集)、历史数据(contract vs mark klines混用、base vs quote volume)、网络(双跳代理脆弱/VM下载失败/DC频繁断联)。**数据质量与基建可靠性是不是项目隐藏的最大风险**？给出更稳的数据源/基建方案（含是否该换非云住宅IP、是否用第三方数据API替代自建采集）。
+4. **致命盲点**：实盘前最可能因为哪个工程/数据缺陷亏钱或出事故？

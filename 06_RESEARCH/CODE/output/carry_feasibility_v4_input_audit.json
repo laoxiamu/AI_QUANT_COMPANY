@@ -1,0 +1,263 @@
+{
+  "generated_at_utc": "2026-06-19T10:52:01.161523+00:00",
+  "cutoff_exclusive_utc": "2024-12-10T00:00:00Z",
+  "protocol": "CARRY_DELTA_NEUTRAL_PREREG_v4",
+  "holdout_or_sealed_input_read": false,
+  "file_audit": {
+    "BTCUSDT_funding_8h": {
+      "path": "06_RESEARCH/DATA/FUTURES/BTCUSDT_FUNDING_8H.csv",
+      "exists": true,
+      "columns": [
+        "datetime",
+        "funding_interval_hours",
+        "last_funding_rate"
+      ],
+      "rows": 7029,
+      "pre_cutoff_rows": 5415,
+      "post_cutoff_rows": 1614,
+      "time_column": "datetime",
+      "min_timestamp_raw": "2020-01-01 00:00:00",
+      "max_timestamp_raw": "2026-05-31 16:00:00",
+      "sha256": "5803cb5e8ffb4dc8b5a1cb4a989ea7477597882341fafbf2a54e0f7148a3b7bf"
+    },
+    "ETHUSDT_funding_8h": {
+      "path": "06_RESEARCH/DATA/FUTURES/ETHUSDT_FUNDING_8H.csv",
+      "exists": true,
+      "columns": [
+        "datetime",
+        "funding_interval_hours",
+        "last_funding_rate"
+      ],
+      "rows": 7029,
+      "pre_cutoff_rows": 5415,
+      "post_cutoff_rows": 1614,
+      "time_column": "datetime",
+      "min_timestamp_raw": "2020-01-01 00:00:00",
+      "max_timestamp_raw": "2026-05-31 16:00:00",
+      "sha256": "e3333672e3dd7b9e46592df34a86a33cb599ee6ee8458a09db0d0236e3c76d08"
+    },
+    "BTCUSDT_mark_1h": {
+      "path": "06_RESEARCH/DATA/FUTURES/BTCUSDT_MARK_1H.csv",
+      "exists": true,
+      "columns": [
+        "datetime",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume"
+      ],
+      "rows": 56040,
+      "pre_cutoff_rows": 43128,
+      "post_cutoff_rows": 12912,
+      "time_column": "datetime",
+      "min_timestamp_raw": "2020-01-01 00:00:00",
+      "max_timestamp_raw": "2026-05-31 23:00:00",
+      "sha256": "4d861143885828eb6f8a25052478dd4ee41388a750130e658341d2c4d208e27d"
+    },
+    "ETHUSDT_mark_1h": {
+      "path": "06_RESEARCH/DATA/FUTURES/ETHUSDT_MARK_1H.csv",
+      "exists": true,
+      "columns": [
+        "datetime",
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume"
+      ],
+      "rows": 56184,
+      "pre_cutoff_rows": 43272,
+      "post_cutoff_rows": 12912,
+      "time_column": "datetime",
+      "min_timestamp_raw": "2020-01-01 00:00:00",
+      "max_timestamp_raw": "2026-05-31 23:00:00",
+      "sha256": "79944e3e2587ca6b90dc6cff3652bf695afea59a19ffdca9f7b0082efb386634"
+    },
+    "BTCUSDT_spot_1h": {
+      "path": "06_RESEARCH/DATA/BTCUSDT_SPOT_1H.csv",
+      "exists": true,
+      "columns": [
+        "open_time",
+        "close"
+      ],
+      "rows": 43288,
+      "pre_cutoff_rows": 43288,
+      "post_cutoff_rows": 0,
+      "time_column": "open_time",
+      "min_timestamp_raw": "2020-01-01 00:00:00+00:00",
+      "max_timestamp_raw": "2024-12-09 23:00:00+00:00",
+      "sha256": "d336e988c49617feab901d6e92ac59587c84cf5981c017b10a6b69baf8d013ed"
+    },
+    "ETHUSDT_spot_1h": {
+      "path": "06_RESEARCH/DATA/ETHUSDT_SPOT_1H.csv",
+      "exists": true,
+      "columns": [
+        "open_time",
+        "close"
+      ],
+      "rows": 43289,
+      "pre_cutoff_rows": 43289,
+      "post_cutoff_rows": 0,
+      "time_column": "open_time",
+      "min_timestamp_raw": "2020-01-01 00:00:00+00:00",
+      "max_timestamp_raw": "2024-12-09 23:00:00+00:00",
+      "sha256": "5a12f998b723a2ae1a53c8f99e4148167f1c38b80afaeb9e28110d882000e9ee"
+    },
+    "BTCUSDT_metrics_5m": {
+      "path": "06_RESEARCH/DATA/FUTURES/BTCUSDT_METRICS_5M.csv",
+      "exists": true,
+      "columns": [
+        "create_time",
+        "symbol",
+        "sum_open_interest",
+        "sum_open_interest_value",
+        "count_toptrader_long_short_ratio",
+        "sum_toptrader_long_short_ratio",
+        "count_long_short_ratio",
+        "sum_taker_long_short_vol_ratio"
+      ],
+      "rows": 605318,
+      "pre_cutoff_rows": 448936,
+      "post_cutoff_rows": 156382,
+      "time_column": "create_time",
+      "min_timestamp_raw": "2020-09-01 00:00:00",
+      "max_timestamp_raw": "2026-06-06 00:00:00",
+      "sha256": "b0e82d967e3a9b530c16a6b21ec0c06521b602cf2defe5484e92a5093d0833e5"
+    },
+    "ETHUSDT_metrics_5m": {
+      "path": "06_RESEARCH/DATA/FUTURES/ETHUSDT_METRICS_5M.csv",
+      "exists": true,
+      "columns": [
+        "create_time",
+        "symbol",
+        "sum_open_interest",
+        "sum_open_interest_value",
+        "count_toptrader_long_short_ratio",
+        "sum_toptrader_long_short_ratio",
+        "count_long_short_ratio",
+        "sum_taker_long_short_vol_ratio"
+      ],
+      "rows": 474484,
+      "pre_cutoff_rows": 318102,
+      "post_cutoff_rows": 156382,
+      "time_column": "create_time",
+      "min_timestamp_raw": "2021-12-01 00:00:00",
+      "max_timestamp_raw": "2026-06-06 00:00:00",
+      "sha256": "fff38bb1b79b70ede87151cbadd35de10ae142ef80138f22df7ad2e2f6837341"
+    }
+  },
+  "v4_required_input_status": {
+    "funding_actual_8h": {
+      "available_from": [
+        "BTCUSDT_funding_8h",
+        "ETHUSDT_funding_8h"
+      ],
+      "status": "available"
+    },
+    "spot_1h_open_close": {
+      "available_from": [
+        "BTCUSDT_spot_1h",
+        "ETHUSDT_spot_1h"
+      ],
+      "status": "missing_open",
+      "reason": "spot files expose close only; v4 needs next 1H open for spot executions"
+    },
+    "perpetual_contract_1h_ohlc": {
+      "available_from": [],
+      "status": "missing",
+      "reason": "only mark OHLC files are present; v4 basis attribution requires contract OHLC separately from mark"
+    },
+    "mark_1h_ohlc": {
+      "available_from": [
+        "BTCUSDT_mark_1h",
+        "ETHUSDT_mark_1h"
+      ],
+      "status": "available"
+    },
+    "index_1h_close": {
+      "available_from": [],
+      "status": "missing",
+      "reason": "v4 depeg and delta reference require Binance index close"
+    },
+    "oi_5m": {
+      "available_from": [
+        "BTCUSDT_metrics_5m",
+        "ETHUSDT_metrics_5m"
+      ],
+      "status": "available"
+    },
+    "historical_leverage_brackets": {
+      "available_from": [],
+      "status": "missing",
+      "reason": "v4 requires floor/cap/mmr/cum at each historical hour"
+    },
+    "liquidation_clearance_fee_rate": {
+      "available_from": [],
+      "status": "missing",
+      "reason": "v4 requires historical clearance fee by bracket"
+    },
+    "withdrawal_status": {
+      "available_from": [],
+      "status": "missing",
+      "reason": "v4 requires frozen BTC/ETH/USDT withdrawal status or announcements"
+    },
+    "usdtusd_cross_indices": {
+      "available_from": [],
+      "status": "missing",
+      "reason": "v4 requires BTCUSD/ETHUSD coin-m and BTCUSDT/ETHUSDT USD-M index cross prices"
+    },
+    "adl_execution_records": {
+      "available_from": [],
+      "status": "missing",
+      "reason": "v4 requires official execution quantity and price if ADL occurs"
+    }
+  },
+  "v4_acceptance_executable": false,
+  "hard_missing_or_incomplete_inputs": {
+    "spot_1h_open_close": {
+      "available_from": [
+        "BTCUSDT_spot_1h",
+        "ETHUSDT_spot_1h"
+      ],
+      "status": "missing_open",
+      "reason": "spot files expose close only; v4 needs next 1H open for spot executions"
+    },
+    "perpetual_contract_1h_ohlc": {
+      "available_from": [],
+      "status": "missing",
+      "reason": "only mark OHLC files are present; v4 basis attribution requires contract OHLC separately from mark"
+    },
+    "index_1h_close": {
+      "available_from": [],
+      "status": "missing",
+      "reason": "v4 depeg and delta reference require Binance index close"
+    },
+    "historical_leverage_brackets": {
+      "available_from": [],
+      "status": "missing",
+      "reason": "v4 requires floor/cap/mmr/cum at each historical hour"
+    },
+    "liquidation_clearance_fee_rate": {
+      "available_from": [],
+      "status": "missing",
+      "reason": "v4 requires historical clearance fee by bracket"
+    },
+    "withdrawal_status": {
+      "available_from": [],
+      "status": "missing",
+      "reason": "v4 requires frozen BTC/ETH/USDT withdrawal status or announcements"
+    },
+    "usdtusd_cross_indices": {
+      "available_from": [],
+      "status": "missing",
+      "reason": "v4 requires BTCUSD/ETHUSD coin-m and BTCUSDT/ETHUSDT USD-M index cross prices"
+    },
+    "adl_execution_records": {
+      "available_from": [],
+      "status": "missing",
+      "reason": "v4 requires official execution quantity and price if ADL occurs"
+    }
+  },
+  "executor_decision": "do_not_run_simplified_engine_as_v4_acceptance"
+}

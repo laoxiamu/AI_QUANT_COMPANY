@@ -1,0 +1,7 @@
+CARRY holdout permtest/blocker log
+generated_at_utc=2026-06-19T10:48:27Z
+manifest_read_success=false (manifest not created; stage1 custodian blocked before seal)
+key_path=~/.aiquant_sealed/carry/carry_key.bin
+key_write_test=failed: mkdir /Users/yaomingyu/.aiquant_sealed/carry: Operation not permitted
+decrypt_without_key=not run (no sealed.enc created)
+holdout_or_sealed_input_read=false
