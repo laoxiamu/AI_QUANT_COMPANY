@@ -1,14 +1,13 @@
 # BOOT_BRIEF —— 精简启动简报（新对话先读这一份，省 token）
 
-> WARN 2026-06-19 重启：先读 `01_MEMORY_CORE/HANDOFF_RESTART_2026-06-19.md`（审计后方向已重校准:借力最小闭环/实盘NO-GO/6月目标重定）再读本文件。
-
+> ✅ 2026-06-20 全项目重组完成：交接简报 `HANDOFF_RESTART_2026-06-19.md` 已执行。四棱镜审计结论已折入，方向重校准完毕。本文件已同步最新状态。
 
 **性质：** 派生摘要，非权威源（当前焦点=`CURRENT_STATE.md`；详细任务=`PROJECT_TASK_PLAN.md`；决策=`DECISION_LOG.md`）。预算 ≤60 行。
-**最后更新：** 2026-06-15（公司总图与单一任务计划建立；carry v4 已获 RR4 APPROVED，进入历史 FEASIBILITY-LOCK）
+**最后更新：** 2026-06-20（全项目重组完成；审计后方向重校准：借力最小闭环/实盘NO-GO/6月目标重定）
 
 ## 一句话现状
 
-Phase 1。公司 OS 原则层已冻结。A-1 独立回弹已 FAILED→Dead；TSMOM 保留 Baseline 且定仓维度穷尽，universe 扩展按 DEC-075 暂缓；carry v4 已获第四轮盲审 APPROVED，当前唯一研究主线是历史 `FEASIBILITY-LOCK`；强平采集器已修复并收数。公司总图与 Phase 0-3 详细 WBS 已建立，终态和阶段边界待 Founder D 级确认。
+Phase 1。四棱镜独立审计已完成，方向重校准：**系统=借力最小闭环（Freqtrade+CCXT）；实盘=有条件NO-GO；6月目标=验证edge是否值得继续**。carry v4 预登记 APPROVED，历史 FEASIBILITY-LOCK 🔴阻塞（custodian封存待主会话操作）。A-1独立回弹 FAILED→Dead。强平采集器已修复收数。能力/假设登记表已建立。文件归档任务（REORGANIZE-ARCHIVE-001）已备好，待Founder确认后派 Codex。
 
 ## 目标函数（DEC-063，原则层冻结）
 
@@ -22,11 +21,12 @@ Phase 1。公司 OS 原则层已冻结。A-1 独立回弹已 FAILED→Dead；TSM
 
 机制优先七问（含"付的钱经什么路径到我口袋"）；预登记+单变量+WF+Holdout物理封存；事件类按 v1.3 增补件（池化+单调性+成本压力档）；**预登记须含 MDE 功效段、验收含同状态被动基准对照（v1.4 已完成）**；不显著点估计禁作方向结论（墓园禁引用措辞字段）。新假设先查 `06_RESEARCH/GRAVEYARD_INDEX.md`。
 
-## 在途与等待（2026-06-15）
+## 在途与等待（2026-06-20）
 
-- **🟢当前主线：** `P1-RES-030` carry v4 历史 `FEASIBILITY-LOCK`；通过后仍须独立验收、策略规格、paper 平台与前向 shadow，不能直接上线。
-- **✅已完成：** A-1 五轮盲审、Tier A FAILED 与墓园闭环；DEC-075；E1-E4 设计；强平采集器路由修复并持续收数；carry v4 与 RR4 APPROVED。
-- **⚪等待 Founder D：** 确认公司推荐终态与 Phase 0-3 阶段边界。真实资金、阶段跨越和重大架构仍按各自 D 级门执行。
+- **🔴阻塞（最优先解除）：** `P1-RES-030` carry FEASIBILITY-LOCK；custodian封存须主会话人工操作（chmod-000法，参A1_RISK_REVIEW_v5 §12）。解除后立即派 Codex 跑。
+- **🔵建设优先：** `P1-OSS-001`(DATA_CONTRACT) → `P1-OSS-002`(Freqtrade集成)；先于重型平台自建。
+- **🔵文件归档：** `REORGANIZE-ARCHIVE-001` 任务书已备好（`04_AI_TEAM/CODEX_TASKS/`），Founder确认保留列表后派 Codex。
+- **⚪等待 Founder D（4项，见 CURRENT_STATE §1c）：** ①借力路线确认 ②carry严谨度下调 ③6月目标重定+kill/pivot ④公司终态/阶段门。
 - **详细任务、依赖与下一步：** `00_PROJECT_MANAGEMENT/PROJECT_TASK_PLAN.md`。本简报不维护第二套任务清单。
 
 ## 公司 OS 全局平衡检查（每次开局强制执行，8维度）

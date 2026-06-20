@@ -29,12 +29,13 @@
 | ⛔废弃 | 任务/方向已终止，保留原因与墓园指针 |
 | 🔴阻塞 | 无法继续，已写阻塞源与解除条件 |
 
-## 当前焦点
+## 当前焦点（2026-06-20 审计后更新）
 
-- **唯一执行主线：** `P1-RES-030`，按 carry v4 冻结规格执行历史 `FEASIBILITY-LOCK`；Claude 验收后由 `P1-RES-031` 给二元结论。
-- **本轮建设任务：** `P1-PMO-010` 已完成，等待 `P0-STR-005` / `P1-PMO-011` 的 Founder D 级确认。
-- **被动并行：** `P1-RES-014` 持续积累真实强平数据，不占当前研究 WIP。
-- **明确暂缓：** `P1-RES-008` TSMOM universe 扩展按 DEC-075 保持调整态，不进入当前 sprint。
+- **唯一研究主线：** `P1-RES-030`，carry v4 历史 FEASIBILITY-LOCK；🔴阻塞（custodian封存需主会话操作）→解除后派Codex跑。
+- **方向重校准（四棱镜审计）：** 系统=借力最小闭环（Freqtrade+CCXT+官方数据）；实盘=有条件NO-GO；6月目标=验证是否值得继续+kill/pivot条件。
+- **当前建设优先级：** `P1-OSS-001`(DATA_CONTRACT)→`P1-OSS-002`(Freqtrade集成)；先于重型平台自建。
+- **被动并行：** `P1-RES-014` 持续积累强平数据，不占研究 WIP。
+- **明确暂缓：** `P1-RES-008` TSMOM universe 扩展按 DEC-075；`P0-STR-005` / `P1-PMO-011` 等待 Founder D 级确认。
 
 ## Phase 0：原则与证据基础
 
@@ -123,12 +124,28 @@
 | P1-PROD-006 | carry ATD v1 | ⚪待办 | Claude；Codex | P1-PROD-004/005 | 至少覆盖 funding、负 funding、再平衡、OI 减仓、buffer breach、liquidation、事件退出、对账 | SOP S3 |
 | P1-PROD-007 | carry 接入最小平台接口契约 | ⚪待办 | Claude；Codex DR | P1-PROD-004、P1-PLAT-008 | 不建立策略私有订单/状态/账务旁路 | `05_TECH_DESIGN/06_MODULE_INTERFACE.md`（待建） |
 
-### 交易平台与数据基础设施
+### 工程借力与最小闭环（OSS集成，优先于自建）
+
+> **来源：** OSS调研 `STAGE_AUDITS/OSS_BUILD_VS_BUY_2026-06-15.md` + 四棱镜A2审计。  
+> **原则：** 不自建能借力替代的组件；自己只写薄风控/决策门/数据校验层。
 
 | ID | 任务 | 状态 | 负责人 | 依赖 | 下一步 | 产物/证据链接 |
 |---|---|---|---|---|---|---|
-| P1-PLAT-001 | Phase 2 公司组织、系统架构、执行流和模块设计 E1-E4 | ✅完成 | Codex；Claude验收 | DEC-071/072 | 作为草图输入，不等于平台已建 | `05_TECH_DESIGN/01_COMPANY_ORG.md`~`04_MODULE_DESIGN.md` |
-| P1-PLAT-002 | 冻结最小 paper 平台范围与非目标 | ⚪待办 | Claude；Founder D 如涉及重大架构 | P0-STR-005、P1-RES-031 | 只建 carry shadow 必需能力；无 UI、多所、RL | `05_TECH_DESIGN/02_SYSTEM_ARCHITECTURE.md` |
+| P1-OSS-001 | 建 DATA_CONTRACT.yaml + 数据校验层 | 🔵新增 | Codex；Claude DR | P1-RES-030（数据适用性证据） | 对价格源、funding、OI、时间、volume类型、缺失、cutoff、schema、hash逐项定义验收标准 | `05_TECH_DESIGN/DATA_CONTRACT.yaml`（待建） |
+| P1-OSS-002 | Freqtrade 集成评估与配置 | 🔵新增 | Codex；Claude DR | P1-OSS-001 | 验证 Freqtrade futures 支持、DB持久化、dry-run/live切换；写配置骨架 | `05_TECH_DESIGN/FREQTRADE_INTEGRATION.md`（待建） |
+| P1-OSS-003 | CCXT 薄封装适配层 | 🔵新增 | Codex | P1-OSS-002 | 覆盖 Binance perp REST/WS；统一 ticker/kline/funding/OI/account/order 接口；保留官方字段校验 | `07_INFRA/ccxt_adapter.py`（待建） |
+| P1-OSS-004 | 数据历史取法标准化 | 🔵新增 | Codex；Claude DR | P1-OSS-001 | 对 contract/mark/funding/OI/continuous kline 分别定义正确来源+坑点；历史用 data.binance.vision；REST 补洞 | `05_TECH_DESIGN/DATA_SOURCES.md`（待建） |
+| P1-OSS-005 | 强平数据策略决策 | 🔵新增 | Claude；Founder D如需预算 | P1-OSS-001 | 决策：研究=买CoinGlass；监控=官方WS+缺口标记；评估月预算内方案 | `STAGE_AUDITS/OSS_BUILD_VS_BUY_2026-06-15.md` |
+| P1-OSS-006 | kill/pivot 条件显式化 | 🔵新增 | Claude；Founder D | P1-OSS-002 | 写明：何时判定"edge不值得继续"并pivot；carry失败后备选机制列表；时间/成本盒检查点 | `00_PROJECT_MANAGEMENT/KILL_PIVOT_CONDITIONS.md`（待建） |
+
+### 交易平台与数据基础设施
+
+> **2026-06-20调整：** 以下 PLAT 任务在 P1-OSS-002 完成后重新审视范围——部分自建功能可由 Freqtrade 直接覆盖（dry-run/live/DB/UI）；自建只保留 Freqtrade 不提供的薄层（风控守门、对账审计、研究验收）。
+
+| ID | 任务 | 状态 | 负责人 | 依赖 | 下一步 | 产物/证据链接 |
+|---|---|---|---|---|---|---|
+| P1-PLAT-001 | Phase 2 公司组织、系统架构、执行流和模块设计 E1-E4 | ✅完成 | Codex；Claude验收 | DEC-071/072 | 作为草图输入；OSS评估后部分自建计划可能废弃 | `05_TECH_DESIGN/01_COMPANY_ORG.md`~`04_MODULE_DESIGN.md` |
+| P1-PLAT-002 | 冻结最小 paper 平台范围与非目标 | 🟡调整 | Claude；Founder D 如涉及重大架构 | P0-STR-005、P1-RES-031、**P1-OSS-002** | 范围须折入 Freqtrade 能力边界，不重建它已覆盖的部分 | `05_TECH_DESIGN/02_SYSTEM_ARCHITECTURE.md` |
 | P1-PLAT-003 | 定义生产数据合同和数据适用性验收门 | 🔵新增 | Claude；Codex | P1-PLAT-002 | 对价格源、funding、OI、时间、缺失、cutoff、schema、hash 逐项验收 | D2/采集器事故证据 |
 | P1-PLAT-004 | 建 PostgreSQL 最小 schema（订单/成交/持仓/风险/账务/决策请求） | ⚪待办 | Codex；Claude DR | P1-PLAT-002/003 | 先写 `05_DB_SCHEMA.md`，再迁移与测试 | DEC-008~011；`05_TECH_DESIGN/05_DB_SCHEMA.md`（待建） |
 | P1-PLAT-005 | 建唯一 trade_id、订单幂等键和生命周期状态机 | ⚪待办 | Codex | P1-PLAT-004 | 覆盖拒绝同向覆盖、部分成交、撤单、重启 | DEC-009/010 |
@@ -242,37 +259,19 @@
 
 ## 关键路径与等待规则
 
-1. **当前主路径：** `P1-RES-030 -> P1-RES-031 -> P1-PROD-004~007 -> P1-PLAT/RISK/OPS/ACC -> P2-DEP-001 -> P2-DEP-002`。
-2. carry 历史复核 FAIL 时，停止 carry 产品化与 shadow 路径；先更新墓园和机会地图，再由 Claude 重排 A-4/其他机制。
-3. carry 历史复核 PASS 也不能跳过策略规格、paper 平台、风控、监控和账务。
-4. A-1 路径 B 只被动积累数据，不与当前 carry 主线争夺 WIP；到 readiness gate 前不重启实验。
-5. TSMOM universe 扩展保持 🟡调整/暂缓；除非 Founder 重新确认优先级且补齐数据适用性，不进入当前 sprint。
-6. Phase 2/3 的所有真实资金、阶段跨越和重大架构任务均等待 Founder D 级，不因前置任务完成自动启动。
+1. **当前主路径（借力路线）：** `P1-OSS-001(DATA_CONTRACT) -> P1-OSS-002(Freqtrade) -> P1-RES-030(carry复核解阻) -> P1-RES-031 -> P1-OSS-003/004 -> P1-PLAT(精简范围) -> P2-DEP-001`。
+2. **build-vs-buy 硬关卡：** P1-PLAT任何自建子任务开工前，必须先核对 P1-OSS-002 结论——Freqtrade 已覆盖的能力不自建。
+3. carry 历史复核 FAIL 时，停止 carry 产品化与 shadow 路径；先更新墓园和机会地图，再按 P1-OSS-006(kill/pivot条件) 重排。
+4. carry 历史复核 PASS 也不能跳过 DATA_CONTRACT、策略规格、风控守门和对账审计。
+5. **实盘硬门（A3审计）：** 实时风控+账本+对账+对手方合规全部建成验收之前，不得用真实资金，不论 carry 结论如何。
+6. A-1 路径 B 只被动积累数据，不与当前主线争夺 WIP；到 readiness gate 前不重启实验。
+7. TSMOM universe 扩展保持 🟡调整/暂缓；不进入当前 sprint。
+8. Phase 2/3 的所有真实资金、阶段跨越和重大架构任务均等待 Founder D 级，不因前置任务完成自动启动。
 
 ## CHANGELOG
 
 | 版本 | 日期 | 作者 | 变更内容 | 触发原因 |
 |---|---|---|---|---|
 | v1.0 | 2026-06-15 | Codex | 建立 Phase 0-3 × 9 能力域的详细 WBS；真实回填已完成、进行中、待办、调整、废弃与阻塞历史；确立单一任务权威和维护纪律 | Founder 要求后续日常推进只看本表即可知道已做/未做/下一步 |
+| v1.1 | 2026-06-20 | Claude | 折入四棱镜审计+OSS调研结论：新增工程借力层(P1-OSS-001~006)；P1-PLAT-002 调整为折入 Freqtrade 范围；关键路径加 build-vs-buy 硬关卡和实盘硬门；当前焦点更新；删除 2026-06-19 实时变更记录段落（已正式转为任务行）；§1c 历史叙事已清空（无悬空建议只留4个D级项） | 四棱镜审计后方向重校准 |
 
----
-## 实时变更记录 — 2026-06-19（审计与根因后，CTO 当轮回写）
-
-**⛔ 已停止（止额度血）**
-- `codex-task-inbox-checker`（每15分钟全天候跑=每天~96次Claude运行烧Founder额度，6/11起）→ **2026-06-19 DISABLED**。
-- `ai-quant-weekly-monitor`（每周一）→ DISABLED（项目重构期暂停）。月度审计保留待Founder定。
-
-**🟡 调整（待Founder D级确认）**
-- 系统范围：从"自建重型五层"→ **借力(CCXT/Freqtrade/数据商)的最小纸面→小额实盘闭环**（A2审计）。
-- 研究严谨度：carry 从"18-24月前向shadow"→ **几月纸面+小额真钱+硬风控**，严谨度对齐3万在险资金（A1/A4审计）。
-- 目标重定：6个月=**止损时间盒(找edge)**，非系统工期；近1-2月成功标准=借力跑通最小真钱闭环+低成本验证≥1个可部署edge，否则pivot（A4审计）。
-
-**🔵 新增任务（审计产出，待排期）**
-- 采用 CCXT/Freqtrade build-vs-buy（RESEARCH-OSS 调研中）；强平/funding/OI 改用数据商(Coinglass/CoinAPI)替代自建采集器。
-- 建 `DATA_CONTRACT.yaml`+校验（实盘前数据质量硬门，A2）。
-- 实盘前硬门：实时风控/账本/对账/对手方合规必须先建（A3 判"有条件不可实盘"）。
-- 建《能力/环境登记表》+《假设登记表》；红队审计制度化、周期化（根因修复）。
-
-**🟢 进行中**：RESEARCH-OSS(工具调研)、AUDIT-A1重派(前次4h前网络死)。**🔴 阻塞**：carry历史可行性复核(custodian需主会话写项目外密钥,Codex沙箱做不了)。
-
-**根因（半个月误投）**：埋头执行不质疑框架 + 无build-vs-buy/退步检查点 + 拿Founder当唯一退步机制；超长线程与"只记执行不记假设"的文件架构放大之。5条结构修复见上"🔵/根因"。

@@ -1,7 +1,7 @@
 # CURRENT_STATE.md
 
-**版本：** 4.3（覆盖式看板制；§4 已改为当前焦点与任务权威指针）
-**最后更新：** 2026-06-15（公司总图与单一任务计划建立；carry v4 已获 RR4 APPROVED，进入历史 FEASIBILITY-LOCK）｜ **更新者：** Codex（待 Claude 验收）
+**版本：** 4.4（2026-06-20 审计后全项目重组；§1c 清空历史叙事，写入真正悬空 D 级项）
+**最后更新：** 2026-06-20（四棱镜审计+OSS调研已完成；方向重校准=借力最小闭环/实盘NO-GO/6月目标重定；全项目重组进行中）｜ **更新者：** Claude
 **历史沿革：** v3.x 滚动记录已归档 `01_MEMORY_CORE/ARCHIVE/STATE_LOG_20260607_0612.md` 及 git 历史
 **维护规则：** 本文件为**固定槽位覆盖式看板**——更新=改写槽位内容，不追加滚动条；超过 150 行即违规（state_check 查）。
 
@@ -16,10 +16,10 @@
 | **失败计数（DEC-069①）** | 旧范式 5 条封账（历史合计 11 次失败存档）；**新范式独立计数=1**（a2，2026-06-11）；计数=L3触发器（每+2触发复评）。**项目主闸=时间盒（2026-06-07 重置起 6 个月无 edge）+成本盒（5000 元，已用 871.93）+L3 裁量** |
 | **Holdout** | 全部封存完好（含 a2 事件级 Holdout 218 条）；任何实验未读取 |
 | **验收口径** | **v1.3/v1.4 增补件已完成**（§一~§九：四件套+成本压力档+相关性+事件规则+第五件基准对照+MDE功效门+AI三行+叙事纪律+自动化边界），文件 `06_RESEARCH/RESEARCH_PROTOCOL_v1.3_ADDENDUM.md` |
-| **在途任务** | **A-1 路径A 已完结（2026-06-15）：** 五轮盲审 v1→v5 收敛 APPROVED → custodian 封 Holdout(work156/sealed38,AES-GCM,密钥项目外) → executor 跑 → **Tier A FAILED**(48h CAR +1.32% 但 Holm p=0.32 不显著,功效充分非欠功效) → **A-1 独立回弹判 Dead**(墓园+机会地图;不耗计数;OI信号降级为carry风控触发候选;前向路径休眠免费期权)。**carry 升主线（2026-06-15）：** v1→RR1(NOT APPROVED 8项,核心=用已探索工作集倒推设计HARKing)→v2(重构:历史=可行性复核不耗计数/前向shadow=真确认/证据等级上线)→RR2(NOT APPROVED 2/8,**重构获认**,余6项实现细节)→**v3起草中(Codex)**;carry回测脚手架25单测就绪。**采集器**:查实零采集(Binance限腾讯云IP的WS行情流,非代码bug)→修复(Codex danger-full-access,经住宅代理绕IP)跑中。**运行中Codex**:carry v3起草 + 采集器修复。git 已commit。|
-| **§1b 活动工作区（Claude 对话级在途）** | **2026-06-15(最新)**：A-1路径A全程完结(v5 APPROVED→custodian封Holdout→executor跑→Tier A **FAILED**→A-1独立回弹**Dead**);carry升主线迭代中(v1→v2→RR2 2/8重构获认→**v3起草**);采集器查实零采集(Binance限云IP)修复中;Codex网络认知更正(网络/SSH活用`--sandbox danger-full-access`,workspace-write关shell网络)。**运行中Codex**:carry v3起草 + 采集器修复(danger-full-access)。**恢复点**:①carry v3出→CTO验收→派独立盲审CARRY-RR3→收敛APPROVED→custodian封Holdout→脚手架跑历史可行性复核(不耗计数/不上线);②采集器修复结果(成→路径B免费期权激活);③前向shadow确认协议待carry过审后设计。**勿再信旧"A1-RR/Tier A"恢复点(已完结)。**|
-| **§1c 对话级建议暂存区** | **制度说明（DEC-073）**：本栏捕获对话中Claude提出但尚未落入§4的建议。Founder确认→升入§4/DECISION_LOG；Founder否决→清除；未响应=下次开局必提。**本轮新增（2026-06-14深夜，Founder委托CTO自主推进期间）：**①**[✅Claude执行完毕]** D2/A1-RR验收+专业透镜：两线均"需返工"属**正确返工**；D2 BLOCKED根因=D1"35/35完成"实为**数据不达用途**(下的contract klines非mark-price、缺真实funding、DEC-070四过滤无证据)→**过程教训：完成计数≠达用途，验收门须查数据适用性**(风险E反例修正)。②**[✅Claude执行完毕]** A-1预登记v2亲自主导改写(`A1_CASCADE_REBOUND_PREREG_v2.md`)，逐条闭合Reviewer十项(方向代理过滤/唯一主horizon=48h/cluster块bootstrap/refractory episode/A-2 P95 overlap/80%power MDE/两级门/现金零基准硬门/物理Holdout封存/闭合decision table)；**Codex三轮闭环**：v2盲审NOT APPROVED(仅闭2/10)→CTO据五项必改起草**v3**(`..._v3.md`:纯方向r6h<0/moving-block bootstrap/功效降诊断/A-2原口径单8H读数P95/沙箱外真权限Holdout)→**A1-RR3第三轮盲审运行中(PID 8335)**,特别要求判定剩余阻塞是否=历史样本不可约识别上限。③**[✅已决→DEC-075:暂缓优先A-1]** TSMOM universe扩展(D1v2+D2)**未执行**——CTO判断：扩样本是D级候选(Founder未批)+只解决DD不解决TSMOM核心"无可行定仓"+DEC-070两过滤需外部数据历史不可得，**强行连夜重采=风险D局部修补搜索**。**推荐：A-1优先级高于universe扩展**。DEC070审计(`20260614_dec070_filter_audit.md`)：2可算过滤器下Tier1-clean 20/35、watch 10/35、排除5/35(AXS/FTM/ICX高跳动/低流动);**审计抛专业异议——本地CSV只存base volume非quote volume(ADTV亦不精确)+float市值比/OI市值比需外部历史数据(Binance OI REST仅近1月)**,数据成本叠加,**强化暂缓**:若Founder坚持闭环TSMOM需先投入补quote volume+外部supply/mcap/OI,性价比低于A-1。④**[✅Claude执行完毕]** 跨对话回收(扫23会话)：唯一含在途未存工作的"外部调研(Sweep形态线)"——其做空测试**已在其他会话独立完成并封账**(v4多头"全维度无一可部署"、v5做空已失败,DEC 2026-06-06)，**无孤儿决策丢失**；工作区沙箱故障根因=claude-code-vm 2.1.170下载循环失败,Desktop Commander为正确通道。⑤**[议程·rule8]** A-1历史方向识别结构性局限→**前向强平数据路径**：历史A-1无真实强平名义额(采集器2026-06-13起前向)，v2只能用价格代理；最强验证仍需前向真实强平数据3-6月——把已部署采集器与A-1直接挂钩,是采集器首个明确alpha用途。⑥**[✅已决→DEC-075]** A-1两段式路径+universe暂缓**已经Founder"按推荐继续"确认,升格DEC-075**(③⑥出本栏)。**当前推进(2026-06-15)**：**路径A**=A-1预登记已迭代到**v5**(`..._v5.md`)。盲审进度:RR4判v4闭2/5(功效治理+family CLOSED),余4项判"文字与算法冻结、不要求达机制确证严格度"→v5逐条闭(§7改"A-2非重叠关联硬门"/circular半开网格`[t1,tn+1h)`+offset截断/Spearman改配对bootstrap对ρ居中真检验ρ=0/WF唯一切点中点+按实际足迹purge/AES-256-GCM+密钥独立principal+负向测试留命令退出码)→**A1-RR5第五轮盲审=✅APPROVED(4/4全闭,`A1_RISK_REVIEW_v5.md`)**!五轮收敛(10→2/10→0/5→2/5→4/4)。放行边界:仅关联结论/不耗独立计数/不晋级策略;**执行前须先AES-256-GCM Holdout封存+负向权限测试**。**[⚠️待Founder知会后派发]** 按预登记铁律,跑Tier A事件研究(封Holdout+出A-1生死判决)须Founder知会+主会话人工派发,故CTO停在放行点未自动跑;**路径B**=`A1_FORWARD_LIQUIDATION_PATH.md`已设计(采集器原始forceOrder含side方向字段已核实=首个alpha用途;就绪门=候选n达功效门→另立预登记走硬门耗计数;待数据累积3-6月,低成本并行不阻塞)。**⑥已闭（2026-06-15）**：A-1 Tier A 已跑 → **FAILED**(48h Holm p=0.32) → A-1独立回弹 **Dead**(墓园+机会地图);PB1脚手架完成。**⑦[已升格→§4]** carry升主线:v1→RR1→v2→RR2(2/8重构获认)→v3起草中;已入§4执行序与机会地图,非悬空建议。**⑧[已记]** 采集器查实零采集(Binance限云IP)→工具链已纠正;Codex网络认知更正(网络活用danger-full-access)。**⑨[环境·待Founder]** VM下载/DC断联:downloads.claude.ai走双跳拉不动53MB二进制,Founder已加Clash单跳规则但下载仍truncate(2核跳板带宽不足),Founder选C忍着(不阻塞research,A-1/carry均nohup扛断)。网络拓扑已记忆([[network-proxy-topology]])。**⑩[核实项·已派Codex]** Founder线索:服务器有历史v4.6.2(数据源也是币安,疑v4-strategy-runner)。**若v4.6.2能正常取币安数据→可能推翻"Binance封本IP"结论**(我只测了futures公共WS forceOrder,v4.6.2或用REST/现货/不同端点/鉴权)。已派`VERIFY_V462`(Codex danger-full-access)核实其数据源+对照,出修采集器正路。**⑪[建议·待Claude评估]** BPR文章评审已落`00_PROJECT_MANAGEMENT/BPR_TOP_LEVEL_FRAMEWORK_REFERENCE_2026-06-15.md`：Claude的9项宜定义为**能力域**，其上补“机会到证据/证据到部署/信号到结算/异常到恢复/绩效到配置/决策到交付/结果到知识”L1端到端价值流；项目文档拆为公司建设总图/组合路线图/CURRENT_STATE实时台账/SOP四层；`OPERATING_MODEL_DESIGN_v2`重定位为策略交付生命周期SOP。**本栏其余无悬空建议（carry在§4,A-1在墓园,采集器在工具链）。**|
-| **等待 Founder** | **无阻塞项。** A-1已完结(Tier A FAILED→Dead,无需Founder)。carry处于可行性研究阶段(历史复核+前向shadow),**通过后核心资本上线才是D级**(未来,DEC-019范围,按DEC-069证据等级解锁)。 |
+| **在途任务** | **carry=唯一执行主线（P1-RES-030）**：carry v4预登记APPROVED(五轮盲审v1→v5收敛)，历史FEASIBILITY-LOCK **🔴阻塞**（custodian封存需主会话写项目外密钥，Codex沙箱做不了→需主会话人工操作chmod-000法，参A1_RISK_REVIEW_v5 §12）。**A-1独立回弹=Dead**（历史快筛FAILED Holm p=0.32，OI信号降级为carry风控触发候选，前向路径B=免费期权积累中）。**强平采集器=已修复收数**（2026-06-15，Binance WS路由迁移`/market/ws/`，已收92帧，路径B激活）。**TSMOM=Baseline**（定仓维度穷尽，universe扩展按DEC-075暂缓）。 |
+| **§1b 活动工作区（Claude 对话级在途）** | **2026-06-20（重组进行中）**：四棱镜独立审计完成（A1-A4+OSS调研）；方向重校准=借力最小闭环/实盘NO-GO/6月目标重定；全项目重组当前执行：①§1c清空✅ ②PROJECT_TASK_PLAN更新（借力路线+kill/pivot）⬜ ③能力/假设登记表⬜ ④Codex归档任务书⬜ ⑤BOOT_BRIEF同步⬜。**恢复点**：重组完成后首要任务=解决carry FEASIBILITY-LOCK阻塞（主会话做custodian封存）→然后派Codex跑历史可行性复核。 |
+| **§1c 对话级建议暂存区** | **制度说明（DEC-073）**：本栏捕获Claude提出但Founder尚未响应的建议。确认→升入§4/DECISION_LOG；否决→清除；未响应=下次开局必提。**当前悬空（2026-06-20，审计后，待Founder一次确认）：** ①【系统路线D级】砍成最小借力闭环（Freqtrade+CCXT+官方数据+CoinGlass）替代自建重型五层？OSS调研结论强烈推荐=是，见`STAGE_AUDITS/OSS_BUILD_VS_BUY_2026-06-15.md`。 ②【carry严谨度D级】将carry验证严谨度从”18-24月学术级shadow”下调为”几月纸面+小额真钱+硬风控”？审计推荐=是（与3万在险资金体量对齐）。 ③【6月目标D级】将6月目标从”找到可部署edge”重定为”验证edge是否值得继续”并设kill/pivot条件？审计推荐=是（最没被质疑的假设=公开数据AI在6月内找到可交易edge）。 ④【公司终态D级】确认推荐终态与Phase 0-3阶段门（P0-STR-005，见总图§2/§6/§9）？此项2026-06-15已挂起，仍未响应。 |
+| **等待 Founder** | **4项D级待一次确认**（见§1c ①②③④）。当前无研究阻塞——carry FEASIBILITY-LOCK阻塞=Claude操作项（custodian封存），不需Founder。 |
 | **禁引用措辞** | "极端拥挤=延续"（墓园 2026-06-12 勘误，不显著点估计不得作结论） |
 
 ## 2. 工具链
@@ -40,14 +40,14 @@
 
 月预算约 1000 元｜Founder 时间约 1h/天、只批 D 级、无技术背景｜本金上限 30,000（DEC-015 阶梯）｜首要行为风险=风险B/C（治理膨胀/停留讨论层）
 
-## 4. 当前焦点与任务计划指针（2026-06-15）
+## 4. 当前焦点与任务计划指针（2026-06-20）
 
 > **详细任务单一权威：** `00_PROJECT_MANAGEMENT/PROJECT_TASK_PLAN.md`。本节不再复制全量 WBS；对话中的新增、调整、阻塞、完成、废弃和决策，必须当轮写回该计划书。
 
-- **当前唯一执行主线：** `P1-RES-030`，按 carry v4 冻结规格执行历史 `FEASIBILITY-LOCK`；该复核不耗独立计数、不读取 Holdout、不授权上线。
-- **当前建设状态：** 公司总图与详细任务计划已建立；等待 Founder D 级确认推荐终态和 Phase 0-3 边界。
-- **被动并行：** 强平采集器已修复并收数；A-1 路径 B 继续积累真实强平数据，到 readiness gate 前不重启研究。
-- **明确暂缓：** TSMOM universe 扩展按 DEC-075 保持调整态；A-1 独立回弹保持 Dead，不得复活或改写为“部分成功”。
+- **当前唯一执行主线：** `P1-RES-030`，carry v4 历史 FEASIBILITY-LOCK；🔴阻塞=custodian封存待主会话操作。解除后派 Codex 跑历史复核（不耗计数/不读Holdout/不授权上线）。
+- **方向重校准（2026-06-20 审计后）：** 系统路线=借力最小闭环（Freqtrade+CCXT+官方数据）；实盘=有条件NO-GO（实时风控/账本/对账全没建）；6月目标=验证edge是否值得继续+设kill/pivot条件。
+- **被动并行：** 强平采集器已修复并收数；A-1 路径 B 继续积累真实强平数据（就绪门=功效门后另立预登记）。
+- **明确暂缓：** TSMOM universe 扩展按 DEC-075 保持调整态；A-1 独立回弹保持 Dead，不得复活或改写为”部分成功”。
 - **中断恢复：** 对话级未完成步骤仍写 §1b；恢复后先核对 `PROJECT_TASK_PLAN.md` 对应任务 ID，再继续执行。
 
 ## 5. 启动协议
