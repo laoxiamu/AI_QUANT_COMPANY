@@ -1,0 +1,8 @@
+{
+  "task_id": "DATA-001",
+  "completed_at": "2026-06-20T09:02:16Z",
+  "status": "blocked",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_DATA-001_carry_data_procurement.md",
+  "next_task": null,
+  "notes": "采购脚本和验证测试已完成；实际数据下载被不可用代理/外网限制阻塞，signed endpoints 缺 Binance API key/secret，parquet engine 也缺失。FEASIBILITY-LOCK 仍不可运行。"
+}

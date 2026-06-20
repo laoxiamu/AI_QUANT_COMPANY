@@ -1,13 +1,13 @@
 # BOOT_BRIEF —— 精简启动简报（新对话先读这一份，省 token）
 
-> ✅ 2026-06-20 全项目重组完成：交接简报 `HANDOFF_RESTART_2026-06-19.md` 已执行。四棱镜审计结论已折入，方向重校准完毕。本文件已同步最新状态。
+> ⚠️ 2026-06-21 顶层重平衡（DEC-082）：研究=唯一P0/治理压一次性卫生/自动化全DEFER；month-30%出研究验收(=资本愿望)；P1-RES-034拆B0-B4单变量序列；杠杆=过门后风险测试非Alpha来源。carry仍Dead(DEC-079)。本文件已同步。
 
 **性质：** 派生摘要，非权威源（当前焦点=`CURRENT_STATE.md`；详细任务=`PROJECT_TASK_PLAN.md`；决策=`DECISION_LOG.md`）。预算 ≤60 行。
-**最后更新：** 2026-06-20（全项目重组完成；审计后方向重校准：借力最小闭环/实盘NO-GO/6月目标重定）
+**最后更新：** 2026-06-21（治理分档DEC-083；最新DEC=DEC-083）
 
 ## 一句话现状
 
-Phase 1。四棱镜独立审计已完成，方向重校准：**系统=借力最小闭环（Freqtrade+CCXT）；实盘=有条件NO-GO；6月目标=验证edge是否值得继续**。carry v4 预登记 APPROVED，历史 FEASIBILITY-LOCK 🔴阻塞（custodian封存待主会话操作）。A-1独立回弹 FAILED→Dead。强平采集器已修复收数。能力/假设登记表已建立。文件归档任务（REORGANIZE-ARCHIVE-001）已备好，待Founder确认后派 Codex。
+Phase 1。**carry=Dead（DEC-079）**。regime-adaptive=**Candidate（待过B0机制门/B1数据门，非已验证主线）**。**DEC-082顶层重平衡：研究=唯一P0轨/治理压一次性卫生(P0-C封顶1包)/自动化全DEFER；month-30%=资本愿望非验收门；杠杆=过门后风险测试非Alpha来源**。数据✅就绪(127 parquet)。🟡下一步=**P0-C治理卫生(先行,state_check+四份规则文件冲突)→起草B0机制卡**。P1-RES-034原捆绑描述已冻结,拆B0→B1→B2(1x)→B3→B4。A-1 Dead。强平采集器收数中。
 
 ## 目标函数（DEC-063，原则层冻结）
 
@@ -21,13 +21,14 @@ Phase 1。四棱镜独立审计已完成，方向重校准：**系统=借力最�
 
 机制优先七问（含"付的钱经什么路径到我口袋"）；预登记+单变量+WF+Holdout物理封存；事件类按 v1.3 增补件（池化+单调性+成本压力档）；**预登记须含 MDE 功效段、验收含同状态被动基准对照（v1.4 已完成）**；不显著点估计禁作方向结论（墓园禁引用措辞字段）。新假设先查 `06_RESEARCH/GRAVEYARD_INDEX.md`。
 
-## 在途与等待（2026-06-20）
+## 在途与等待（2026-06-20 方向重置后）
 
-- **🔴阻塞（最优先解除）：** `P1-RES-030` carry FEASIBILITY-LOCK；custodian封存须主会话人工操作（chmod-000法，参A1_RISK_REVIEW_v5 §12）。解除后立即派 Codex 跑。
-- **🔵建设优先：** `P1-OSS-001`(DATA_CONTRACT) → `P1-OSS-002`(Freqtrade集成)；先于重型平台自建。
-- **🔵文件归档：** `REORGANIZE-ARCHIVE-001` 任务书已备好（`04_AI_TEAM/CODEX_TASKS/`），Founder确认保留列表后派 Codex。
-- **⚪等待 Founder D（4项，见 CURRENT_STATE §1c）：** ①借力路线确认 ②carry严谨度下调 ③6月目标重定+kill/pivot ④公司终态/阶段门。
-- **详细任务、依赖与下一步：** `00_PROJECT_MANAGEMENT/PROJECT_TASK_PLAN.md`。本简报不维护第二套任务清单。
+- **🟡唯一研究主线（DEC-082拆分）：** regime-adaptive = B0机制卡(可证伪硬验收,不碰Holdout/不调参)→B1标签审计→B2单变量门控(1x)→B3仓位→B4杠杆风险测试。任一步不过=回墓园/pivot,禁改参数续命。
+- **🟡执行顺序：** P0-C一次性治理卫生(先行,封顶1包:state_check修复+AGENTS/CLAUDE/SYSTEM_RULES/AGENT_REGISTRY硬冲突裁决)→验收后起草B0。
+- **🧊 DEFER（DEC-082,解冻=一条edge过B2或Founder时间实测为瓶颈）：** Spec Kit初始化/ADR-业务项/C4全套/Orchestrator/Strategy Governor引擎/Web/Discord/七维路由/九域记分卡。
+- **🔵知识积压：** OSS-001 TOOLS_KNOWLEDGE 6项更新待执行(非阻塞)。
+- **⚪等待 Founder D（1项）：** ④公司终态/阶段门（非紧急,待B0后再谈）。
+- **详细任务：** `00_PROJECT_MANAGEMENT/PROJECT_TASK_PLAN.md`。
 
 ## 公司 OS 全局平衡检查（每次开局强制执行，8维度）
 
@@ -35,14 +36,14 @@ Phase 1。四棱镜独立审计已完成，方向重校准：**系统=借力最�
 
 | 维度 | 当前状态 | 警戒 |
 |---|---|---|
-| ①量化研究 | carry 为唯一执行主线；A-1 Dead；TSMOM Baseline | 正常 |
+| ①量化研究 | regime-adaptive=Candidate(待过B0机制门)；carry Dead；A-1 Dead；TSMOM Baseline | ⚠️edge=0，唯一P0 |
 | ②生产工程基础设施 | E1-E4 草图已完成，生产平台未建 | ⚠️ 待实现 |
 | ③实时风控执行层 | 规则与架构草图已有，代码层未实现 | ⚠️ 待实现 |
 | ④运营工作流 | 责任与流程未形成可运行闭环 | ⚠️ 待建设 |
 | ⑤公司治理/文档 | DECISION_LOG/OS蓝图相对完整 | 正常 |
 | ⑥项目管理/产研工作流 | 总图与 108 项单一 WBS 已建立 | 正常 |
 | ⑦监控与告警 | 只有强平采集器，无交易系统监控 | ⚠️ Phase 2前设计 |
-| ⑧知识管理/经验沉淀 | 墓园/机会地图可用，自动反向引用未建 | ⚠️ 改善中 |
+| ⑧知识管理/经验沉淀 | CARRY_KNOWLEDGE/TOOLS_KNOWLEDGE/RESEARCH_ACTION_REGISTRY已建；3个Claude Skills（result-intake/codex-task-spec/research-harvest）+Holdout hook已建；60+历史报告harvest待执行 | ⚠️ 改善中 |
 
 **②③④⑦ 已有 DRAFT v0.2（`05_TECH_DESIGN/PHASE2_SYSTEM_BLUEPRINT.md`）**，包含 Track A（自动执行）+ Track B（AI主动分析）双轨制设计。**Track B 方向待 Founder D 级确认。**
 
@@ -52,8 +53,8 @@ Phase 1。四棱镜独立审计已完成，方向重校准：**系统=借力最�
 
 ## 细节指针
 
-CURRENT_STATE v4.3（当前焦点；§4 指向任务权威）｜**PROJECT_TASK_PLAN（唯一详细任务权威）**｜**§1b=活动工作区（Claude 对话级在途）**｜DECISION_LOG（索引→DEC-075 为最新）｜OPPORTUNITY_MAP_STATUS｜直调配方 `04_AI_TEAM/CODEX_DIRECT_CALL_RUNBOOK.md`｜启动协议见 CLAUDE.md v2.4。
+CURRENT_STATE v4.3（当前焦点；§4 指向任务权威）｜**PROJECT_TASK_PLAN（唯一详细任务权威）**｜**§1b=活动工作区（Claude 对话级在途）**｜DECISION_LOG（索引→DEC-083 为最新）｜OPPORTUNITY_MAP_STATUS｜直调配方 `04_AI_TEAM/CODEX_DIRECT_CALL_RUNBOOK.md`｜启动协议见 CLAUDE.md v2.4。
 **新协议**：Codex完成任务→写04_AI_TEAM/TASK_INBOX/{ID}_DONE.json→15min调度器自动拾取→派发下一步（见TASK_INBOX/README.md）。
 
 **§1b 制度**：Founder 主动打断对话时，Claude 在结束前必须更新 §1b（已完成什么、剩余什么、恢复点在哪）。新对话开局如 §1b 有内容，优先恢复，不重新分析。
-**§1c 制度（DEC-073）**：对话中 Claude 提出的任何建议须当场写入 §1c；Founder 确认→升入§4；否决→清除；未响应=下次开局必提。DEC-073=全周期决策记录规范（§1c制度来源）；**最新=DEC-075**。
+**§1c 制度（DEC-073）**：对话中 Claude 提出的任何建议须当场写入 §1c；Founder 确认→升入§4；否决→清除；未响应=下次开局必提。DEC-073=全周期决策记录规范（§1c制度来源）；**最新=DEC-083**。

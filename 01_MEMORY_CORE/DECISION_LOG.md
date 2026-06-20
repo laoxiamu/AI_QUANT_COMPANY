@@ -99,6 +99,14 @@
 | DEC-073 | 项目全周期决策记录规范：对话级建议须当场写入§1c，不得仅存于对话 | ACTIVE |
 | DEC-074 | OPERATING_MODEL_DESIGN_v2.md 产研三循环框架（R/S/E）初步确认，待优化 | ACTIVE |
 | DEC-075 | A-1 采两段式路径（历史关联快筛+前向真实强平确证）；TSMOM universe扩展暂缓优先A-1 | ACTIVE |
+| DEC-076 | 系统路线确认：最小借力闭环（Freqtrade+CCXT+免费工具链），禁止付费第三方数据 | ACTIVE |
+| DEC-077 | carry验证严谨度下调 + 1个月实盘目标：FEASIBILITY-LOCK通过→最薄风控→小额实盘 | **DEPRECATED**（carry已死，2026-06-20） |
+| DEC-078 | 6月目标重定：验证carry edge是否值得继续 + 设kill/pivot条件 | **DEPRECATED**（carry已死，目标已重定为regime-adaptive首个实验，DEC-080） |
+| DEC-079 | carry / 资金费率类策略正式关闭（Founder D级，项目起始即否决，本次对话重确认） | ACTIVE |
+| DEC-080 | 新研究方向：regime-adaptive 方向性策略，小资金合约，~~月化30%目标~~ | ACTIVE（验收口径被 **DEC-082** 修订：month-30% 移出研究验收） |
+| DEC-081 | 治理工具栈：保留 Superpowers + Spec Kit；补 AGENTS.md + ADR + C4 Level 1；缓 Backstage/DevLake/BMAD/Task Master/Plane | ACTIVE（顶层重平衡后 Spec Kit/C4/ADR-业务项 DEFER，见 DEC-082） |
+| DEC-082 | 顶层重平衡：研究=唯一P0/治理压成一次性卫生/自动化全DEFER；month-30%移出研究验收（=资本愿望）；P1-RES-034拆为B0-B4单变量序列；杠杆=过门后风险测试非Alpha来源 | ACTIVE（Founder D级 2026-06-21；Claude+Codex收敛） |
+| DEC-083 | 治理分档最终裁决：Orchestrator=只读状态/事件日志骨架(G2只读PoC)不建自动派单/Web/Discord；ADR-001+C4 L1+DEC变更传播强化现在做(P0-C+)；完整编排/控制面/Spec Kit全量/七维路由/九域记分卡仍DEFER(解冻=edge过B2或Founder时间瓶颈) | ACTIVE（Founder D级 2026-06-21；Claude反对全套+折中被采纳） |
 | DEC-DEPRECATED-001 | 三方AI协作模式（OpenClaw + DeepSeek + | DEPRECATED |
 
 ## 本项目自身决策
@@ -2006,6 +2014,202 @@ L3 紧急审计：
 决策时间：2026-06-14
 来源：Founder明确指令："当前项目的所有决策都需要记录这是需要规范到整个项目的规则"
 影响范围：STATE_SYNC_CHECKLIST（已更新步骤0）；CURRENT_STATE（新增§1c槽位）；CLAUDE.md关键行为规则5；全项目治理流程
+状态：ACTIVE
+```
+
+---
+
+**[DEC-076]**
+```
+决策内容：系统路线确认——最小借力闭环，禁止付费第三方数据
+  1. 系统路线：Freqtrade（回测/dry-run/live）+ CCXT（交易所适配）+ Binance官方REST（数据）
+  2. 数据来源限制：只用免费官方数据（data.binance.vision / Binance REST API）；禁止订阅付费第三方数据（CoinGlass/Kaiko/Amberdata等）
+  3. 替代低优先方案：NautilusTrader 作为 Phase 2 生产候选，现阶段不引入
+  4. 废止：自建重型五层平台方案（P1-PLAT系列任务降级为在OSS评估后按需补充薄层）
+决策时间：2026-06-20
+来源：Founder确认 §1c①
+影响范围：P1-OSS-001~006任务书；工具链约束；数据采购预算（强制免费）
+状态：ACTIVE
+```
+
+---
+
+**[DEC-077]**
+```
+决策内容：carry验证严谨度下调 + 1个月实盘目标
+  旧口径：18-24月学术级前向shadow后才考虑实盘
+  新口径：FEASIBILITY-LOCK通过 → 最薄风控层（仓位硬上限+日亏熔断）→ Freqtrade dry-run（1-2周）→ 小额实盘印证
+  1个月目标：从今（2026-06-20）起1个月内（即2026-07-20前）进入小额实盘，前提=FEASIBILITY-LOCK通过
+  最薄风控硬约束（实盘前必须存在）：
+    - 单笔仓位上限：2000 USDT（约占3万本金6-7%）
+    - 日亏熔断：-3%本金即停止当日下单
+    - 事件kill-switch：USDT脱锚>0.5% 或 OI单小时缩减>30% → 平仓不开新仓
+    - Founder每日人工check
+  失败条件（FEASIBILITY-LOCK FAIL → 1个月目标自动取消）：
+    - carry v4历史可行性未通过 → 进入kill/pivot评估，不强行上线
+决策时间：2026-06-20
+来源：Founder明确指令 §1c②③（"尽快看到正向结果进入小额实盘印证，1个月内"）
+影响范围：P1-RES-030/031/032/033排序；P1-RISK-001~006精简为最薄必要风控；实盘时间轴
+状态：ACTIVE
+```
+
+---
+
+**[DEC-078]**
+```
+决策内容：6月目标重定
+  旧：找到可部署edge
+  新：验证carry edge是否值得继续 + 显式kill/pivot条件
+  Kill条件：carry FEASIBILITY-LOCK FAIL → 立即进入机会地图复评，不继续carry方向修补
+  Pivot候选（若carry FAIL）：A-4新上市、或重新评估机制地图
+  时间盒检查点：2026-07-20（从DEC-077起1个月）
+决策时间：2026-06-20
+来源：Founder确认 §1c③
+影响范围：项目主闸判定；研究排序；Founder关注焦点
+状态：ACTIVE
+```
+
+---
+
+---
+
+**[DEC-079]**
+```
+决策内容：carry / 资金费率类策略正式关闭
+  Founder 在项目开始时明确否决资金费率类策略（"不做赚资金费率的策略"）。
+  该决定从未进入 DECISION_LOG，导致 Claude 在2026-06-12双边盲审中错误"重开"carry，
+  并推进到 v4 预登记、数据采购等阶段——这是项目最大的过程失职。
+  本次对话（2026-06-20）Founder 重确认：不做 carry / delta中性 / 资金费率类策略。
+  任何形式复活均需 Founder 新的 D 级授权，否则视为违规。
+决策时间：2026-06-20（追溯确认项目起始即成立）
+来源：Founder D 级明确确认
+影响范围：
+  - P1-RES-030/031/032/033 全部废弃
+  - P1-PROD-004~007 全部废弃
+  - P2-DEP-001/002 全部废弃
+  - DEC-077/078 同步废弃
+  - carry 相关数据（127个parquet）保留，用途转为 regime-adaptive 回测输入
+状态：ACTIVE
+```
+
+---
+
+**[DEC-080]**
+> ⚠️ 验收口径已被 **DEC-082**（2026-06-21）修订：月化30%已移出研究验收（=资本愿望非门槛）；原杠杆捆绑实验已冻结，拆为 B0-B4 单变量序列。下方为历史原文意图，不再作为研究验收门。
+```
+决策内容：新研究主方向 = regime-adaptive 方向性合约策略
+  目标：小资金永续合约方向性策略（月化30%为资本愿望，DEC-082已移出研究验收，非门槛）
+  核心逻辑：不同市场状态（趋势/震荡/高波动）对应不同策略，组合形成 regime-adaptive 框架
+  起点：基于现有 TSMOM Baseline + 2020-2024 BTC/ETH 1H 数据（127个parquet已就绪）
+  原捆绑设计（已被DEC-082冻结，拆为B0-B4单变量序列）：Regime门控 × TSMOM × 高杠杆
+  验收口径（DEC-082修订后）：机制成立 + 成本后E[R]>0 + 爆仓概率/log growth/分年正期望 + 同状态被动基准对照；杠杆=过门后风险测试非Alpha来源
+  与旧方向区别：方向性（非delta中性）；机制来自趋势溢价而非资金费率
+讨论中状态：方向=Candidate（待过B0机制门/B1数据门，DEC-082）
+决策时间：2026-06-20（验收口径2026-06-21被DEC-082修订）
+来源：Founder D 级确认（方向）；月化30%口径由DEC-082裁为资本愿望
+影响范围：全部研究队列
+状态：ACTIVE（验收口径见DEC-082）
+```
+
+---
+
+**[DEC-081]**
+```
+决策内容：治理工具栈选型
+  保留：Superpowers（Claude Code plugin v6.0.3 + Codex openai-curated v5.1.3）
+  保留：Spec Kit（specify CLI v0.11.3，需初始化到项目）
+  补充：AGENTS.md 规范化（写入禁止事项+新方向定义）
+  补充：ADR（adr-tools 管理架构决策，第一篇=本次方向重置）
+  补充：C4 Level 1 系统图（量化系统组件关系）
+  缓：Backstage / DevLake / OpenDORA / BMAD-METHOD / Task Master / Shrimp / Plane
+  官方底座：CLAUDE.md（Claude侧）+ AGENTS.md（Codex侧）+ Hooks + Skills
+  决策原则：不装则已，装了必须进主流程；治理工具本身不能变成负担（风险B）
+决策时间：2026-06-20
+来源：Founder 确认工具栈方向
+影响范围：P1-GOV 系列新任务
+状态：ACTIVE
+```
+
+---
+
+**[DEC-082]**
+```
+决策内容：顶层重平衡（Claude 主理人方案 + Codex 反审收敛 + Founder D 级裁决）
+  背景：四份 Codex 草案（GOV-AUTO-001 + AI-NATIVE 调研三件）提出 Orchestrator/Strategy
+        Governor/Web/Discord/七维路由/九域记分卡/Spec Kit 等治理自动化建设。Claude 独立诊断：
+        当前绑定约束=闭箱期 edge=0（剩约5.5个月跑道/成本盒剩约4128元），非协作；按双轨平权
+        建治理=触发风险B。Codex 反审总裁决 ACCEPT-with-MODIFY，四靶心全部 ACCEPT Claude。
+
+  裁决一（口径·Founder D级 2026-06-21）：
+    month-30% = 资本愿望 / 极端上行情景参考，**移出研究验收口径**。
+    研究验收口径 = 机制成立 + 成本后 E[R]>0 + 赢亏比/爆仓概率/log growth/分年正期望
+                  + 与同状态被动基准对照（按 Research Protocol v1.4）。
+    杠杆 = 仅在 edge 与仓位模型过门后做风险敏感性测试，不作为 Alpha 来源（@2x 实证年爆仓61-76%）。
+    DEC-063 继续优先；DEC-080「月化30%目标」据此修订删除。
+
+  裁决二（优先级）：研究=唯一 P0 执行轨（WIP=1）；不设常设治理轨。
+
+  裁决三（治理范围）：P0-C 一次性治理卫生封顶=1个Codex任务包+Claude半天验收，做完即停。
+    成功标准：权威只有一个最新主线口径/carry不在active位/AGENTS·CLAUDE·SYSTEM_RULES·
+    AGENT_REGISTRY硬冲突逐条裁决/state_check对冲突返回非零/报告列「未做清单」并声明冻结。
+
+  裁决四（DEFER 清单）：Orchestrator·事件库·Strategy Governor引擎·Web·Discord·七维路由·
+    九域记分卡·Spec Kit试点·C4全套·Research-to-Value validator·模型网关/RAG/A2A/Temporal/
+    LangGraph/Backstage/DevLake/Plane/BMAD/Task Master —— 全部 OBSERVE。
+    唯一解冻触发 = 「至少一条 edge 通过 B2 研究门」或「Founder 时间被实测为瓶颈」。
+
+  裁决五（研究拆分）：P1-RES-034 原捆绑描述（Regime×TSMOM×10-20x 单实验）冻结，拆为单变量序列：
+    B0 机制卡（可证伪硬验收，结论 KILL/PROCEED/REVISE_ONCE，不碰Holdout不调参）
+    → B1 数据与标签审计（无前视/切换延迟/样本量MDE；不按收益选标签）
+    → B2 实验A（冻结TSMOM+1x，只测单一regime门控，防隐形多变量，对同状态被动基准）
+    → B3 实验B（冻结信号上测仓位/波动目标）
+    → B4 杠杆风险敏感性（仅过门后，作风险测试）。
+    任一步不过 → 回墓园/pivot，不改参数续命（风险D闸）。
+
+  ADR 边界（接受 Codex 反审）：month-30%/方向口径属 DEC，不写 ADR；ADR-001（可选）只记
+    「edge=0 阶段不建 Orchestrator/控制面，维持文件式 handoff + 一次性卫生」技术选择。
+
+决策时间：2026-06-21
+来源：Claude 独立方案 + Codex 反审收敛 + Founder D 级裁决（month-30% 口径）
+影响范围：全部研究队列与治理/自动化队列；DEC-080 验收口径；DEC-081 落地范围
+关联文件：04_AI_TEAM/CODEX_TASKS/PLAN_CLAUDE_TOPLEVEL_REBALANCE_20260621.md（§8 已并入 Codex 修订）；
+         CODEX_RESPONSE_CLAUDE_TOPLEVEL_REBALANCE_20260621.md
+状态：ACTIVE
+```
+
+---
+
+**[DEC-083]**
+```
+决策内容：治理分档最终裁决（Founder D级 + Claude 书面异议 + 折中被采纳）
+  背景：Founder 在 DEC-082 基础上提出"连 Orchestrator/控制面也现在全上"，理由=之前吃过
+        治理不够的亏（文件/进度断档、记忆缺失，导致大部分工作推倒重来）。
+  Claude 书面异议（反迎合·留档）：反对全套现在上。理由——
+    ① Orchestrator 治的是"自动派单/协调吞吐/会话恢复"，不治断档；断档真因=状态一致性
+       (P0-C 已修 state_check 假绿灯/5项冲突) + 方向错(DEC-079/082)，已对症。
+    ② Codex 方案原话："权威一致性没稳前，Orchestrator 会高效率放大状态漂移和错误方向"——
+       edge=0、方向未验证时上它=给"推倒重来"装加速器。
+    ③ 全套是几周工程+大量 token，吃成本盒(剩~4128/5.5月)，挤占唯一 P0(B0 未动)。
+    ④ Web/Discord 控制面给 Founder(1h/天、无技术背景)远程审批——当前无协作规模需求。
+
+  Founder 裁决（采纳 Claude 折中）：
+    Orchestrator 范围 = **只读状态/事件日志骨架**(Codex G2 只读 PoC)：
+      SQLite 记录每个任务状态变迁+恢复点，只读展示；
+      **不建**自动派单/自动执行/Web/Discord。给"状态有据可查、断了能恢复"的兜底。
+
+  并行确定（防断档纪律提前，P0-C+，封顶1包不挤占B0）：
+    ① DEC 变更传播强化：扩 state_check 检"DEC变更→任务/状态/摘要/机会地图/墓园/规格"传播；
+    ② ADR-001（一页，技术架构决策留痕：为何 DEFER 完整编排、维持文件式 handoff）；
+    ③ C4 Level 1（一页当前态系统图，防"系统/架构在哪"的认知断档）。
+
+  仍 DEFER（解冻=一条edge过B2 或 Founder时间被实测为瓶颈）：
+    完整 Orchestrator 自动派单 / Strategy Governor 引擎 / Web / Discord 控制面 /
+    七维路由器 / 九域记分卡 / Spec Kit 全量初始化。
+
+决策时间：2026-06-21
+来源：Founder D 级（Orchestrator 范围）+ Claude 书面异议与折中
+影响范围：DEC-082 治理范围细化；P0-C+ 任务包；DEFER 清单
+关联文件：04_AI_TEAM/CODEX_TASKS/TASK_P0-C_PLUS_GOVERNANCE_20260621.md（待建）
 状态：ACTIVE
 ```
 

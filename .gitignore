@@ -5,3 +5,6 @@ __pycache__/
 collector.log
 .obsidian/workspace.json
 *.tmp
+08_DATA/
+*_RUN.log
+99_TEMP/

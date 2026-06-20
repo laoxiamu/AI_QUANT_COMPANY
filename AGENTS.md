@@ -17,10 +17,10 @@
 
 ## 工程纪律
 - 库纪律（DEC-061）：Triple Barrier/Purged CV/统计校验等一律**自实现为可审计小函数**；MLFinPy 等仅作参考，不引硬依赖。
-- 持仓/状态以 DB 或文件为权威，禁内存字典（V4 事故根因）。
+- 持仓/状态以 DB 或文件为权威，禁内存字典（V4 事故根因）。**状态权威分层（DEC-082冲突裁决）：交易/持仓/生产账户=DB 为权威；项目治理/任务/决策/研究=权威文件为准；二者均禁以内存字典为最终权威。**
 - 输出三件套：CODE（可复跑脚本+固定seed）/ RESULTS（结论md）/ CODEX_TASKS 执行报告（含验收标准逐条自检）。
 - 数据：只读 06_RESEARCH/DATA/；产出写 06_RESEARCH/CODE/output/；UTC 时间戳。
-- git：每任务完成 commit，message 带任务号。
+- git：**Codex 不直接 commit/push（DEC-082冲突裁决，对齐 AGENT_REGISTRY）**——只交付 CODE/RESULTS/报告 + 写 TASK_INBOX 完成事件；由 Claude 验收后统一 commit/push（message 带任务号）。
 
 ## 禁止项
 碰 Holdout｜改预登记文档｜简化成本模型｜全样本分位｜引入不可审计黑箱依赖｜把失败结果写成"部分成功"｜超任务书范围"顺手优化"。
