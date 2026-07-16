@@ -1,0 +1,121 @@
+{
+ "note": "已知大额vesting解锁主流币∩币安USDT永续(2023+),可直接扩面板;解锁规模/日期待免费源叠加",
+ "shortlist": [
+  {
+   "base": "ARB",
+   "onboard": "2023-03-23"
+  },
+  {
+   "base": "SUI",
+   "onboard": "2023-05-03"
+  },
+  {
+   "base": "WLD",
+   "onboard": "2023-07-24"
+  },
+  {
+   "base": "SEI",
+   "onboard": "2023-08-17"
+  },
+  {
+   "base": "TIA",
+   "onboard": "2023-10-31"
+  },
+  {
+   "base": "PYTH",
+   "onboard": "2023-11-22"
+  },
+  {
+   "base": "JTO",
+   "onboard": "2023-12-08"
+  },
+  {
+   "base": "MANTA",
+   "onboard": "2024-01-18"
+  },
+  {
+   "base": "ALT",
+   "onboard": "2024-01-25"
+  },
+  {
+   "base": "JUP",
+   "onboard": "2024-01-31"
+  },
+  {
+   "base": "PIXEL",
+   "onboard": "2024-02-19"
+  },
+  {
+   "base": "STRK",
+   "onboard": "2024-02-20"
+  },
+  {
+   "base": "PORTAL",
+   "onboard": "2024-02-29"
+  },
+  {
+   "base": "AEVO",
+   "onboard": "2024-03-13"
+  },
+  {
+   "base": "ETHFI",
+   "onboard": "2024-03-18"
+  },
+  {
+   "base": "ENA",
+   "onboard": "2024-04-02"
+  },
+  {
+   "base": "W",
+   "onboard": "2024-04-03"
+  },
+  {
+   "base": "SAGA",
+   "onboard": "2024-04-09"
+  },
+  {
+   "base": "REZ",
+   "onboard": "2024-04-30"
+  },
+  {
+   "base": "NOT",
+   "onboard": "2024-05-16"
+  },
+  {
+   "base": "IO",
+   "onboard": "2024-06-11"
+  },
+  {
+   "base": "ZK",
+   "onboard": "2024-06-17"
+  },
+  {
+   "base": "ZRO",
+   "onboard": "2024-06-20"
+  },
+  {
+   "base": "EIGEN",
+   "onboard": "2024-10-01"
+  },
+  {
+   "base": "SCR",
+   "onboard": "2024-10-22"
+  },
+  {
+   "base": "GRASS",
+   "onboard": "2024-11-08"
+  },
+  {
+   "base": "MOVE",
+   "onboard": "2024-12-09"
+  },
+  {
+   "base": "ME",
+   "onboard": "2024-12-10"
+  },
+  {
+   "base": "USUAL",
+   "onboard": "2024-12-18"
+  }
+ ]
+}

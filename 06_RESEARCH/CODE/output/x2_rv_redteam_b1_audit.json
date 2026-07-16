@@ -1,0 +1,67 @@
+{
+  "task_id": "P1-RES-037-B1",
+  "generated_at_utc": "2026-06-22T01:34:35Z",
+  "stage0_verdict": "KILL",
+  "b1_gates_run": false,
+  "b1_skip_reason": "Stage 0 KILL: no hard pre-B1 evidence that residual pair-RV edge exceeds the 4-fill cost hurdle.",
+  "cost_table": [
+    {
+      "case": "maker_low_bound_with_adverse_selection",
+      "fee_per_fill": 0.0002,
+      "slippage_or_adverse_per_fill": 0.001,
+      "spread_return_hurdle_pct": 0.48,
+      "gross_pair_capital_hurdle_pct": 0.24
+    },
+    {
+      "case": "protocol_base_taker",
+      "fee_per_fill": 0.001,
+      "slippage_or_adverse_per_fill": 0.001,
+      "spread_return_hurdle_pct": 0.8,
+      "gross_pair_capital_hurdle_pct": 0.4
+    },
+    {
+      "case": "stress_taker_slippage_0_3pct",
+      "fee_per_fill": 0.001,
+      "slippage_or_adverse_per_fill": 0.003,
+      "spread_return_hurdle_pct": 1.6,
+      "gross_pair_capital_hurdle_pct": 0.8
+    },
+    {
+      "case": "stress_taker_slippage_0_5pct",
+      "fee_per_fill": 0.001,
+      "slippage_or_adverse_per_fill": 0.005,
+      "spread_return_hurdle_pct": 2.4,
+      "gross_pair_capital_hurdle_pct": 1.2
+    },
+    {
+      "case": "stress_taker_slippage_1_0pct",
+      "fee_per_fill": 0.001,
+      "slippage_or_adverse_per_fill": 0.01,
+      "spread_return_hurdle_pct": 4.4,
+      "gross_pair_capital_hurdle_pct": 2.2
+    }
+  ],
+  "data_inventory": {
+    "data_dir": "06_RESEARCH/DATA",
+    "total_files": 93,
+    "csv_files": 73,
+    "parquet_files": 0,
+    "expanded_4h_csv_files": 35,
+    "expanded_4h_min_rows": 8885,
+    "expanded_4h_max_rows": 10738,
+    "holdout_like_files_detected_but_not_read": [
+      "06_RESEARCH/DATA/HOLDOUT/a2_events_holdout.csv",
+      "06_RESEARCH/DATA/A1_WORK/sealed_holdout.enc",
+      "06_RESEARCH/DATA/A1_WORK/A1_HOLDOUT_PERMTEST.log",
+      "06_RESEARCH/DATA/A1_WORK/A1_HOLDOUT_MANIFEST.json",
+      "06_RESEARCH/DATA/CARRY_WORK/CARRY_HOLDOUT_PERMTEST.log"
+    ],
+    "parquet_path_check": "NO_PARQUET_FILES_FOUND_UNDER_DATA"
+  },
+  "arxiv_2602_23762": {
+    "status": "verified_via_arxiv_primary_page",
+    "title": "One Rising Ship Sinks Other Ships: Cross-Chain Negative Spillovers in Crypto Markets",
+    "submitted": "2026-02-27",
+    "url": "https://arxiv.org/abs/2602.23762"
+  }
+}

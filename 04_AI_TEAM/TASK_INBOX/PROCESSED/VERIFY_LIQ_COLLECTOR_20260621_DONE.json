@@ -1,0 +1,8 @@
+{
+  "task_id": "VERIFY_LIQ_COLLECTOR_20260621",
+  "completed_at": "2026-06-21T16:53:33Z",
+  "status": "blocked",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_VERIFY_LIQ_COLLECTOR_20260621.md",
+  "next_task": null,
+  "notes": "VM SSH 被本地沙箱在 connect(43.160.200.224:22) 阶段拒绝，未能核实/修复 VM 实时数据流；本地 LIQUIDATIONS 已出现 20260615-20260621 共245614行，最新 recv_ts=2026-06-21T16:47:09Z，但回流来源和 VM 当前增量仍未审计。"
+}

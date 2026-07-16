@@ -1,0 +1,272 @@
+{
+  "task_id": "P0-RES-015",
+  "generated_at_utc": "2026-07-12T06:05:03Z",
+  "authorization": "DEC-093 Founder 2026-07-12 approved one-time Holdout use",
+  "runner": "06_RESEARCH/CODE/p0res015_engine_l_holdout_blind_20260712.py",
+  "official_verdict_reserved_for_claude": true,
+  "all_four_gates_pass": false,
+  "pre_cutoff_reconstruction": {
+    "passed": true,
+    "p006_registered_acceptance": {
+      "ending_equity": 248231.4416162631,
+      "annualized_log_growth": 0.1839922380583385
+    },
+    "p014_registered_unadjusted": {
+      "ending_equity": 248231.4416162631,
+      "return_mean_annualized_log_growth": 0.18419635258701625
+    },
+    "reconstructed": {
+      "ending_equity": 248231.4416162631,
+      "acceptance_annualized_log_growth": 0.1839922380583385,
+      "return_mean_annualized_log_growth": 0.18419635258701625
+    },
+    "diffs": {
+      "vs_p006_acceptance_ending_equity_abs_diff": 0.0,
+      "vs_p006_acceptance_annualized_log_growth_abs_diff": 0.0,
+      "vs_p014_unadjusted_ending_equity_abs_diff": 0.0,
+      "vs_p014_unadjusted_return_mean_log_growth_abs_diff": 0.0
+    }
+  },
+  "hashes": {
+    "task_spec": "07ac51bb138ee21850b39c2939621a140822f209aae73e20873c88ea5b5862cf",
+    "tsmom_dual_engine": "3c5379b27da8397e9ad50d8f6cc1da7dce3c464374b2a144685dbb7f91f17bb4",
+    "p0res014_recheck_script": "ba37c5c57f944ee66a344f74bd58e525de9673eab082f7d8e3b41d59254afb0d",
+    "BTC_MARK_4H": "7127294528e65f78965765d315f3bb684dca61941b5f3edc2140081cfa080e47",
+    "BTC_FUNDING_8H": "5803cb5e8ffb4dc8b5a1cb4a989ea7477597882341fafbf2a54e0f7148a3b7bf",
+    "ETH_MARK_4H": "53135ef7aca6d4dd713cadc3c937b7b3aafcabce76ac20bfa4ab5865d5bba567",
+    "ETH_FUNDING_8H": "e3333672e3dd7b9e46592df34a86a33cb599ee6ee8458a09db0d0236e3c76d08",
+    "SOL_MARK_4H": "fc58a2e85afa0d71d7d5cd4ef6a56a6975512a9cde4ac0084ebaf5f3d2f6ceb8",
+    "SOL_FUNDING_8H": "24456f2c9e71caf27b910aab0b2a1bf7f17b2ee9f0048486a1e07541e3ae3df3",
+    "BNB_MARK_4H": "add65e6d6d9a932ece44d6a803dac95b2ed61b535b9255b1dd13167ca0de82c7",
+    "BNB_FUNDING_8H": "81f4a92b9d2b6f14185567567a78f3d2389548ce255933eb13083b436a513cb9",
+    "XRP_MARK_4H": "04dc42d2bb17d2028da4990695bafca6af83c01f764862668620e1ccb89148e9",
+    "XRP_FUNDING_8H": "41deb77f53cdb8502bad8d161d991d5258f61bf0d66644579fd1bd01f791a778",
+    "DOGE_MARK_4H": "5e7cf36bb221672417ddba7743dc986b90d9da3267e7c7acfec93d9998511701",
+    "DOGE_FUNDING_8H": "e07f22a72564e0fd1b8486dcf55063cfb1dc723cc38b592f446a1340ca33d5cf",
+    "ADA_MARK_4H": "b833a72be8f11552f0e85a27e0790705542455ecec9cb6986b78a7dfbd4a5ee4",
+    "ADA_FUNDING_8H": "f9be04cfb1a1737384cc700a010fb85744288cb1accf2b9bf67ed9f2b21a4873",
+    "LTC_MARK_4H": "fae3a992dc9082ad1923d5f344d6170da9689b326a10f71322f996b878af4f02",
+    "LTC_FUNDING_8H": "3c6270f57fcee58ecfd01dcd834faa73ccfd70057f54847f9af3b7ebe06f9b0c"
+  },
+  "data_audit": {
+    "BTC": {
+      "bars_first_timestamp": "2020-01-01 00:00:00",
+      "bars_last_timestamp": "2026-05-31 20:00:00",
+      "bars_rows_read_full_file": 14010,
+      "funding_first_timestamp": "2020-01-01 00:00:00",
+      "funding_last_timestamp": "2026-05-31 16:00:00",
+      "funding_rows_read_full_file": 7029,
+      "bars_rows_in_holdout_window": 3228,
+      "funding_rows_through_holdout_funding_end": 1614
+    },
+    "ETH": {
+      "bars_first_timestamp": "2020-01-01 00:00:00",
+      "bars_last_timestamp": "2026-05-31 20:00:00",
+      "bars_rows_read_full_file": 14046,
+      "funding_first_timestamp": "2020-01-01 00:00:00",
+      "funding_last_timestamp": "2026-05-31 16:00:00",
+      "funding_rows_read_full_file": 7029,
+      "bars_rows_in_holdout_window": 3228,
+      "funding_rows_through_holdout_funding_end": 1614
+    },
+    "SOL": {
+      "bars_first_timestamp": "2020-09-13 08:00:00",
+      "bars_last_timestamp": "2026-05-31 20:00:00",
+      "bars_rows_read_full_file": 12478,
+      "funding_first_timestamp": "2020-09-13 16:00:00",
+      "funding_last_timestamp": "2026-05-31 16:00:00",
+      "funding_rows_read_full_file": 6334,
+      "bars_rows_in_holdout_window": 3228,
+      "funding_rows_through_holdout_funding_end": 1614
+    },
+    "BNB": {
+      "bars_first_timestamp": "2020-02-01 00:00:00",
+      "bars_last_timestamp": "2026-06-05 20:00:00",
+      "bars_rows_read_full_file": 13854,
+      "funding_first_timestamp": "2020-02-10 08:00:00",
+      "funding_last_timestamp": "2026-06-05 16:00:00",
+      "funding_rows_read_full_file": 6923,
+      "bars_rows_in_holdout_window": 3228,
+      "funding_rows_through_holdout_funding_end": 1614
+    },
+    "XRP": {
+      "bars_first_timestamp": "2020-01-06 00:00:00",
+      "bars_last_timestamp": "2026-06-05 20:00:00",
+      "bars_rows_read_full_file": 14016,
+      "funding_first_timestamp": "2020-01-06 08:00:00",
+      "funding_last_timestamp": "2026-06-05 16:00:00",
+      "funding_rows_read_full_file": 7028,
+      "bars_rows_in_holdout_window": 3228,
+      "funding_rows_through_holdout_funding_end": 1614
+    },
+    "DOGE": {
+      "bars_first_timestamp": "2020-07-10 00:00:00",
+      "bars_last_timestamp": "2026-06-05 20:00:00",
+      "bars_rows_read_full_file": 12930,
+      "funding_first_timestamp": "2020-07-10 08:00:00",
+      "funding_last_timestamp": "2026-06-05 16:00:00",
+      "funding_rows_read_full_file": 6470,
+      "bars_rows_in_holdout_window": 3228,
+      "funding_rows_through_holdout_funding_end": 1614
+    },
+    "ADA": {
+      "bars_first_timestamp": "2020-01-19 08:00:00",
+      "bars_last_timestamp": "2026-06-05 20:00:00",
+      "bars_rows_read_full_file": 13966,
+      "funding_first_timestamp": "2020-01-19 16:00:00",
+      "funding_last_timestamp": "2026-06-05 16:00:00",
+      "funding_rows_read_full_file": 6988,
+      "bars_rows_in_holdout_window": 3228,
+      "funding_rows_through_holdout_funding_end": 1614
+    },
+    "LTC": {
+      "bars_first_timestamp": "2020-01-09 04:00:00",
+      "bars_last_timestamp": "2026-06-05 20:00:00",
+      "bars_rows_read_full_file": 14027,
+      "funding_first_timestamp": "2020-01-09 08:00:00",
+      "funding_last_timestamp": "2026-06-05 16:00:00",
+      "funding_rows_read_full_file": 7019,
+      "bars_rows_in_holdout_window": 3228,
+      "funding_rows_through_holdout_funding_end": 1614
+    }
+  },
+  "forbidden_sources_check": {
+    "read_2026H1_increment_files": false,
+    "read_DATA_HOLDOUT": false,
+    "read_aiquant_sealed": false
+  },
+  "holdout": {
+    "window": {
+      "start": "2024-12-10 00:00:00",
+      "end": "2026-05-31 20:00:00",
+      "funding_end": "2026-05-31 16:00:00"
+    },
+    "strategy_metrics": {
+      "starting_equity": 100000.0,
+      "ending_equity": 90387.16824646972,
+      "annualized_log_growth": -0.06863517052284801,
+      "return_mean_annualized_log_growth": -0.06863517052284812,
+      "annualized_vol": 0.13192238966788378,
+      "max_drawdown": -0.17026933705240732,
+      "period_count": 3227
+    },
+    "benchmark_metrics": {
+      "starting_equity": 100000.0,
+      "ending_equity": 60828.29478377812,
+      "annualized_log_growth": -0.3375907773129226,
+      "annualized_vol": 0.45447862081958884,
+      "scaled_to_10pct": {
+        "scale": 0.22003235228021056,
+        "annualized_log_growth": -0.05631038437169649
+      }
+    },
+    "h4_scaled_comparison": {
+      "target_vol": 0.1,
+      "strategy_scale": 0.7580214416351252,
+      "benchmark_scale": 0.22003235228021056,
+      "strategy_scaled_log_growth": -0.0504109645387665,
+      "benchmark_scaled_log_growth": -0.05631038437169649,
+      "diff_log_growth": 0.005899419832929992,
+      "strategy_significantly_underperforms": false,
+      "bootstrap": {
+        "iterations": 5000,
+        "seed": 20260712,
+        "block_bars": 42,
+        "paired_period_count": 3227,
+        "diff_log_growth_ci_low": -0.09076142710421785,
+        "diff_log_growth_ci_high": 0.10232850807371027,
+        "p_strategy_ge_benchmark": 0.5226
+      }
+    },
+    "trade_diagnostics": {
+      "window_entry_definition": "entry_time >= holdout_start and entry_time <= holdout_end; cross-boundary trades excluded from H1",
+      "window_entry_trades": {
+        "trade_count": 151,
+        "expectancy_r": -0.0062898641011967585,
+        "win_rate": 0.3973509933774834,
+        "average_win_r": 0.04175072493374661,
+        "average_loss_r_abs": 0.037964977750609974,
+        "win_loss_ratio": 1.0997168287047348,
+        "net_pnl": -24232.624627974397,
+        "fees": 7614.588465312602,
+        "slippage_cost": 7614.581299916586,
+        "funding_cost": 1838.05924005755
+      },
+      "low_power_trade_count_lt_10": false
+    },
+    "cross_boundary_trades": [],
+    "quarterly_returns": [
+      {
+        "quarter": "2024Q4",
+        "start": "2024-12-10 00:00:00",
+        "end": "2024-12-31 20:00:00",
+        "simple_return": -0.030275295493283783,
+        "log_return": -0.030743057553218336
+      },
+      {
+        "quarter": "2025Q1",
+        "start": "2025-01-01 00:00:00",
+        "end": "2025-03-31 20:00:00",
+        "simple_return": -0.09102574571154343,
+        "log_return": -0.09543850832077448
+      },
+      {
+        "quarter": "2025Q2",
+        "start": "2025-04-01 00:00:00",
+        "end": "2025-06-30 20:00:00",
+        "simple_return": -0.025610880730775554,
+        "log_return": -0.025944548684474884
+      },
+      {
+        "quarter": "2025Q3",
+        "start": "2025-07-01 00:00:00",
+        "end": "2025-09-30 20:00:00",
+        "simple_return": 0.08704339956206497,
+        "log_return": 0.08346153334211064
+      },
+      {
+        "quarter": "2025Q4",
+        "start": "2025-10-01 00:00:00",
+        "end": "2025-12-31 20:00:00",
+        "simple_return": -0.031207838430275636,
+        "log_return": -0.03170517764125791
+      },
+      {
+        "quarter": "2026Q1",
+        "start": "2026-01-01 00:00:00",
+        "end": "2026-03-31 20:00:00",
+        "simple_return": 0.0,
+        "log_return": 0.0
+      },
+      {
+        "quarter": "2026Q2",
+        "start": "2026-04-01 00:00:00",
+        "end": "2026-05-31 20:00:00",
+        "simple_return": 0.0,
+        "log_return": 0.0
+      }
+    ],
+    "gates": {
+      "H1_E_R_gt_0": {
+        "value": -0.0062898641011967585,
+        "threshold": "> 0",
+        "pass": false
+      },
+      "H2_annualized_log_growth_gt_0": {
+        "value": -0.06863517052284801,
+        "threshold": "> 0",
+        "pass": false
+      },
+      "H3_max_drawdown_lt_20pct": {
+        "value": -0.17026933705240732,
+        "threshold": "> -0.20",
+        "pass": true
+      },
+      "H4_not_significantly_underperform_passive": {
+        "value": 0.10232850807371027,
+        "threshold": "diff 95%CI upper >= 0",
+        "pass": true
+      }
+    }
+  }
+}

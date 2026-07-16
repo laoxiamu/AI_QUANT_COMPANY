@@ -1,0 +1,1057 @@
+{
+  "task_id": "P1-RES-039-PIPELINE-S2",
+  "generated_at": "2026-06-27T11:56:41Z",
+  "requested_window": {
+    "start": "2025-01-01",
+    "end": "2026-06-22"
+  },
+  "symbols": [
+    "AAVE",
+    "ATOM",
+    "AVAX",
+    "AXS",
+    "COMP",
+    "CRV",
+    "DASH",
+    "DOT",
+    "EGLD",
+    "ENJ",
+    "ETH",
+    "FTM",
+    "ICX",
+    "KNC",
+    "KSM",
+    "LINK",
+    "LRC",
+    "NEAR",
+    "REN",
+    "RUNE",
+    "SNX",
+    "SUSHI",
+    "THETA",
+    "TRX",
+    "UNI",
+    "XLM",
+    "XMR",
+    "XTZ",
+    "YFI",
+    "ZEC",
+    "ZRX"
+  ],
+  "funding": [
+    {
+      "symbol": "AAVE",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/AAVEUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "caf5ed90a80bae8531b69cac5ee6b094c2826c353b86f5ad82d11597e0c72baf",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "ATOM",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/ATOMUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "f790ef51606e654a1a797c37def67e0e59843cbcd577c5b00f8525af45c73fa2",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "AVAX",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/AVAXUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "52169faa2b481d585f5357b3b1a3e32fa8c1858f285f9e81230768c306e4f02d",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "AXS",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/AXSUSDT_funding_8h.csv",
+      "rows": 2239,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T20:00:00",
+      "output_sha256": "f5f6ee889ea203d71084b460c7a4dbacba798ce415d042993475ae1a7ba3f46e",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "COMP",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/COMPUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "e11fc29b40148a180c664d40ae33629320127036e5d631d2365d29a73fbb4a0c",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "CRV",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/CRVUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "118ffe420ec3e5566a4dc6a5cf5fceabc738ee80ac365a29014e1c96b2fb25cd",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "DASH",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/DASHUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "c04bd19d7104c91a380b74ada4057fd234ab83ec0803b3bb7fdccafa92e0e0a0",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "DOT",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/DOTUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "9e275979075f1f63ef8b2b337bde545228a44037b60848e5e77cf613fb86bee2",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "EGLD",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/EGLDUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "f4b5441031c006918f5e44d50afa5b128a4b431e4bbac4ffa643d02b4c2970fb",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "ENJ",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/ENJUSDT_funding_8h.csv",
+      "rows": 2174,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T20:00:00",
+      "output_sha256": "bafdec4080a4be3dc9ce7675ca7142833953eadb28c0fd807d791c8d025bfd7e",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "ETH",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/ETHUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "a70430baab2ce9f268758789db289c5be8ea485fbe33feba442667ac3235d6be",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "FTM",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/FTMUSDT_funding_8h.csv",
+      "rows": 509,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2025-06-19T08:00:00.003000",
+      "output_sha256": "931a210222c64ea6ad112077ddc6c0d06990e1da5544aefe621f9be8e0c09ef3",
+      "coverage": {
+        "coverage_status": "partial",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2025-06-19",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "ICX",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/ICXUSDT_funding_8h.csv",
+      "rows": 1958,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T20:00:00",
+      "output_sha256": "5a0f9e778fb570d1aa7e3e17531557cf4cd5735df8157e836f9c0cb227f735be",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "KNC",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/KNCUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "780f6bd0ca71ab10534d2fb4a9abd50157e9779c3e5ec2a857b8facfcff3e19b",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "KSM",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/KSMUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "9c23f7499c183238cf05f3733f7d650be1ff0b6bb7611dd04271408fcc188ce1",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "LINK",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/LINKUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "4ca23071949a972d86ba7e29613959f51ab85ab98ab317348a2b0128e34d0d07",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "LRC",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/LRCUSDT_funding_8h.csv",
+      "rows": 2058,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-03-24T08:00:00",
+      "output_sha256": "947bd5333c039f1e5a84839728324656c72e12742052a478bea1be7cfcd96542",
+      "coverage": {
+        "coverage_status": "partial",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-03-24",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "NEAR",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/NEARUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "5f877eff155e4636a6d2ba6f446050613411c92ac96e911e5f59b2be108f4bba",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "REN",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/RENUSDT_funding_8h.csv",
+      "rows": 509,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2025-06-19T08:00:00.003000",
+      "output_sha256": "546fe1c58c2d85cc42d6a8eef4eb773b2dd25c0d971b1218ee34fb89da67ac65",
+      "coverage": {
+        "coverage_status": "partial",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2025-06-19",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "RUNE",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/RUNEUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "a13bff64226fcb702248368ff540789f9f6e22286a1cec93820b59035dad7c07",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "SNX",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/SNXUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "40515e3f1b25f8d45b7fc864ec2abf5459c3e24070a0f1d8173a3122098ebcb7",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "SUSHI",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/SUSHIUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "dd4463eb77854083ccdb5f31fc603b59ed432025205be362568286e0d068294d",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "THETA",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/THETAUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "021a926f9c186e6a71110944130b19a07ef35b815c608e8376160e2c39263a6c",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "TRX",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/TRXUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "6f68f8875e7037f35a8587ec6624765492e7261a3ae43dcf197a272d9438437f",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "UNI",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/UNIUSDT_funding_8h.csv",
+      "rows": 1548,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-05-31T16:00:00.004000",
+      "output_sha256": "54d7aa2569280678af979171f52a4439f727192efd84cf177d024e0045a79d4b",
+      "coverage": {
+        "coverage_status": "partial",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-05-31",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "XLM",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/XLMUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "59f1fa7aeeb7467594e5615895a79e6b996ca5fc392ab1d733a5fc6bf57acd52",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "XMR",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/XMRUSDT_funding_8h.csv",
+      "rows": 1548,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-05-31T16:00:00.004000",
+      "output_sha256": "19cfc5e1a16d97e93e2485bea8bc75ce12b7d363e8291c67880f0bd920f23777",
+      "coverage": {
+        "coverage_status": "partial",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-05-31",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "XTZ",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/XTZUSDT_funding_8h.csv",
+      "rows": 2534,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-05-31T20:00:00.010000",
+      "output_sha256": "0f548e1bd067ddc0c7b8224739df4dcadbd7e034f980ff25e52327ab2fc2010a",
+      "coverage": {
+        "coverage_status": "partial",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-05-31",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "YFI",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/YFIUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "1e3631929c5e0c9a2d48250aec21ecd82e56017a09d6b1d3bb37918f1e92d1d3",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "ZEC",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/ZECUSDT_funding_8h.csv",
+      "rows": 1614,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T16:00:00.002000",
+      "output_sha256": "b8ca21643a2743be7f04e28e67ad4f53b48045d5cfdac16b47b220c14acf11fb",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    },
+    {
+      "symbol": "ZRX",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/funding_8h/ZRXUSDT_funding_8h.csv",
+      "rows": 2270,
+      "start": "2025-01-01T00:00:00.015000",
+      "end": "2026-06-22T20:00:00",
+      "output_sha256": "68660ced8d9993e37593de515f66db16697dcf28a9c0a7beb0ac74d876d5b43c",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "8h"
+      }
+    }
+  ],
+  "metrics": [
+    {
+      "symbol": "AAVE",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/AAVEUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "16e213d44a9c7c6a508309d988e4c9eaed241cc8ec8bf5b29601cca63a0e29a8",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "ATOM",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/ATOMUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "dd1a036b18ff49807f323a2804568c86596bb2df31fb2e2d6d26cbf5d27654f5",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "AVAX",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/AVAXUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "4e4f729d94ad527fdec78a064056e12cfe6bcdaa3443dd7382740f94c713a9ed",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "AXS",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/AXSUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "f17d6a11bda78a4a2485890971ced720c1a17ee8d2eaabaec126759fc96641f9",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "COMP",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/COMPUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "f6186403b6e89ca55ec8b36d618f56592b905ca161cda9e3bd9699773143ba00",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "CRV",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/CRVUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "d97c016de6485366f0cd1797b62e45e441a79decac678a194d95c8f6b5bea5c9",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "DASH",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/DASHUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "be21bee4b5874e85a7cb8601cfe09a24f8f4f65636f6d27e48ee9822ec338dd6",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "DOT",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/DOTUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "b66bdd0f1135ab9af86062017ed965aa6981e68f65ada73194a99f369e529b63",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "EGLD",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/EGLDUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "fafca06aaa14fb1e7ce01222e0dc819b113ad7fad2e3d82286617740a2f7937f",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "ENJ",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/ENJUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "5e3150113959c32f0bc3229d3964788408a3e2399109847280cb23e23d66dc1f",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "ETH",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/ETHUSDT_metrics_4h.csv",
+      "rows": 3224,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "e02f6b70f9c572cb39b8bdafda90796d31f5e5cf6f7a273529783b783ac796e4",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "FTM",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/FTMUSDT_metrics_4h.csv",
+      "rows": 96,
+      "start": "2025-01-01T00:00:00",
+      "end": "2025-03-10T00:00:00",
+      "output_sha256": "611c82fd64be5deae164e062f3a65278ad4341f1c352d8e4d83799485f15b9d3",
+      "coverage": {
+        "coverage_status": "partial",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2025-03-10",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "ICX",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/ICXUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "6b405d986d2c78285398554a8c4ee86a9a934f6fd5e9c404cbd3a23879a15d39",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "KNC",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/KNCUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "65a1a483be0fd875c6b12323f22d03a22bc1ed8fd85ecb7f3f3550b55eba1b40",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "KSM",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/KSMUSDT_metrics_4h.csv",
+      "rows": 3224,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "a3de0aee5667ca763094243df7a7c52f85b8200737440c850e2c50529592a04b",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "LINK",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/LINKUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "6c4f9078870d850b7ee0b84997eaad61248bbce877887192f6ef50781adbd63b",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "LRC",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/LRCUSDT_metrics_4h.csv",
+      "rows": 2775,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-22T00:00:00",
+      "output_sha256": "ba7a9c34b3942477c4f55710aeed35636401463628a2673711574e02c7aa264c",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-22",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "NEAR",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/NEARUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "48f14f748b74cb6ed58d23e29c218664299fa178434ab06aee341288fcb87ad0",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "REN",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/RENUSDT_metrics_4h.csv",
+      "rows": 69,
+      "start": "2025-01-01T00:00:00",
+      "end": "2025-03-10T00:00:00",
+      "output_sha256": "3f2d3b502ad1e68783ee92ead57930361d947702a7a4fed8ca69cc7a121d4aec",
+      "coverage": {
+        "coverage_status": "partial",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2025-03-10",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "RUNE",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/RUNEUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "ac5b07929abf4cdb60b9937204384281a920d837bd7e5f2a45b051e557bea325",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "SNX",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/SNXUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "59293ef09d00b7d95b26749266b33bf15740559ab7c376f8e6c1ecf58bdb9700",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "SUSHI",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/SUSHIUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "e5bc58e609f8e6cabb1a5fe5b8c73531038d3c9c669b72c9b9eeb2be3b8153c7",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "THETA",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/THETAUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "0b1c8ef97281b9594263c46d525866a45e0c752b3a40ea18790bd47b00decf4d",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "TRX",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/TRXUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "28a4d31cfe813e85b617a141dfb1cd38287433bd710f01599babcfaf93cd6597",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "UNI",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/UNIUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "3398a2b6cb075758997c1b66a85691a3cdf304a78f6d77077a7eb9708240a7e5",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "XLM",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/XLMUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "79d68c9c280533e8cca8d7152228a8184375daedcb6730f00a92e11dae963790",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "XMR",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/XMRUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "e8fb4c1e8f2a5c7a956e7f5df9682c5a1a9dc4f7d1d9f637e6fff1c161bd2d80",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "XTZ",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/XTZUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "b0b7278dbde428a140ebeef83f5f59be1cc7d076aed9490c155294de08a829ce",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "YFI",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/YFIUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "5483a60cb77e7c4a4022b4fc9733c254a2cb334db56b3462728383163f7179ec",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "ZEC",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/ZECUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "9a9d4cf9a04c40573557dea1d00b12809526a27e46dd7bc0bafe82e7518d4373",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    },
+    {
+      "symbol": "ZRX",
+      "output_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/metrics_4h/ZRXUSDT_metrics_4h.csv",
+      "rows": 3229,
+      "start": "2025-01-01T00:00:00",
+      "end": "2026-06-23T00:00:00",
+      "output_sha256": "72049098d8e23355a5b5f23dff8ffd3f6c8306dd2575fa4021d9328120758f00",
+      "coverage": {
+        "coverage_status": "covers_requested_window",
+        "expected_start": "2025-01-01",
+        "expected_end": "2026-06-22",
+        "actual_start_date": "2025-01-01",
+        "actual_end_date": "2026-06-23",
+        "frequency": "4h"
+      }
+    }
+  ],
+  "manifest_file": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026/manifest.json",
+  "output_dir": "06_RESEARCH/DATA/FUTURES_OI_FUNDING_2026",
+  "summary": {
+    "funding_symbols_with_rows": 31,
+    "metrics_symbols_with_rows": 31,
+    "funding_empty_symbols": [],
+    "metrics_empty_symbols": [],
+    "funding_partial_symbols": [
+      "FTM",
+      "LRC",
+      "REN",
+      "UNI",
+      "XMR",
+      "XTZ"
+    ],
+    "metrics_partial_symbols": [
+      "FTM",
+      "REN"
+    ]
+  }
+}

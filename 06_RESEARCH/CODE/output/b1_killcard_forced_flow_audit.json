@@ -1,0 +1,277 @@
+{
+  "task_id": "P1-RES-036-B1",
+  "generated_at_utc": "2026-06-21T13:21:05.732918+00:00",
+  "holdout_policy": "No HOLDOUT or sealed_holdout paths read; script refuses those paths.",
+  "data_audit": {
+    "LIQUIDATIONS": {
+      "path": "06_RESEARCH/DATA/LIQUIDATIONS",
+      "exists": true,
+      "file_count": 0,
+      "files": []
+    },
+    "LIQ_SAMPLE": {
+      "path": "06_RESEARCH/DATA/LIQ_SAMPLE",
+      "exists": true,
+      "file_count": 0,
+      "files": []
+    },
+    "SPOT": {
+      "path": "06_RESEARCH/DATA/SPOT",
+      "exists": true,
+      "file_count": 0,
+      "files": []
+    },
+    "FUTURES": {
+      "path": "06_RESEARCH/DATA/FUTURES",
+      "exists": true,
+      "file_count": 31,
+      "files": [
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/ADAUSDT_FUNDING_8H.csv",
+          "rows": 6989
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/ADAUSDT_MARK_4H.csv",
+          "rows": 13967
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/BNBUSDT_FUNDING_8H.csv",
+          "rows": 6924
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/BNBUSDT_MARK_4H.csv",
+          "rows": 13855
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/BTCUSDT_FUNDING_8H.csv",
+          "rows": 7030
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/BTCUSDT_FUNDING_8H_2026H1.csv",
+          "rows": 16
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/BTCUSDT_MARK_1H.csv",
+          "rows": 56041
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/BTCUSDT_MARK_1H_2026H1.csv",
+          "rows": 121
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/BTCUSDT_MARK_4H.csv",
+          "rows": 14011
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/BTCUSDT_MARK_4H_2026H1.csv",
+          "rows": 31
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/BTCUSDT_METRICS_5M.csv",
+          "rows": 605319
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/DOGEUSDT_FUNDING_8H.csv",
+          "rows": 6471
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/DOGEUSDT_MARK_4H.csv",
+          "rows": 12931
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/ETHUSDT_FUNDING_8H.csv",
+          "rows": 7030
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/ETHUSDT_FUNDING_8H_2026H1.csv",
+          "rows": 16
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/ETHUSDT_MARK_1H.csv",
+          "rows": 56185
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/ETHUSDT_MARK_1H_2026H1.csv",
+          "rows": 121
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/ETHUSDT_MARK_4H.csv",
+          "rows": 14047
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/ETHUSDT_MARK_4H_2026H1.csv",
+          "rows": 31
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/ETHUSDT_METRICS_5M.csv",
+          "rows": 474485
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/LTCUSDT_FUNDING_8H.csv",
+          "rows": 7020
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/LTCUSDT_MARK_4H.csv",
+          "rows": 14028
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/SOLUSDT_FUNDING_8H.csv",
+          "rows": 6335
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/SOLUSDT_FUNDING_8H_2026H1.csv",
+          "rows": 16
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/SOLUSDT_MARK_1H.csv",
+          "rows": 49910
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/SOLUSDT_MARK_1H_2026H1.csv",
+          "rows": 121
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/SOLUSDT_MARK_4H.csv",
+          "rows": 12479
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/SOLUSDT_MARK_4H_2026H1.csv",
+          "rows": 31
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/SOLUSDT_METRICS_5M.csv",
+          "rows": 474468
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/XRPUSDT_FUNDING_8H.csv",
+          "rows": 7029
+        },
+        {
+          "path": "06_RESEARCH/DATA/FUTURES/XRPUSDT_MARK_4H.csv",
+          "rows": 14017
+        }
+      ]
+    }
+  },
+  "collector_dataplane_diag_summary": {
+    "present": true,
+    "layer_diagnosis": "All handshake-capable Mac-side paths received zero aggTrade frames for the full 60s windows across independent client/proxy/URL combinations. This rules out a single Python library failure and points below the library layer, most likely Clash/upstream VM forwarding or provider data-plane filtering. Mac-side collector changes are not sufficient; run on the VM directly. Non-handshake variants: websockets_socks_stream.",
+    "test_count": 6,
+    "zero_frame_tests": 6
+  },
+  "collector_log_summary": {
+    "exists": true,
+    "heartbeat_count": 156,
+    "heartbeat_nonzero_count": 0,
+    "heartbeat_max_rows": 0,
+    "errors": {
+      "ping/pong timed out": 22,
+      "UNEXPECTED_EOF_WHILE_READING": 170,
+      "Connection to remote host was lost": 51
+    }
+  },
+  "cost_scenarios": {
+    "founder_taker_taker_base_bp": 30.0,
+    "protocol_conservative_taker_taker_base_bp": 40.0,
+    "event_taker_taker_stress_bp": [
+      {
+        "slippage_bp_per_side": 30.0,
+        "roundtrip_bp": 70.0
+      },
+      {
+        "slippage_bp_per_side": 50.0,
+        "roundtrip_bp": 110.0
+      },
+      {
+        "slippage_bp_per_side": 100.0,
+        "roundtrip_bp": 210.0
+      }
+    ],
+    "maker_maker": [
+      {
+        "name": "optimistic",
+        "fill_rate": 0.7,
+        "adverse_selection_bp_per_side": 3.0,
+        "nominal_fee_roundtrip_bp": 4.0,
+        "filled_trade_effective_cost_bp": 10.0,
+        "signal_level_effective_hurdle_bp": 14.29
+      },
+      {
+        "name": "base",
+        "fill_rate": 0.5,
+        "adverse_selection_bp_per_side": 5.0,
+        "nominal_fee_roundtrip_bp": 4.0,
+        "filled_trade_effective_cost_bp": 14.0,
+        "signal_level_effective_hurdle_bp": 28.0
+      },
+      {
+        "name": "stress",
+        "fill_rate": 0.25,
+        "adverse_selection_bp_per_side": 8.0,
+        "nominal_fee_roundtrip_bp": 4.0,
+        "filled_trade_effective_cost_bp": 20.0,
+        "signal_level_effective_hurdle_bp": 80.0
+      }
+    ]
+  },
+  "candidate_gates": {
+    "OFI": {
+      "gate1_cost": {
+        "decision": "KILL_AS_TRADABLE",
+        "basis": "Reasonable gross upper bound 10.0bp does not exceed best maker signal-level hurdle 14.29bp; taker base is 30.0bp and protocol conservative base is 40.0bp."
+      },
+      "gate2_data": {
+        "decision": "KILL",
+        "basis": "No local aggTrades/depth sample files; dataplane zero-frames=True; L2 rebuilder present=False."
+      },
+      "gate3_anti_a1": {
+        "decision": "N/A",
+        "basis": "OFI is not the A-1 liquidation rebound path."
+      },
+      "gate4_anti_sweep": {
+        "decision": "PASS_CONDITIONAL",
+        "basis": "Pure OFI/MLOFI uses flow variables only, but no tradable/data-ready design passed gates 1-2."
+      },
+      "overall": "KILL_AS_TRADABLE"
+    },
+    "LIQUIDATION_FLOW": {
+      "gate1_cost": {
+        "decision": "KILL_TO_SLEEP",
+        "basis": "Event execution must survive taker stress costs [70.0, 110.0, 210.0]bp; free data provides no reliable gross-effect upper bound."
+      },
+      "gate2_data": {
+        "decision": "KILL_TO_SLEEP",
+        "basis": "Liquidation files empty=True; collector heartbeats all zero=True; free forceOrder missingness cannot be bounded from current artifacts."
+      },
+      "gate3_anti_a1": {
+        "decision": "KILL_TO_SLEEP",
+        "basis": "No single liquidation direction thesis (continuation or exhaustion) is frozen in an executable preregistration; without full direct data, true separation from A-1 cannot be established."
+      },
+      "gate4_anti_sweep": {
+        "decision": "PASS_CONDITIONAL",
+        "basis": "Allowed only if trigger, direction, and maker levels are derived from liquidation/order-flow variables, not chart levels."
+      },
+      "overall": "SLEEP_DATA_ACCUMULATION_ONLY"
+    },
+    "SPOT_PERP_LEAD_LAG": {
+      "gate1_cost": {
+        "decision": "KILL_NOW",
+        "basis": "Reasonable gross upper bound 10.0bp does not exceed best maker signal-level hurdle 14.29bp; taker base is 30.0bp. This remains only a future data-audit candidate."
+      },
+      "gate2_data": {
+        "decision": "KILL_NOW",
+        "basis": "Spot aggressive-flow files empty=True; no paired spot/perp trade+book continuity audit exists."
+      },
+      "gate3_anti_a1": {
+        "decision": "N/A",
+        "basis": "Not a liquidation rebound hypothesis."
+      },
+      "gate4_anti_sweep": {
+        "decision": "PASS_CONDITIONAL",
+        "basis": "Can be whitelist-clean only if entry/direction use signed aggressive flow and book variables."
+      },
+      "overall": "KILL_NOW_NOT_B2"
+    }
+  },
+  "overall_recommendation": "Do not enter B2. Kill OFI as tradable under current public/minute assumptions; keep liquidation flow asleep for paid/full or 3-6 month forward data; do not take lead-lag without a new clean data audit."
+}

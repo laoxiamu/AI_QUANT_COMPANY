@@ -1,0 +1,1113 @@
+{
+  "task_id": "P1-RES-039-PIPELINE-S1",
+  "generated_at": "2026-06-27T10:20:12Z",
+  "discipline": {
+    "holdout_touched": false,
+    "backtest_performed": false,
+    "parameter_tuning_performed": false,
+    "data_reads": [
+      "06_RESEARCH/DATA/FUTURES_EXPANDED",
+      "06_RESEARCH/DATA/FUTURES_EXPANDED_2026"
+    ]
+  },
+  "old_panel_symbol_count": 35,
+  "new_panel_symbol_count": 31,
+  "missing_old_symbols_from_new_panel": [
+    "ALGO",
+    "ETC",
+    "FIL",
+    "MKR",
+    "OMG"
+  ],
+  "new_only_symbols": [
+    "ETH"
+  ],
+  "strict_full_panel_usable_universe": [
+    "AAVE",
+    "ATOM",
+    "AVAX",
+    "AXS",
+    "COMP",
+    "CRV",
+    "DASH",
+    "DOT",
+    "EGLD",
+    "ENJ",
+    "ETH",
+    "ICX",
+    "LINK",
+    "REN",
+    "RUNE",
+    "SNX",
+    "THETA",
+    "UNI",
+    "XMR",
+    "XTZ",
+    "ZRX"
+  ],
+  "strict_full_panel_usable_universe_count": 21,
+  "post_2025_event_eligible_universe": [
+    "AAVE",
+    "ATOM",
+    "AVAX",
+    "AXS",
+    "COMP",
+    "CRV",
+    "DASH",
+    "DOT",
+    "EGLD",
+    "ENJ",
+    "ETH",
+    "FTM",
+    "ICX",
+    "KNC",
+    "KSM",
+    "LINK",
+    "LRC",
+    "NEAR",
+    "REN",
+    "RUNE",
+    "SNX",
+    "SUSHI",
+    "THETA",
+    "TRX",
+    "UNI",
+    "XLM",
+    "XMR",
+    "XTZ",
+    "YFI",
+    "ZEC",
+    "ZRX"
+  ],
+  "post_2025_event_eligible_universe_count": 31,
+  "assets": [
+    {
+      "symbol": "AAVE",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/AAVEUSDT_4H.csv",
+      "new_rows": 12450,
+      "new_start": "2020-10-16T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/AAVEUSDT_4H.csv",
+      "old_rows": 9095,
+      "old_start": "2020-10-16T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9095,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "ATOM",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/ATOMUSDT_4H.csv",
+      "new_rows": 13960,
+      "new_start": "2020-02-07T12:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ATOMUSDT_4H.csv",
+      "old_rows": 10605,
+      "old_start": "2020-02-07T12:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 10605,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "AVAX",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/AVAXUSDT_4H.csv",
+      "new_rows": 12588,
+      "new_start": "2020-09-23T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/AVAXUSDT_4H.csv",
+      "old_rows": 9233,
+      "old_start": "2020-09-23T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9233,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "AXS",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/AXSUSDT_4H.csv",
+      "new_rows": 12240,
+      "new_start": "2020-11-20T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/AXSUSDT_4H.csv",
+      "old_rows": 8885,
+      "old_start": "2020-11-20T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 8885,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "COMP",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/COMPUSDT_4H.csv",
+      "new_rows": 13097,
+      "new_start": "2020-06-30T08:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/COMPUSDT_4H.csv",
+      "old_rows": 9742,
+      "old_start": "2020-06-30T08:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9742,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "CRV",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/CRVUSDT_4H.csv",
+      "new_rows": 12720,
+      "new_start": "2020-09-01T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/CRVUSDT_4H.csv",
+      "old_rows": 9365,
+      "old_start": "2020-09-01T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9365,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "DASH",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/DASHUSDT_4H.csv",
+      "new_rows": 13979,
+      "new_start": "2020-02-04T08:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/DASHUSDT_4H.csv",
+      "old_rows": 10624,
+      "old_start": "2020-02-04T08:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 10624,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "DOT",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/DOTUSDT_4H.csv",
+      "new_rows": 12780,
+      "new_start": "2020-08-22T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/DOTUSDT_4H.csv",
+      "old_rows": 9425,
+      "old_start": "2020-08-22T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9425,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "EGLD",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/EGLDUSDT_4H.csv",
+      "new_rows": 12642,
+      "new_start": "2020-09-14T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/EGLDUSDT_4H.csv",
+      "old_rows": 9287,
+      "old_start": "2020-09-14T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9287,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "ENJ",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/ENJUSDT_4H.csv",
+      "new_rows": 12552,
+      "new_start": "2020-09-29T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ENJUSDT_4H.csv",
+      "old_rows": 9197,
+      "old_start": "2020-09-29T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9197,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "ETH",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/ETHUSDT_4H.csv",
+      "new_rows": 3361,
+      "new_start": "2024-12-09T00:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": null,
+      "old_rows": null,
+      "old_start": null,
+      "old_end": null,
+      "seam_status": "no_old_symbol",
+      "old_last_bar_present_in_new": null,
+      "new_next_bar_after_old_end": null,
+      "seam_gap_hours": null,
+      "overlap_duplicate_count_if_naively_concat": null,
+      "old_values_match_new_at_old_end": null
+    },
+    {
+      "symbol": "FTM",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/FTMUSDT_4H.csv",
+      "new_rows": 12552,
+      "new_start": "2020-09-24T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 2,
+        "non_4h_gap_examples": [
+          {
+            "prev": "2022-02-25T20:00:00",
+            "current": "2022-03-01T00:00:00",
+            "delta_hours": 76.0
+          },
+          {
+            "prev": "2022-03-31T20:00:00",
+            "current": "2022-04-03T00:00:00",
+            "delta_hours": 52.0
+          }
+        ]
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/FTMUSDT_4H.csv",
+      "old_rows": 9197,
+      "old_start": "2020-09-24T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9197,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "ICX",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/ICXUSDT_4H.csv",
+      "new_rows": 12636,
+      "new_start": "2020-09-15T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ICXUSDT_4H.csv",
+      "old_rows": 9281,
+      "old_start": "2020-09-15T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9281,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "KNC",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/KNCUSDT_4H.csv",
+      "new_rows": 13115,
+      "new_start": "2020-06-22T08:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 2,
+        "non_4h_gap_examples": [
+          {
+            "prev": "2022-02-25T20:00:00",
+            "current": "2022-03-01T00:00:00",
+            "delta_hours": 76.0
+          },
+          {
+            "prev": "2022-03-31T20:00:00",
+            "current": "2022-04-03T00:00:00",
+            "delta_hours": 52.0
+          }
+        ]
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/KNCUSDT_4H.csv",
+      "old_rows": 9760,
+      "old_start": "2020-06-22T08:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9760,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "KSM",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/KSMUSDT_4H.csv",
+      "new_rows": 12432,
+      "new_start": "2020-10-14T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 2,
+        "non_4h_gap_examples": [
+          {
+            "prev": "2022-02-25T20:00:00",
+            "current": "2022-03-01T00:00:00",
+            "delta_hours": 76.0
+          },
+          {
+            "prev": "2022-03-31T20:00:00",
+            "current": "2022-04-03T00:00:00",
+            "delta_hours": 52.0
+          }
+        ]
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/KSMUSDT_4H.csv",
+      "old_rows": 9077,
+      "old_start": "2020-10-14T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9077,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "LINK",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/LINKUSDT_4H.csv",
+      "new_rows": 14087,
+      "new_start": "2020-01-17T08:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/LINKUSDT_4H.csv",
+      "old_rows": 10732,
+      "old_start": "2020-01-17T08:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 10732,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "LRC",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/LRCUSDT_4H.csv",
+      "new_rows": 12402,
+      "new_start": "2020-10-19T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 2,
+        "non_4h_gap_examples": [
+          {
+            "prev": "2022-02-25T20:00:00",
+            "current": "2022-03-01T00:00:00",
+            "delta_hours": 76.0
+          },
+          {
+            "prev": "2022-03-31T20:00:00",
+            "current": "2022-04-03T00:00:00",
+            "delta_hours": 52.0
+          }
+        ]
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/LRCUSDT_4H.csv",
+      "old_rows": 9047,
+      "old_start": "2020-10-19T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9047,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "NEAR",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/NEARUSDT_4H.csv",
+      "new_rows": 12425,
+      "new_start": "2020-10-15T08:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 2,
+        "non_4h_gap_examples": [
+          {
+            "prev": "2022-02-25T20:00:00",
+            "current": "2022-03-01T00:00:00",
+            "delta_hours": 76.0
+          },
+          {
+            "prev": "2022-03-31T20:00:00",
+            "current": "2022-04-03T00:00:00",
+            "delta_hours": 52.0
+          }
+        ]
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/NEARUSDT_4H.csv",
+      "old_rows": 9070,
+      "old_start": "2020-10-15T08:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9070,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "REN",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/RENUSDT_4H.csv",
+      "new_rows": 12468,
+      "new_start": "2020-10-13T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/RENUSDT_4H.csv",
+      "old_rows": 9113,
+      "old_start": "2020-10-13T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9113,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "RUNE",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/RUNEUSDT_4H.csv",
+      "new_rows": 12702,
+      "new_start": "2020-09-04T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/RUNEUSDT_4H.csv",
+      "old_rows": 9347,
+      "old_start": "2020-09-04T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9347,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "SNX",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/SNXUSDT_4H.csv",
+      "new_rows": 12828,
+      "new_start": "2020-08-14T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/SNXUSDT_4H.csv",
+      "old_rows": 9473,
+      "old_start": "2020-08-14T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9473,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "SUSHI",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/SUSHIUSDT_4H.csv",
+      "new_rows": 12672,
+      "new_start": "2020-09-04T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 2,
+        "non_4h_gap_examples": [
+          {
+            "prev": "2022-02-25T20:00:00",
+            "current": "2022-03-01T00:00:00",
+            "delta_hours": 76.0
+          },
+          {
+            "prev": "2022-03-31T20:00:00",
+            "current": "2022-04-03T00:00:00",
+            "delta_hours": 52.0
+          }
+        ]
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/SUSHIUSDT_4H.csv",
+      "old_rows": 9317,
+      "old_start": "2020-09-04T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9317,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "THETA",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/THETAUSDT_4H.csv",
+      "new_rows": 13301,
+      "new_start": "2020-05-27T08:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/THETAUSDT_4H.csv",
+      "old_rows": 9946,
+      "old_start": "2020-05-27T08:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9946,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "TRX",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/TRXUSDT_4H.csv",
+      "new_rows": 14069,
+      "new_start": "2020-01-15T08:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 2,
+        "non_4h_gap_examples": [
+          {
+            "prev": "2022-02-25T20:00:00",
+            "current": "2022-03-01T00:00:00",
+            "delta_hours": 76.0
+          },
+          {
+            "prev": "2022-03-31T20:00:00",
+            "current": "2022-04-03T00:00:00",
+            "delta_hours": 52.0
+          }
+        ]
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/TRXUSDT_4H.csv",
+      "old_rows": 10714,
+      "old_start": "2020-01-15T08:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 10714,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "UNI",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/UNIUSDT_4H.csv",
+      "new_rows": 12618,
+      "new_start": "2020-09-18T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/UNIUSDT_4H.csv",
+      "old_rows": 9263,
+      "old_start": "2020-09-18T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9263,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "XLM",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/XLMUSDT_4H.csv",
+      "new_rows": 14039,
+      "new_start": "2020-01-20T08:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 2,
+        "non_4h_gap_examples": [
+          {
+            "prev": "2022-02-25T20:00:00",
+            "current": "2022-03-01T00:00:00",
+            "delta_hours": 76.0
+          },
+          {
+            "prev": "2022-03-31T20:00:00",
+            "current": "2022-04-03T00:00:00",
+            "delta_hours": 52.0
+          }
+        ]
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/XLMUSDT_4H.csv",
+      "old_rows": 10684,
+      "old_start": "2020-01-20T08:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 10684,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "XMR",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/XMRUSDT_4H.csv",
+      "new_rows": 13985,
+      "new_start": "2020-02-03T08:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/XMRUSDT_4H.csv",
+      "old_rows": 10630,
+      "old_start": "2020-02-03T08:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 10630,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "XTZ",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/XTZUSDT_4H.csv",
+      "new_rows": 13967,
+      "new_start": "2020-02-06T08:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/XTZUSDT_4H.csv",
+      "old_rows": 10612,
+      "old_start": "2020-02-06T08:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 10612,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "YFI",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/YFIUSDT_4H.csv",
+      "new_rows": 12696,
+      "new_start": "2020-08-31T04:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 2,
+        "non_4h_gap_examples": [
+          {
+            "prev": "2022-02-25T20:00:00",
+            "current": "2022-03-01T00:00:00",
+            "delta_hours": 76.0
+          },
+          {
+            "prev": "2022-03-31T20:00:00",
+            "current": "2022-04-03T00:00:00",
+            "delta_hours": 52.0
+          }
+        ]
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/YFIUSDT_4H.csv",
+      "old_rows": 9341,
+      "old_start": "2020-08-31T04:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9341,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "ZEC",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/ZECUSDT_4H.csv",
+      "new_rows": 13943,
+      "new_start": "2020-02-05T08:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 2,
+        "non_4h_gap_examples": [
+          {
+            "prev": "2022-02-25T20:00:00",
+            "current": "2022-03-01T00:00:00",
+            "delta_hours": 76.0
+          },
+          {
+            "prev": "2022-03-31T20:00:00",
+            "current": "2022-04-03T00:00:00",
+            "delta_hours": 52.0
+          }
+        ]
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ZECUSDT_4H.csv",
+      "old_rows": 10588,
+      "old_start": "2020-02-05T08:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 10588,
+      "old_values_match_new_at_old_end": true
+    },
+    {
+      "symbol": "ZRX",
+      "new_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/ZRXUSDT_4H.csv",
+      "new_rows": 13133,
+      "new_start": "2020-06-24T08:00:00",
+      "new_end": "2026-06-22T00:00:00",
+      "new_reaches_2026_06": true,
+      "new_integrity": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "new_integrity_from_2025": {
+        "duplicate_timestamps": 0,
+        "non_4h_gap_count": 0,
+        "non_4h_gap_examples": []
+      },
+      "old_file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ZRXUSDT_4H.csv",
+      "old_rows": 9778,
+      "old_start": "2020-06-24T08:00:00",
+      "old_end": "2024-12-09T20:00:00",
+      "seam_status": "continuous_by_new_panel",
+      "old_last_bar_present_in_new": true,
+      "new_next_bar_after_old_end": "2024-12-10T00:00:00",
+      "seam_gap_hours": 4.0,
+      "overlap_duplicate_count_if_naively_concat": 9778,
+      "old_values_match_new_at_old_end": true
+    }
+  ],
+  "summary": {
+    "all_new_assets_reach_2026_06": true,
+    "assets_with_duplicate_timestamps": [],
+    "assets_with_non_4h_gaps": [
+      "FTM",
+      "KNC",
+      "KSM",
+      "LRC",
+      "NEAR",
+      "SUSHI",
+      "TRX",
+      "XLM",
+      "YFI",
+      "ZEC"
+    ],
+    "assets_with_non_4h_gaps_from_2025": [],
+    "assets_with_continuous_old_new_seam": [
+      "AAVE",
+      "ATOM",
+      "AVAX",
+      "AXS",
+      "COMP",
+      "CRV",
+      "DASH",
+      "DOT",
+      "EGLD",
+      "ENJ",
+      "FTM",
+      "ICX",
+      "KNC",
+      "KSM",
+      "LINK",
+      "LRC",
+      "NEAR",
+      "REN",
+      "RUNE",
+      "SNX",
+      "SUSHI",
+      "THETA",
+      "TRX",
+      "UNI",
+      "XLM",
+      "XMR",
+      "XTZ",
+      "YFI",
+      "ZEC",
+      "ZRX"
+    ],
+    "assets_with_noncontinuous_old_new_seam": []
+  }
+}

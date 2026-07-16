@@ -1,0 +1,132 @@
+{
+  "task_id": "P0-RES-007",
+  "generated_at_utc": "2026-07-06T16:24:49Z",
+  "diagnostic_recheck": "DEC-092 v1.5 item 5",
+  "independent_experiment_count_consumed": false,
+  "holdout_read": false,
+  "source_script_reused": "06_RESEARCH/CODE/x3_momentum_redteam_b1_audit.py",
+  "frequency": "weekly",
+  "cost_case": "protocol_base_0_20pct",
+  "data_inventory": {
+    "data_path": "06_RESEARCH/DATA/FUTURES_EXPANDED",
+    "csv_files": 35,
+    "symbols": [
+      "AAVEUSDT",
+      "ALGOUSDT",
+      "ATOMUSDT",
+      "AVAXUSDT",
+      "AXSUSDT",
+      "COMPUSDT",
+      "CRVUSDT",
+      "DASHUSDT",
+      "DOTUSDT",
+      "EGLDUSDT",
+      "ENJUSDT",
+      "ETCUSDT",
+      "FILUSDT",
+      "FTMUSDT",
+      "ICXUSDT",
+      "KNCUSDT",
+      "KSMUSDT",
+      "LINKUSDT",
+      "LRCUSDT",
+      "MKRUSDT",
+      "NEARUSDT",
+      "OMGUSDT",
+      "RENUSDT",
+      "RUNEUSDT",
+      "SNXUSDT",
+      "SUSHIUSDT",
+      "THETAUSDT",
+      "TRXUSDT",
+      "UNIUSDT",
+      "XLMUSDT",
+      "XMRUSDT",
+      "XTZUSDT",
+      "YFIUSDT",
+      "ZECUSDT",
+      "ZRXUSDT"
+    ]
+  },
+  "original_unadjusted": {
+    "strategy": {
+      "annualized_arithmetic_return": 0.13698641175842136,
+      "annualized_log_growth": -0.03415603355708355,
+      "annualized_vol": 0.5736449387421465,
+      "min_period_return": -0.47469176460206186,
+      "max_period_return": 0.3405777981966722
+    },
+    "benchmark": {
+      "annualized_arithmetic_return": 0.8848071953391389,
+      "annualized_log_growth": 0.4845095339758384,
+      "annualized_vol": 0.890399837370993,
+      "min_period_return": -0.3309179776451773,
+      "max_period_return": 0.42977159311434815
+    }
+  },
+  "comparisons": [
+    {
+      "name": "both scaled to 10% annual vol",
+      "target_vol": 0.1,
+      "strategy_scale": 0.17432386001569872,
+      "benchmark_scale": 0.11230909508615972,
+      "strategy": {
+        "annualized_arithmetic_return": 0.023880000067427905,
+        "annualized_log_growth": 0.018890720495117204,
+        "annualized_vol": 0.1,
+        "min_period_return": -0.08275010072309484,
+        "max_period_return": 0.05937083641729157
+      },
+      "benchmark": {
+        "annualized_arithmetic_return": 0.09937189543426166,
+        "annualized_log_growth": 0.09431561177445909,
+        "annualized_vol": 0.09999999999999999,
+        "min_period_return": -0.03716509861707189,
+        "max_period_return": 0.04826725871640967
+      },
+      "strategy_minus_benchmark_log_growth": -0.07542489127934188,
+      "bootstrap_diff": {
+        "iterations": 5000,
+        "seed": 20260702,
+        "block_weeks": 4,
+        "diff_log_growth_ci_low": -0.1957045590093193,
+        "diff_log_growth_ci_high": 0.061099408409084136,
+        "p_strategy_ge_benchmark": 0.1638
+      },
+      "strategy_still_underperforms": false
+    },
+    {
+      "name": "both scaled to benchmark actual vol",
+      "target_vol": 0.890399837370993,
+      "strategy_scale": 1.5521793660786187,
+      "benchmark_scale": 1.0,
+      "strategy": {
+        "annualized_arithmetic_return": 0.2126274817645709,
+        "annualized_log_growth": -0.23979554136830553,
+        "annualized_vol": 0.890399837370993,
+        "min_period_return": -0.7368067622627693,
+        "max_period_return": 0.5286378309053624
+      },
+      "benchmark": {
+        "annualized_arithmetic_return": 0.8848071953391389,
+        "annualized_log_growth": 0.4845095339758384,
+        "annualized_vol": 0.890399837370993,
+        "min_period_return": -0.3309179776451773,
+        "max_period_return": 0.42977159311434815
+      },
+      "strategy_minus_benchmark_log_growth": -0.7243050753441439,
+      "bootstrap_diff": {
+        "iterations": 5000,
+        "seed": 20260702,
+        "block_weeks": 4,
+        "diff_log_growth_ci_low": -1.9249336366471759,
+        "diff_log_growth_ci_high": 0.5552320552101696,
+        "p_strategy_ge_benchmark": 0.1588
+      },
+      "strategy_still_underperforms": false
+    }
+  ],
+  "passive_benchmark_gate_verdict": "RISK_ADJUSTED_GATE_NOT_CONFIRMED",
+  "overall_verdict": "KILL_MAINTAINED",
+  "overall_verdict_reason": "Primary kill reasons remain monotonicity CI crossing zero and in-panel survivorship stress; passive benchmark gate is not confirmed as a significant independent KILL reason after volatility matching."
+}

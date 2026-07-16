@@ -1,0 +1,21 @@
+{
+  "task_id": "P1-GOV-009-EXTRACT",
+  "completed_at": "2026-06-28T16:09:27+00:00",
+  "status": "completed",
+  "output_file": "02_KNOWLEDGE_BASE/HARVEST_STAGING_20260627.md",
+  "next_task": null,
+  "scanned_files": {
+    "04_AI_TEAM/CODEX_TASKS/REPORT_*.md": 84,
+    "06_RESEARCH/RESULTS/*.md": 55,
+    "total": 139
+  },
+  "category_counts": {
+    "Carry": 15,
+    "系统工程": 18,
+    "工具OSS": 6,
+    "TSMOM-Alpha": 29,
+    "治理审计": 15,
+    "其他": 56
+  },
+  "notes": "完成历史报告 harvest 批量提取；仅写暂存 md，未写正式知识库条目。"
+}

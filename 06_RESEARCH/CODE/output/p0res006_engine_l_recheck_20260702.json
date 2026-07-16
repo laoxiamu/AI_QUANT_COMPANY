@@ -1,0 +1,354 @@
+{
+  "task_id": "P0-RES-006",
+  "generated_at_utc": "2026-07-06T16:23:16Z",
+  "diagnostic_recheck": "DEC-092 v1.5 item 3",
+  "independent_experiment_count_consumed": false,
+  "holdout_read": false,
+  "script_reused": "06_RESEARCH/CODE/tsmom_dual_engine.py",
+  "cutoff_utc": "2024-12-09 23:59:00",
+  "pre_registered_scan_target_vols": [
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3
+  ],
+  "bootstrap": {
+    "seed": 20260612,
+    "iterations": 2000,
+    "block_bars": 42,
+    "year_bars": 2191
+  },
+  "data_audit": {
+    "BTC": {
+      "bars_first_timestamp": "2020-01-01 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10782,
+      "funding_first_timestamp": "2020-01-01 00:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5415,
+      "onboard_date": "2019-09-08 00:00:00",
+      "pit_eligible_from": "2019-12-07 00:00:00"
+    },
+    "ETH": {
+      "bars_first_timestamp": "2020-01-01 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10818,
+      "funding_first_timestamp": "2020-01-01 00:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5415,
+      "onboard_date": "2019-11-27 00:00:00",
+      "pit_eligible_from": "2020-02-25 00:00:00"
+    },
+    "SOL": {
+      "bars_first_timestamp": "2020-09-13 08:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 9250,
+      "funding_first_timestamp": "2020-09-13 16:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 4720,
+      "onboard_date": "2020-09-14 00:00:00",
+      "pit_eligible_from": "2020-12-13 00:00:00"
+    },
+    "BNB": {
+      "bars_first_timestamp": "2020-02-01 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10596,
+      "funding_first_timestamp": "2020-02-10 08:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5294,
+      "onboard_date": "2020-02-10 00:00:00",
+      "pit_eligible_from": "2020-05-10 00:00:00"
+    },
+    "XRP": {
+      "bars_first_timestamp": "2020-01-06 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10758,
+      "funding_first_timestamp": "2020-01-06 08:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5399,
+      "onboard_date": "2020-01-06 00:00:00",
+      "pit_eligible_from": "2020-04-05 00:00:00"
+    },
+    "DOGE": {
+      "bars_first_timestamp": "2020-07-10 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 9672,
+      "funding_first_timestamp": "2020-07-10 08:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 4841,
+      "onboard_date": "2020-07-10 00:00:00",
+      "pit_eligible_from": "2020-10-08 00:00:00"
+    },
+    "ADA": {
+      "bars_first_timestamp": "2020-01-19 08:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10708,
+      "funding_first_timestamp": "2020-01-19 16:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5359,
+      "onboard_date": "2020-01-31 00:00:00",
+      "pit_eligible_from": "2020-04-30 00:00:00"
+    },
+    "LTC": {
+      "bars_first_timestamp": "2020-01-09 04:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10769,
+      "funding_first_timestamp": "2020-01-09 08:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5390,
+      "onboard_date": "2020-01-09 00:00:00",
+      "pit_eligible_from": "2020-04-08 00:00:00"
+    }
+  },
+  "scan_results": [
+    {
+      "target_vol": 0.1,
+      "acceptance": {
+        "annualized_log_growth": 0.1839922380583385,
+        "ending_equity": 248231.4416162631,
+        "max_drawdown": -0.1935195874233977,
+        "expectancy_r": 0.013323654685058622,
+        "win_loss_ratio": 1.9845486433723363,
+        "trade_count": 441,
+        "risk_scale_min": 0.20587667517706704,
+        "risk_scale_mean": 0.8214616560592183,
+        "risk_scale_lt_1_bars": 4411,
+        "p_dd35": 0.0,
+        "p_dd20": 0.026,
+        "bootstrap_block_bars": 42,
+        "bootstrap_year_bars": 2191,
+        "bootstrap_iterations": 2000,
+        "bootstrap_seed": 20260612,
+        "positive_years": 4,
+        "counted_years": 4,
+        "positive_years_majority": true,
+        "walk_forward_positive_windows": 2,
+        "checks": {
+          "positive_expectancy": true,
+          "win_loss_ratio_ge_1_5": true,
+          "standard_dd35_prob_le_20pct": true,
+          "conservative_dd20_prob_le_10pct": true,
+          "annualized_log_growth_positive": true,
+          "positive_years_majority": true,
+          "walk_forward_majority_positive": true,
+          "fifth_benchmark_excess_positive": false
+        },
+        "decision_by_v1_5_position_gate": true
+      }
+    },
+    {
+      "target_vol": 0.15,
+      "acceptance": {
+        "annualized_log_growth": 0.22279228020355038,
+        "ending_equity": 300693.2450783539,
+        "max_drawdown": -0.2192782275444759,
+        "expectancy_r": 0.013840898572022848,
+        "win_loss_ratio": 2.011690674132505,
+        "trade_count": 441,
+        "risk_scale_min": 0.25214869518660005,
+        "risk_scale_mean": 0.8706018687247737,
+        "risk_scale_lt_1_bars": 3548,
+        "p_dd35": 0.0,
+        "p_dd20": 0.0725,
+        "bootstrap_block_bars": 42,
+        "bootstrap_year_bars": 2191,
+        "bootstrap_iterations": 2000,
+        "bootstrap_seed": 20260612,
+        "positive_years": 4,
+        "counted_years": 4,
+        "positive_years_majority": true,
+        "walk_forward_positive_windows": 2,
+        "checks": {
+          "positive_expectancy": true,
+          "win_loss_ratio_ge_1_5": true,
+          "standard_dd35_prob_le_20pct": true,
+          "conservative_dd20_prob_le_10pct": true,
+          "annualized_log_growth_positive": true,
+          "positive_years_majority": true,
+          "walk_forward_majority_positive": true,
+          "fifth_benchmark_excess_positive": false
+        },
+        "decision_by_v1_5_position_gate": true
+      }
+    },
+    {
+      "target_vol": 0.2,
+      "acceptance": {
+        "annualized_log_growth": 0.2600563498385378,
+        "ending_equity": 361488.32769096206,
+        "max_drawdown": -0.2310936576381012,
+        "expectancy_r": 0.014998833010204028,
+        "win_loss_ratio": 2.0806470209006305,
+        "trade_count": 441,
+        "risk_scale_min": 0.29209453201219765,
+        "risk_scale_mean": 0.901096036289334,
+        "risk_scale_lt_1_bars": 2971,
+        "p_dd35": 0.002,
+        "p_dd20": 0.1215,
+        "bootstrap_block_bars": 42,
+        "bootstrap_year_bars": 2191,
+        "bootstrap_iterations": 2000,
+        "bootstrap_seed": 20260612,
+        "positive_years": 4,
+        "counted_years": 4,
+        "positive_years_majority": true,
+        "walk_forward_positive_windows": 2,
+        "checks": {
+          "positive_expectancy": true,
+          "win_loss_ratio_ge_1_5": true,
+          "standard_dd35_prob_le_20pct": true,
+          "conservative_dd20_prob_le_10pct": false,
+          "annualized_log_growth_positive": true,
+          "positive_years_majority": true,
+          "walk_forward_majority_positive": true,
+          "fifth_benchmark_excess_positive": false
+        },
+        "decision_by_v1_5_position_gate": false
+      }
+    },
+    {
+      "target_vol": 0.25,
+      "acceptance": {
+        "annualized_log_growth": 0.2931970192325344,
+        "ending_equity": 425810.00022610987,
+        "max_drawdown": -0.23634500833882843,
+        "expectancy_r": 0.016320644087788744,
+        "win_loss_ratio": 2.073712326564234,
+        "trade_count": 441,
+        "risk_scale_min": 0.32793689285247607,
+        "risk_scale_mean": 0.9223583420601961,
+        "risk_scale_lt_1_bars": 2519,
+        "p_dd35": 0.003,
+        "p_dd20": 0.1745,
+        "bootstrap_block_bars": 42,
+        "bootstrap_year_bars": 2191,
+        "bootstrap_iterations": 2000,
+        "bootstrap_seed": 20260612,
+        "positive_years": 4,
+        "counted_years": 4,
+        "positive_years_majority": true,
+        "walk_forward_positive_windows": 2,
+        "checks": {
+          "positive_expectancy": true,
+          "win_loss_ratio_ge_1_5": true,
+          "standard_dd35_prob_le_20pct": true,
+          "conservative_dd20_prob_le_10pct": false,
+          "annualized_log_growth_positive": true,
+          "positive_years_majority": true,
+          "walk_forward_majority_positive": true,
+          "fifth_benchmark_excess_positive": false
+        },
+        "decision_by_v1_5_position_gate": false
+      }
+    },
+    {
+      "target_vol": 0.3,
+      "acceptance": {
+        "annualized_log_growth": 0.3257315200069385,
+        "ending_equity": 500076.63755391847,
+        "max_drawdown": -0.2490728427268345,
+        "expectancy_r": 0.017609048037995578,
+        "win_loss_ratio": 2.106003521195783,
+        "trade_count": 441,
+        "risk_scale_min": 0.35987762802113726,
+        "risk_scale_mean": 0.9379317573831726,
+        "risk_scale_lt_1_bars": 2228,
+        "p_dd35": 0.007,
+        "p_dd20": 0.217,
+        "bootstrap_block_bars": 42,
+        "bootstrap_year_bars": 2191,
+        "bootstrap_iterations": 2000,
+        "bootstrap_seed": 20260612,
+        "positive_years": 4,
+        "counted_years": 4,
+        "positive_years_majority": true,
+        "walk_forward_positive_windows": 2,
+        "checks": {
+          "positive_expectancy": true,
+          "win_loss_ratio_ge_1_5": true,
+          "standard_dd35_prob_le_20pct": true,
+          "conservative_dd20_prob_le_10pct": false,
+          "annualized_log_growth_positive": true,
+          "positive_years_majority": true,
+          "walk_forward_majority_positive": true,
+          "fifth_benchmark_excess_positive": false
+        },
+        "decision_by_v1_5_position_gate": false
+      }
+    }
+  ],
+  "feasible_points": [
+    {
+      "target_vol": 0.1,
+      "acceptance": {
+        "annualized_log_growth": 0.1839922380583385,
+        "ending_equity": 248231.4416162631,
+        "max_drawdown": -0.1935195874233977,
+        "expectancy_r": 0.013323654685058622,
+        "win_loss_ratio": 1.9845486433723363,
+        "trade_count": 441,
+        "risk_scale_min": 0.20587667517706704,
+        "risk_scale_mean": 0.8214616560592183,
+        "risk_scale_lt_1_bars": 4411,
+        "p_dd35": 0.0,
+        "p_dd20": 0.026,
+        "bootstrap_block_bars": 42,
+        "bootstrap_year_bars": 2191,
+        "bootstrap_iterations": 2000,
+        "bootstrap_seed": 20260612,
+        "positive_years": 4,
+        "counted_years": 4,
+        "positive_years_majority": true,
+        "walk_forward_positive_windows": 2,
+        "checks": {
+          "positive_expectancy": true,
+          "win_loss_ratio_ge_1_5": true,
+          "standard_dd35_prob_le_20pct": true,
+          "conservative_dd20_prob_le_10pct": true,
+          "annualized_log_growth_positive": true,
+          "positive_years_majority": true,
+          "walk_forward_majority_positive": true,
+          "fifth_benchmark_excess_positive": false
+        },
+        "decision_by_v1_5_position_gate": true
+      }
+    },
+    {
+      "target_vol": 0.15,
+      "acceptance": {
+        "annualized_log_growth": 0.22279228020355038,
+        "ending_equity": 300693.2450783539,
+        "max_drawdown": -0.2192782275444759,
+        "expectancy_r": 0.013840898572022848,
+        "win_loss_ratio": 2.011690674132505,
+        "trade_count": 441,
+        "risk_scale_min": 0.25214869518660005,
+        "risk_scale_mean": 0.8706018687247737,
+        "risk_scale_lt_1_bars": 3548,
+        "p_dd35": 0.0,
+        "p_dd20": 0.0725,
+        "bootstrap_block_bars": 42,
+        "bootstrap_year_bars": 2191,
+        "bootstrap_iterations": 2000,
+        "bootstrap_seed": 20260612,
+        "positive_years": 4,
+        "counted_years": 4,
+        "positive_years_majority": true,
+        "walk_forward_positive_windows": 2,
+        "checks": {
+          "positive_expectancy": true,
+          "win_loss_ratio_ge_1_5": true,
+          "standard_dd35_prob_le_20pct": true,
+          "conservative_dd20_prob_le_10pct": true,
+          "annualized_log_growth_positive": true,
+          "positive_years_majority": true,
+          "walk_forward_majority_positive": true,
+          "fifth_benchmark_excess_positive": false
+        },
+        "decision_by_v1_5_position_gate": true
+      }
+    }
+  ],
+  "verdict": "EXISTS_FEASIBLE_POSITION_SIZING"
+}

@@ -1,0 +1,50 @@
+{
+  "BTCUSDT": {
+    "symbol": "BTCUSDT",
+    "old_panel": {
+      "rows": 0,
+      "start": null,
+      "end": null,
+      "gaps_over_4h": null,
+      "duplicate_timestamps": 0
+    },
+    "download_start": "2024-12-09 00:00:00",
+    "download_end": "2026-06-22 00:00:00",
+    "source": "binance_fapi",
+    "status": "downloaded",
+    "errors": [],
+    "new_rows_downloaded": 3361,
+    "output_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/BTCUSDT_4H.csv",
+    "combined_panel_summary": {
+      "rows": 3361,
+      "start": "2024-12-09 00:00:00",
+      "end": "2026-06-22 00:00:00",
+      "gaps_over_4h": 0,
+      "duplicate_timestamps": 0
+    }
+  },
+  "ETCUSDT": {
+    "symbol": "ETCUSDT",
+    "old_panel": {
+      "rows": 10738,
+      "start": "2020-01-16 08:00:00",
+      "end": "2024-12-09 20:00:00",
+      "gaps_over_4h": 0,
+      "duplicate_timestamps": 0
+    },
+    "download_start": "2024-12-10 00:00:00",
+    "download_end": "2026-06-22 00:00:00",
+    "source": "binance_fapi",
+    "status": "downloaded",
+    "errors": [],
+    "new_rows_downloaded": 3355,
+    "output_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/ETCUSDT_4H.csv",
+    "combined_panel_summary": {
+      "rows": 14093,
+      "start": "2020-01-16 08:00:00",
+      "end": "2026-06-22 00:00:00",
+      "gaps_over_4h": 0,
+      "duplicate_timestamps": 0
+    }
+  }
+}

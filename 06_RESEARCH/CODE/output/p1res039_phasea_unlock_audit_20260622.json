@@ -1,0 +1,728 @@
+{
+  "task_id": "P1-RES-039-B1-PHASEA",
+  "generated_at": "2026-06-22T13:31:43Z",
+  "discipline": {
+    "holdout_touched": false,
+    "backtest_performed": false,
+    "parameter_tuning_performed": false,
+    "independent_count_consumed": false,
+    "data_reads": [
+      "06_RESEARCH/DATA/FUTURES_EXPANDED"
+    ]
+  },
+  "local_price_panel": {
+    "price_dir": "06_RESEARCH/DATA/FUTURES_EXPANDED",
+    "asset_count": 35,
+    "row_count_min": 8885,
+    "row_count_max": 10738,
+    "panel_start_min": "2020-01-15T08:00:00",
+    "panel_start_max": "2020-11-20T04:00:00",
+    "panel_end_min": "2024-12-09T20:00:00",
+    "panel_end_max": "2024-12-09T20:00:00",
+    "assets": [
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/AAVEUSDT_4H.csv",
+        "symbol": "AAVE",
+        "rows": 9095,
+        "start": "2020-10-16T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ALGOUSDT_4H.csv",
+        "symbol": "ALGO",
+        "rows": 9826,
+        "start": "2020-06-16T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ATOMUSDT_4H.csv",
+        "symbol": "ATOM",
+        "rows": 10605,
+        "start": "2020-02-07T12:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/AVAXUSDT_4H.csv",
+        "symbol": "AVAX",
+        "rows": 9233,
+        "start": "2020-09-23T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/AXSUSDT_4H.csv",
+        "symbol": "AXS",
+        "rows": 8885,
+        "start": "2020-11-20T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/COMPUSDT_4H.csv",
+        "symbol": "COMP",
+        "rows": 9742,
+        "start": "2020-06-30T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/CRVUSDT_4H.csv",
+        "symbol": "CRV",
+        "rows": 9365,
+        "start": "2020-09-01T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/DASHUSDT_4H.csv",
+        "symbol": "DASH",
+        "rows": 10624,
+        "start": "2020-02-04T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/DOTUSDT_4H.csv",
+        "symbol": "DOT",
+        "rows": 9425,
+        "start": "2020-08-22T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/EGLDUSDT_4H.csv",
+        "symbol": "EGLD",
+        "rows": 9287,
+        "start": "2020-09-14T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ENJUSDT_4H.csv",
+        "symbol": "ENJ",
+        "rows": 9197,
+        "start": "2020-09-29T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ETCUSDT_4H.csv",
+        "symbol": "ETC",
+        "rows": 10738,
+        "start": "2020-01-16T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/FILUSDT_4H.csv",
+        "symbol": "FIL",
+        "rows": 9065,
+        "start": "2020-10-16T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/FTMUSDT_4H.csv",
+        "symbol": "FTM",
+        "rows": 9197,
+        "start": "2020-09-24T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ICXUSDT_4H.csv",
+        "symbol": "ICX",
+        "rows": 9281,
+        "start": "2020-09-15T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/KNCUSDT_4H.csv",
+        "symbol": "KNC",
+        "rows": 9760,
+        "start": "2020-06-22T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/KSMUSDT_4H.csv",
+        "symbol": "KSM",
+        "rows": 9077,
+        "start": "2020-10-14T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/LINKUSDT_4H.csv",
+        "symbol": "LINK",
+        "rows": 10732,
+        "start": "2020-01-17T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/LRCUSDT_4H.csv",
+        "symbol": "LRC",
+        "rows": 9047,
+        "start": "2020-10-19T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/MKRUSDT_4H.csv",
+        "symbol": "MKR",
+        "rows": 9449,
+        "start": "2020-08-13T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/NEARUSDT_4H.csv",
+        "symbol": "NEAR",
+        "rows": 9070,
+        "start": "2020-10-15T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/OMGUSDT_4H.csv",
+        "symbol": "OMG",
+        "rows": 9700,
+        "start": "2020-07-02T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/RENUSDT_4H.csv",
+        "symbol": "REN",
+        "rows": 9113,
+        "start": "2020-10-13T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/RUNEUSDT_4H.csv",
+        "symbol": "RUNE",
+        "rows": 9347,
+        "start": "2020-09-04T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/SNXUSDT_4H.csv",
+        "symbol": "SNX",
+        "rows": 9473,
+        "start": "2020-08-14T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/SUSHIUSDT_4H.csv",
+        "symbol": "SUSHI",
+        "rows": 9317,
+        "start": "2020-09-04T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/THETAUSDT_4H.csv",
+        "symbol": "THETA",
+        "rows": 9946,
+        "start": "2020-05-27T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/TRXUSDT_4H.csv",
+        "symbol": "TRX",
+        "rows": 10714,
+        "start": "2020-01-15T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/UNIUSDT_4H.csv",
+        "symbol": "UNI",
+        "rows": 9263,
+        "start": "2020-09-18T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/XLMUSDT_4H.csv",
+        "symbol": "XLM",
+        "rows": 10684,
+        "start": "2020-01-20T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/XMRUSDT_4H.csv",
+        "symbol": "XMR",
+        "rows": 10630,
+        "start": "2020-02-03T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/XTZUSDT_4H.csv",
+        "symbol": "XTZ",
+        "rows": 10612,
+        "start": "2020-02-06T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/YFIUSDT_4H.csv",
+        "symbol": "YFI",
+        "rows": 9341,
+        "start": "2020-08-31T04:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ZECUSDT_4H.csv",
+        "symbol": "ZEC",
+        "rows": 10588,
+        "start": "2020-02-05T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      },
+      {
+        "file": "06_RESEARCH/DATA/FUTURES_EXPANDED/ZRXUSDT_4H.csv",
+        "symbol": "ZRX",
+        "rows": 9778,
+        "start": "2020-06-24T08:00:00",
+        "end": "2024-12-09T20:00:00",
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ]
+      }
+    ]
+  },
+  "unlock_source_free_boundary": {
+    "asof_utc": "2026-06-22T00:00:00Z",
+    "source_docs": [
+      "https://docs.tokenomist.ai/api-documents/introduction",
+      "https://docs.tokenomist.ai/api-documents/unlock-events/v5",
+      "https://docs.tokenomist.ai/features/csv-download"
+    ],
+    "api_auth": "x-api-key required for token list, unlock events, upcoming unlock events",
+    "free_trial_unlock_events_history": "1 year backward",
+    "standard_unlock_events_history": "1 year backward, 2 years forward",
+    "elite_unlock_events_history": "2 years backward, 3 years forward",
+    "csv_export_boundary": "CSV export only available to Pro users; all release events not free"
+  },
+  "audited_free_public_article_samples": [
+    {
+      "sample": {
+        "token": "Avalanche",
+        "symbol": "AVAX",
+        "event_date_utc": "2024-08-20T00:00:00Z",
+        "amount_tokens": 9540000.0,
+        "value_usd": 251330000.0,
+        "value_to_circulating_supply_pct": 2.42,
+        "allocation_summary": {
+          "strategic_partners": 2250000.0,
+          "foundation": 1670000.0,
+          "team": 4500000.0,
+          "airdrop": 1130000.0
+        },
+        "source_name": "BeInCrypto article citing TokenUnlocks",
+        "source_url": "https://beincrypto.com/token-unlocks-august-2024/",
+        "source_published_utc": "2024-07-31T21:30:00Z",
+        "source_note": "Public article, not bulk API. Date-only event time; script aligns to nearest 4H bar and reports this precision limit."
+      },
+      "symbol_present_in_price_panel": true,
+      "price_symbol": "AVAXUSDT",
+      "event_overlap_with_price_panel": true,
+      "alignment": {
+        "requested_event_time_utc": "2024-08-20T00:00:00Z",
+        "nearest_bar_time_utc": "2024-08-20T00:00:00",
+        "nearest_bar_close": 21.79,
+        "event_time_precision": "date-only public article; 00:00Z convention"
+      },
+      "drifts": [
+        {
+          "horizon_bars_4h": 6,
+          "horizon_hours": 24,
+          "pre_event_long_return_bp": 434.82,
+          "post_event_long_return_bp": 634.24,
+          "post_event_short_return_bp": -634.24,
+          "post_event_abs_gross_drift_bp": 634.24
+        },
+        {
+          "horizon_bars_4h": 18,
+          "horizon_hours": 72,
+          "pre_event_long_return_bp": 670.91,
+          "post_event_long_return_bp": 2139.97,
+          "post_event_short_return_bp": -2139.97,
+          "post_event_abs_gross_drift_bp": 2139.97
+        },
+        {
+          "horizon_bars_4h": 42,
+          "horizon_hours": 168,
+          "pre_event_long_return_bp": 460.37,
+          "post_event_long_return_bp": 2062.41,
+          "post_event_short_return_bp": -2062.41,
+          "post_event_abs_gross_drift_bp": 2062.41
+        }
+      ]
+    },
+    {
+      "sample": {
+        "token": "Wormhole",
+        "symbol": "W",
+        "event_date_utc": "2024-08-03T00:00:00Z",
+        "amount_tokens": 600000000.0,
+        "value_usd": 151670000.0,
+        "value_to_circulating_supply_pct": 33.33,
+        "allocation_summary": {
+          "community_and_launch": 600000000.0
+        },
+        "source_name": "BeInCrypto article citing TokenUnlocks",
+        "source_url": "https://beincrypto.com/token-unlocks-august-2024/",
+        "source_published_utc": "2024-07-31T21:30:00Z",
+        "source_note": "Public article, not bulk API; token absent from local price panel."
+      },
+      "symbol_present_in_price_panel": false,
+      "price_symbol": null,
+      "event_overlap_with_price_panel": false,
+      "alignment": null,
+      "drifts": []
+    },
+    {
+      "sample": {
+        "token": "Aptos",
+        "symbol": "APT",
+        "event_date_utc": "2024-08-12T00:00:00Z",
+        "amount_tokens": 11310000.0,
+        "value_usd": 76450000.0,
+        "value_to_circulating_supply_pct": 2.41,
+        "allocation_summary": {
+          "foundation": 1330000.0,
+          "community": 3210000.0,
+          "core_contributors": 3960000.0,
+          "investors": 2810000.0
+        },
+        "source_name": "BeInCrypto article citing TokenUnlocks",
+        "source_url": "https://beincrypto.com/token-unlocks-august-2024/",
+        "source_published_utc": "2024-07-31T21:30:00Z",
+        "source_note": "Public article, not bulk API; token absent from local price panel."
+      },
+      "symbol_present_in_price_panel": false,
+      "price_symbol": null,
+      "event_overlap_with_price_panel": false,
+      "alignment": null,
+      "drifts": []
+    },
+    {
+      "sample": {
+        "token": "The Sandbox",
+        "symbol": "SAND",
+        "event_date_utc": "2024-08-14T00:00:00Z",
+        "amount_tokens": 205590000.0,
+        "value_usd": 66750000.0,
+        "value_to_circulating_supply_pct": 9.0,
+        "allocation_summary": {
+          "team": 71250000.0,
+          "advisors": 37500000.0,
+          "company_reserve": 96840000.0
+        },
+        "source_name": "BeInCrypto article citing TokenUnlocks",
+        "source_url": "https://beincrypto.com/token-unlocks-august-2024/",
+        "source_published_utc": "2024-07-31T21:30:00Z",
+        "source_note": "Public article, not bulk API; token absent from local price panel."
+      },
+      "symbol_present_in_price_panel": false,
+      "price_symbol": null,
+      "event_overlap_with_price_panel": false,
+      "alignment": null,
+      "drifts": []
+    },
+    {
+      "sample": {
+        "token": "Arbitrum",
+        "symbol": "ARB",
+        "event_date_utc": "2024-08-16T00:00:00Z",
+        "amount_tokens": 92650000.0,
+        "value_usd": 65170000.0,
+        "value_to_circulating_supply_pct": 2.77,
+        "allocation_summary": {
+          "team_future_team_advisors": 56130000.0,
+          "investors": 36520000.0
+        },
+        "source_name": "BeInCrypto article citing TokenUnlocks",
+        "source_url": "https://beincrypto.com/token-unlocks-august-2024/",
+        "source_published_utc": "2024-07-31T21:30:00Z",
+        "source_note": "Public article, not bulk API; token absent from local price panel."
+      },
+      "symbol_present_in_price_panel": false,
+      "price_symbol": null,
+      "event_overlap_with_price_panel": false,
+      "alignment": null,
+      "drifts": []
+    }
+  ],
+  "event_census_initial": {
+    "scope": "Only five events from one public historical article; not a broad census.",
+    "recognizable_events_in_sample": 5,
+    "events_with_local_price_overlap": 1,
+    "episode_ge_100": false,
+    "eligible_for_60_20_20_split": false,
+    "eligible_for_any_event_census_conclusion": false,
+    "reason": "Bulk historical unlock events require Tokenomist API key/paid plan or heterogeneous on-chain contract reconstruction."
+  },
+  "cost_gates_bp": {
+    "low": 80,
+    "mid": 120,
+    "high": 220
+  }
+}

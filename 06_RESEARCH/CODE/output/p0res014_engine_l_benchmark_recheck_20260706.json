@@ -1,0 +1,404 @@
+{
+  "task_id": "P0-RES-014",
+  "generated_at_utc": "2026-07-06T16:50:42Z",
+  "diagnostic_recheck": "DEC-092 v1.5 item 5 for TSMOM engine L",
+  "independent_experiment_count_consumed": false,
+  "holdout_read": false,
+  "source_script_reused": "06_RESEARCH/CODE/tsmom_dual_engine.py",
+  "p006_source_json": "06_RESEARCH/CODE/output/p0res006_engine_l_recheck_20260702.json",
+  "p007_method_source": "06_RESEARCH/CODE/p0res007_x3_benchmark_recheck_20260702.py",
+  "position_target_vols_rechecked": [
+    0.1,
+    0.15
+  ],
+  "no_position_scan_performed": true,
+  "frequency": "4H",
+  "annual_periods": 2191.455,
+  "cutoff_utc": "2024-12-09 23:59:00",
+  "bootstrap": {
+    "iterations": 5000,
+    "seed": 20260702,
+    "block_bars": 42
+  },
+  "data_audit": {
+    "BTC": {
+      "bars_first_timestamp": "2020-01-01 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10782,
+      "funding_first_timestamp": "2020-01-01 00:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5415,
+      "onboard_date": "2019-09-08 00:00:00",
+      "pit_eligible_from": "2019-12-07 00:00:00"
+    },
+    "ETH": {
+      "bars_first_timestamp": "2020-01-01 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10818,
+      "funding_first_timestamp": "2020-01-01 00:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5415,
+      "onboard_date": "2019-11-27 00:00:00",
+      "pit_eligible_from": "2020-02-25 00:00:00"
+    },
+    "SOL": {
+      "bars_first_timestamp": "2020-09-13 08:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 9250,
+      "funding_first_timestamp": "2020-09-13 16:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 4720,
+      "onboard_date": "2020-09-14 00:00:00",
+      "pit_eligible_from": "2020-12-13 00:00:00"
+    },
+    "BNB": {
+      "bars_first_timestamp": "2020-02-01 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10596,
+      "funding_first_timestamp": "2020-02-10 08:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5294,
+      "onboard_date": "2020-02-10 00:00:00",
+      "pit_eligible_from": "2020-05-10 00:00:00"
+    },
+    "XRP": {
+      "bars_first_timestamp": "2020-01-06 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10758,
+      "funding_first_timestamp": "2020-01-06 08:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5399,
+      "onboard_date": "2020-01-06 00:00:00",
+      "pit_eligible_from": "2020-04-05 00:00:00"
+    },
+    "DOGE": {
+      "bars_first_timestamp": "2020-07-10 00:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 9672,
+      "funding_first_timestamp": "2020-07-10 08:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 4841,
+      "onboard_date": "2020-07-10 00:00:00",
+      "pit_eligible_from": "2020-10-08 00:00:00"
+    },
+    "ADA": {
+      "bars_first_timestamp": "2020-01-19 08:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10708,
+      "funding_first_timestamp": "2020-01-19 16:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5359,
+      "onboard_date": "2020-01-31 00:00:00",
+      "pit_eligible_from": "2020-04-30 00:00:00"
+    },
+    "LTC": {
+      "bars_first_timestamp": "2020-01-09 04:00:00",
+      "bars_last_timestamp": "2024-12-09 20:00:00",
+      "bars_rows_used": 10769,
+      "funding_first_timestamp": "2020-01-09 08:00:00",
+      "funding_last_timestamp": "2024-12-09 16:00:00",
+      "funding_rows_used": 5390,
+      "onboard_date": "2020-01-09 00:00:00",
+      "pit_eligible_from": "2020-04-08 00:00:00"
+    }
+  },
+  "points": [
+    {
+      "position_target_vol": 0.1,
+      "reconstructed_label": "p0res006_engine_l_target_vol_10",
+      "p006_reconstruction_check": {
+        "ending_equity_abs_diff": 0.0,
+        "annualized_log_growth_abs_diff": 0.0,
+        "p_dd20_abs_diff": 0.0
+      },
+      "original_unadjusted": {
+        "strategy": {
+          "annualized_arithmetic_return": 0.19461664892552474,
+          "annualized_log_growth": 0.18419635258701625,
+          "annualized_vol": 0.14431804069232543,
+          "min_period_return": -0.03446642802124955,
+          "max_period_return": 0.04709646366508213,
+          "period_count": 10817
+        },
+        "benchmark": {
+          "annualized_arithmetic_return": 0.7009171460351732,
+          "annualized_log_growth": 0.5373292886269768,
+          "annualized_vol": 0.5706408899719831,
+          "min_period_return": -0.14168642506983464,
+          "max_period_return": 0.15131855140744888,
+          "period_count": 10817
+        },
+        "strategy_minus_benchmark_log_growth": -0.35313293603996054
+      },
+      "comparisons": [
+        {
+          "name": "both scaled to 10% annual vol",
+          "target_vol": 0.1,
+          "strategy_scale": 0.6929140634135412,
+          "benchmark_scale": 0.17524156042324573,
+          "strategy": {
+            "annualized_arithmetic_return": 0.13485261301491197,
+            "annualized_log_growth": 0.12984946352160864,
+            "annualized_vol": 0.09999999999999998,
+            "min_period_return": -0.023882272691554365,
+            "max_period_return": 0.03263380201058026,
+            "period_count": 10817
+          },
+          "benchmark": {
+            "annualized_arithmetic_return": 0.12282981439861178,
+            "annualized_log_growth": 0.11782437455189403,
+            "annualized_vol": 0.1,
+            "min_period_return": -0.024829350220029106,
+            "max_period_return": 0.02651729906962647,
+            "period_count": 10817
+          },
+          "strategy_minus_benchmark_log_growth": 0.012025088969714617,
+          "bootstrap_diff": {
+            "iterations": 5000,
+            "seed": 20260702,
+            "block_bars": 42,
+            "paired_period_count": 10817,
+            "diff_log_growth_ci_low": -0.042052988154613564,
+            "diff_log_growth_ci_high": 0.062426302176794686,
+            "p_strategy_ge_benchmark": 0.621
+          },
+          "strategy_significantly_underperforms": false,
+          "risk_adjusted_gate_pass": true
+        },
+        {
+          "name": "both scaled to benchmark actual vol",
+          "target_vol": 0.5706408899719831,
+          "strategy_scale": 3.954050978204063,
+          "benchmark_scale": 1.0,
+          "strategy": {
+            "annualized_arithmetic_return": 0.7695241510587679,
+            "annualized_log_growth": 0.6064381411252522,
+            "annualized_vol": 0.5706408899719831,
+            "min_period_return": -0.13628201343262172,
+            "max_period_return": 0.18622181822487013,
+            "period_count": 10817
+          },
+          "benchmark": {
+            "annualized_arithmetic_return": 0.7009171460351732,
+            "annualized_log_growth": 0.5373292886269768,
+            "annualized_vol": 0.5706408899719831,
+            "min_period_return": -0.14168642506983464,
+            "max_period_return": 0.15131855140744888,
+            "period_count": 10817
+          },
+          "strategy_minus_benchmark_log_growth": 0.06910885249827536,
+          "bootstrap_diff": {
+            "iterations": 5000,
+            "seed": 20260702,
+            "block_bars": 42,
+            "paired_period_count": 10817,
+            "diff_log_growth_ci_low": -0.23849875114351765,
+            "diff_log_growth_ci_high": 0.3552446907638782,
+            "p_strategy_ge_benchmark": 0.6206
+          },
+          "strategy_significantly_underperforms": false,
+          "risk_adjusted_gate_pass": true
+        }
+      ],
+      "old_v1_4_benchmark_gate": {
+        "strategy_ending_equity": 248231.4416162631,
+        "benchmark_ending_equity": 1418594.95129868,
+        "excess_profit": -1170363.509682417,
+        "fifth_benchmark_excess_positive": false
+      },
+      "p006_existing_acceptance": {
+        "annualized_log_growth": 0.1839922380583385,
+        "ending_equity": 248231.4416162631,
+        "max_drawdown": -0.1935195874233977,
+        "expectancy_r": 0.013323654685058622,
+        "win_loss_ratio": 1.9845486433723363,
+        "trade_count": 441,
+        "risk_scale_min": 0.20587667517706704,
+        "risk_scale_mean": 0.8214616560592183,
+        "risk_scale_lt_1_bars": 4411,
+        "p_dd35": 0.0,
+        "p_dd20": 0.026,
+        "bootstrap_block_bars": 42,
+        "bootstrap_year_bars": 2191,
+        "bootstrap_iterations": 2000,
+        "bootstrap_seed": 20260612,
+        "positive_years": 4,
+        "counted_years": 4,
+        "positive_years_majority": true,
+        "walk_forward_positive_windows": 2,
+        "checks": {
+          "positive_expectancy": true,
+          "win_loss_ratio_ge_1_5": true,
+          "standard_dd35_prob_le_20pct": true,
+          "conservative_dd20_prob_le_10pct": true,
+          "annualized_log_growth_positive": true,
+          "positive_years_majority": true,
+          "walk_forward_majority_positive": true,
+          "fifth_benchmark_excess_positive": false
+        },
+        "decision_by_v1_5_position_gate": true
+      },
+      "v1_5_checks": {
+        "positive_expectancy": true,
+        "win_loss_ratio_ge_1_5": true,
+        "standard_dd35_prob_le_20pct": true,
+        "conservative_dd20_prob_le_10pct": true,
+        "annualized_log_growth_positive": true,
+        "positive_years_majority": true,
+        "walk_forward_majority_positive": true,
+        "risk_adjusted_benchmark_gate_pass": true,
+        "all_seven_v1_5_checks_pass": true
+      }
+    },
+    {
+      "position_target_vol": 0.15,
+      "reconstructed_label": "p0res006_engine_l_target_vol_15",
+      "p006_reconstruction_check": {
+        "ending_equity_abs_diff": 0.0,
+        "annualized_log_growth_abs_diff": 0.0,
+        "p_dd20_abs_diff": 0.0
+      },
+      "original_unadjusted": {
+        "strategy": {
+          "annualized_arithmetic_return": 0.23828634997691886,
+          "annualized_log_growth": 0.22303943813665922,
+          "annualized_vol": 0.17455590984128974,
+          "min_period_return": -0.042194604353836374,
+          "max_period_return": 0.057778806409839234,
+          "period_count": 10817
+        },
+        "benchmark": {
+          "annualized_arithmetic_return": 0.7009171460351732,
+          "annualized_log_growth": 0.5373292886269768,
+          "annualized_vol": 0.5706408899719831,
+          "min_period_return": -0.14168642506983464,
+          "max_period_return": 0.15131855140744888,
+          "period_count": 10817
+        },
+        "strategy_minus_benchmark_log_growth": -0.3142898504903176
+      },
+      "comparisons": [
+        {
+          "name": "both scaled to 10% annual vol",
+          "target_vol": 0.1,
+          "strategy_scale": 0.5728823509380021,
+          "benchmark_scale": 0.17524156042324573,
+          "strategy": {
+            "annualized_arithmetic_return": 0.1365100443712128,
+            "annualized_log_growth": 0.13150638009442028,
+            "annualized_vol": 0.1,
+            "min_period_return": -0.02417254413912464,
+            "max_period_return": 0.033100458450460404,
+            "period_count": 10817
+          },
+          "benchmark": {
+            "annualized_arithmetic_return": 0.12282981439861178,
+            "annualized_log_growth": 0.11782437455189403,
+            "annualized_vol": 0.1,
+            "min_period_return": -0.024829350220029106,
+            "max_period_return": 0.02651729906962647,
+            "period_count": 10817
+          },
+          "strategy_minus_benchmark_log_growth": 0.013682005542526257,
+          "bootstrap_diff": {
+            "iterations": 5000,
+            "seed": 20260702,
+            "block_bars": 42,
+            "paired_period_count": 10817,
+            "diff_log_growth_ci_low": -0.03904034615101494,
+            "diff_log_growth_ci_high": 0.06267651051381537,
+            "p_strategy_ge_benchmark": 0.644
+          },
+          "strategy_significantly_underperforms": false,
+          "risk_adjusted_gate_pass": true
+        },
+        {
+          "name": "both scaled to benchmark actual vol",
+          "target_vol": 0.5706408899719831,
+          "strategy_scale": 3.2691009458850346,
+          "benchmark_scale": 1.0,
+          "strategy": {
+            "annualized_arithmetic_return": 0.778982132101038,
+            "annualized_log_growth": 0.6158143956110095,
+            "annualized_vol": 0.5706408899719831,
+            "min_period_return": -0.1379384210043713,
+            "max_period_return": 0.18888475068651375,
+            "period_count": 10817
+          },
+          "benchmark": {
+            "annualized_arithmetic_return": 0.7009171460351732,
+            "annualized_log_growth": 0.5373292886269768,
+            "annualized_vol": 0.5706408899719831,
+            "min_period_return": -0.14168642506983464,
+            "max_period_return": 0.15131855140744888,
+            "period_count": 10817
+          },
+          "strategy_minus_benchmark_log_growth": 0.07848510698403266,
+          "bootstrap_diff": {
+            "iterations": 5000,
+            "seed": 20260702,
+            "block_bars": 42,
+            "paired_period_count": 10817,
+            "diff_log_growth_ci_low": -0.2245542505585574,
+            "diff_log_growth_ci_high": 0.3538741055588287,
+            "p_strategy_ge_benchmark": 0.645
+          },
+          "strategy_significantly_underperforms": false,
+          "risk_adjusted_gate_pass": true
+        }
+      ],
+      "old_v1_4_benchmark_gate": {
+        "strategy_ending_equity": 300693.2450783539,
+        "benchmark_ending_equity": 1418594.95129868,
+        "excess_profit": -1117901.706220326,
+        "fifth_benchmark_excess_positive": false
+      },
+      "p006_existing_acceptance": {
+        "annualized_log_growth": 0.22279228020355038,
+        "ending_equity": 300693.2450783539,
+        "max_drawdown": -0.2192782275444759,
+        "expectancy_r": 0.013840898572022848,
+        "win_loss_ratio": 2.011690674132505,
+        "trade_count": 441,
+        "risk_scale_min": 0.25214869518660005,
+        "risk_scale_mean": 0.8706018687247737,
+        "risk_scale_lt_1_bars": 3548,
+        "p_dd35": 0.0,
+        "p_dd20": 0.0725,
+        "bootstrap_block_bars": 42,
+        "bootstrap_year_bars": 2191,
+        "bootstrap_iterations": 2000,
+        "bootstrap_seed": 20260612,
+        "positive_years": 4,
+        "counted_years": 4,
+        "positive_years_majority": true,
+        "walk_forward_positive_windows": 2,
+        "checks": {
+          "positive_expectancy": true,
+          "win_loss_ratio_ge_1_5": true,
+          "standard_dd35_prob_le_20pct": true,
+          "conservative_dd20_prob_le_10pct": true,
+          "annualized_log_growth_positive": true,
+          "positive_years_majority": true,
+          "walk_forward_majority_positive": true,
+          "fifth_benchmark_excess_positive": false
+        },
+        "decision_by_v1_5_position_gate": true
+      },
+      "v1_5_checks": {
+        "positive_expectancy": true,
+        "win_loss_ratio_ge_1_5": true,
+        "standard_dd35_prob_le_20pct": true,
+        "conservative_dd20_prob_le_10pct": true,
+        "annualized_log_growth_positive": true,
+        "positive_years_majority": true,
+        "walk_forward_majority_positive": true,
+        "risk_adjusted_benchmark_gate_pass": true,
+        "all_seven_v1_5_checks_pass": true
+      }
+    }
+  ],
+  "passive_benchmark_gate_verdict": "RISK_ADJUSTED_GATE_NOT_CONFIRMED",
+  "ten_pct_all_seven_v1_5_checks_pass": true,
+  "final_verdict_text": "TSMOM引擎L·10%目标波动率点＝七项检查全过，构成DEC-092后首个重新达标候选，是否晋级正常验收/paper-forward流程待Claude/Founder决定。"
+}

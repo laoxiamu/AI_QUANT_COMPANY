@@ -1,0 +1,84 @@
+{
+ "scan_utc": "20260712_0658",
+ "n_prescreen": 9,
+ "candidates": [
+  {
+   "symbol": "HOTUSDT",
+   "funding_8h": -0.00551227,
+   "chg24h_pct": 5.639,
+   "quote_vol_usdt": 15467097.8345323,
+   "oi_24h_ago_usdt": 1792182.87688329,
+   "oi_now_usdt": 2191179.2193016,
+   "oi_24h_ratio": 1.223
+  },
+  {
+   "symbol": "TUSDT",
+   "funding_8h": -0.00536688,
+   "chg24h_pct": 49.21,
+   "quote_vol_usdt": 531348015.92185,
+   "oi_24h_ago_usdt": 852656.36676564,
+   "oi_now_usdt": 13911190.996498,
+   "oi_24h_ratio": 16.315
+  },
+  {
+   "symbol": "VANRYUSDT",
+   "funding_8h": -0.00512083,
+   "chg24h_pct": 14.163,
+   "quote_vol_usdt": 57487555.958521,
+   "oi_24h_ago_usdt": 6551180.26693629,
+   "oi_now_usdt": 6575307.613968,
+   "oi_24h_ratio": 1.004
+  },
+  {
+   "symbol": "GWEIUSDT",
+   "funding_8h": -0.00454247,
+   "chg24h_pct": 3.697,
+   "quote_vol_usdt": 32226507.277546,
+   "oi_24h_ago_usdt": 8756142.20328656,
+   "oi_now_usdt": 9348351.809,
+   "oi_24h_ratio": 1.068
+  },
+  {
+   "symbol": "SXTUSDT",
+   "funding_8h": -0.00417443,
+   "chg24h_pct": 20.578,
+   "quote_vol_usdt": 213454145.919924,
+   "oi_24h_ago_usdt": 1298551.29155816,
+   "oi_now_usdt": 4659762.056895,
+   "oi_24h_ratio": 3.588
+  },
+  {
+   "symbol": "ANKRUSDT",
+   "funding_8h": -0.0030119,
+   "chg24h_pct": 3.123,
+   "quote_vol_usdt": 25124394.568058,
+   "oi_24h_ago_usdt": 1186992.687012,
+   "oi_now_usdt": 1969296.27667191,
+   "oi_24h_ratio": 1.659
+  },
+  {
+   "symbol": "EVAAUSDT",
+   "funding_8h": 0.00132748,
+   "chg24h_pct": -33.879,
+   "quote_vol_usdt": 629281107.51769,
+   "oi_24h_ago_usdt": 21287347.11696768,
+   "oi_now_usdt": 14123292.6382502,
+   "oi_24h_ratio": 0.663
+  },
+  {
+   "symbol": "LABUSDT",
+   "funding_8h": 0.00021154,
+   "chg24h_pct": -36.552,
+   "quote_vol_usdt": 462406410.7553,
+   "oi_24h_ago_usdt": 20508649.30311162,
+   "oi_now_usdt": 20441332.408312,
+   "oi_24h_ratio": 0.997
+  },
+  {
+   "symbol": "BUSDT",
+   "funding_8h": 5e-05,
+   "chg24h_pct": -34.61,
+   "quote_vol_usdt": 291757641.2406
+  }
+ ]
+}

@@ -1,0 +1,207 @@
+{
+  "task_id": "P1-RES-039-PIPELINE-S3",
+  "generated_at": "2026-06-27T12:06:24Z",
+  "discipline": {
+    "holdout_touched": false,
+    "paid_api_used": false,
+    "article_samples_used_as_census": false,
+    "parameter_tuning_performed": false
+  },
+  "universe": [
+    "AAVE",
+    "ATOM",
+    "AVAX",
+    "AXS",
+    "COMP",
+    "CRV",
+    "DASH",
+    "DOT",
+    "EGLD",
+    "ENJ",
+    "ETH",
+    "FTM",
+    "ICX",
+    "KNC",
+    "KSM",
+    "LINK",
+    "LRC",
+    "NEAR",
+    "REN",
+    "RUNE",
+    "SNX",
+    "SUSHI",
+    "THETA",
+    "TRX",
+    "UNI",
+    "XLM",
+    "XMR",
+    "XTZ",
+    "YFI",
+    "ZEC",
+    "ZRX"
+  ],
+  "source_audit": [
+    {
+      "url": "https://api.llama.fi/protocols",
+      "ok": true,
+      "status": 200,
+      "size_bytes": 8261411,
+      "sha256": "34ebcb548f459dc1afe36519706951a85730ca0a09f618ee974df25bb30f9a98",
+      "sample": "[{\"id\":\"2269\",\"name\":\"Binance CEX\",\"address\":null,\"symbol\":\"BNB\",\"url\":\"https://www.binance.com\",\"description\":\"Binance is a cryptocurrency exchange which is the largest exchange in the world in terms of daily trading volume of cryptocurrencies\",\"chain\":\"Multi-Chain\",\"logo\":\"https://icons.llamao.fi/",
+      "error_type": null,
+      "error": null,
+      "name": "DefiLlama protocols API control",
+      "expected": "reachable free API, not unlock events",
+      "signals": {
+        "payment_required": false,
+        "not_found": false,
+        "tokenomist_api_banner": false,
+        "has_unlock_keywords": false,
+        "has_probable_event_json": false,
+        "has_article_cards": false
+      },
+      "free_event_table_status": "no_structured_events_detected"
+    },
+    {
+      "url": "https://api.llama.fi/emissions",
+      "ok": true,
+      "status": 402,
+      "size_bytes": 66,
+      "sha256": "77af6ecfa9bf69c017f1d642d816fa1db0e8bdb8a5dd77009c8454b6441c0f2a",
+      "sample": "Upgrade to the paid API plan at https://defillama.com/subscription",
+      "error_type": null,
+      "error": null,
+      "name": "DefiLlama emissions API",
+      "expected": "structured unlock/emissions API if free",
+      "signals": {
+        "payment_required": true,
+        "not_found": false,
+        "tokenomist_api_banner": false,
+        "has_unlock_keywords": false,
+        "has_probable_event_json": false,
+        "has_article_cards": false
+      },
+      "free_event_table_status": "blocked_paid_api"
+    },
+    {
+      "url": "https://api.llama.fi/unlocks",
+      "ok": true,
+      "status": 404,
+      "size_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sample": "",
+      "error_type": null,
+      "error": null,
+      "name": "DefiLlama unlocks API guess",
+      "expected": "structured unlock API if exposed",
+      "signals": {
+        "payment_required": false,
+        "not_found": true,
+        "tokenomist_api_banner": false,
+        "has_unlock_keywords": false,
+        "has_probable_event_json": false,
+        "has_article_cards": false
+      },
+      "free_event_table_status": "not_found"
+    },
+    {
+      "url": "https://defillama.com/unlocks",
+      "ok": false,
+      "status": null,
+      "size_bytes": 0,
+      "sha256": null,
+      "sample": "",
+      "error_type": "SSLError",
+      "error": "HTTPSConnectionPool(host='defillama.com', port=443): Max retries exceeded with url: /unlocks (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1028)')))",
+      "name": "DefiLlama unlocks page",
+      "expected": "public dashboard page",
+      "signals": {
+        "payment_required": false,
+        "not_found": false,
+        "tokenomist_api_banner": false,
+        "has_unlock_keywords": false,
+        "has_probable_event_json": false,
+        "has_article_cards": false
+      },
+      "free_event_table_status": "no_structured_events_detected"
+    },
+    {
+      "url": "https://tokenomist.ai/?sort-key=upcomingEvent.dateUnix&sort-direction=asc&page-size=25&watchlist=false",
+      "ok": true,
+      "status": 200,
+      "size_bytes": 725339,
+      "sha256": "213ae80830a874830c42589da8b3d7900e3b110dbc903a801770ead9869b7d92",
+      "sample": "<!DOCTYPE html><html lang=\"en\" data-scroll-behavior=\"smooth\" class=\"inter_a286ccd6-module__kdUgHa__variable dm_mono_49de4911-module__mPbA6a__variable scroll-smooth\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><meta name=\"viewport\" content=\"width=",
+      "error_type": null,
+      "error": null,
+      "name": "Tokenomist overview page",
+      "expected": "guest dashboard / upcoming events only if embedded",
+      "signals": {
+        "payment_required": false,
+        "not_found": true,
+        "tokenomist_api_banner": true,
+        "has_unlock_keywords": true,
+        "has_probable_event_json": false,
+        "has_article_cards": true
+      },
+      "free_event_table_status": "not_found"
+    },
+    {
+      "url": "https://tokenomist.ai/aave/unlock-events",
+      "ok": true,
+      "status": 200,
+      "size_bytes": 539980,
+      "sha256": "c18eeffbb4eb2e846bccc73660008d0d054286859e235e928e6df95a76f9d792",
+      "sample": "<!DOCTYPE html><html lang=\"en\" data-scroll-behavior=\"smooth\" class=\"inter_a286ccd6-module__kdUgHa__variable dm_mono_49de4911-module__mPbA6a__variable scroll-smooth\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><meta name=\"viewport\" content=\"width=",
+      "error_type": null,
+      "error": null,
+      "name": "Tokenomist AAVE token unlock page",
+      "expected": "single-token guest visible page, not full universe",
+      "signals": {
+        "payment_required": false,
+        "not_found": true,
+        "tokenomist_api_banner": true,
+        "has_unlock_keywords": true,
+        "has_probable_event_json": false,
+        "has_article_cards": true
+      },
+      "free_event_table_status": "not_found"
+    },
+    {
+      "url": "https://tokenomist.ai/api-documents/unlock-events/v5",
+      "ok": true,
+      "status": 404,
+      "size_bytes": 130294,
+      "sha256": "6b0faeae43cee03e043904a7ffc48defe768bdc169bf81a15b896c57fef58299",
+      "sample": "<!DOCTYPE html><html id=\"__next_error__\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"preload\" as=\"script\" fetchPriority=\"low\" href=\"https://space.tokenomist.ai/bucket/20af86a/_next/static/chunks/0snnyrl2u-ixn.js\"/><script src=\"https://",
+      "error_type": null,
+      "error": null,
+      "name": "Tokenomist API docs path",
+      "expected": "docs path if public",
+      "signals": {
+        "payment_required": false,
+        "not_found": true,
+        "tokenomist_api_banner": false,
+        "has_unlock_keywords": true,
+        "has_probable_event_json": false,
+        "has_article_cards": true
+      },
+      "free_event_table_status": "not_found"
+    }
+  ],
+  "free_structured_events": {
+    "event_file": "06_RESEARCH/CODE/output/p1pipe_s3_free_unlock_events.csv",
+    "events": [],
+    "event_count": 0,
+    "reason_empty": "No reproducible free full-history unlock event table was available. DefiLlama emissions returned 402, Tokenomist public pages are limited/guest UI or 404 for API docs, and article/research cards were excluded by task instruction."
+  },
+  "overlap_census": {
+    "price_overlap_episodes": 0,
+    "price_oi_funding_overlap_episodes": 0,
+    "episode_ge_50": false,
+    "episode_ge_100": false,
+    "episode_ge_300": false,
+    "eligible_for_60_20_20": false,
+    "scale_bucket_distribution": {}
+  }
+}

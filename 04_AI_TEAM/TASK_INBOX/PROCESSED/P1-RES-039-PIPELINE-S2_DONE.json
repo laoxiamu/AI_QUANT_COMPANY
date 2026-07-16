@@ -1,0 +1,8 @@
+{
+  "task_id": "P1-RES-039-PIPELINE-S2",
+  "completed_at": "2026-06-27T11:57:07Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_P1PIPE_S2_OIFUNDING.md",
+  "next_task": "P1-RES-039-PIPELINE-S3",
+  "notes": "Step 2通过但带数据边界：31个symbol均有OI/funding输出；29个OI近端可用；25个OI+funding近端完整可用；FTM/REN等缺口已在manifest披露。"
+}

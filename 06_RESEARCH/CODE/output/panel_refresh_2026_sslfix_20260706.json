@@ -1,0 +1,168 @@
+{
+  "ALGOUSDT": {
+    "symbol": "ALGOUSDT",
+    "old_panel": {
+      "rows": 9826,
+      "start": "2020-06-16 08:00:00",
+      "end": "2024-12-09 20:00:00",
+      "gaps_over_4h": 0,
+      "duplicate_timestamps": 0
+    },
+    "download_start": "2024-12-10 00:00:00",
+    "download_end": "2026-06-22 00:00:00",
+    "source": "binance_fapi",
+    "status": "downloaded",
+    "errors": [],
+    "new_rows_downloaded": 3355,
+    "output_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/ALGOUSDT_4H.csv",
+    "combined_panel_summary": {
+      "rows": 13181,
+      "start": "2020-06-16 08:00:00",
+      "end": "2026-06-22 00:00:00",
+      "gaps_over_4h": 0,
+      "duplicate_timestamps": 0
+    }
+  },
+  "BTCUSDT": {
+    "symbol": "BTCUSDT",
+    "old_panel": {
+      "rows": 0,
+      "start": null,
+      "end": null,
+      "gaps_over_4h": null,
+      "duplicate_timestamps": 0
+    },
+    "download_start": "2024-12-09 00:00:00",
+    "download_end": "2026-06-22 00:00:00",
+    "source": null,
+    "status": "failed",
+    "errors": [
+      {
+        "source": "binance_fapi",
+        "error_type": "URLError",
+        "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1028)>"
+      },
+      {
+        "source": "bybit_linear",
+        "error_type": "URLError",
+        "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1028)>"
+      }
+    ],
+    "new_rows_downloaded": 0,
+    "output_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/BTCUSDT_4H.csv",
+    "combined_panel_summary": {
+      "rows": 0,
+      "start": null,
+      "end": null,
+      "gaps_over_4h": null,
+      "duplicate_timestamps": 0
+    }
+  },
+  "ETCUSDT": {
+    "symbol": "ETCUSDT",
+    "old_panel": {
+      "rows": 10738,
+      "start": "2020-01-16 08:00:00",
+      "end": "2024-12-09 20:00:00",
+      "gaps_over_4h": 0,
+      "duplicate_timestamps": 0
+    },
+    "download_start": "2024-12-10 00:00:00",
+    "download_end": "2026-06-22 00:00:00",
+    "source": null,
+    "status": "failed",
+    "errors": [
+      {
+        "source": "binance_fapi",
+        "error_type": "URLError",
+        "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1028)>"
+      },
+      {
+        "source": "bybit_linear",
+        "error_type": "URLError",
+        "error": "<urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1028)>"
+      }
+    ],
+    "new_rows_downloaded": 0,
+    "output_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/ETCUSDT_4H.csv",
+    "combined_panel_summary": {
+      "rows": 10738,
+      "start": "2020-01-16 08:00:00",
+      "end": "2024-12-09 20:00:00",
+      "gaps_over_4h": 0,
+      "duplicate_timestamps": 0
+    }
+  },
+  "FILUSDT": {
+    "symbol": "FILUSDT",
+    "old_panel": {
+      "rows": 9065,
+      "start": "2020-10-16 04:00:00",
+      "end": "2024-12-09 20:00:00",
+      "gaps_over_4h": 2,
+      "duplicate_timestamps": 0
+    },
+    "download_start": "2024-12-10 00:00:00",
+    "download_end": "2026-06-22 00:00:00",
+    "source": "binance_fapi",
+    "status": "downloaded",
+    "errors": [],
+    "new_rows_downloaded": 3355,
+    "output_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/FILUSDT_4H.csv",
+    "combined_panel_summary": {
+      "rows": 12420,
+      "start": "2020-10-16 04:00:00",
+      "end": "2026-06-22 00:00:00",
+      "gaps_over_4h": 2,
+      "duplicate_timestamps": 0
+    }
+  },
+  "MKRUSDT": {
+    "symbol": "MKRUSDT",
+    "old_panel": {
+      "rows": 9449,
+      "start": "2020-08-13 04:00:00",
+      "end": "2024-12-09 20:00:00",
+      "gaps_over_4h": 2,
+      "duplicate_timestamps": 0
+    },
+    "download_start": "2024-12-10 00:00:00",
+    "download_end": "2026-06-22 00:00:00",
+    "source": "binance_fapi",
+    "status": "downloaded",
+    "errors": [],
+    "new_rows_downloaded": 3355,
+    "output_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/MKRUSDT_4H.csv",
+    "combined_panel_summary": {
+      "rows": 12804,
+      "start": "2020-08-13 04:00:00",
+      "end": "2026-06-22 00:00:00",
+      "gaps_over_4h": 2,
+      "duplicate_timestamps": 0
+    }
+  },
+  "OMGUSDT": {
+    "symbol": "OMGUSDT",
+    "old_panel": {
+      "rows": 9700,
+      "start": "2020-07-02 08:00:00",
+      "end": "2024-12-09 20:00:00",
+      "gaps_over_4h": 2,
+      "duplicate_timestamps": 0
+    },
+    "download_start": "2024-12-10 00:00:00",
+    "download_end": "2026-06-22 00:00:00",
+    "source": "binance_fapi",
+    "status": "downloaded",
+    "errors": [],
+    "new_rows_downloaded": 3355,
+    "output_file": "06_RESEARCH/DATA/FUTURES_EXPANDED_2026/OMGUSDT_4H.csv",
+    "combined_panel_summary": {
+      "rows": 13055,
+      "start": "2020-07-02 08:00:00",
+      "end": "2026-06-22 00:00:00",
+      "gaps_over_4h": 2,
+      "duplicate_timestamps": 0
+    }
+  }
+}

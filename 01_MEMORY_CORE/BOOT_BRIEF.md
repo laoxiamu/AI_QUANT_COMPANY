@@ -1,13 +1,12 @@
 # BOOT_BRIEF —— 精简启动简报（新对话先读这一份，省 token）
 
-> ⚠️ 2026-06-21 顶层重平衡（DEC-082）：研究=唯一P0/治理压一次性卫生/自动化全DEFER；month-30%出研究验收(=资本愿望)；P1-RES-034拆B0-B4单变量序列；杠杆=过门后风险测试非Alpha来源。carry仍Dead(DEC-079)。本文件已同步。
-
 **性质：** 派生摘要，非权威源（当前焦点=`CURRENT_STATE.md`；详细任务=`PROJECT_TASK_PLAN.md`；决策=`DECISION_LOG.md`）。预算 ≤60 行。
-**最后更新：** 2026-06-21（治理分档DEC-083；最新DEC=DEC-083）
+**最后更新：** 2026-07-15（L1深度审计完成，见"一句话现状"末尾增量2；此前2026-07-06：DEC-092触发的诊断复查**全部完成**：TSMOM引擎L七项检查全过后经Holdout盲验**FAIL判死（2026-07-12）**；#X3维持KILL；价格面板37/37已修复。**DEC-093（2026-07-12）：Founder已批消耗Holdout盲验，P0-RES-015当日执行并验收=**FAIL：引擎L判死（H1 E[R]=-0.63%<0生存底线/H2 -6.86%<0，151笔非低功效），TSMOM家族永闭，Holdout消耗封账，量化侧活体候选归零**；死因=样本外premium消失+成本拖累≈11.6%/年；同日失败风险专项评估落盘`STAGE_AUDITS/FAILURE_RISK_REVIEW_20260712.md`（结论：爆炸式失败概率极低；时间盒内未证实edge概率~60-75%；最大失败驱动=执行吞吐）。教训：** Founder追问"codex任务正常吗"发现此前多次"已派Codex"只是写了任务书未实际执行，已核实+补救，今后"已派"必须附真实进程/日志证据。最新DEC=DEC-094）
 
 ## 一句话现状
 
-Phase 1。**carry=Dead（DEC-079）**。regime-adaptive=**Candidate（待过B0机制门/B1数据门，非已验证主线）**。**DEC-082顶层重平衡：研究=唯一P0轨/治理压一次性卫生(P0-C封顶1包)/自动化全DEFER；month-30%=资本愿望非验收门；杠杆=过门后风险测试非Alpha来源**。数据✅就绪(127 parquet)。🟡下一步=**P0-C治理卫生(先行,state_check+四份规则文件冲突)→起草B0机制卡**。P1-RES-034原捆绑描述已冻结,拆B0→B1→B2(1x)→B3→B4。A-1 Dead。强平采集器收数中。
+Phase 1，edge=0（唯一P0）。**carry/A-1/A-2/#X2/#X3/TSMOM定仓穷尽=Dead**（免费价格软-payer族已判定耗尽，收窄口径=死的是普通价格形态+低维动量，结构数据+事件交互未试完）。forced-flow v2/P1解锁PARK待数据（2026-07-02核实：价格面板早已刷新至6/22但此前未同步，"无重叠"判断过期，实际有约10天重叠增长中仍不够统计检验；付费数据核实不划算）。**量化主动猎暂停（Founder认可），投研线领跑**（DEC-091四层流水线：投研发现→前向纸面→量化验证→核心资本）。权威路线图见 `OPPORTUNITY_MAP_STATUS.md §🧭`（P0 forced-flow v2/P1事件×资金流/P2山寨痕迹沙盒/P3美股事件/蒸馏支线/三账户分层）。
+**当前恢复点（2026-07-06）**：①grill-me/Tokenomist/强平同步/fable两轮审查落地DEC-092等此前工作已归档，见`CURRENT_STATE.md §1b/§1c`；②**DEC-092诊断复查已实际执行**（此前只写了任务书未真正派发，Founder追问后核实并补派）：**P0-RES-006 TSMOM引擎L=EXISTS_FEASIBLE_POSITION_SIZING**（10%目标波动率点6/7项检查通过，DD/growth/WF/赢亏比/正期望全过，唯一未过=旧口径基准比较，P0-RES-014用v1.5风险调整法重算中）——**DEC-092后首个有希望复活的候选，非已晋级**；**P0-RES-007 #X3=KILL_MAINTAINED**（风险调整基准门未确认但主死因独立成立）；③**P0-RES-008价格面板SSL修复已完成**（37/37symbol续到2026-06-22，⚠️新发现BTCUSDT历史仅1.5年远浅于其余~6年，原面板从未含BTCUSDT，另案评估）；④**侦察积压**：P0-RES-009 Hyperliquid已完成（2026-07-06，结论=非数据墙直接解法，留零成本平行验证线）；P0-RES-010~012未派、本周清零（2026-07-15审计R7）、013存档；高频thesis模板(24-72h窗)本周待起草；⑤THESIS #001/#002已结算：方向命中1/2（详见CURRENT_STATE §1b⑦），YZY(T0=7/17)待~7/14冻结。**遗留**：小红书`x-reader login xhs`待Founder配合登录。详细过程见 `CURRENT_STATE.md §1b/§1c`。**2026-07-15增量：THESIS_003/004已结算=均部分命中2/3（003窗末-12.2%方向败/004窗末+8.3%方向中；方向累计2/4=50%与随机无异，样本小且003/004非独立）；YZY弃（真实流动性$1.8k/日不可执行）；拒绝分母累计7条；模板补第7条(字段11禁"期"写绝对时间戳)；取数走通道B(SG)；进度2/10-20剩~22天需新候选；**DEC-094=每日巡检定时任务已建（10:01扫描+登记+结算+watchlist，纸面only），进度脱离人工发起**；DEC-093批Holdout盲验→P0-RES-015当日执行完毕=**FAIL，引擎L判死，TSMOM家族永闭**；失败风险评估已落盘（引擎L死后定义2概率上修至~75-85%，见附录）。最新DEC=DEC-094。**增量2（2026-07-15 L1深度审计）**：路线无偏航；🔴git 24天未提交已补commit+成本盒仪表34天未更新（待Founder补账单）；🟠强平本地同步二次断裂14天已重启rsync（周报加滞后告警R2）、每日巡检待Founder点Run now、权威文件4处过时段+记忆TSMOM变体冲突已修；替代路径=不换路线换执行密度（面板月刷/扫描源拓宽/侦察清零）；处方R1-R7见`STAGE_AUDITS/L1_DEEP_AUDIT_CLAUDE_2026-07-15.md`。**
 
 ## 目标函数（DEC-063，原则层冻结）
 
@@ -23,12 +22,12 @@ Phase 1。**carry=Dead（DEC-079）**。regime-adaptive=**Candidate（待过B0�
 
 ## 在途与等待（2026-06-20 方向重置后）
 
-- **🟡唯一研究主线（DEC-082拆分）：** regime-adaptive = B0机制卡(可证伪硬验收,不碰Holdout/不调参)→B1标签审计→B2单变量门控(1x)→B3仓位→B4杠杆风险测试。任一步不过=回墓园/pivot,禁改参数续命。
-- **🟡执行顺序：** P0-C一次性治理卫生(先行,封顶1包:state_check修复+AGENTS/CLAUDE/SYSTEM_RULES/AGENT_REGISTRY硬冲突裁决)→验收后起草B0。
-- **🧊 DEFER（DEC-082,解冻=一条edge过B2或Founder时间实测为瓶颈）：** Spec Kit初始化/ADR-业务项/C4全套/Orchestrator/Strategy Governor引擎/Web/Discord/七维路由/九域记分卡。
+- **🟡P0研究主线（DEC-088）：** 加密合约forced-flow/payer-flow v2 = B0机制卡(单一方向预登记,弃价格动量,funding极端/OI重置/强平簇/taker失衡)→B1-KILLCARD(默认KILL基线,成本/数据/反A-1/反Sweep)→B2(1x)→B3入场优化→B4杠杆风险测试。任一步不过=回墓园/pivot,禁改参数续命。强平清算路径免费阶段A数据预筛(Coinalyze/Tardis/Bybit自采)并入数据层。
+- **🟡执行顺序：** ✅三免费价格线连灭(TSMOM/#X2/#X3)→✅DEC-087目标函数修订→✅DEC-088战略复盘三方收敛+路线图→🟡**起草P0 forced-flow v2 B0卡**→B1-KILLCARD→…。P1事件×资金流升一等(P0后或并行)。
+- **🧊 DEFER（DEC-082/088,解冻=一条edge过B2或Founder时间实测为瓶颈）：** Spec Kit初始化/ADR-业务项/C4全套/Orchestrator/Strategy Governor引擎/Web/Discord/七维路由/九域记分卡。
 - **🔵知识积压：** OSS-001 TOOLS_KNOWLEDGE 6项更新待执行(非阻塞)。
-- **⚪等待 Founder D（1项）：** ④公司终态/阶段门（非紧急,待B0后再谈）。
-- **详细任务：** `00_PROJECT_MANAGEMENT/PROJECT_TASK_PLAN.md`。
+- **⚪等待 Founder D（1项）：** ④公司终态/阶段门（非紧急,待edge后再谈）。
+- **详细任务：** `00_PROJECT_MANAGEMENT/PROJECT_TASK_PLAN.md`；权威路线图 `OPPORTUNITY_MAP_STATUS.md §🧭`。
 
 ## 公司 OS 全局平衡检查（每次开局强制执行，8维度）
 
@@ -36,7 +35,7 @@ Phase 1。**carry=Dead（DEC-079）**。regime-adaptive=**Candidate（待过B0�
 
 | 维度 | 当前状态 | 警戒 |
 |---|---|---|
-| ①量化研究 | regime-adaptive=Candidate(待过B0机制门)；carry Dead；A-1 Dead；TSMOM Baseline | ⚠️edge=0，唯一P0 |
+| ①量化研究 | P0=forced-flow/payer-flow v2(PARK待数据)；carry/A-1/A-2/#X2/#X3 Dead；**TSMOM全家族=Dead（引擎L Holdout盲验FAIL，2026-07-12永闭）；量化侧活体候选=0，投研线领跑** | ⚠️"过回测"≠"edge证实"，勿冒进宣布已找到edge |
 | ②生产工程基础设施 | E1-E4 草图已完成，生产平台未建 | ⚠️ 待实现 |
 | ③实时风控执行层 | 规则与架构草图已有，代码层未实现 | ⚠️ 待实现 |
 | ④运营工作流 | 责任与流程未形成可运行闭环 | ⚠️ 待建设 |
@@ -53,8 +52,8 @@ Phase 1。**carry=Dead（DEC-079）**。regime-adaptive=**Candidate（待过B0�
 
 ## 细节指针
 
-CURRENT_STATE v4.3（当前焦点；§4 指向任务权威）｜**PROJECT_TASK_PLAN（唯一详细任务权威）**｜**§1b=活动工作区（Claude 对话级在途）**｜DECISION_LOG（索引→DEC-083 为最新）｜OPPORTUNITY_MAP_STATUS｜直调配方 `04_AI_TEAM/CODEX_DIRECT_CALL_RUNBOOK.md`｜启动协议见 CLAUDE.md v2.4。
-**新协议**：Codex完成任务→写04_AI_TEAM/TASK_INBOX/{ID}_DONE.json→15min调度器自动拾取→派发下一步（见TASK_INBOX/README.md）。
+CURRENT_STATE v5.0（当前焦点；§4 指向任务权威）｜**PROJECT_TASK_PLAN（唯一详细任务权威）**｜**OPPORTUNITY_MAP_STATUS §🧭=权威路线图**｜**§1b=活动工作区/§1c=对话级建议暂存**｜DECISION_LOG（索引→**DEC-094** 为最新）｜直调配方 `04_AI_TEAM/CODEX_DIRECT_CALL_RUNBOOK.md`（含DC稳定配方）｜启动协议见 CLAUDE.md v2.4。
+**Codex闭环实况（2026-07-15审计更正）**：Codex完成→写04_AI_TEAM/TASK_INBOX/{ID}_DONE.json→**人工/VM轮询验收**；15min自动调度器`codex-task-inbox-checker`已于2026-06-19起disabled，勿再当现行协议引用。
 
 **§1b 制度**：Founder 主动打断对话时，Claude 在结束前必须更新 §1b（已完成什么、剩余什么、恢复点在哪）。新对话开局如 §1b 有内容，优先恢复，不重新分析。
-**§1c 制度（DEC-073）**：对话中 Claude 提出的任何建议须当场写入 §1c；Founder 确认→升入§4；否决→清除；未响应=下次开局必提。DEC-073=全周期决策记录规范（§1c制度来源）；**最新=DEC-083**。
+**§1c 制度（DEC-073）**：对话中 Claude 提出的任何建议须当场写入 §1c；Founder 确认→升入§4；否决→清除；未响应=下次开局必提。DEC-073=全周期决策记录规范（§1c制度来源）；**最新=DEC-094**。

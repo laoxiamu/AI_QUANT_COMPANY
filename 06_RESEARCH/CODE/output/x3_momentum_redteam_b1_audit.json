@@ -1,0 +1,818 @@
+{
+  "task_id": "P1-RES-038-B1",
+  "generated_at_utc": "2026-06-22T03:50:04Z",
+  "seed": 20260622,
+  "protocol": {
+    "lookback_days": 30,
+    "groups": "top/bottom terciles",
+    "frequencies": [
+      "daily",
+      "weekly"
+    ],
+    "cost_cases_per_fill": {
+      "maker_low_with_adverse_0_15pct": 0.15,
+      "protocol_base_0_20pct": 0.2,
+      "alt_taker_high_0_30pct": 0.3
+    },
+    "holdout_read": false,
+    "parameter_search": false
+  },
+  "data_inventory": {
+    "data_path": "06_RESEARCH/DATA/FUTURES_EXPANDED",
+    "csv_files": 35,
+    "symbols": [
+      "AAVEUSDT",
+      "ALGOUSDT",
+      "ATOMUSDT",
+      "AVAXUSDT",
+      "AXSUSDT",
+      "COMPUSDT",
+      "CRVUSDT",
+      "DASHUSDT",
+      "DOTUSDT",
+      "EGLDUSDT",
+      "ENJUSDT",
+      "ETCUSDT",
+      "FILUSDT",
+      "FTMUSDT",
+      "ICXUSDT",
+      "KNCUSDT",
+      "KSMUSDT",
+      "LINKUSDT",
+      "LRCUSDT",
+      "MKRUSDT",
+      "NEARUSDT",
+      "OMGUSDT",
+      "RENUSDT",
+      "RUNEUSDT",
+      "SNXUSDT",
+      "SUSHIUSDT",
+      "THETAUSDT",
+      "TRXUSDT",
+      "UNIUSDT",
+      "XLMUSDT",
+      "XMRUSDT",
+      "XTZUSDT",
+      "YFIUSDT",
+      "ZECUSDT",
+      "ZRXUSDT"
+    ],
+    "min_rows": 8885,
+    "max_rows": 10738,
+    "min_start": "2020-01-15 08:00:00",
+    "max_start": "2020-11-20 04:00:00",
+    "common_end": "2024-12-09 20:00:00",
+    "rows": [
+      {
+        "symbol": "AAVEUSDT",
+        "rows": 9095,
+        "start": "2020-10-16 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "ALGOUSDT",
+        "rows": 9826,
+        "start": "2020-06-16 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "ATOMUSDT",
+        "rows": 10605,
+        "start": "2020-02-07 12:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "AVAXUSDT",
+        "rows": 9233,
+        "start": "2020-09-23 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "AXSUSDT",
+        "rows": 8885,
+        "start": "2020-11-20 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "COMPUSDT",
+        "rows": 9742,
+        "start": "2020-06-30 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "CRVUSDT",
+        "rows": 9365,
+        "start": "2020-09-01 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "DASHUSDT",
+        "rows": 10624,
+        "start": "2020-02-04 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "DOTUSDT",
+        "rows": 9425,
+        "start": "2020-08-22 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "EGLDUSDT",
+        "rows": 9287,
+        "start": "2020-09-14 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "ENJUSDT",
+        "rows": 9197,
+        "start": "2020-09-29 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "ETCUSDT",
+        "rows": 10738,
+        "start": "2020-01-16 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "FILUSDT",
+        "rows": 9065,
+        "start": "2020-10-16 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "FTMUSDT",
+        "rows": 9197,
+        "start": "2020-09-24 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "ICXUSDT",
+        "rows": 9281,
+        "start": "2020-09-15 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "KNCUSDT",
+        "rows": 9760,
+        "start": "2020-06-22 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "KSMUSDT",
+        "rows": 9077,
+        "start": "2020-10-14 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "LINKUSDT",
+        "rows": 10732,
+        "start": "2020-01-17 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "LRCUSDT",
+        "rows": 9047,
+        "start": "2020-10-19 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "MKRUSDT",
+        "rows": 9449,
+        "start": "2020-08-13 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "NEARUSDT",
+        "rows": 9070,
+        "start": "2020-10-15 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "OMGUSDT",
+        "rows": 9700,
+        "start": "2020-07-02 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "RENUSDT",
+        "rows": 9113,
+        "start": "2020-10-13 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "RUNEUSDT",
+        "rows": 9347,
+        "start": "2020-09-04 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "SNXUSDT",
+        "rows": 9473,
+        "start": "2020-08-14 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "SUSHIUSDT",
+        "rows": 9317,
+        "start": "2020-09-04 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "THETAUSDT",
+        "rows": 9946,
+        "start": "2020-05-27 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "TRXUSDT",
+        "rows": 10714,
+        "start": "2020-01-15 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "UNIUSDT",
+        "rows": 9263,
+        "start": "2020-09-18 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "XLMUSDT",
+        "rows": 10684,
+        "start": "2020-01-20 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "XMRUSDT",
+        "rows": 10630,
+        "start": "2020-02-03 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "XTZUSDT",
+        "rows": 10612,
+        "start": "2020-02-06 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "YFIUSDT",
+        "rows": 9341,
+        "start": "2020-08-31 04:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "ZECUSDT",
+        "rows": 10588,
+        "start": "2020-02-05 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      },
+      {
+        "symbol": "ZRXUSDT",
+        "rows": 9778,
+        "start": "2020-06-24 08:00:00",
+        "end": "2024-12-09 20:00:00",
+        "close_na": 0
+      }
+    ]
+  },
+  "stage0_verdict": "PROCEED",
+  "stage0_reason": "The red-team objections are material, but the available 35-asset panel can quantify cost, monotonicity, in-panel survivorship stress, and TSMOM correlation under frozen assumptions.",
+  "frequencies": {
+    "daily": {
+      "summary": {
+        "periods": 1601,
+        "start": "2020-07-22",
+        "end": "2024-12-08",
+        "mean_raw": 0.0007175337316286816,
+        "mean_raw_pct": 0.0718,
+        "std_raw": 0.026722536765225006,
+        "t_stat_normal": 1.0743859120874741,
+        "p_value_normal_approx": 0.2826497539546169,
+        "bootstrap": {
+          "ci_low": -0.0005823551891313494,
+          "ci_high": 0.002114979930970596,
+          "p_mean_le_0": 0.1266
+        },
+        "bootstrap_ci_pct": [
+          -0.0582,
+          0.2115
+        ],
+        "mde_95_period_pct": 0.1309,
+        "top_mean_pct": 0.2876,
+        "middle_mean_pct": 0.2053,
+        "bottom_mean_pct": 0.2158,
+        "monotonic_bottom_middle_top": false,
+        "avg_total_turnover": 0.5378535961921346,
+        "avg_total_turnover_pct": 53.7854,
+        "break_even_cost_per_fill": 0.001334068855741853,
+        "break_even_cost_per_fill_pct": 0.1334,
+        "annualized_raw_log_growth": 0.13105754539159714,
+        "annualized_raw_log_growth_pct": 13.1058,
+        "ew_alt_period_mean_pct": 0.2346,
+        "ew_alt_annualized_log_growth": 0.4576278010375422,
+        "ew_alt_annualized_log_growth_pct": 45.7628,
+        "cost_cases": {
+          "maker_low_with_adverse_0_15pct": {
+            "per_fill_cost_pct": 0.15,
+            "mean_cost_period_pct": 0.0807,
+            "mean_net_period_pct": -0.0089,
+            "annualized_net_log_growth_pct": -16.3713,
+            "positive_net_mean": false
+          },
+          "protocol_base_0_20pct": {
+            "per_fill_cost_pct": 0.2,
+            "mean_cost_period_pct": 0.1076,
+            "mean_net_period_pct": -0.0358,
+            "annualized_net_log_growth_pct": -26.2036,
+            "positive_net_mean": false
+          },
+          "alt_taker_high_0_30pct": {
+            "per_fill_cost_pct": 0.3,
+            "mean_cost_period_pct": 0.1614,
+            "mean_net_period_pct": -0.0896,
+            "annualized_net_log_growth_pct": -45.8784,
+            "positive_net_mean": false
+          }
+        },
+        "yearly_base_cost": [
+          {
+            "year": 2020,
+            "periods": 163,
+            "raw_mean_pct": 0.4551,
+            "base_net_mean_pct": 0.3483,
+            "base_net_positive": true
+          },
+          {
+            "year": 2021,
+            "periods": 365,
+            "raw_mean_pct": 0.2873,
+            "base_net_mean_pct": 0.1847,
+            "base_net_positive": true
+          },
+          {
+            "year": 2022,
+            "periods": 365,
+            "raw_mean_pct": -0.0964,
+            "base_net_mean_pct": -0.2087,
+            "base_net_positive": false
+          },
+          {
+            "year": 2023,
+            "periods": 365,
+            "raw_mean_pct": 0.0072,
+            "base_net_mean_pct": -0.101,
+            "base_net_positive": false
+          },
+          {
+            "year": 2024,
+            "periods": 343,
+            "raw_mean_pct": -0.0923,
+            "base_net_mean_pct": -0.1996,
+            "base_net_positive": false
+          }
+        ],
+        "positive_years_base_cost": 2,
+        "majority_years_positive_base_cost": false,
+        "protocol_v1_3_base_cost": {
+          "period_mean_pct": -0.0358,
+          "expectancy_positive": false,
+          "average_win_pct": 1.957,
+          "average_loss_abs_pct": 1.8457,
+          "win_loss_ratio": 1.0602778406316253,
+          "win_loss_ratio_ge_1_5": false,
+          "drawdown_bootstrap": {
+            "seed": 20260622,
+            "iterations": 5000,
+            "block_periods": 5,
+            "year_periods": 365,
+            "standard_dd35_probability": 0.8048,
+            "conservative_dd20_probability": 0.9926,
+            "ruin_dd100_probability": 0.0
+          },
+          "annualized_log_growth_pct": -26.2036,
+          "annualized_log_growth_positive": false,
+          "yearly": [
+            {
+              "year": 2020,
+              "periods": 163,
+              "mean_pct": 0.3483,
+              "positive_expectancy": true
+            },
+            {
+              "year": 2021,
+              "periods": 365,
+              "mean_pct": 0.1847,
+              "positive_expectancy": true
+            },
+            {
+              "year": 2022,
+              "periods": 365,
+              "mean_pct": -0.2087,
+              "positive_expectancy": false
+            },
+            {
+              "year": 2023,
+              "periods": 365,
+              "mean_pct": -0.101,
+              "positive_expectancy": false
+            },
+            {
+              "year": 2024,
+              "periods": 343,
+              "mean_pct": -0.1996,
+              "positive_expectancy": false
+            }
+          ],
+          "positive_years": 2,
+          "majority_years_positive": false
+        }
+      },
+      "gates": {
+        "freq": "daily",
+        "gate1_cost_pass": false,
+        "gate2_monotonic_significance_pass": false,
+        "passive_benchmark_pass": false
+      },
+      "orthogonality": {
+        "periods": 1601,
+        "correlation": 0.2973831680958366,
+        "beta_to_tsmom": 0.22264119923268266,
+        "cs_mean_pct": 0.0718,
+        "tsmom_mean_pct": 0.2357,
+        "residual_mean_pct": 0.0193,
+        "abs_corr_gt_0_70": false
+      },
+      "survivorship": {
+        "terminal_return_bottom_20pct": {
+          "RENUSDT": -85.9233,
+          "CRVUSDT": -80.2389,
+          "FILUSDT": -79.3291,
+          "YFIUSDT": -69.8516,
+          "OMGUSDT": -67.7283,
+          "DASHUSDT": -57.6152,
+          "ICXUSDT": -56.3297
+        },
+        "terminal_return_top_20pct": {
+          "THETAUSDT": 664.3979,
+          "RUNEUSDT": 683.7204,
+          "LINKUSDT": 724.9629,
+          "AVAXUSDT": 1180.1685,
+          "TRXUSDT": 1415.1672,
+          "AXSUSDT": 1427.1853,
+          "FTMUSDT": 2717.8366
+        },
+        "stress": {
+          "drop_top_20pct_terminal_winners": {
+            "periods": 1591,
+            "mean_raw_pct": -0.0361,
+            "mean_change_vs_baseline_pct": -0.1078,
+            "edge_disappears": true
+          },
+          "drop_bottom_20pct_terminal_losers": {
+            "periods": 1599,
+            "mean_raw_pct": 0.1442,
+            "mean_change_vs_baseline_pct": 0.0724,
+            "edge_disappears": false
+          },
+          "common_sample_after_all_symbols_listed": {
+            "periods": 1450,
+            "mean_raw_pct": 0.0434,
+            "mean_change_vs_baseline_pct": -0.0284,
+            "edge_disappears": false
+          }
+        },
+        "caveat": "The 35-file panel cannot add exchange listings that died before 2024-12; this is an in-panel stress proxy, not a full point-in-time delisting correction."
+      },
+      "survivorship_gate_pass": false,
+      "selection_concentration_top10": [
+        {
+          "symbol": "TRXUSDT",
+          "net_top_minus_bottom_selections": 389
+        },
+        {
+          "symbol": "XMRUSDT",
+          "net_top_minus_bottom_selections": 347
+        },
+        {
+          "symbol": "RENUSDT",
+          "net_top_minus_bottom_selections": -284
+        },
+        {
+          "symbol": "FILUSDT",
+          "net_top_minus_bottom_selections": -255
+        },
+        {
+          "symbol": "LINKUSDT",
+          "net_top_minus_bottom_selections": 249
+        },
+        {
+          "symbol": "OMGUSDT",
+          "net_top_minus_bottom_selections": -248
+        },
+        {
+          "symbol": "AAVEUSDT",
+          "net_top_minus_bottom_selections": 230
+        },
+        {
+          "symbol": "LRCUSDT",
+          "net_top_minus_bottom_selections": -208
+        },
+        {
+          "symbol": "UNIUSDT",
+          "net_top_minus_bottom_selections": 182
+        },
+        {
+          "symbol": "KNCUSDT",
+          "net_top_minus_bottom_selections": -171
+        }
+      ]
+    },
+    "weekly": {
+      "summary": {
+        "periods": 228,
+        "start": "2020-07-27",
+        "end": "2024-12-02",
+        "mean_raw": 0.005307069952887949,
+        "mean_raw_pct": 0.5307,
+        "std_raw": 0.07955897140542185,
+        "t_stat_normal": 1.0072402589652787,
+        "p_value_normal_approx": 0.31381933076919505,
+        "bootstrap": {
+          "ci_low": -0.004073138673971354,
+          "ci_high": 0.01556040673322804,
+          "p_mean_le_0": 0.127
+        },
+        "bootstrap_ci_pct": [
+          -0.4073,
+          1.556
+        ],
+        "mde_95_period_pct": 1.0327,
+        "top_mean_pct": 2.0525,
+        "middle_mean_pct": 1.5668,
+        "bottom_mean_pct": 1.5218,
+        "monotonic_bottom_middle_top": true,
+        "avg_total_turnover": 1.3363579403053087,
+        "avg_total_turnover_pct": 133.6358,
+        "break_even_cost_per_fill": 0.003971293762564451,
+        "break_even_cost_per_fill_pct": 0.3971,
+        "annualized_raw_log_growth": 0.10505709870345945,
+        "annualized_raw_log_growth_pct": 10.5057,
+        "ew_alt_period_mean_pct": 1.7016,
+        "ew_alt_annualized_log_growth": 0.4845095339758384,
+        "ew_alt_annualized_log_growth_pct": 48.451,
+        "cost_cases": {
+          "maker_low_with_adverse_0_15pct": {
+            "per_fill_cost_pct": 0.15,
+            "mean_cost_period_pct": 0.2005,
+            "mean_net_period_pct": 0.3303,
+            "annualized_net_log_growth_pct": 0.0686,
+            "positive_net_mean": true
+          },
+          "protocol_base_0_20pct": {
+            "per_fill_cost_pct": 0.2,
+            "mean_cost_period_pct": 0.2673,
+            "mean_net_period_pct": 0.2634,
+            "annualized_net_log_growth_pct": -3.4156,
+            "positive_net_mean": true
+          },
+          "alt_taker_high_0_30pct": {
+            "per_fill_cost_pct": 0.3,
+            "mean_cost_period_pct": 0.4009,
+            "mean_net_period_pct": 0.1298,
+            "annualized_net_log_growth_pct": -10.3918,
+            "positive_net_mean": true
+          }
+        },
+        "yearly_base_cost": [
+          {
+            "year": 2020,
+            "periods": 23,
+            "raw_mean_pct": 1.4539,
+            "base_net_mean_pct": 1.1782,
+            "base_net_positive": true
+          },
+          {
+            "year": 2021,
+            "periods": 52,
+            "raw_mean_pct": 2.4195,
+            "base_net_mean_pct": 2.1628,
+            "base_net_positive": true
+          },
+          {
+            "year": 2022,
+            "periods": 52,
+            "raw_mean_pct": -0.6323,
+            "base_net_mean_pct": -0.9137,
+            "base_net_positive": false
+          },
+          {
+            "year": 2023,
+            "periods": 52,
+            "raw_mean_pct": 0.5731,
+            "base_net_mean_pct": 0.3052,
+            "base_net_positive": true
+          },
+          {
+            "year": 2024,
+            "periods": 49,
+            "raw_mean_pct": -0.7178,
+            "base_net_mean_pct": -0.9768,
+            "base_net_positive": false
+          }
+        ],
+        "positive_years_base_cost": 3,
+        "majority_years_positive_base_cost": true,
+        "protocol_v1_3_base_cost": {
+          "period_mean_pct": 0.2634,
+          "expectancy_positive": true,
+          "average_win_pct": 5.5092,
+          "average_loss_abs_pct": 4.7133,
+          "win_loss_ratio": 1.1688589620318623,
+          "win_loss_ratio_ge_1_5": false,
+          "drawdown_bootstrap": {
+            "seed": 20260622,
+            "iterations": 5000,
+            "block_periods": 4,
+            "year_periods": 52,
+            "standard_dd35_probability": 0.6446,
+            "conservative_dd20_probability": 0.9368,
+            "ruin_dd100_probability": 0.0
+          },
+          "annualized_log_growth_pct": -3.4156,
+          "annualized_log_growth_positive": false,
+          "yearly": [
+            {
+              "year": 2020,
+              "periods": 23,
+              "mean_pct": 1.1782,
+              "positive_expectancy": true
+            },
+            {
+              "year": 2021,
+              "periods": 52,
+              "mean_pct": 2.1628,
+              "positive_expectancy": true
+            },
+            {
+              "year": 2022,
+              "periods": 52,
+              "mean_pct": -0.9137,
+              "positive_expectancy": false
+            },
+            {
+              "year": 2023,
+              "periods": 52,
+              "mean_pct": 0.3052,
+              "positive_expectancy": true
+            },
+            {
+              "year": 2024,
+              "periods": 49,
+              "mean_pct": -0.9768,
+              "positive_expectancy": false
+            }
+          ],
+          "positive_years": 3,
+          "majority_years_positive": true
+        }
+      },
+      "gates": {
+        "freq": "weekly",
+        "gate1_cost_pass": true,
+        "gate2_monotonic_significance_pass": false,
+        "passive_benchmark_pass": false
+      },
+      "orthogonality": {
+        "periods": 228,
+        "correlation": 0.2937105261173562,
+        "beta_to_tsmom": 0.24328312857076181,
+        "cs_mean_pct": 0.5307,
+        "tsmom_mean_pct": 1.4744,
+        "residual_mean_pct": 0.172,
+        "abs_corr_gt_0_70": false
+      },
+      "survivorship": {
+        "terminal_return_bottom_20pct": {
+          "RENUSDT": -85.9233,
+          "CRVUSDT": -80.2389,
+          "FILUSDT": -79.3291,
+          "YFIUSDT": -69.8516,
+          "OMGUSDT": -67.7283,
+          "DASHUSDT": -57.6152,
+          "ICXUSDT": -56.3297
+        },
+        "terminal_return_top_20pct": {
+          "THETAUSDT": 664.3979,
+          "RUNEUSDT": 683.7204,
+          "LINKUSDT": 724.9629,
+          "AVAXUSDT": 1180.1685,
+          "TRXUSDT": 1415.1672,
+          "AXSUSDT": 1427.1853,
+          "FTMUSDT": 2717.8366
+        },
+        "stress": {
+          "drop_top_20pct_terminal_winners": {
+            "periods": 227,
+            "mean_raw_pct": -0.2912,
+            "mean_change_vs_baseline_pct": -0.822,
+            "edge_disappears": true
+          },
+          "drop_bottom_20pct_terminal_losers": {
+            "periods": 228,
+            "mean_raw_pct": 0.6728,
+            "mean_change_vs_baseline_pct": 0.1421,
+            "edge_disappears": false
+          },
+          "common_sample_after_all_symbols_listed": {
+            "periods": 207,
+            "mean_raw_pct": 0.4751,
+            "mean_change_vs_baseline_pct": -0.0556,
+            "edge_disappears": false
+          }
+        },
+        "caveat": "The 35-file panel cannot add exchange listings that died before 2024-12; this is an in-panel stress proxy, not a full point-in-time delisting correction."
+      },
+      "survivorship_gate_pass": false,
+      "selection_concentration_top10": [
+        {
+          "symbol": "XMRUSDT",
+          "net_top_minus_bottom_selections": 56
+        },
+        {
+          "symbol": "TRXUSDT",
+          "net_top_minus_bottom_selections": 49
+        },
+        {
+          "symbol": "AAVEUSDT",
+          "net_top_minus_bottom_selections": 44
+        },
+        {
+          "symbol": "FILUSDT",
+          "net_top_minus_bottom_selections": -41
+        },
+        {
+          "symbol": "RENUSDT",
+          "net_top_minus_bottom_selections": -41
+        },
+        {
+          "symbol": "KNCUSDT",
+          "net_top_minus_bottom_selections": -40
+        },
+        {
+          "symbol": "OMGUSDT",
+          "net_top_minus_bottom_selections": -38
+        },
+        {
+          "symbol": "LINKUSDT",
+          "net_top_minus_bottom_selections": 36
+        },
+        {
+          "symbol": "UNIUSDT",
+          "net_top_minus_bottom_selections": 28
+        },
+        {
+          "symbol": "LRCUSDT",
+          "net_top_minus_bottom_selections": -23
+        }
+      ]
+    }
+  },
+  "final_verdict": "KILL",
+  "final_reason": "未通过：截面单调/显著门、幸存者偏差门、被动基准门、v1.3 年化log增长、v1.3 赢亏比；默认 KILL 基线下不得靠改 L/分位/频率续命。",
+  "agenda_escalation": "触发"
+}

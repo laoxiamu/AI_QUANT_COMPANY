@@ -1,0 +1,1478 @@
+{
+  "generated_at_utc": "2026-06-22T13:10:44Z",
+  "task_id": "P0-RES-038-B1-PHASEA",
+  "cost_gates_bp": {
+    "low": 70,
+    "medium": 110,
+    "cascade_high": 210
+  },
+  "liquidations_audit": {
+    "path": "06_RESEARCH/DATA/LIQUIDATIONS",
+    "files": {
+      "liq_20260615.jsonl": 37649,
+      "liq_20260616.jsonl": 35722,
+      "liq_20260617.jsonl": 39474,
+      "liq_20260618.jsonl": 48013,
+      "liq_20260619.jsonl": 33235,
+      "liq_20260620.jsonl": 31585,
+      "liq_20260621.jsonl": 19936
+    },
+    "rows": 245614,
+    "parsed_rows": 245614,
+    "bad_rows": 0,
+    "first_event_utc": "2026-06-15T00:38:31Z",
+    "last_event_utc": "2026-06-21T16:47:08Z",
+    "unique_symbols": 672,
+    "top_level_keys": [
+      "E",
+      "e",
+      "o",
+      "recv_ts"
+    ],
+    "order_keys": [
+      "S",
+      "T",
+      "X",
+      "ap",
+      "f",
+      "l",
+      "o",
+      "p",
+      "q",
+      "s",
+      "z"
+    ],
+    "side_counts": {
+      "SELL": 148249,
+      "BUY": 97365
+    },
+    "status_counts": {
+      "FILLED": 245614
+    },
+    "order_type_counts": {
+      "LIMIT": 245614
+    },
+    "time_in_force_counts": {
+      "IOC": 245614
+    },
+    "notional_usdt_quantiles": {
+      "min": 0.0004,
+      "p10": 11.6853,
+      "p25": 48.1987,
+      "p50": 242.026,
+      "p75": 1149.7805,
+      "p90": 4459.3002,
+      "p95": 9198.2768,
+      "max": 12029019.8042
+    },
+    "known_truncation": "Binance !forceOrder@arr pushes only the largest liquidation order per symbol per 1000 ms; local rows are a lower-bound sample, not full liquidation volume."
+  },
+  "futures_expanded_audit": {
+    "path": "06_RESEARCH/DATA/FUTURES_EXPANDED",
+    "csv_files": 35,
+    "total_rows": 339206,
+    "global_first_utc": "2020-01-15T08:00:00Z",
+    "global_last_utc": "2024-12-09T20:00:00Z",
+    "columns_seen": [
+      "close",
+      "datetime",
+      "high",
+      "low",
+      "open",
+      "volume"
+    ],
+    "has_oi_field": false,
+    "has_funding_field": false,
+    "sample_files": {
+      "AAVEUSDT_4H.csv": {
+        "rows": 9095,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-10-16T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9095,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "ALGOUSDT_4H.csv": {
+        "rows": 9826,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-06-16T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9826,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "ATOMUSDT_4H.csv": {
+        "rows": 10605,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-02-07T12:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 10605,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "AVAXUSDT_4H.csv": {
+        "rows": 9233,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-09-23T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9233,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "AXSUSDT_4H.csv": {
+        "rows": 8885,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-11-20T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 8885,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      }
+    },
+    "per_file": {
+      "AAVEUSDT_4H.csv": {
+        "rows": 9095,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-10-16T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9095,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "ALGOUSDT_4H.csv": {
+        "rows": 9826,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-06-16T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9826,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "ATOMUSDT_4H.csv": {
+        "rows": 10605,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-02-07T12:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 10605,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "AVAXUSDT_4H.csv": {
+        "rows": 9233,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-09-23T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9233,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "AXSUSDT_4H.csv": {
+        "rows": 8885,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-11-20T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 8885,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "COMPUSDT_4H.csv": {
+        "rows": 9742,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-06-30T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9742,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "CRVUSDT_4H.csv": {
+        "rows": 9365,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-09-01T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9365,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "DASHUSDT_4H.csv": {
+        "rows": 10624,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-02-04T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 10624,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "DOTUSDT_4H.csv": {
+        "rows": 9425,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-08-22T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9425,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "EGLDUSDT_4H.csv": {
+        "rows": 9287,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-09-14T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9287,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "ENJUSDT_4H.csv": {
+        "rows": 9197,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-09-29T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9197,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "ETCUSDT_4H.csv": {
+        "rows": 10738,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-01-16T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 10738,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "FILUSDT_4H.csv": {
+        "rows": 9065,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-10-16T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9095,
+        "missing_or_duplicate_grid_rows": 30,
+        "gaps_over_4h": 2
+      },
+      "FTMUSDT_4H.csv": {
+        "rows": 9197,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-09-24T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9227,
+        "missing_or_duplicate_grid_rows": 30,
+        "gaps_over_4h": 2
+      },
+      "ICXUSDT_4H.csv": {
+        "rows": 9281,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-09-15T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9281,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "KNCUSDT_4H.csv": {
+        "rows": 9760,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-06-22T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9790,
+        "missing_or_duplicate_grid_rows": 30,
+        "gaps_over_4h": 2
+      },
+      "KSMUSDT_4H.csv": {
+        "rows": 9077,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-10-14T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9107,
+        "missing_or_duplicate_grid_rows": 30,
+        "gaps_over_4h": 2
+      },
+      "LINKUSDT_4H.csv": {
+        "rows": 10732,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-01-17T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 10732,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "LRCUSDT_4H.csv": {
+        "rows": 9047,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-10-19T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9077,
+        "missing_or_duplicate_grid_rows": 30,
+        "gaps_over_4h": 2
+      },
+      "MKRUSDT_4H.csv": {
+        "rows": 9449,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-08-13T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9479,
+        "missing_or_duplicate_grid_rows": 30,
+        "gaps_over_4h": 2
+      },
+      "NEARUSDT_4H.csv": {
+        "rows": 9070,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-10-15T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9100,
+        "missing_or_duplicate_grid_rows": 30,
+        "gaps_over_4h": 2
+      },
+      "OMGUSDT_4H.csv": {
+        "rows": 9700,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-07-02T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9730,
+        "missing_or_duplicate_grid_rows": 30,
+        "gaps_over_4h": 2
+      },
+      "RENUSDT_4H.csv": {
+        "rows": 9113,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-10-13T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9113,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "RUNEUSDT_4H.csv": {
+        "rows": 9347,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-09-04T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9347,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "SNXUSDT_4H.csv": {
+        "rows": 9473,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-08-14T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9473,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "SUSHIUSDT_4H.csv": {
+        "rows": 9317,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-09-04T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9347,
+        "missing_or_duplicate_grid_rows": 30,
+        "gaps_over_4h": 2
+      },
+      "THETAUSDT_4H.csv": {
+        "rows": 9946,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-05-27T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9946,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "TRXUSDT_4H.csv": {
+        "rows": 10714,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-01-15T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 10744,
+        "missing_or_duplicate_grid_rows": 30,
+        "gaps_over_4h": 2
+      },
+      "UNIUSDT_4H.csv": {
+        "rows": 9263,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-09-18T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9263,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "XLMUSDT_4H.csv": {
+        "rows": 10684,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-01-20T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 10714,
+        "missing_or_duplicate_grid_rows": 30,
+        "gaps_over_4h": 2
+      },
+      "XMRUSDT_4H.csv": {
+        "rows": 10630,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-02-03T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 10630,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "XTZUSDT_4H.csv": {
+        "rows": 10612,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-02-06T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 10612,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      },
+      "YFIUSDT_4H.csv": {
+        "rows": 9341,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-08-31T04:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9371,
+        "missing_or_duplicate_grid_rows": 30,
+        "gaps_over_4h": 2
+      },
+      "ZECUSDT_4H.csv": {
+        "rows": 10588,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-02-05T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 10618,
+        "missing_or_duplicate_grid_rows": 30,
+        "gaps_over_4h": 2
+      },
+      "ZRXUSDT_4H.csv": {
+        "rows": 9778,
+        "columns": [
+          "datetime",
+          "open",
+          "high",
+          "low",
+          "close",
+          "volume"
+        ],
+        "first_utc": "2020-06-24T08:00:00Z",
+        "last_utc": "2024-12-09T20:00:00Z",
+        "expected_4h_grid_rows": 9778,
+        "missing_or_duplicate_grid_rows": 0,
+        "gaps_over_4h": 0
+      }
+    }
+  },
+  "local_oi_auxiliary_audit": {
+    "path": "06_RESEARCH/DATA/FUTURES",
+    "note": "Local auxiliary source for OI reset; FUTURES_EXPANDED itself has OHLCV only.",
+    "symbols": {
+      "BTCUSDT": {
+        "metrics_path": "06_RESEARCH/DATA/FUTURES/BTCUSDT_METRICS_5M.csv",
+        "metrics_rows": 605318,
+        "metrics_first_utc": "2020-09-01T00:00:00Z",
+        "metrics_last_utc": "2026-06-06T00:00:00Z",
+        "metrics_columns_used": [
+          "create_time",
+          "sum_open_interest",
+          "sum_open_interest_value"
+        ],
+        "mark_4h_paths": [
+          "06_RESEARCH/DATA/FUTURES/BTCUSDT_MARK_4H.csv",
+          "06_RESEARCH/DATA/FUTURES/BTCUSDT_MARK_4H_2026H1.csv"
+        ]
+      },
+      "ETHUSDT": {
+        "metrics_path": "06_RESEARCH/DATA/FUTURES/ETHUSDT_METRICS_5M.csv",
+        "metrics_rows": 474484,
+        "metrics_first_utc": "2021-12-01T00:00:00Z",
+        "metrics_last_utc": "2026-06-06T00:00:00Z",
+        "metrics_columns_used": [
+          "create_time",
+          "sum_open_interest",
+          "sum_open_interest_value"
+        ],
+        "mark_4h_paths": [
+          "06_RESEARCH/DATA/FUTURES/ETHUSDT_MARK_4H.csv",
+          "06_RESEARCH/DATA/FUTURES/ETHUSDT_MARK_4H_2026H1.csv"
+        ]
+      },
+      "SOLUSDT": {
+        "metrics_path": "06_RESEARCH/DATA/FUTURES/SOLUSDT_METRICS_5M.csv",
+        "metrics_rows": 474467,
+        "metrics_first_utc": "2021-12-01T00:00:00Z",
+        "metrics_last_utc": "2026-06-06T00:00:00Z",
+        "metrics_columns_used": [
+          "create_time",
+          "sum_open_interest",
+          "sum_open_interest_value"
+        ],
+        "mark_4h_paths": [
+          "06_RESEARCH/DATA/FUTURES/SOLUSDT_MARK_4H.csv",
+          "06_RESEARCH/DATA/FUTURES/SOLUSDT_MARK_4H_2026H1.csv"
+        ]
+      }
+    }
+  },
+  "liquidation_cluster_descriptive": {
+    "rows": 24088,
+    "first_cluster_utc": "2026-06-15T00:00:00Z",
+    "last_cluster_utc": "2026-06-21T16:00:00Z",
+    "notional_usdt_quantiles_by_4h_symbol_side": {
+      "min": 0.0004,
+      "p10": 16.2947,
+      "p25": 99.4845,
+      "p50": 821.3039,
+      "p75": 5323.9259,
+      "p90": 25707.3366,
+      "p95": 74689.2225,
+      "max": 42977206.7448
+    },
+    "bucket_counts": {
+      "lt_1k": 12630,
+      "1k_10k": 7212,
+      "10k_100k": 3271,
+      "100k_1m": 843,
+      "ge_1m": 132
+    },
+    "top_10_symbols_by_notional": {
+      "ETHUSDT": 257247773.13,
+      "BTCUSDT": 194264810.26,
+      "SPCXUSDT": 54935129.38,
+      "SOLUSDT": 38875038.69,
+      "ETHUSDC": 23895082.47,
+      "ZECUSDT": 22327235.03,
+      "HYPEUSDT": 18638614.85,
+      "WLDUSDT": 18080054.18,
+      "BTCUSDC": 16159922.66,
+      "XRPUSDT": 15933796.2
+    },
+    "futures_expanded_overlap_clusters": 0,
+    "gross_drift_status": "UNAVAILABLE: LIQUIDATIONS are 2026-06-15..2026-06-21; FUTURES_EXPANDED ends 2024-12-09, so no legal local join for 1-4x4H drift."
+  },
+  "oi_reset_descriptive": {
+    "definition": "OI reset event = fixed 24h OI drop bins on 4H-resampled Binance metrics; direction sign = prior 24h price log-return sign. Continuation and exhaustion are both reported; neither is selected.",
+    "symbol_audit": {
+      "BTCUSDT": {
+        "joined_4h_rows": 12576,
+        "first_utc": "2020-09-01T00:00:00Z",
+        "last_utc": "2026-06-05T20:00:00Z",
+        "oi_drop_events_fixed_bins": 3070
+      },
+      "ETHUSDT": {
+        "joined_4h_rows": 9876,
+        "first_utc": "2021-12-01T00:00:00Z",
+        "last_utc": "2026-06-05T20:00:00Z",
+        "oi_drop_events_fixed_bins": 2453
+      },
+      "SOLUSDT": {
+        "joined_4h_rows": 9876,
+        "first_utc": "2021-12-01T00:00:00Z",
+        "last_utc": "2026-06-05T20:00:00Z",
+        "oi_drop_events_fixed_bins": 2911
+      }
+    },
+    "total_fixed_bin_events": 8434,
+    "events_by_symbol": {
+      "BTCUSDT": 3070,
+      "SOLUSDT": 2911,
+      "ETHUSDT": 2453
+    },
+    "events_by_bucket": {
+      "drop_2_to_5pct": 5492,
+      "drop_5_to_10pct": 2313,
+      "drop_ge_10pct": 629
+    },
+    "by_bucket": {
+      "drop_2_to_5pct": {
+        "events": 5492,
+        "oi_change_24h_bp": {
+          "min": -499.983,
+          "p10": -451.3364,
+          "p25": -388.4607,
+          "p50": -314.636,
+          "p75": -253.0537,
+          "p90": -220.739,
+          "p95": -209.1076,
+          "max": -200.0313
+        },
+        "past_price_logret_24h_bp": {
+          "min": -2317.0241,
+          "p10": -418.0247,
+          "p25": -200.0425,
+          "p50": -19.4666,
+          "p75": 140.3667,
+          "p90": 373.3554,
+          "p95": 527.9233,
+          "max": 1759.3646
+        },
+        "windows": {
+          "1x4h": {
+            "valid_events": 5491,
+            "raw_forward_logret_bp": {
+              "min": -1021.0168,
+              "p10": -161.1244,
+              "p25": -62.0003,
+              "p50": 2.5187,
+              "p75": 64.5192,
+              "p90": 152.4003,
+              "p95": 222.7007,
+              "max": 1829.9093
+            },
+            "continuation_bp": {
+              "min": -1021.0168,
+              "p10": -148.5811,
+              "p25": -63.0911,
+              "p50": -3.4914,
+              "p75": 63.2855,
+              "p90": 162.1189,
+              "p95": 241.5717,
+              "max": 1829.9093
+            },
+            "exhaustion_bp": {
+              "min": -1829.9093,
+              "p10": -162.1189,
+              "p25": -63.2855,
+              "p50": 3.4914,
+              "p75": 63.0911,
+              "p90": 148.5811,
+              "p95": 223.4825,
+              "max": 1021.0168
+            },
+            "absolute_gross_drift_bp": {
+              "min": 0.0,
+              "p10": 9.9002,
+              "p25": 26.6623,
+              "p50": 63.1821,
+              "p75": 134.1285,
+              "p90": 231.4768,
+              "p95": 314.8436,
+              "max": 1829.9093
+            }
+          },
+          "2x4h": {
+            "valid_events": 5490,
+            "raw_forward_logret_bp": {
+              "min": -1760.2378,
+              "p10": -228.2852,
+              "p25": -90.7921,
+              "p50": 3.7872,
+              "p75": 95.5325,
+              "p90": 223.0864,
+              "p95": 332.1597,
+              "max": 2533.9857
+            },
+            "continuation_bp": {
+              "min": -1399.7021,
+              "p10": -222.9989,
+              "p25": -98.0393,
+              "p50": -9.7655,
+              "p75": 85.9945,
+              "p90": 228.8021,
+              "p95": 350.5422,
+              "max": 2533.9857
+            },
+            "exhaustion_bp": {
+              "min": -2533.9857,
+              "p10": -228.8021,
+              "p25": -85.9945,
+              "p50": 9.7655,
+              "p75": 98.0393,
+              "p90": 222.9989,
+              "p95": 331.1543,
+              "max": 1399.7021
+            },
+            "absolute_gross_drift_bp": {
+              "min": 0.0449,
+              "p10": 13.9874,
+              "p25": 39.8008,
+              "p50": 92.8493,
+              "p75": 191.1507,
+              "p90": 341.4417,
+              "p95": 467.201,
+              "max": 2533.9857
+            }
+          },
+          "3x4h": {
+            "valid_events": 5489,
+            "raw_forward_logret_bp": {
+              "min": -1716.4054,
+              "p10": -281.8409,
+              "p25": -117.7507,
+              "p50": 2.6888,
+              "p75": 122.5863,
+              "p90": 284.2055,
+              "p95": 405.8051,
+              "max": 2029.3432
+            },
+            "continuation_bp": {
+              "min": -1694.8446,
+              "p10": -288.4317,
+              "p25": -128.5093,
+              "p50": -11.7936,
+              "p75": 112.2401,
+              "p90": 277.2984,
+              "p95": 421.538,
+              "max": 2029.3432
+            },
+            "exhaustion_bp": {
+              "min": -2029.3432,
+              "p10": -277.2984,
+              "p25": -112.2401,
+              "p50": 11.7936,
+              "p75": 128.5093,
+              "p90": 288.4317,
+              "p95": 408.268,
+              "max": 1694.8446
+            },
+            "absolute_gross_drift_bp": {
+              "min": 0.0063,
+              "p10": 16.9985,
+              "p25": 48.9229,
+              "p50": 120.0704,
+              "p75": 242.562,
+              "p90": 416.8076,
+              "p95": 569.4036,
+              "max": 2029.3432
+            }
+          },
+          "4x4h": {
+            "valid_events": 5489,
+            "raw_forward_logret_bp": {
+              "min": -2311.3148,
+              "p10": -324.6418,
+              "p25": -137.6193,
+              "p50": 0.9017,
+              "p75": 143.4778,
+              "p90": 332.9756,
+              "p95": 472.4766,
+              "max": 1999.8888
+            },
+            "continuation_bp": {
+              "min": -2023.0437,
+              "p10": -339.3617,
+              "p25": -149.6923,
+              "p50": -7.394,
+              "p75": 133.3398,
+              "p90": 319.1818,
+              "p95": 489.8069,
+              "max": 2311.3148
+            },
+            "exhaustion_bp": {
+              "min": -2311.3148,
+              "p10": -319.1818,
+              "p25": -133.3398,
+              "p50": 7.394,
+              "p75": 149.6923,
+              "p90": 339.3617,
+              "p95": 475.7209,
+              "max": 2023.0437
+            },
+            "absolute_gross_drift_bp": {
+              "min": 0.0399,
+              "p10": 20.296,
+              "p25": 54.5081,
+              "p50": 140.3314,
+              "p75": 283.5682,
+              "p90": 484.0963,
+              "p95": 649.2288,
+              "max": 2311.3148
+            }
+          }
+        }
+      },
+      "drop_5_to_10pct": {
+        "events": 2313,
+        "oi_change_24h_bp": {
+          "min": -999.745,
+          "p10": -885.4841,
+          "p25": -772.9646,
+          "p50": -649.0214,
+          "p75": -566.2025,
+          "p90": -526.1817,
+          "p95": -513.7855,
+          "max": -500.0579
+        },
+        "past_price_logret_24h_bp": {
+          "min": -2349.8595,
+          "p10": -654.8865,
+          "p25": -372.4069,
+          "p50": -109.3539,
+          "p75": 148.176,
+          "p90": 434.4967,
+          "p95": 649.0941,
+          "max": 2188.4726
+        },
+        "windows": {
+          "1x4h": {
+            "valid_events": 2313,
+            "raw_forward_logret_bp": {
+              "min": -1024.028,
+              "p10": -184.5024,
+              "p25": -66.4896,
+              "p50": 5.6849,
+              "p75": 81.9042,
+              "p90": 190.7025,
+              "p95": 289.5941,
+              "max": 1163.4386
+            },
+            "continuation_bp": {
+              "min": -1024.028,
+              "p10": -197.7772,
+              "p25": -85.6899,
+              "p50": -9.1995,
+              "p75": 60.7319,
+              "p90": 172.8055,
+              "p95": 268.9667,
+              "max": 1163.4386
+            },
+            "exhaustion_bp": {
+              "min": -1163.4386,
+              "p10": -172.8055,
+              "p25": -60.7319,
+              "p50": 9.1995,
+              "p75": 85.6899,
+              "p90": 197.7772,
+              "p95": 288.9061,
+              "max": 1024.028
+            },
+            "absolute_gross_drift_bp": {
+              "min": 0.0,
+              "p10": 11.1561,
+              "p25": 29.5976,
+              "p50": 76.2111,
+              "p75": 156.7226,
+              "p90": 278.7257,
+              "p95": 383.0074,
+              "max": 1163.4386
+            }
+          },
+          "2x4h": {
+            "valid_events": 2313,
+            "raw_forward_logret_bp": {
+              "min": -1405.8952,
+              "p10": -241.108,
+              "p25": -89.3698,
+              "p50": 7.8065,
+              "p75": 124.6166,
+              "p90": 259.9755,
+              "p95": 385.355,
+              "max": 1821.1208
+            },
+            "continuation_bp": {
+              "min": -1405.8952,
+              "p10": -262.6286,
+              "p25": -118.4981,
+              "p50": -8.0319,
+              "p75": 90.1735,
+              "p90": 235.1862,
+              "p95": 370.9917,
+              "max": 1821.1208
+            },
+            "exhaustion_bp": {
+              "min": -1821.1208,
+              "p10": -235.1862,
+              "p25": -90.1735,
+              "p50": 8.0319,
+              "p75": 118.4981,
+              "p90": 262.6286,
+              "p95": 383.359,
+              "max": 1405.8952
+            },
+            "absolute_gross_drift_bp": {
+              "min": 0.0,
+              "p10": 15.907,
+              "p25": 44.1076,
+              "p50": 105.9155,
+              "p75": 216.5944,
+              "p90": 382.383,
+              "p95": 526.5628,
+              "max": 1821.1208
+            }
+          },
+          "3x4h": {
+            "valid_events": 2313,
+            "raw_forward_logret_bp": {
+              "min": -2683.5014,
+              "p10": -296.1313,
+              "p25": -116.6302,
+              "p50": 12.7411,
+              "p75": 144.0998,
+              "p90": 342.3044,
+              "p95": 497.6003,
+              "max": 2194.2619
+            },
+            "continuation_bp": {
+              "min": -1876.3871,
+              "p10": -326.2933,
+              "p25": -138.862,
+              "p50": -9.6982,
+              "p75": 121.8672,
+              "p90": 314.7519,
+              "p95": 487.2112,
+              "max": 2683.5014
+            },
+            "exhaustion_bp": {
+              "min": -2683.5014,
+              "p10": -314.7519,
+              "p25": -121.8672,
+              "p50": 9.6982,
+              "p75": 138.862,
+              "p90": 326.2933,
+              "p95": 475.71,
+              "max": 1876.3871
+            },
+            "absolute_gross_drift_bp": {
+              "min": 0.0077,
+              "p10": 19.8417,
+              "p25": 55.2144,
+              "p50": 130.5393,
+              "p75": 271.105,
+              "p90": 477.8918,
+              "p95": 639.6455,
+              "max": 2683.5014
+            }
+          },
+          "4x4h": {
+            "valid_events": 2312,
+            "raw_forward_logret_bp": {
+              "min": -2044.9801,
+              "p10": -333.8211,
+              "p25": -132.4082,
+              "p50": 18.4948,
+              "p75": 180.6685,
+              "p90": 391.2461,
+              "p95": 583.5094,
+              "max": 2174.1552
+            },
+            "continuation_bp": {
+              "min": -1925.3702,
+              "p10": -366.3894,
+              "p25": -168.9668,
+              "p50": -10.1275,
+              "p75": 146.2175,
+              "p90": 361.8863,
+              "p95": 542.8435,
+              "max": 2174.1552
+            },
+            "exhaustion_bp": {
+              "min": -2174.1552,
+              "p10": -361.8863,
+              "p25": -146.2175,
+              "p50": 10.1275,
+              "p75": 168.9668,
+              "p90": 366.3894,
+              "p95": 557.986,
+              "max": 1925.3702
+            },
+            "absolute_gross_drift_bp": {
+              "min": 0.0788,
+              "p10": 23.4713,
+              "p25": 66.8706,
+              "p50": 156.2259,
+              "p75": 306.0102,
+              "p90": 550.5358,
+              "p95": 730.9033,
+              "max": 2174.1552
+            }
+          }
+        }
+      },
+      "drop_ge_10pct": {
+        "events": 629,
+        "oi_change_24h_bp": {
+          "min": -10000.0,
+          "p10": -2166.9475,
+          "p25": -1646.088,
+          "p50": -1307.197,
+          "p75": -1113.3176,
+          "p90": -1034.8766,
+          "p95": -1017.9941,
+          "max": -1002.0886
+        },
+        "past_price_logret_24h_bp": {
+          "min": -2404.7339,
+          "p10": -1109.0806,
+          "p25": -723.4817,
+          "p50": -309.3616,
+          "p75": 189.4949,
+          "p90": 775.9332,
+          "p95": 1197.875,
+          "max": 4174.3293
+        },
+        "windows": {
+          "1x4h": {
+            "valid_events": 629,
+            "raw_forward_logret_bp": {
+              "min": -1089.9545,
+              "p10": -246.5877,
+              "p25": -93.8815,
+              "p50": 6.4385,
+              "p75": 116.0342,
+              "p90": 240.5379,
+              "p95": 391.8177,
+              "max": 1172.0385
+            },
+            "continuation_bp": {
+              "min": -1172.0385,
+              "p10": -274.8083,
+              "p25": -125.1688,
+              "p50": -15.3991,
+              "p75": 80.6451,
+              "p90": 206.1099,
+              "p95": 339.0146,
+              "max": 1089.9545
+            },
+            "exhaustion_bp": {
+              "min": -1089.9545,
+              "p10": -206.1099,
+              "p25": -80.6451,
+              "p50": 15.3991,
+              "p75": 125.1688,
+              "p90": 274.8083,
+              "p95": 420.8575,
+              "max": 1172.0385
+            },
+            "absolute_gross_drift_bp": {
+              "min": 0.1916,
+              "p10": 14.3179,
+              "p25": 38.0038,
+              "p50": 105.0809,
+              "p75": 207.1898,
+              "p90": 392.4107,
+              "p95": 525.6517,
+              "max": 1172.0385
+            }
+          },
+          "2x4h": {
+            "valid_events": 629,
+            "raw_forward_logret_bp": {
+              "min": -1109.6537,
+              "p10": -317.4104,
+              "p25": -129.0844,
+              "p50": 15.715,
+              "p75": 151.9418,
+              "p90": 357.1508,
+              "p95": 586.2325,
+              "max": 1139.2207
+            },
+            "continuation_bp": {
+              "min": -1139.2207,
+              "p10": -366.6135,
+              "p25": -185.5479,
+              "p50": -31.5715,
+              "p75": 104.8211,
+              "p90": 287.93,
+              "p95": 436.4445,
+              "max": 1034.2453
+            },
+            "exhaustion_bp": {
+              "min": -1034.2453,
+              "p10": -287.93,
+              "p25": -104.8211,
+              "p50": 31.5715,
+              "p75": 185.5479,
+              "p90": 366.6135,
+              "p95": 574.4695,
+              "max": 1139.2207
+            },
+            "absolute_gross_drift_bp": {
+              "min": 0.0,
+              "p10": 18.5742,
+              "p25": 51.6423,
+              "p50": 143.9716,
+              "p75": 277.5868,
+              "p90": 496.0047,
+              "p95": 646.0699,
+              "max": 1139.2207
+            }
+          },
+          "3x4h": {
+            "valid_events": 629,
+            "raw_forward_logret_bp": {
+              "min": -1763.1841,
+              "p10": -324.214,
+              "p25": -140.932,
+              "p50": 11.7856,
+              "p75": 184.1373,
+              "p90": 392.3652,
+              "p95": 629.1229,
+              "max": 1214.7951
+            },
+            "continuation_bp": {
+              "min": -1763.1841,
+              "p10": -411.3308,
+              "p25": -208.8473,
+              "p50": -31.4417,
+              "p75": 109.0955,
+              "p90": 300.4624,
+              "p95": 464.769,
+              "max": 1521.2044
+            },
+            "exhaustion_bp": {
+              "min": -1521.2044,
+              "p10": -300.4624,
+              "p25": -109.0955,
+              "p50": 31.4417,
+              "p75": 208.8473,
+              "p90": 411.3308,
+              "p95": 618.0845,
+              "max": 1763.1841
+            },
+            "absolute_gross_drift_bp": {
+              "min": 0.0495,
+              "p10": 23.5952,
+              "p25": 71.9482,
+              "p50": 160.6664,
+              "p75": 295.5212,
+              "p90": 591.7104,
+              "p95": 758.1437,
+              "max": 1763.1841
+            }
+          },
+          "4x4h": {
+            "valid_events": 629,
+            "raw_forward_logret_bp": {
+              "min": -3254.0465,
+              "p10": -377.5447,
+              "p25": -142.365,
+              "p50": 22.5166,
+              "p75": 199.0278,
+              "p90": 444.5826,
+              "p95": 694.3707,
+              "max": 1778.7674
+            },
+            "continuation_bp": {
+              "min": -3254.0465,
+              "p10": -448.9009,
+              "p25": -215.1691,
+              "p50": -42.7105,
+              "p75": 120.8274,
+              "p90": 366.6368,
+              "p95": 582.126,
+              "max": 1432.3324
+            },
+            "exhaustion_bp": {
+              "min": -1432.3324,
+              "p10": -366.6368,
+              "p25": -120.8274,
+              "p50": 42.7105,
+              "p75": 215.1691,
+              "p90": 448.9009,
+              "p95": 712.9455,
+              "max": 3254.0465
+            },
+            "absolute_gross_drift_bp": {
+              "min": 0.8362,
+              "p10": 27.4204,
+              "p25": 75.4084,
+              "p50": 170.5504,
+              "p75": 349.2996,
+              "p90": 666.4651,
+              "p95": 885.7352,
+              "max": 3254.0465
+            }
+          }
+        }
+      }
+    },
+    "monotonic_probe": {
+      "1x4h_abs_p90_non_decreasing_by_drop_severity": true,
+      "1x4h_abs_p90_values_bp": [
+        231.4768,
+        278.7257,
+        392.4107
+      ],
+      "2x4h_abs_p90_non_decreasing_by_drop_severity": true,
+      "2x4h_abs_p90_values_bp": [
+        341.4417,
+        382.383,
+        496.0047
+      ],
+      "3x4h_abs_p90_non_decreasing_by_drop_severity": true,
+      "3x4h_abs_p90_values_bp": [
+        416.8076,
+        477.8918,
+        591.7104
+      ],
+      "4x4h_abs_p90_non_decreasing_by_drop_severity": true,
+      "4x4h_abs_p90_values_bp": [
+        484.0963,
+        550.5358,
+        666.4651
+      ]
+    },
+    "max_observed_abs_gross_drift_p95_bp_across_bins_windows": 885.7352,
+    "cost_gates_bp": {
+      "low": 70,
+      "medium": 110,
+      "cascade_high": 210
+    }
+  },
+  "holdout_read_statement": "No HOLDOUT path is read by this script."
+}

@@ -29,14 +29,17 @@
 | ⛔废弃 | 任务/方向已终止，保留原因与墓园指针 |
 | 🔴阻塞 | 无法继续，已写阻塞源与解除条件 |
 
-## 当前焦点（2026-06-21 顶层重平衡后更新，DEC-082）
+## 当前焦点（2026-07-12 state-sync 更正，DEC-092执行结果；此前 2026-07-01 state-sync DEC-087~091；2026-06-22 战略复盘 DEC-087/088）
 
-- **⚠️ 重大方向变更（DEC-079/080/082）：** carry 关闭（DEC-079）。regime-adaptive **当前=Candidate（待过B0机制门/B1数据门，非「已验证主线」）**。**DEC-082：month-30%=资本愿望非验收门；杠杆=过门后风险测试非Alpha来源；研究=唯一P0轨/治理压一次性卫生(P0-C封顶1包)/自动化全DEFER。**
-- **唯一研究主线（拆分后）：** `P1-RES-034` 原捆绑描述已冻结，拆为 **B0机制卡→B1标签审计→B2单变量门控(1x)→B3仓位→B4杠杆风险测试**（单变量序列，任一步不过即回墓园/pivot，禁改参数续命）。
-- **执行顺序：** P0-C 一次性治理卫生（先行：state_check修复 + AGENTS/CLAUDE/SYSTEM_RULES/AGENT_REGISTRY硬冲突裁决清单）→ 验收后起草 B0。
-- **DEFER（DEC-082，解冻=一条edge过B2或Founder时间实测为瓶颈）：** Spec Kit初始化/ADR-业务项/C4全套/Orchestrator/Strategy Governor引擎/Web/Discord/七维路由/九域记分卡。
-- **被动并行：** `P1-RES-014` 持续积累强平数据，不占研究 WIP。数据资产 127 parquet 就绪。
-- **明确暂缓：** `P1-RES-008` TSMOM universe 扩展；`P0-STR-005`（公司终态）待 B0 后再谈。
+- **权威路线图＝`OPPORTUNITY_MAP_STATUS.md §🧭`**（本段为指针，不复制全量）。
+- **⚫终局（2026-07-15审计更正，取代本行2026-07-06旧文）：TSMOM引擎L已于2026-07-12经Holdout一次性盲验FAIL判死（DEC-093，P0-RES-015），全家族永闭、禁开任何变体。** 2026-07-06"七项检查全过"最终成为"回测全门+WF全过仍样本外死"的协议价值实证。"TSMOM定仓穷尽"历史口径经历"推翻→复活候选→Holdout判死"全周期，终局=Dead。详见`GRAVEYARD_INDEX.md`、下方P0-RES-015行。**当前领跑=投研线高频thesis冲刺（DEC-091/094，进度2/10-20），任务追踪见P0-RES-016行与`CURRENT_STATE.md §1b`。
+- **⚠️ 战略拐点（DEC-087/088，历史记录，TSMOM一项已被2026-07-06进展更正）：** 三免费价格软-payer线连灭（~~TSMOM定仓穷尽~~已复活见上/`P1-RES-037`#X2跨链RV 阶段0 KILL/`P1-RES-038`#X3横截面动量 B1 KILL，后两者仍维持墓园判决）。**口径更正：死的是普通价格形态+低维横截面动量，不是整个免费价格族——免费结构数据(funding/OI/basis/强平/taker失衡)+事件交互未试完。** 机制优先扩7类。三方(Claude/零认知子代理/Codex红队)独立印证方法没跑偏。
+- **目标函数修订（DEC-087 Founder D级）：** 猎场过滤器(多空对称/24x7/杠杆可得/低准入)松绑为可选；保命纪律硬(先edge再投核心资本/杠杆=已验证edge乘数非利润源/月化30%只是资本愿望不约束研究)。
+- **🟡唯一研究主线（DEC-088）＝P0 加密合约 forced-flow/payer-flow v2**（funding极端/OI重置/强平簇/taker失衡，**弃普通价格动量**）。序列=**B0机制卡(单一方向预登记,成本门前置)→B1-KILLCARD(默认KILL)→B2(1x)→B3入场优化→B4杠杆风险**（任一步不过即 pivot，禁改参数续命）。免费阶段A强平数据预筛(Coinalyze/Tardis/Bybit自采)并入数据层。**状态更新（2026-07-01，state-sync 修正原"下一步=起草B0"过期指针）：B0机制卡已起草完成**（`06_RESEARCH/PREREGISTRATIONS/FORCED_FLOW_PAYER_FLOW_V2_B0_MECHANISM_CARD.md`，任务ID P0-RES-038-B0，REVISE_ONCE）**，阶段A数据审计发现强平簇缺重叠数据/taker缺L2/funding易退化carry→机制未否，转被动攒数/PARK**，量化主动猎暂停（Founder认可），当前唯一P0轨=投研线（DEC-091四层管道）。解冻条件=强平数据积累到位（采集器持续收数中）或Founder时间判定为瓶颈。
+- **P1（升一等，P0后或并行）：** 事件×结构资金流（FOMC/上币/解锁/脱锚，与OI/funding合并）。**P2：** 山寨操盘痕迹沙盒。**P3观察：** 美股事件/散户期权/ETF流。**支线：** 实战者方法论蒸馏(只蒸馏机制/付钱方喂P2)。**三账户分层：** Research/Paper-forward/Discretionary sandbox。
+- **DEFER（DEC-082/088）：** Spec Kit/ADR-业务项/C4全套/Orchestrator/Web/Discord/七维路由/九域记分卡。
+- **被动并行：** `P1-RES-014` 强平采集器持续攒数(245k条已同步本地，VM→本地同步待常态化，不新建定时任务)，不占研究 WIP。
+- **明确暂缓：** `P1-RES-008` TSMOM universe 扩展；`P0-STR-005`（公司终态）待 edge 后再谈。
 
 ## Phase 0：原则与证据基础
 
@@ -58,6 +61,18 @@
 | P0-RES-002 | 用 v1.3/v1.4 四件套、事件压力档、第五件和 MDE 门替换旧 Sharpe/MaxDD 尺子 | ✅完成 | Claude；Founder确认 | P0-RES-001 | 新实验按最新协议执行 | DEC-063/066/069；Protocol 增补件 |
 | P0-RES-003 | 建立可审计小函数库纪律，禁止 MLFinPy 等黑箱硬依赖 | ✅完成 | Claude；Codex | P0-RES-001 | 新统计方法先自实现并测试 | DEC-061 |
 | P0-RES-004 | 建立机会地图状态机和墓园/禁引用措辞 | ✅完成 | Claude | P0-RES-001 | 每个二元结果当轮更新 | `00_PROJECT_MANAGEMENT/OPPORTUNITY_MAP_STATUS.md`；`06_RESEARCH/GRAVEYARD_INDEX.md` |
+| P0-RES-005 | 验收协议v1.3/v1.4增补件第3/5件测量对象修正（升级v1.5，DEC-092） | ✅完成 | fable审查；Claude裁决；Founder确认 | 无 | **2026-07-02完成**：第3件(爆仓概率)改判"是否存在可行仓位方案"而非已测方案是否达标；第5件(被动基准对照)改风险调整后比较。触发引擎L/#X3两条墓园记录一次性诊断复查（见P0-RES-006/007） | `06_RESEARCH/RESEARCH_PROTOCOL_v1.3_ADDENDUM.md`（v1.5）；DEC-092 |
+| P0-RES-006 | 诊断复查：TSMOM引擎L是否存在可行仓位方案（新3件口径） | ✅完成（2026-07-06） | Codex执行；Claude验收 | DEC-092；P0-RES-005 | **结果=EXISTS_FEASIBLE_POSITION_SIZING**（10%/15%目标波动率两点通过，10%点年化log增长18.40%/P(DD≥20%)=2.60%）——原"定仓维度穷尽"判决推翻，原FAILED解除，见GRAVEYARD_INDEX.md。**未完待续：** 需在10%仓位点补测WF+风险调整基准两项（见P0-RES-014）才能真正判定晋级 | `04_AI_TEAM/CODEX_TASKS/REPORT_P0RES006_ENGINE_L_RECHECK_20260702.md` |
+| P0-RES-007 | 诊断复查：#X3横截面动量被动基准门风险调整后重算 | ✅完成（2026-07-06） | Codex执行；Claude验收 | DEC-092；P0-RES-005 | 结果符合预期：风险调整后被动基准门`RISK_ADJUSTED_GATE_NOT_CONFIRMED`（CI穿0），但主死因（截面单调CI穿0+幸存者偏差）不受影响，**整体KILL_MAINTAINED，不复活** | `04_AI_TEAM/CODEX_TASKS/REPORT_P0RES007_X3_BENCHMARK_RECHECK_20260702.md` |
+| P0-RES-014 | TSMOM引擎L在10%/15%目标波动率点用v1.5风险调整法重算被动基准门 | ✅完成（2026-07-06） | Codex执行；Claude验收 | P0-RES-006、P0-RES-007（同款方法） | **结果：10%/15%两点七项检查全过**（10%点：策略年化log增长12.98% vs 基准11.78%，diff+1.20%，95%CI[-4.21%,6.24%]，"显著跑输"不成立）。**这是DEC-092落地以来、也是本项目至今唯一走完当前量化验收协议全流程的候选。** 未消耗Holdout，未产生前向证据——是否晋级待Claude/Founder决策，见CURRENT_STATE §1c | `04_AI_TEAM/CODEX_TASKS/REPORT_P0RES014_ENGINE_L_BENCHMARK_RECHECK_20260706.md` |
+| P0-RES-008 | 修复价格面板6个刷新失败symbol（含BTCUSDT，SSL错误） | ✅完成（2026-07-06，Claude直接执行） | Claude | `06_RESEARCH/CODE/panel_refresh_2026.py` | 根因=瞬时连接问题（非代码/symbol错误），直连重试后37/37全部续到2026-06-22。**新发现待评估**：BTCUSDT历史深度远低于其他symbol（仅2024-12-09起，其余多为2020年起）——原始面板从未含BTCUSDT，非本次引入 | `04_AI_TEAM/CODEX_TASKS/REPORT_P0RES008_PANEL_SSL_FIX_20260706.md` |
+| P0-RES-009 | 备胎侦察R1：Hyperliquid链上完整清算数据可行性 | ✅完成（2026-07-06，Claude WebSearch/Fetch直接调研） | Claude | fable备胎扫描2026-07-02 | **结论：不是forced-flow v2数据墙的直接解法**——免费第三方归档(Hydromancer Reservoir)对Hyperliquid永续合约历史只从2025年8月起(~11个月)，深度接近我们已修复的BTCUSDT(~1.5年)，远不及其余symbol(~6年)；且清算机制(链上CLOB+ADL)与Binance(保险基金)结构不同，不能直接当同一机制的证据外推。**建议列为几乎零成本的独立平行验证线**，留待P0重启时顺手验证，不单独立项 | `04_AI_TEAM/CODEX_TASKS/REPORT_P0RES009_HYPERLIQUID_SCOUT_20260706.md` |
+| P0-RES-010 | 备胎侦察R3：Binance退市强制平仓事件库存 | 🟡待派Codex | Codex执行；Claude验收 | fable备胎扫描2026-07-02 | 爬历史退市公告建事件清单，与价格面板对齐评估样本量；只建库存备忘，不启动正式立项 | `OPPORTUNITY_MAP_STATUS.md`备胎清单R3 |
+| P0-RES-011 | 备胎侦察R4：期权对冲流(#6/#7)DEFER前提复核 | 🟡待派Codex | Codex执行；Claude验收 | fable备胎扫描2026-07-02 | 只核实Deribit公开API/Laevitas等免费源是否够初筛，若"需付费"前提不成立则修正机会地图状态标注，不做信号研究 | `OPPORTUNITY_MAP_STATUS.md`备胎清单R4 |
+| P0-RES-012 | 备胎侦察R5：美股事件×bStocks（Claude核实推翻fable"流动性差"原判断） | 🟡待派Codex | Codex执行；Claude验收 | Founder 2026-07-02指出bStocks成交量数据；Claude核实 | 核实事件类候选（财报/期权拥挤/ETF流）在bStocks渠道下是否真有小资金容量优势，不做信号研究 | `OPPORTUNITY_MAP_STATUS.md`备胎清单R5 |
+| P0-RES-013 | 备胎侦察R6：境内合规黄金渠道（上期所黄金期货/银行黄金T+D） | ⚪存档待排期 | Claude/Codex | Founder 2026-07-02提出 | 初步资料研究是否有可测微观机制，**明确排除MT4/MT5境外黄金CFD（合规风险，见已否决清单）** | `OPPORTUNITY_MAP_STATUS.md`备胎清单R6 |
+| P0-RES-016 | L1深度审计R7执行包（2026-07-15）：①面板月刷制度化（panel_refresh_2026.py月度重跑，重叠窗9/15复评门）②投研扫描源拓宽（thesis_hf_scan.py扩上币/退市公告流+公开解锁日历+脱锚监控）③P0-RES-010/011/012同批派出 | 🔵新增 | Claude起草任务书；Codex执行 | L1审计2026-07-15处方R7 | 本周起草并nohup派发（-m铁律）；周报digest加liq同步滞后告警（R2）一并落 | `00_PROJECT_MANAGEMENT/STAGE_AUDITS/L1_DEEP_AUDIT_CLAUDE_2026-07-15.md` |
+| P0-RES-015 | TSMOM引擎L（10%目标波动率点）Holdout一次性最终盲验（DEC-093，Founder 2026-07-12批准） | ✅**完成（2026-07-12，Claude验收裁决=FAIL，引擎L判死）**：H1 E[R]=-0.63%<0（生存底线）、H2年化log增长-6.86%<0两门不过；H3 DD17.0%过/H4基准门过；151笔非低功效；验收核查=hash全对+重构对账0差异+禁读边界干净+算术自检一致。死因=样本外趋势premium消失+成本拖累≈11.6%/年。TSMOM家族永闭，Holdout消耗封账，墓园/机会地图已写回。（派发过程留痕：首派CLI/模型不匹配失败[p0res015_run.log]→`-m gpt-5.5`重派成功[PID 11815, session 019f54e9, p0res015_run2.log]） | Claude起草预登记任务书✅；Codex执行中；Claude验收 | DEC-093；P0-RES-006/014 | 判据已冻结（四门H1-H4：窗内E[R]>0/年化log增长>0/实现DD<20%/风险调整基准门seed=20260712；Holdout窗=2024-12-10→2026-05-31；一次执行禁重跑；任务书SHA256=07ac51bb…5862cf）。VM轮询`p0res015_run.log`+`TASK_INBOX/P0RES015_DONE.json`；完成后Claude验收裁决PASS/FAIL并写回墓园/机会地图 | `04_AI_TEAM/CODEX_TASKS/TASK_P0RES015_ENGINE_L_HOLDOUT_BLIND_20260712.md`；待产出REPORT_P0RES015 |
 
 ### 治理、知识与审计
 
@@ -114,7 +129,14 @@
 | P1-RES-032 | carry 前向 SHADOW 启动准备 | ⛔废弃 | — | — | carry关闭连带废弃（DEC-079）。 | — |
 | P1-RES-033 | carry 18-24 月前向 SHADOW 一次性确认 | ⛔废弃 | — | — | carry关闭连带废弃（DEC-079）。 | — |
 | P1-RES-034 | regime-adaptive 研究（原捆绑描述已冻结，DEC-082拆为B0-B4） | 🔵拆分中 | Claude起草；Codex执行/反审 | DEC-082；P1-RES-030A数据；P0-C先行 | **DEC-082冻结原「Regime×TSMOM×10-20x单实验+月均>20%/夏普>0.5验收」**（违反单变量+机制后置+杠杆前置+收益反推）。改单变量序列，验收口径=机制成立+成本后E[R]>0+爆仓概率/log growth/分年正期望+同状态被动基准对照（v1.4） | 见 B0-B4 子任务 |
-| P1-RES-034-B0 | B0 机制卡（可证伪硬验收） | 🔵待起草 | Claude起草；Codex反审 | DEC-082；P0-C验收 | 结论须落 KILL/PROCEED/REVISE_ONCE；6问合格标准（谁付钱=明确对手方/市场结构；钱如何进口袋=信号→成交→持仓→费用→funding→滑点闭环；小资金为何拿得到；为何非数据挖掘=≥2条可被数据反驳预测；用什么数据证伪；失败即停）。**不碰Holdout/不调参** | 待建 |
+| P1-RES-034-B0 | B0 机制卡（regime-adaptive 方向性） | 🟡Tier2持有（领跑被扫描推翻） | Claude起草 | DEC-082；P0-C验收 | **2026-06-21**：B0 v1 收窄为「强制流状态门控趋势」(REVISE_ONCE)。**随后机制扫描(14候选)推翻其领跑**：强制流门控仍=TSMOM+门控(同P1-04/06)+强平免费数据抽样截断(A-1旧伤)→**降Tier2持有**(待强平数据攒够+前档全灭再重启)。卡含 §6 扫描后再裁决。**未碰Holdout/未调参/不耗计数** | `06_RESEARCH/PREREGISTRATIONS/REGIME_ADAPTIVE_B0_MECHANISM_CARD.md` |
+| P1-RES-035 | 机制候选扫描（14候选）+ Claude 排序裁决 | ✅完成 | Claude（子代理搜集，自己裁决） | B0 v1 | **2026-06-21 完成**：Founder挑战"先调研防烂尾"→general-purpose子代理扫14候选→Claude换皮裁决(不下放)。产出排序backlog(Tier1领跑=#X1横截面funding carry,Tier1备选=#X2跨链RV配对,其余Tier2/3/Defer)，落OPPORTUNITY_MAP_STATUS作pivot菜单。消费合约=研究主线选择依据+kill后抽下一档+晋级路径B0→B1→B2 | `06_RESEARCH/MECHANISM_SURVEY/CRYPTO_PERP_MECHANISM_SCAN_20260621.md`；`OPPORTUNITY_MAP_STATUS.md`机制候选段 |
+| P1-RES-036-B0 | B0 机制卡：~~#X1 carry~~~~/#X2 RV~~ → **强制流/订单流机制**（形态=触发器，**新领跑 DEC-085**） | ✅完成（Codex红队通过，已推进至B1，见P1-RES-036-B1；**状态标签2026-07-12核实后更正**，此前长期滞留"🟢草成待Codex红队"，实际红队与B1均已完成） | Claude起草；Codex红队 | DEC-085；P1-RES-035 | **DEC-085（Founder D级2026-06-21）定向**：Founder要自动化但嫌市场中性利润低→看图法量化卡入场=风险D死循环,但形态背后有真机制→**猎强制流/订单流(流动性掠夺→清算流;量价→订单流),形态=触发器,入场优化后置B3,杠杆放大已验证edge取收益B4**。B0已起草=**PROCEED到B1**,带子机制选定门(建议OFI先行数据齐;清算流并行攒数)+数据功效门;防换皮vs A-1硬约束(A-1清算回弹FAILED,新线须选distinct子机制)。**✅Codex红队完成+Claude接受MODIFY→B0降REVISE_ONCE(默认KILL基线)**。**B1-KILLCARD已完成=不进B2**（见P1-RES-036-B1，OFI/清算流/lead-lag三子机制均未通过数据-功效门），此线已终结，不再有下一步 | `FORCED_FLOW_ORDERFLOW_B0_MECHANISM_CARD.md`(§5修订)；`REPORT_REDTEAM_FORCED_FLOW_20260621.md` |
+| P1-RES-036-B1 | B1-KILLCARD：强制/激进流数据-功效门（四道非收益筛查） | ✅完成=不进B2 | Codex；Claude验收 | B0 REVISE_ONCE | **2026-06-21完成=不进B2**：OFI KILL_AS_TRADABLE(成本门:maker最乐观signal-level 14bp>分钟级信号~10bp+本地无可审计aggTrades/L2);免费清算流SLEEP(forceOrder缺失不可界定=A-1换皮);lead-lag KILL_NOW(无成对spot/perp数据)。Founder maker变量已入账(成交率+逆选折扣)。⚠️审计发现本地强平/SPOT数据0行+采集器零帧→需核VM。下一步=Founder三选一(回#X2/付费数据/修采集器攒数) | `REPORT_B1_KILLCARD_FORCED_FLOW_20260621.md`；`06_RESEARCH/CODE/b1_killcard_forced_flow_audit.py` |
+| P1-RES-037 | 研究范围约束登记：禁资金费型策略（DEC-084） | ✅完成 | Founder D；Claude | 无 | **2026-06-21**：Founder口头"不要做资金费策略"→落DEC-084。严格读法=禁funding-harvest为edge(delta-carry/横截面carry/任何变体)；funding可否作非edge状态输入=待Founder边界确认(从严)。 | DEC-084；OPPORTUNITY_MAP_STATUS |
+| P1-RES-037-B0 | B0 机制卡：#X2 跨链/跨品种相对价值配对（强制流死后回取，新领跑） | ⛔KILL（阶段0，DEC-088） | Claude起草；Codex红队 | 强制流B1全灭；DEC-084合规 | **2026-06-22（DEC-088战略复盘）**：三方独立扫描印证后于阶段0 KILL，入墓园，不再是研究主线；领跑权转 forced-flow/payer-flow v2（见 P0-RES-038-B0）。原 2026-06-21 起草记录保留存档。 | `06_RESEARCH/PREREGISTRATIONS/CROSS_ASSET_RV_B0_MECHANISM_CARD.md`；`06_RESEARCH/GRAVEYARD_INDEX.md` |
+| P0-RES-038-B0 | B0 机制卡：forced-flow/payer-flow v2（funding极端/OI重置/强平簇/taker失衡，弃普通价格动量，DEC-088新领跑） | 🟡PARK·数据饿死 | Claude起草 | DEC-088；强平采集器数据层 | **2026-06-22起草=REVISE_ONCE**。**2026-06-22阶段A数据审计**：OI重置成本门fail入墓园/强平簇缺重叠数据/taker缺L2/funding易退化carry→**机制未否，仅免费当前数据不可测**，转被动攒数/PARK（非放弃）。强平采集器持续健康收数（本地已续到`liq_20260701.jsonl`，245k+条）。**下一步=数据积累到可测阈值后重启B1-KILLCARD，或Founder时间判定为瓶颈时改用付费数据源**。量化主动猎暂停期间不占WIP，投研线（DEC-091）领跑。 | `06_RESEARCH/PREREGISTRATIONS/FORCED_FLOW_PAYER_FLOW_V2_B0_MECHANISM_CARD.md` |
+| P1-RES-014B | 核实强平采集器（风险E排查→误报更正） | ✅完成=采集器健康 | Claude直连VM | B1审计报本地0行 | **2026-06-21**：Claude直连VM(`id_ed25519_aiquant`)核实=**采集器健康**(service active 6/15起,VM上245,614条真实记录,今日19,842行在线)。B1"0行"=**VM→本地同步断**,非采集器死(上轮风险E误报已更正)。已rsync 7文件到本地`06_RESEARCH/DATA/LIQUIDATIONS/`。遗留:同步常态化(不新建定时任务,手动/Codex periodic)。Codex任务因429+沙箱挡SSH失败,Claude直连完成 | `06_RESEARCH/DATA/LIQUIDATIONS/`(245k行) |
 | P1-RES-034-B1 | B1 数据与标签审计 | ⚪B0后 | Codex；Claude验收 | B0=PROCEED | 验regime标签可滚动计算/无前视/切换延迟/样本量MDE/数据质量；**不得按收益选标签**；结束冻结标签规则或KILL | 待建 |
 | P1-RES-034-B2 | B2 实验A：单变量Regime门控 | ⚪B1后 | Codex；Claude验收 | B1冻结标签 | 冻结TSMOM+1x，只测单一regime门控是否改善预登记指标且优于同状态被动基准；**禁同时调lookback/阈值/出场/费用/仓位/杠杆；禁多regime并行试到最好；禁把失败写「部分有效」** | 待建（预登记+功效段） |
 | P1-RES-034-B3 | B3 实验B：仓位/波动目标 | ⚪B2过门后 | Codex；Claude验收 | B2 ACCEPT | 在冻结信号上测仓位/波动目标 | 待建 |
@@ -206,9 +228,10 @@
 | P1-GOV-006 | 建3个Claude项目级Skill + Holdout硬门控 | ✅完成 | Claude | 无 | result-intake/codex-task-spec/research-harvest已建；protect-holdout.py已建 | `.claude/skills/`；`.claude/hooks/protect-holdout.py`（2026-06-20） |
 | P1-GOV-007 | 建state-sync Skill + hypothesis-preregister Skill | 🟡进行中 | Claude | P1-GOV-006 | state-sync Skill ✅已建（2026-06-20）；hypothesis-preregister ⚪待建（新方向spec起草后补） | `.claude/skills/state-sync/SKILL.md` |
 | P1-GOV-008 | TASK_INBOX文件监听daemon | 🔵新增 | Codex | 无 | 任务书已备好`04_AI_TEAM/CODEX_TASKS/BUILD_TASK_INBOX_DAEMON.md`；消除Codex→Claude复制粘贴传话 | `04_AI_TEAM/CODEX_TASKS/BUILD_TASK_INBOX_DAEMON.md` |
-| P1-GOV-009 | 执行历史Codex报告积压harvest（60+份） | 🔵新增 | Claude（research-harvest Skill） | P1-GOV-006 | 用research-harvest Skill按类别扫描60+份REPORT_*.md，提取结论写入CARRY_KNOWLEDGE/TOOLS_KNOWLEDGE/RESEARCH_ACTION_REGISTRY；优先carry相关+失败报告 | `02_KNOWLEDGE_BASE/` |
+| P1-GOV-009 | 执行历史Codex报告积压harvest（实际~139份：84 CODEX_TASKS+55 RESULTS） | ✅完成 | Codex提取段+Claude判断段(DEC-069) | P1-GOV-006 | 2026-06-27完成。Codex扫139份→暂存`HARVEST_STAGING_20260627.md`(未碰正式库);Claude判断段→权威摘要`HARVEST_DIGEST_20260627.md`。**主理人判断=积压无埋藏edge/机制,全是已吸收负面知识;5个反复流程病(数据不全/口径漂移/机制先验弱/成本门/scaffold当证据)项目纪律已内化**。新增5道流程门(H1 BLOCKED≠FAILED/H2 scaffold≠证据/H3验证前置/H4工具治理登记/H5工具不替裁决)+4行动项(RA-H1~H4)。大类(Sweep/TSMOM/Carry/X2/X3/forced-flow)确认已在各KB/墓园,不重复。 | `02_KNOWLEDGE_BASE/HARVEST_DIGEST_20260627.md` |
 | P1-GOV-010 | 文件归档：REORGANIZE-ARCHIVE-001 | 🔵新增 | Codex | Founder确认保留列表 | 任务书已备好；清理历史散落文件；待Founder确认不删除的文件列表后立即派Codex | `04_AI_TEAM/CODEX_TASKS/REORGANIZE-ARCHIVE-001.md` |
 | P1-GOV-011 | 精简CLAUDE.md至≤200行，流程规则移入Skill | 🔵新增 | Claude | P1-GOV-007 | RA-013要求；当前CLAUDE.md内联所有规则=每次对话全量加载=token浪费；流程类规则→Skill；原则类保留；参考触发条件"阶段切换/持续输出偏差" | `CLAUDE.md`；RA-013 |
+| P1-GOV-012 | harvest 外部历史项目 v4.6.2/openclaw（SG服务器） | ✅完成 | Claude（只读SSH） | 无 | **2026-06-27 Founder临时指派**。⚠️流程教训=Claude执行前未查计划(违规则4)。**裁决=策略/架构/因子一条不借**:v4.6.2自诊断22分制IC≈50%噪声+执行层修补=墓园标准死法;candidate-factors 8因子全墓园同族(F4=OFI已KILL/F6=funding carry+a2已死)。唯一收获=负面确认范式耗尽。SG只读未碰服务。≠P1-GOV-009(那是harvest我方60+Codex报告,仍待办)。 | CURRENT_STATE §1b ㊱ |
 | P1-GOV-012 | 部署Claude subagents处理重量级上下文任务 | 🔵新增 | Claude | P1-GOV-006 | RA-012；超长对话漂移问题的机制解法：把"会淹没主上下文的60+报告扫描/日志分析/多文件读取"放独立subagent窗口；主对话保持干净 | `.claude/agents/`（目录已建） |
 | P1-GOV-013 | 写Founder使用协议（对话管理+D级批处理+token节省） | 🔵新增 | Claude | P1-GOV-011 | 本次对话诊断出的Founder侧使用问题系统化；产物=`00_PROJECT_MANAGEMENT/FOUNDER_USAGE_PROTOCOL.md` | 本次对话诊断 |
 

@@ -1,0 +1,69 @@
+{
+ "scan_utc": "20260715_1526",
+ "n_prescreen": 7,
+ "candidates": [
+  {
+   "symbol": "SAMSUNGUSDT",
+   "funding_8h": -0.0042118,
+   "chg24h_pct": -6.996,
+   "quote_vol_usdt": 168302989.3543,
+   "oi_24h_ago_usdt": 18820465.93731169,
+   "oi_now_usdt": 16020816.4316,
+   "oi_24h_ratio": 0.851
+  },
+  {
+   "symbol": "AKEUSDT",
+   "funding_8h": 0.00050896,
+   "chg24h_pct": 295.575,
+   "quote_vol_usdt": 680631680.9576232,
+   "oi_24h_ago_usdt": 3185518.8170222,
+   "oi_now_usdt": 40663508.1238728,
+   "oi_24h_ratio": 12.765
+  },
+  {
+   "symbol": "LABUSDT",
+   "funding_8h": 0.00035577,
+   "chg24h_pct": -32.689,
+   "quote_vol_usdt": 299946799.1443,
+   "oi_24h_ago_usdt": 20756360.34790875,
+   "oi_now_usdt": 20407656.28824496,
+   "oi_24h_ratio": 0.983
+  },
+  {
+   "symbol": "KORUUSDT",
+   "funding_8h": 0.00034925,
+   "chg24h_pct": -95.61,
+   "quote_vol_usdt": 776443268.6163,
+   "oi_24h_ago_usdt": 124450975.677,
+   "oi_now_usdt": 89362366.21546483,
+   "oi_24h_ratio": 0.718
+  },
+  {
+   "symbol": "USUSDT",
+   "funding_8h": 0.00033597,
+   "chg24h_pct": 39.621,
+   "quote_vol_usdt": 80887122.657065,
+   "oi_24h_ago_usdt": 13238761.298616,
+   "oi_now_usdt": 21295806.4198272,
+   "oi_24h_ratio": 1.609
+  },
+  {
+   "symbol": "SNXXUSDT",
+   "funding_8h": 0.00011433,
+   "chg24h_pct": -25.943,
+   "quote_vol_usdt": 22409767.6686,
+   "oi_24h_ago_usdt": 951669.1945,
+   "oi_now_usdt": 2192321.04650575,
+   "oi_24h_ratio": 2.304
+  },
+  {
+   "symbol": "DODOXUSDT",
+   "funding_8h": 5e-05,
+   "chg24h_pct": 43.55,
+   "quote_vol_usdt": 187045690.657177,
+   "oi_24h_ago_usdt": 2766017.1033986,
+   "oi_now_usdt": 6678457.577296,
+   "oi_24h_ratio": 2.414
+  }
+ ]
+}

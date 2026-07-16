@@ -1,0 +1,2540 @@
+{
+ "generated": "2026-06-27T21:02:35.377609Z",
+ "total_usdt_perp_trading": 530,
+ "candidate_count_2023plus_not_in_panel": 422,
+ "candidates_2023plus": [
+  {
+   "symbol": "CAPUSDT",
+   "base": "CAP",
+   "onboard": "2026-06-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "OUSDT",
+   "base": "O",
+   "onboard": "2026-06-24",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ARXUSDT",
+   "base": "ARX",
+   "onboard": "2026-06-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "REUSDT",
+   "base": "RE",
+   "onboard": "2026-06-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ZESTUSDT",
+   "base": "ZEST",
+   "onboard": "2026-06-04",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BTWUSDT",
+   "base": "BTW",
+   "onboard": "2026-06-04",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SLXUSDT",
+   "base": "SLX",
+   "onboard": "2026-06-01",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CTRUSDT",
+   "base": "CTR",
+   "onboard": "2026-05-28",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PHAROSUSDT",
+   "base": "PHAROS",
+   "onboard": "2026-05-14",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "STARUSDT",
+   "base": "STAR",
+   "onboard": "2026-05-14",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BILLUSDT",
+   "base": "BILL",
+   "onboard": "2026-05-07",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AIGENSYNUSDT",
+   "base": "AIGENSYN",
+   "onboard": "2026-04-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "OPGUSDT",
+   "base": "OPG",
+   "onboard": "2026-04-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "GENIUSUSDT",
+   "base": "GENIUS",
+   "onboard": "2026-04-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CHIPUSDT",
+   "base": "CHIP",
+   "onboard": "2026-04-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PRLUSDT",
+   "base": "PRL",
+   "onboard": "2026-04-01",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BASEDUSDT",
+   "base": "BASED",
+   "onboard": "2026-03-30",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "XAUTUSDT",
+   "base": "XAUT",
+   "onboard": "2026-03-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BSBUSDT",
+   "base": "BSB",
+   "onboard": "2026-03-25",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "EDGEUSDT",
+   "base": "EDGE",
+   "onboard": "2026-03-19",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CFGUSDT",
+   "base": "CFG",
+   "onboard": "2026-03-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "龙虾USDT",
+   "base": "龙虾",
+   "onboard": "2026-03-11",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MANTRAUSDT",
+   "base": "MANTRA",
+   "onboard": "2026-03-04",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "KATUSDT",
+   "base": "KAT",
+   "onboard": "2026-03-02",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ROBOUSDT",
+   "base": "ROBO",
+   "onboard": "2026-02-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "OPNUSDT",
+   "base": "OPN",
+   "onboard": "2026-02-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AZTECUSDT",
+   "base": "AZTEC",
+   "onboard": "2026-02-11",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ESPUSDT",
+   "base": "ESP",
+   "onboard": "2026-02-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TRIAUSDT",
+   "base": "TRIA",
+   "onboard": "2026-02-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MEGAUSDT",
+   "base": "MEGA",
+   "onboard": "2026-01-30",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "INXUSDT",
+   "base": "INX",
+   "onboard": "2026-01-30",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BIRBUSDT",
+   "base": "BIRB",
+   "onboard": "2026-01-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "GWEIUSDT",
+   "base": "GWEI",
+   "onboard": "2026-01-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SPACEUSDT",
+   "base": "SPACE",
+   "onboard": "2026-01-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "FIGHTUSDT",
+   "base": "FIGHT",
+   "onboard": "2026-01-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ELSAUSDT",
+   "base": "ELSA",
+   "onboard": "2026-01-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SKRUSDT",
+   "base": "SKR",
+   "onboard": "2026-01-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ACUUSDT",
+   "base": "ACU",
+   "onboard": "2026-01-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "我踏马来了USDT",
+   "base": "我踏马来了",
+   "onboard": "2026-01-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AIAUSDT",
+   "base": "AIA",
+   "onboard": "2026-01-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SPORTFUNUSDT",
+   "base": "SPORTFUN",
+   "onboard": "2026-01-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "FRAXUSDT",
+   "base": "FRAX",
+   "onboard": "2026-01-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "FOGOUSDT",
+   "base": "FOGO",
+   "onboard": "2026-01-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ZAMAUSDT",
+   "base": "ZAMA",
+   "onboard": "2026-01-09",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "COLLECTUSDT",
+   "base": "COLLECT",
+   "onboard": "2025-12-31",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MAGMAUSDT",
+   "base": "MAGMA",
+   "onboard": "2025-12-31",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BREVUSDT",
+   "base": "BREV",
+   "onboard": "2025-12-30",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "LITUSDT",
+   "base": "LIT",
+   "onboard": "2025-12-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ZKPUSDT",
+   "base": "ZKP",
+   "onboard": "2025-12-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "GUAUSDT",
+   "base": "GUA",
+   "onboard": "2025-12-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "RAVEUSDT",
+   "base": "RAVE",
+   "onboard": "2025-12-14",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "USUSDT",
+   "base": "US",
+   "onboard": "2025-12-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CYSUSDT",
+   "base": "CYS",
+   "onboard": "2025-12-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "WETUSDT",
+   "base": "WET",
+   "onboard": "2025-12-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "NIGHTUSDT",
+   "base": "NIGHT",
+   "onboard": "2025-12-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "POWERUSDT",
+   "base": "POWER",
+   "onboard": "2025-12-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "IRYSUSDT",
+   "base": "IRYS",
+   "onboard": "2025-11-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PIEVERSEUSDT",
+   "base": "PIEVERSE",
+   "onboard": "2025-11-14",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SENTUSDT",
+   "base": "SENT",
+   "onboard": "2025-11-14",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CLANKERUSDT",
+   "base": "CLANKER",
+   "onboard": "2025-11-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BEATUSDT",
+   "base": "BEAT",
+   "onboard": "2025-11-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ALLOUSDT",
+   "base": "ALLO",
+   "onboard": "2025-11-11",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "JCTUSDT",
+   "base": "JCT",
+   "onboard": "2025-11-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "UAIUSDT",
+   "base": "UAI",
+   "onboard": "2025-11-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "FOLKSUSDT",
+   "base": "FOLKS",
+   "onboard": "2025-11-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "STABLEUSDT",
+   "base": "STABLE",
+   "onboard": "2025-11-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TRUSTUSDT",
+   "base": "TRUST",
+   "onboard": "2025-11-05",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MMTUSDT",
+   "base": "MMT",
+   "onboard": "2025-11-04",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CCUSDT",
+   "base": "CC",
+   "onboard": "2025-10-31",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "KITEUSDT",
+   "base": "KITE",
+   "onboard": "2025-10-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ATUSDT",
+   "base": "AT",
+   "onboard": "2025-10-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ONUSDT",
+   "base": "ON",
+   "onboard": "2025-10-24",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "APRUSDT",
+   "base": "APR",
+   "onboard": "2025-10-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TURTLEUSDT",
+   "base": "TURTLE",
+   "onboard": "2025-10-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BLUAIUSDT",
+   "base": "BLUAI",
+   "onboard": "2025-10-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "币安人生USDT",
+   "base": "币安人生",
+   "onboard": "2025-10-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ZBTUSDT",
+   "base": "ZBT",
+   "onboard": "2025-10-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "LABUSDT",
+   "base": "LAB",
+   "onboard": "2025-10-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "RIVERUSDT",
+   "base": "RIVER",
+   "onboard": "2025-10-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "RECALLUSDT",
+   "base": "RECALL",
+   "onboard": "2025-10-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ENSOUSDT",
+   "base": "ENSO",
+   "onboard": "2025-10-14",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CLOUSDT",
+   "base": "CLO",
+   "onboard": "2025-10-14",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "EULUSDT",
+   "base": "EUL",
+   "onboard": "2025-10-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "METUSDT",
+   "base": "MET",
+   "onboard": "2025-10-11",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MONUSDT",
+   "base": "MON",
+   "onboard": "2025-10-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "YBUSDT",
+   "base": "YB",
+   "onboard": "2025-10-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "GIGGLEUSDT",
+   "base": "GIGGLE",
+   "onboard": "2025-10-09",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "4USDT",
+   "base": "4",
+   "onboard": "2025-10-08",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "KGENUSDT",
+   "base": "KGEN",
+   "onboard": "2025-10-07",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "LYNUSDT",
+   "base": "LYN",
+   "onboard": "2025-10-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "EVAAUSDT",
+   "base": "EVAA",
+   "onboard": "2025-10-03",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "2ZUSDT",
+   "base": "2Z",
+   "onboard": "2025-10-02",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "NOMUSDT",
+   "base": "NOM",
+   "onboard": "2025-10-01",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TRUTHUSDT",
+   "base": "TRUTH",
+   "onboard": "2025-10-01",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "EDENUSDT",
+   "base": "EDEN",
+   "onboard": "2025-09-30",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "XANUSDT",
+   "base": "XAN",
+   "onboard": "2025-09-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "FFUSDT",
+   "base": "FF",
+   "onboard": "2025-09-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "LIGHTUSDT",
+   "base": "LIGHT",
+   "onboard": "2025-09-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "HANAUSDT",
+   "base": "HANA",
+   "onboard": "2025-09-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MIRAUSDT",
+   "base": "MIRA",
+   "onboard": "2025-09-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AKEUSDT",
+   "base": "AKE",
+   "onboard": "2025-09-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ORDERUSDT",
+   "base": "ORDER",
+   "onboard": "2025-09-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "COAIUSDT",
+   "base": "COAI",
+   "onboard": "2025-09-25",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "FLUIDUSDT",
+   "base": "FLUID",
+   "onboard": "2025-09-24",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BLESSUSDT",
+   "base": "BLESS",
+   "onboard": "2025-09-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ASTERUSDT",
+   "base": "ASTER",
+   "onboard": "2025-09-19",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TRADOORUSDT",
+   "base": "TRADOOR",
+   "onboard": "2025-09-19",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BARDUSDT",
+   "base": "BARD",
+   "onboard": "2025-09-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TOSHIUSDT",
+   "base": "TOSHI",
+   "onboard": "2025-09-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "STBLUSDT",
+   "base": "STBL",
+   "onboard": "2025-09-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "0GUSDT",
+   "base": "0G",
+   "onboard": "2025-09-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ZKCUSDT",
+   "base": "ZKC",
+   "onboard": "2025-09-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "XPINUSDT",
+   "base": "XPIN",
+   "onboard": "2025-09-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "UBUSDT",
+   "base": "UB",
+   "onboard": "2025-09-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "HOLOUSDT",
+   "base": "HOLO",
+   "onboard": "2025-09-11",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "FLOCKUSDT",
+   "base": "FLOCK",
+   "onboard": "2025-09-09",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SKYUSDT",
+   "base": "SKY",
+   "onboard": "2025-09-09",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AVNTUSDT",
+   "base": "AVNT",
+   "onboard": "2025-09-09",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "OPENUSDT",
+   "base": "OPEN",
+   "onboard": "2025-09-08",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ARIAUSDT",
+   "base": "ARIA",
+   "onboard": "2025-09-03",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TAKEUSDT",
+   "base": "TAKE",
+   "onboard": "2025-09-03",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PTBUSDT",
+   "base": "PTB",
+   "onboard": "2025-09-03",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "QUSDT",
+   "base": "Q",
+   "onboard": "2025-09-02",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "LINEAUSDT",
+   "base": "LINEA",
+   "onboard": "2025-09-01",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "HEMIUSDT",
+   "base": "HEMI",
+   "onboard": "2025-08-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MITOUSDT",
+   "base": "MITO",
+   "onboard": "2025-08-28",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BTRUSDT",
+   "base": "BTR",
+   "onboard": "2025-08-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BASUSDT",
+   "base": "BAS",
+   "onboard": "2025-08-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SOMIUSDT",
+   "base": "SOMI",
+   "onboard": "2025-08-25",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "WLFIUSDT",
+   "base": "WLFI",
+   "onboard": "2025-08-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "XPLUSDT",
+   "base": "XPL",
+   "onboard": "2025-08-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SAPIENUSDT",
+   "base": "SAPIEN",
+   "onboard": "2025-08-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "USELESSUSDT",
+   "base": "USELESS",
+   "onboard": "2025-08-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AIOUSDT",
+   "base": "AIO",
+   "onboard": "2025-08-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "XNYUSDT",
+   "base": "XNY",
+   "onboard": "2025-08-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "INUSDT",
+   "base": "IN",
+   "onboard": "2025-08-07",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CARVUSDT",
+   "base": "CARV",
+   "onboard": "2025-08-07",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ALLUSDT",
+   "base": "ALL",
+   "onboard": "2025-08-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TOWNSUSDT",
+   "base": "TOWNS",
+   "onboard": "2025-08-05",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PROVEUSDT",
+   "base": "PROVE",
+   "onboard": "2025-08-05",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PLAYUSDT",
+   "base": "PLAY",
+   "onboard": "2025-07-31",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "NAORISUSDT",
+   "base": "NAORIS",
+   "onboard": "2025-07-31",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ESPORTSUSDT",
+   "base": "ESPORTS",
+   "onboard": "2025-07-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TREEUSDT",
+   "base": "TREE",
+   "onboard": "2025-07-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ZORAUSDT",
+   "base": "ZORA",
+   "onboard": "2025-07-25",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TAGUSDT",
+   "base": "TAG",
+   "onboard": "2025-07-25",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CVXUSDT",
+   "base": "CVX",
+   "onboard": "2025-07-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SLPUSDT",
+   "base": "SLP",
+   "onboard": "2025-07-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TAUSDT",
+   "base": "TA",
+   "onboard": "2025-07-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ERAUSDT",
+   "base": "ERA",
+   "onboard": "2025-07-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CUSDT",
+   "base": "C",
+   "onboard": "2025-07-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "VELVETUSDT",
+   "base": "VELVET",
+   "onboard": "2025-07-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TACUSDT",
+   "base": "TAC",
+   "onboard": "2025-07-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PUMPUSDT",
+   "base": "PUMP",
+   "onboard": "2025-07-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CROSSUSDT",
+   "base": "CROSS",
+   "onboard": "2025-07-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AINUSDT",
+   "base": "AIN",
+   "onboard": "2025-07-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MUSDT",
+   "base": "M",
+   "onboard": "2025-07-07",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BULLAUSDT",
+   "base": "BULLA",
+   "onboard": "2025-07-04",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "IDOLUSDT",
+   "base": "IDOL",
+   "onboard": "2025-07-04",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ICNTUSDT",
+   "base": "ICNT",
+   "onboard": "2025-07-03",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SAHARAUSDT",
+   "base": "SAHARA",
+   "onboard": "2025-06-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "HUSDT",
+   "base": "H",
+   "onboard": "2025-06-25",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "NEWTUSDT",
+   "base": "NEWT",
+   "onboard": "2025-06-19",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MYXUSDT",
+   "base": "MYX",
+   "onboard": "2025-06-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "FUSDT",
+   "base": "F",
+   "onboard": "2025-06-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SPKUSDT",
+   "base": "SPK",
+   "onboard": "2025-06-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PUMPBTCUSDT",
+   "base": "PUMPBTC",
+   "onboard": "2025-06-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TAIKOUSDT",
+   "base": "TAIKO",
+   "onboard": "2025-06-11",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SQDUSDT",
+   "base": "SQD",
+   "onboard": "2025-06-11",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "HOMEUSDT",
+   "base": "HOME",
+   "onboard": "2025-06-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "RESOLVUSDT",
+   "base": "RESOLV",
+   "onboard": "2025-06-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "1000000BOBUSDT",
+   "base": "1000000BOB",
+   "onboard": "2025-06-05",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "LAUSDT",
+   "base": "LA",
+   "onboard": "2025-06-05",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "HYPEUSDT",
+   "base": "HYPE",
+   "onboard": "2025-05-30",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MERLUSDT",
+   "base": "MERL",
+   "onboard": "2025-05-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AUSDT",
+   "base": "A",
+   "onboard": "2025-05-28",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SOPHUSDT",
+   "base": "SOPH",
+   "onboard": "2025-05-28",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "HUMAUSDT",
+   "base": "HUMA",
+   "onboard": "2025-05-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SOONUSDT",
+   "base": "SOON",
+   "onboard": "2025-05-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BUSDT",
+   "base": "B",
+   "onboard": "2025-05-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AWEUSDT",
+   "base": "AWE",
+   "onboard": "2025-05-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AGTUSDT",
+   "base": "AGT",
+   "onboard": "2025-05-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CVCUSDT",
+   "base": "CVC",
+   "onboard": "2025-05-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "NXPCUSDT",
+   "base": "NXPC",
+   "onboard": "2025-05-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SKYAIUSDT",
+   "base": "SKYAI",
+   "onboard": "2025-05-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "OGUSDT",
+   "base": "OG",
+   "onboard": "2025-05-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "DOODUSDT",
+   "base": "DOOD",
+   "onboard": "2025-05-09",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SYRUPUSDT",
+   "base": "SYRUP",
+   "onboard": "2025-05-07",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ASRUSDT",
+   "base": "ASR",
+   "onboard": "2025-05-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ALPINEUSDT",
+   "base": "ALPINE",
+   "onboard": "2025-05-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "B2USDT",
+   "base": "B2",
+   "onboard": "2025-05-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SXTUSDT",
+   "base": "SXT",
+   "onboard": "2025-05-02",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "DOLOUSDT",
+   "base": "DOLO",
+   "onboard": "2025-05-01",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "HAEDALUSDT",
+   "base": "HAEDAL",
+   "onboard": "2025-05-01",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PUNDIXUSDT",
+   "base": "PUNDIX",
+   "onboard": "2025-04-30",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CTKUSDT",
+   "base": "CTK",
+   "onboard": "2025-04-30",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AIOTUSDT",
+   "base": "AIOT",
+   "onboard": "2025-04-30",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "JSTUSDT",
+   "base": "JST",
+   "onboard": "2025-04-28",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SIGNUSDT",
+   "base": "SIGN",
+   "onboard": "2025-04-28",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "DEEPUSDT",
+   "base": "DEEP",
+   "onboard": "2025-04-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "HYPERUSDT",
+   "base": "HYPER",
+   "onboard": "2025-04-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BANKUSDT",
+   "base": "BANK",
+   "onboard": "2025-04-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "INITUSDT",
+   "base": "INIT",
+   "onboard": "2025-04-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AERGOUSDT",
+   "base": "AERGO",
+   "onboard": "2025-04-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "WCTUSDT",
+   "base": "WCT",
+   "onboard": "2025-04-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "KERNELUSDT",
+   "base": "KERNEL",
+   "onboard": "2025-04-14",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "STOUSDT",
+   "base": "STO",
+   "onboard": "2025-04-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "FHEUSDT",
+   "base": "FHE",
+   "onboard": "2025-04-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PROMPTUSDT",
+   "base": "PROMPT",
+   "onboard": "2025-04-11",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BABYUSDT",
+   "base": "BABY",
+   "onboard": "2025-04-05",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ATHUSDT",
+   "base": "ATH",
+   "onboard": "2025-04-02",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "GUNUSDT",
+   "base": "GUN",
+   "onboard": "2025-03-31",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PAXGUSDT",
+   "base": "PAXG",
+   "onboard": "2025-03-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "WALUSDT",
+   "base": "WAL",
+   "onboard": "2025-03-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "JELLYJELLYUSDT",
+   "base": "JELLYJELLY",
+   "onboard": "2025-03-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MAVIAUSDT",
+   "base": "MAVIA",
+   "onboard": "2025-03-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PARTIUSDT",
+   "base": "PARTI",
+   "onboard": "2025-03-25",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "NILUSDT",
+   "base": "NIL",
+   "onboard": "2025-03-24",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SIRENUSDT",
+   "base": "SIREN",
+   "onboard": "2025-03-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BANANAS31USDT",
+   "base": "BANANAS31",
+   "onboard": "2025-03-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BROCCOLI714USDT",
+   "base": "BROCCOLI714",
+   "onboard": "2025-03-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BROCCOLIF3BUSDT",
+   "base": "BROCCOLIF3B",
+   "onboard": "2025-03-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BRUSDT",
+   "base": "BR",
+   "onboard": "2025-03-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PLUMEUSDT",
+   "base": "PLUME",
+   "onboard": "2025-03-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TUTUSDT",
+   "base": "TUT",
+   "onboard": "2025-03-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "FORMUSDT",
+   "base": "FORM",
+   "onboard": "2025-03-19",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BMTUSDT",
+   "base": "BMT",
+   "onboard": "2025-03-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MUBARAKUSDT",
+   "base": "MUBARAK",
+   "onboard": "2025-03-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "EPICUSDT",
+   "base": "EPIC",
+   "onboard": "2025-03-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "VICUSDT",
+   "base": "VIC",
+   "onboard": "2025-03-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "REDUSDT",
+   "base": "RED",
+   "onboard": "2025-03-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "KAITOUSDT",
+   "base": "KAITO",
+   "onboard": "2025-02-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "GPSUSDT",
+   "base": "GPS",
+   "onboard": "2025-02-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SHELLUSDT",
+   "base": "SHELL",
+   "onboard": "2025-02-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "HEIUSDT",
+   "base": "HEI",
+   "onboard": "2025-02-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "IPUSDT",
+   "base": "IP",
+   "onboard": "2025-02-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "LAYERUSDT",
+   "base": "LAYER",
+   "onboard": "2025-02-11",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TSTUSDT",
+   "base": "TST",
+   "onboard": "2025-02-09",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BERAUSDT",
+   "base": "BERA",
+   "onboard": "2025-02-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "VVVUSDT",
+   "base": "VVV",
+   "onboard": "2025-01-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PIPPINUSDT",
+   "base": "PIPPIN",
+   "onboard": "2025-01-24",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ANIMEUSDT",
+   "base": "ANIME",
+   "onboard": "2025-01-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "VTHOUSDT",
+   "base": "VTHO",
+   "onboard": "2025-01-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MELANIAUSDT",
+   "base": "MELANIA",
+   "onboard": "2025-01-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TRUMPUSDT",
+   "base": "TRUMP",
+   "onboard": "2025-01-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SOLVUSDT",
+   "base": "SOLV",
+   "onboard": "2025-01-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ARCUSDT",
+   "base": "ARC",
+   "onboard": "2025-01-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AVAAIUSDT",
+   "base": "AVAAI",
+   "onboard": "2025-01-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SUSDT",
+   "base": "S",
+   "onboard": "2025-01-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PROMUSDT",
+   "base": "PROM",
+   "onboard": "2025-01-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SONICUSDT",
+   "base": "SONIC",
+   "onboard": "2025-01-08",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "COOKIEUSDT",
+   "base": "COOKIE",
+   "onboard": "2025-01-07",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ALCHUSDT",
+   "base": "ALCH",
+   "onboard": "2025-01-07",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SWARMSUSDT",
+   "base": "SWARMS",
+   "onboard": "2025-01-07",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BIOUSDT",
+   "base": "BIO",
+   "onboard": "2025-01-03",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "GRIFFAINUSDT",
+   "base": "GRIFFAIN",
+   "onboard": "2025-01-02",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ZEREBROUSDT",
+   "base": "ZEREBRO",
+   "onboard": "2025-01-02",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PHAUSDT",
+   "base": "PHA",
+   "onboard": "2024-12-30",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "DEXEUSDT",
+   "base": "DEXE",
+   "onboard": "2024-12-24",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "HIVEUSDT",
+   "base": "HIVE",
+   "onboard": "2024-12-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AIXBTUSDT",
+   "base": "AIXBT",
+   "onboard": "2024-12-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "FARTCOINUSDT",
+   "base": "FARTCOIN",
+   "onboard": "2024-12-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "KMNOUSDT",
+   "base": "KMNO",
+   "onboard": "2024-12-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CGPTUSDT",
+   "base": "CGPT",
+   "onboard": "2024-12-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "LUMIAUSDT",
+   "base": "LUMIA",
+   "onboard": "2024-12-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "USUALUSDT",
+   "base": "USUAL",
+   "onboard": "2024-12-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PENGUUSDT",
+   "base": "PENGU",
+   "onboard": "2024-12-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MOCAUSDT",
+   "base": "MOCA",
+   "onboard": "2024-12-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "VANAUSDT",
+   "base": "VANA",
+   "onboard": "2024-12-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AVAUSDT",
+   "base": "AVA",
+   "onboard": "2024-12-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "VELODROMEUSDT",
+   "base": "VELODROME",
+   "onboard": "2024-12-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "RAYSOLUSDT",
+   "base": "RAYSOL",
+   "onboard": "2024-12-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "KOMAUSDT",
+   "base": "KOMA",
+   "onboard": "2024-12-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "VIRTUALUSDT",
+   "base": "VIRTUAL",
+   "onboard": "2024-12-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SPXUSDT",
+   "base": "SPX",
+   "onboard": "2024-12-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MEUSDT",
+   "base": "ME",
+   "onboard": "2024-12-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MOVEUSDT",
+   "base": "MOVE",
+   "onboard": "2024-12-09",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ACXUSDT",
+   "base": "ACX",
+   "onboard": "2024-12-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ORCAUSDT",
+   "base": "ORCA",
+   "onboard": "2024-12-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "KAIAUSDT",
+   "base": "KAIA",
+   "onboard": "2024-12-04",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AEROUSDT",
+   "base": "AERO",
+   "onboard": "2024-12-04",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "THEUSDT",
+   "base": "THE",
+   "onboard": "2024-11-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MORPHOUSDT",
+   "base": "MORPHO",
+   "onboard": "2024-11-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CHILLGUYUSDT",
+   "base": "CHILLGUY",
+   "onboard": "2024-11-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "1000CHEEMSUSDT",
+   "base": "1000CHEEMS",
+   "onboard": "2024-11-25",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SCRTUSDT",
+   "base": "SCRT",
+   "onboard": "2024-11-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BANUSDT",
+   "base": "BAN",
+   "onboard": "2024-11-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AKTUSDT",
+   "base": "AKT",
+   "onboard": "2024-11-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ACTUSDT",
+   "base": "ACT",
+   "onboard": "2024-11-11",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PNUTUSDT",
+   "base": "PNUT",
+   "onboard": "2024-11-11",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "GRASSUSDT",
+   "base": "GRASS",
+   "onboard": "2024-11-08",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "DRIFTUSDT",
+   "base": "DRIFT",
+   "onboard": "2024-11-08",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "1000000MOGUSDT",
+   "base": "1000000MOG",
+   "onboard": "2024-11-07",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "COWUSDT",
+   "base": "COW",
+   "onboard": "2024-11-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CETUSUSDT",
+   "base": "CETUS",
+   "onboard": "2024-11-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SANTOSUSDT",
+   "base": "SANTOS",
+   "onboard": "2024-10-28",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MOODENGUSDT",
+   "base": "MOODENG",
+   "onboard": "2024-10-25",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SAFEUSDT",
+   "base": "SAFE",
+   "onboard": "2024-10-25",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "GOATUSDT",
+   "base": "GOAT",
+   "onboard": "2024-10-24",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SCRUSDT",
+   "base": "SCR",
+   "onboard": "2024-10-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "1000CATUSDT",
+   "base": "1000CAT",
+   "onboard": "2024-10-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "DIAUSDT",
+   "base": "DIA",
+   "onboard": "2024-10-02",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "EIGENUSDT",
+   "base": "EIGEN",
+   "onboard": "2024-10-01",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "HMSTRUSDT",
+   "base": "HMSTR",
+   "onboard": "2024-09-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CATIUSDT",
+   "base": "CATI",
+   "onboard": "2024-09-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "FIDAUSDT",
+   "base": "FIDA",
+   "onboard": "2024-09-19",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "1MBABYDOGEUSDT",
+   "base": "1MBABYDOGE",
+   "onboard": "2024-09-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "NEIROUSDT",
+   "base": "NEIRO",
+   "onboard": "2024-09-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "POLUSDT",
+   "base": "POL",
+   "onboard": "2024-09-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "RPLUSDT",
+   "base": "RPL",
+   "onboard": "2024-09-09",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "FLUXUSDT",
+   "base": "FLUX",
+   "onboard": "2024-09-03",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "DOGSUSDT",
+   "base": "DOGS",
+   "onboard": "2024-08-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "POPCATUSDT",
+   "base": "POPCAT",
+   "onboard": "2024-08-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SUNUSDT",
+   "base": "SUN",
+   "onboard": "2024-08-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BRETTUSDT",
+   "base": "BRETT",
+   "onboard": "2024-08-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SYNUSDT",
+   "base": "SYN",
+   "onboard": "2024-08-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BANANAUSDT",
+   "base": "BANANA",
+   "onboard": "2024-08-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "RAREUSDT",
+   "base": "RARE",
+   "onboard": "2024-08-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "GUSDT",
+   "base": "G",
+   "onboard": "2024-08-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "RENDERUSDT",
+   "base": "RENDER",
+   "onboard": "2024-07-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "LISTAUSDT",
+   "base": "LISTA",
+   "onboard": "2024-06-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ZROUSDT",
+   "base": "ZRO",
+   "onboard": "2024-06-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ZKUSDT",
+   "base": "ZK",
+   "onboard": "2024-06-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MEWUSDT",
+   "base": "MEW",
+   "onboard": "2024-06-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "IOUSDT",
+   "base": "IO",
+   "onboard": "2024-06-11",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TURBOUSDT",
+   "base": "TURBO",
+   "onboard": "2024-05-30",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "NOTUSDT",
+   "base": "NOT",
+   "onboard": "2024-05-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BBUSDT",
+   "base": "BB",
+   "onboard": "2024-05-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "REZUSDT",
+   "base": "REZ",
+   "onboard": "2024-04-30",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TAOUSDT",
+   "base": "TAO",
+   "onboard": "2024-04-11",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SAGAUSDT",
+   "base": "SAGA",
+   "onboard": "2024-04-09",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TNSRUSDT",
+   "base": "TNSR",
+   "onboard": "2024-04-08",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "WUSDT",
+   "base": "W",
+   "onboard": "2024-04-03",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ENAUSDT",
+   "base": "ENA",
+   "onboard": "2024-04-02",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ETHFIUSDT",
+   "base": "ETHFI",
+   "onboard": "2024-03-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BOMEUSDT",
+   "base": "BOME",
+   "onboard": "2024-03-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AEVOUSDT",
+   "base": "AEVO",
+   "onboard": "2024-03-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "VANRYUSDT",
+   "base": "VANRY",
+   "onboard": "2024-03-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "METISUSDT",
+   "base": "METIS",
+   "onboard": "2024-03-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AXLUSDT",
+   "base": "AXL",
+   "onboard": "2024-03-01",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PORTALUSDT",
+   "base": "PORTAL",
+   "onboard": "2024-02-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "GLMUSDT",
+   "base": "GLM",
+   "onboard": "2024-02-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "STRKUSDT",
+   "base": "STRK",
+   "onboard": "2024-02-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PIXELUSDT",
+   "base": "PIXEL",
+   "onboard": "2024-02-19",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "DYMUSDT",
+   "base": "DYM",
+   "onboard": "2024-02-07",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "RONINUSDT",
+   "base": "RONIN",
+   "onboard": "2024-02-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ZETAUSDT",
+   "base": "ZETA",
+   "onboard": "2024-02-02",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "JUPUSDT",
+   "base": "JUP",
+   "onboard": "2024-01-31",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "LSKUSDT",
+   "base": "LSK",
+   "onboard": "2024-01-25",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ALTUSDT",
+   "base": "ALT",
+   "onboard": "2024-01-25",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ONDOUSDT",
+   "base": "ONDO",
+   "onboard": "2024-01-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "WIFUSDT",
+   "base": "WIF",
+   "onboard": "2024-01-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MANTAUSDT",
+   "base": "MANTA",
+   "onboard": "2024-01-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "XAIUSDT",
+   "base": "XAI",
+   "onboard": "2024-01-09",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "NFPUSDT",
+   "base": "NFP",
+   "onboard": "2023-12-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MOVRUSDT",
+   "base": "MOVR",
+   "onboard": "2023-12-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ACEUSDT",
+   "base": "ACE",
+   "onboard": "2023-12-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AUCTIONUSDT",
+   "base": "AUCTION",
+   "onboard": "2023-12-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "1000RATSUSDT",
+   "base": "1000RATS",
+   "onboard": "2023-12-15",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "1000SATSUSDT",
+   "base": "1000SATS",
+   "onboard": "2023-12-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "JTOUSDT",
+   "base": "JTO",
+   "onboard": "2023-12-08",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ETHWUSDT",
+   "base": "ETHW",
+   "onboard": "2023-11-28",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "USTCUSDT",
+   "base": "USTC",
+   "onboard": "2023-11-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ONGUSDT",
+   "base": "ONG",
+   "onboard": "2023-11-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SUPERUSDT",
+   "base": "SUPER",
+   "onboard": "2023-11-26",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "1000BONKUSDT",
+   "base": "1000BONK",
+   "onboard": "2023-11-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PYTHUSDT",
+   "base": "PYTH",
+   "onboard": "2023-11-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "KASUSDT",
+   "base": "KAS",
+   "onboard": "2023-11-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BEAMXUSDT",
+   "base": "BEAMX",
+   "onboard": "2023-11-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ILVUSDT",
+   "base": "ILV",
+   "onboard": "2023-11-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "STEEMUSDT",
+   "base": "STEEM",
+   "onboard": "2023-11-08",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ORDIUSDT",
+   "base": "ORDI",
+   "onboard": "2023-11-07",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MEMEUSDT",
+   "base": "MEME",
+   "onboard": "2023-11-03",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TWTUSDT",
+   "base": "TWT",
+   "onboard": "2023-11-03",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CAKEUSDT",
+   "base": "CAKE",
+   "onboard": "2023-11-02",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TIAUSDT",
+   "base": "TIA",
+   "onboard": "2023-10-31",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "POWRUSDT",
+   "base": "POWR",
+   "onboard": "2023-10-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "POLYXUSDT",
+   "base": "POLYX",
+   "onboard": "2023-10-25",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "GASUSDT",
+   "base": "GAS",
+   "onboard": "2023-10-25",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "RIFUSDT",
+   "base": "RIF",
+   "onboard": "2023-10-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BSVUSDT",
+   "base": "BSV",
+   "onboard": "2023-10-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "WAXPUSDT",
+   "base": "WAXP",
+   "onboard": "2023-10-18",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BIGTIMEUSDT",
+   "base": "BIGTIME",
+   "onboard": "2023-10-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BICOUSDT",
+   "base": "BICO",
+   "onboard": "2023-09-28",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ARKUSDT",
+   "base": "ARK",
+   "onboard": "2023-09-19",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CYBERUSDT",
+   "base": "CYBER",
+   "onboard": "2023-08-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SEIUSDT",
+   "base": "SEI",
+   "onboard": "2023-08-17",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BNTUSDT",
+   "base": "BNT",
+   "onboard": "2023-08-10",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "DODOXUSDT",
+   "base": "DODOX",
+   "onboard": "2023-08-08",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "YGGUSDT",
+   "base": "YGG",
+   "onboard": "2023-08-05",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "AGLDUSDT",
+   "base": "AGLD",
+   "onboard": "2023-07-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "PENDLEUSDT",
+   "base": "PENDLE",
+   "onboard": "2023-07-28",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ARKMUSDT",
+   "base": "ARKM",
+   "onboard": "2023-07-28",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "WLDUSDT",
+   "base": "WLD",
+   "onboard": "2023-07-24",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "XVGUSDT",
+   "base": "XVG",
+   "onboard": "2023-07-05",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MAVUSDT",
+   "base": "MAV",
+   "onboard": "2023-06-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "NMRUSDT",
+   "base": "NMR",
+   "onboard": "2023-06-22",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "UMAUSDT",
+   "base": "UMA",
+   "onboard": "2023-05-09",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "1000FLOKIUSDT",
+   "base": "1000FLOKI",
+   "onboard": "2023-05-06",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "1000PEPEUSDT",
+   "base": "1000PEPE",
+   "onboard": "2023-05-05",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SUIUSDT",
+   "base": "SUI",
+   "onboard": "2023-05-03",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "EDUUSDT",
+   "base": "EDU",
+   "onboard": "2023-04-28",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "BLURUSDT",
+   "base": "BLUR",
+   "onboard": "2023-04-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "XVSUSDT",
+   "base": "XVS",
+   "onboard": "2023-04-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "HFTUSDT",
+   "base": "HFT",
+   "onboard": "2023-04-05",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TLMUSDT",
+   "base": "TLM",
+   "onboard": "2023-03-29",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "JOEUSDT",
+   "base": "JOE",
+   "onboard": "2023-03-28",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "IDUSDT",
+   "base": "ID",
+   "onboard": "2023-03-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ARBUSDT",
+   "base": "ARB",
+   "onboard": "2023-03-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "USDCUSDT",
+   "base": "USDC",
+   "onboard": "2023-03-12",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "LQTYUSDT",
+   "base": "LQTY",
+   "onboard": "2023-03-08",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CKBUSDT",
+   "base": "CKB",
+   "onboard": "2023-02-27",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "SSVUSDT",
+   "base": "SSV",
+   "onboard": "2023-02-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ACHUSDT",
+   "base": "ACH",
+   "onboard": "2023-02-21",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "STXUSDT",
+   "base": "STX",
+   "onboard": "2023-02-20",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "CFXUSDT",
+   "base": "CFX",
+   "onboard": "2023-02-19",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "GMXUSDT",
+   "base": "GMX",
+   "onboard": "2023-02-16",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "ASTRUSDT",
+   "base": "ASTR",
+   "onboard": "2023-02-13",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MINAUSDT",
+   "base": "MINA",
+   "onboard": "2023-02-03",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "TUSDT",
+   "base": "T",
+   "onboard": "2023-01-31",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "MAGICUSDT",
+   "base": "MAGIC",
+   "onboard": "2023-01-23",
+   "in_current_panel": false
+  },
+  {
+   "symbol": "FETUSDT",
+   "base": "FET",
+   "onboard": "2023-01-15",
+   "in_current_panel": false
+  }
+ ],
+ "note": "解锁规模过滤待扩展步用免费/抽样源(Tokenomist免费页/文章样本)叠加;本表只保证币安4H可取"
+}
