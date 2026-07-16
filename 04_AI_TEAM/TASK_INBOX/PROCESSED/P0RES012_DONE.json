@@ -1,0 +1,8 @@
+{
+  "task_id": "P0RES012",
+  "completed_at": "2026-07-16T06:16:26Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_P0RES012_BSTOCKS_CAPACITY.md",
+  "next_task": null,
+  "notes": "核实 bStocks 官方状态、准入、margin/collateral 限制和公开流动性样本；不支持小资金容量优势的立项级判断。"
+}

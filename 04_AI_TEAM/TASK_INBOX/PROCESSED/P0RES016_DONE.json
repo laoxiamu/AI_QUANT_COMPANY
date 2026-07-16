@@ -1,0 +1,8 @@
+{
+  "task_id": "P0RES016",
+  "completed_at": "2026-07-16T06:18:50Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_P0RES016_SCAN_SOURCES_20260716.md",
+  "next_task": null,
+  "notes": "thesis_hf_scan.py 已扩展 Binance 公告、CryptoRank unlock、CoinGecko depeg 三源；保留 funding/OI legacy 回归；通道B实测生成合并候选 JSON。"
+}

@@ -1,0 +1,1964 @@
+{
+ "schema_version": "P0-RES-016",
+ "scan_utc": "20260716_0614",
+ "sources_requested": [
+  "funding_oi",
+  "binance_announcements",
+  "token_unlocks",
+  "depeg"
+ ],
+ "n_prescreen": 7,
+ "legacy_funding_oi": {
+  "scan_utc": "20260716_0614",
+  "n_prescreen": 7,
+  "candidates": [
+   {
+    "symbol": "SKLUSDT",
+    "funding_8h": -0.00415601,
+    "chg24h_pct": 11.752,
+    "quote_vol_usdt": 83947462.243015,
+    "oi_24h_ago_usdt": 3341824.4583868,
+    "oi_now_usdt": 4336347.7901423,
+    "oi_24h_ratio": 1.298
+   },
+   {
+    "symbol": "FWDIUSDT",
+    "funding_8h": 0.00380759,
+    "chg24h_pct": -6.816,
+    "quote_vol_usdt": 567386.94724,
+    "oi_24h_ago_usdt": 99096.6096,
+    "oi_now_usdt": 70186.46997992,
+    "oi_24h_ratio": 0.708
+   },
+   {
+    "symbol": "BOTUSDT",
+    "funding_8h": -0.0036062,
+    "chg24h_pct": -7.472,
+    "quote_vol_usdt": 4329800.2865,
+    "oi_24h_ago_usdt": 352898.4032,
+    "oi_now_usdt": 481048.7672,
+    "oi_24h_ratio": 1.363
+   },
+   {
+    "symbol": "EBAYUSDT",
+    "funding_8h": -0.00343954,
+    "chg24h_pct": 0.089,
+    "quote_vol_usdt": 235499.8241,
+    "oi_24h_ago_usdt": 160646.56745281,
+    "oi_now_usdt": 160070.98117086,
+    "oi_24h_ratio": 0.996
+   },
+   {
+    "symbol": "USUSDT",
+    "funding_8h": 0.00043079,
+    "chg24h_pct": 56.566,
+    "quote_vol_usdt": 185032018.915808,
+    "oi_24h_ago_usdt": 15126247.71294,
+    "oi_now_usdt": 28613332.082995,
+    "oi_24h_ratio": 1.892
+   },
+   {
+    "symbol": "AKEUSDT",
+    "funding_8h": 0.00020831,
+    "chg24h_pct": 99.9,
+    "quote_vol_usdt": 1009345575.790335,
+    "oi_24h_ago_usdt": 10405967.3983805,
+    "oi_now_usdt": 38799216.3330471,
+    "oi_24h_ratio": 3.729
+   },
+   {
+    "symbol": "BANKUSDT",
+    "funding_8h": 5e-05,
+    "chg24h_pct": 26.353,
+    "quote_vol_usdt": 63147784.54503,
+    "oi_24h_ago_usdt": 5912487.49707225,
+    "oi_now_usdt": 10582586.57656812,
+    "oi_24h_ratio": 1.79
+   }
+  ]
+ },
+ "source_errors": [],
+ "candidates": [
+  {
+   "source": "depeg_coingecko",
+   "event_type": "peg_deviation",
+   "symbol": "MIM",
+   "name": "Magic Internet Money",
+   "coingecko_id": "magic-internet-money",
+   "peg_usd": 1.0,
+   "price_usd": 0.137416,
+   "deviation_pct": -86.2584,
+   "usd_24h_change_pct": 4.643422454563371,
+   "last_updated_at": 1784182577,
+   "url": "https://www.coingecko.com/en/coins/magic-internet-money",
+   "source_url": "https://api.coingecko.com/api/v3/simple/price?ids=tether,usd-coin,dai,first-digital-usd,true-usd,frax,usdd,magic-internet-money,paypal-usd,ethena-usde&vs_currencies=usd&include_24hr_change=true&include_last_updated_at=true",
+   "raw": {
+    "usd": 0.137416,
+    "usd_24h_change": 4.643422454563371,
+    "last_updated_at": 1784182577
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "SKHYUSDT",
+   "symbols": [
+    "SKHYUSDT"
+   ],
+   "title": "Binance Futures Will Launch USDⓈ-Margined SKHYUSDT Perpetual Contract (2026-07-10)",
+   "event_date": "2026-07-10",
+   "article_id": 279770,
+   "article_code": "6fe9f6dc91544df88dc24ad41211feff",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=6fe9f6dc91544df88dc24ad41211feff",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 279770,
+    "code": "6fe9f6dc91544df88dc24ad41211feff",
+    "title": "Binance Futures Will Launch USDⓈ-Margined SKHYUSDT Perpetual Contract (2026-07-10)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-07-10)",
+   "event_date": "2026-07-10",
+   "article_id": 279679,
+   "article_code": "d0833e4ae9b542be90dbf3fe1c960c53",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=d0833e4ae9b542be90dbf3fe1c960c53",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 279679,
+    "code": "d0833e4ae9b542be90dbf3fe1c960c53",
+    "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-07-10)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-07-09)",
+   "event_date": "2026-07-09",
+   "article_id": 279610,
+   "article_code": "84ad610bdd284699bc451b7baaa0ff7d",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=84ad610bdd284699bc451b7baaa0ff7d",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 279610,
+    "code": "84ad610bdd284699bc451b7baaa0ff7d",
+    "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-07-09)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "DATAIPUSDT,DATAIPUSDC",
+   "symbols": [
+    "DATAIPUSDT",
+    "DATAIPUSDC"
+   ],
+   "title": "Binance Futures Will Launch USDⓈ-Margined DATAIPUSDT and DATAIPUSDC Perpetual Contracts (2026-07-03)",
+   "event_date": "2026-07-03",
+   "article_id": 279021,
+   "article_code": "98d978c5630041c49a6bd317daa791e8",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=98d978c5630041c49a6bd317daa791e8",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 279021,
+    "code": "98d978c5630041c49a6bd317daa791e8",
+    "title": "Binance Futures Will Launch USDⓈ-Margined DATAIPUSDT and DATAIPUSDC Perpetual Contracts (2026-07-03)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "ETHUSD1",
+   "symbols": [
+    "ETHUSD1"
+   ],
+   "title": "Binance Futures Will Launch USDⓈ-Margined ETHUSD1 Perpetual Contract (2026-07-03)",
+   "event_date": "2026-07-03",
+   "article_id": 278948,
+   "article_code": "23c9b8e88309409cbcd8509af0b78d10",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=23c9b8e88309409cbcd8509af0b78d10",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 278948,
+    "code": "23c9b8e88309409cbcd8509af0b78d10",
+    "title": "Binance Futures Will Launch USDⓈ-Margined ETHUSD1 Perpetual Contract (2026-07-03)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-07-02)",
+   "event_date": "2026-07-02",
+   "article_id": 278866,
+   "article_code": "d2acaa91c14e4cc598aaee1017efc1ac",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=d2acaa91c14e4cc598aaee1017efc1ac",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 278866,
+    "code": "d2acaa91c14e4cc598aaee1017efc1ac",
+    "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-07-02)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "BTCU,ETHU",
+   "symbols": [
+    "BTCU",
+    "ETHU"
+   ],
+   "title": "Binance Futures Will Launch USDⓈ-Margined BTCU and ETHU Perpetual Contracts (2026-07-01)",
+   "event_date": "2026-07-01",
+   "article_id": 278732,
+   "article_code": "25da4614ffff435fa28544b27fd33a39",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=25da4614ffff435fa28544b27fd33a39",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 278732,
+    "code": "25da4614ffff435fa28544b27fd33a39",
+    "title": "Binance Futures Will Launch USDⓈ-Margined BTCU and ETHU Perpetual Contracts (2026-07-01)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "CAPUSDT",
+   "symbols": [
+    "CAPUSDT"
+   ],
+   "title": "Binance Futures Will Launch USDⓈ-Margined CAPUSDT Perpetual Contract (2026-06-27)",
+   "event_date": "2026-06-27",
+   "article_id": 278360,
+   "article_code": "a444dd2f67da43e0bafdd730fddc3887",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=a444dd2f67da43e0bafdd730fddc3887",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 278360,
+    "code": "a444dd2f67da43e0bafdd730fddc3887",
+    "title": "Binance Futures Will Launch USDⓈ-Margined CAPUSDT Perpetual Contract (2026-06-27)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "OUSDT",
+   "symbols": [
+    "OUSDT"
+   ],
+   "title": "Binance Futures Will Launch USDⓈ-Margined OUSDT Perpetual Contract (2026-06-24)",
+   "event_date": "2026-06-24",
+   "article_id": 278063,
+   "article_code": "a6b7d5a8a14a44c1b6a6a34813c6d93f",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=a6b7d5a8a14a44c1b6a6a34813c6d93f",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 278063,
+    "code": "a6b7d5a8a14a44c1b6a6a34813c6d93f",
+    "title": "Binance Futures Will Launch USDⓈ-Margined OUSDT Perpetual Contract (2026-06-24)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-29)",
+   "event_date": "2026-06-29",
+   "article_id": 277937,
+   "article_code": "ba04ce1272df4bdf8d2595ccb0e1954b",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=ba04ce1272df4bdf8d2595ccb0e1954b",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 277937,
+    "code": "ba04ce1272df4bdf8d2595ccb0e1954b",
+    "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-29)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "ARXUSDT",
+   "symbols": [
+    "ARXUSDT"
+   ],
+   "title": "Binance Futures Will Launch USDⓈ-Margined ARXUSDT Perpetual Contract (2026-06-23)",
+   "event_date": "2026-06-23",
+   "article_id": 277821,
+   "article_code": "7fa4e8b3ced94b4c8c189a4593dbce9b",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=7fa4e8b3ced94b4c8c189a4593dbce9b",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 277821,
+    "code": "7fa4e8b3ced94b4c8c189a4593dbce9b",
+    "title": "Binance Futures Will Launch USDⓈ-Margined ARXUSDT Perpetual Contract (2026-06-23)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-22)",
+   "event_date": "2026-06-22",
+   "article_id": 277736,
+   "article_code": "88ea4a4f9f0b4ad4b7b308195c026fe4",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=88ea4a4f9f0b4ad4b7b308195c026fe4",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 277736,
+    "code": "88ea4a4f9f0b4ad4b7b308195c026fe4",
+    "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-22)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-11)",
+   "event_date": "2026-06-11",
+   "article_id": 276722,
+   "article_code": "f622c1f2a1a94ba1894d9a9e265fb4b9",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=f622c1f2a1a94ba1894d9a9e265fb4b9",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 276722,
+    "code": "f622c1f2a1a94ba1894d9a9e265fb4b9",
+    "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-11)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-10)",
+   "event_date": "2026-06-10",
+   "article_id": 276585,
+   "article_code": "b893d3539ae34c47856013b1f3cc94fb",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=b893d3539ae34c47856013b1f3cc94fb",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 276585,
+    "code": "b893d3539ae34c47856013b1f3cc94fb",
+    "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-10)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-09)",
+   "event_date": "2026-06-09",
+   "article_id": 276476,
+   "article_code": "f598c7bb87d74b8c995b9f67bf210be1",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=f598c7bb87d74b8c995b9f67bf210be1",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 276476,
+    "code": "f598c7bb87d74b8c995b9f67bf210be1",
+    "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-09)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-08)",
+   "event_date": "2026-06-08",
+   "article_id": 276395,
+   "article_code": "9595cb2560cc4f4b9906dca1d4cbd6d1",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=9595cb2560cc4f4b9906dca1d4cbd6d1",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 276395,
+    "code": "9595cb2560cc4f4b9906dca1d4cbd6d1",
+    "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-08)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "ZESTUSDT,BTWUSDT",
+   "symbols": [
+    "ZESTUSDT",
+    "BTWUSDT"
+   ],
+   "title": "Binance Futures Will Launch USDⓈ-Margined ZESTUSDT and BTWUSDT Perpetual Contracts (2026-06-04)",
+   "event_date": "2026-06-04",
+   "article_id": 276229,
+   "article_code": "61e41ce0e4b74dc7a794cc6bf9c57d38",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=61e41ce0e4b74dc7a794cc6bf9c57d38",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 276229,
+    "code": "61e41ce0e4b74dc7a794cc6bf9c57d38",
+    "title": "Binance Futures Will Launch USDⓈ-Margined ZESTUSDT and BTWUSDT Perpetual Contracts (2026-06-04)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-03)",
+   "event_date": "2026-06-03",
+   "article_id": 275984,
+   "article_code": "d77e2d77ea21405d9ef2cd7c6974ea5f",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=d77e2d77ea21405d9ef2cd7c6974ea5f",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 275984,
+    "code": "d77e2d77ea21405d9ef2cd7c6974ea5f",
+    "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-03)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "ANTHROPICUSDT,IPO",
+   "symbols": [
+    "ANTHROPICUSDT",
+    "IPO"
+   ],
+   "title": "Binance Futures Will Launch ANTHROPICUSDT USDⓈ-Margined Perpetual Contract Pre-IPO Trading (2026-06-02)",
+   "event_date": "2026-06-02",
+   "article_id": 275737,
+   "article_code": "2b9ff1e1acf8433793bc40c59a0cb852",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=2b9ff1e1acf8433793bc40c59a0cb852",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 275737,
+    "code": "2b9ff1e1acf8433793bc40c59a0cb852",
+    "title": "Binance Futures Will Launch ANTHROPICUSDT USDⓈ-Margined Perpetual Contract Pre-IPO Trading (2026-06-02)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-02)",
+   "event_date": "2026-06-02",
+   "article_id": 275716,
+   "article_code": "ed2c6a6160c64eb397b534af90b9d66a",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=ed2c6a6160c64eb397b534af90b9d66a",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 275716,
+    "code": "ed2c6a6160c64eb397b534af90b9d66a",
+    "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-02)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "SLXUSDT",
+   "symbols": [
+    "SLXUSDT"
+   ],
+   "title": "Binance Futures Will Launch USDⓈ-Margined SLXUSDT Perpetual Contract (2026-06-01)",
+   "event_date": "2026-06-01",
+   "article_id": 275647,
+   "article_code": "4299caec4ca4407cb282707154a97ffe",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=4299caec4ca4407cb282707154a97ffe",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 275647,
+    "code": "4299caec4ca4407cb282707154a97ffe",
+    "title": "Binance Futures Will Launch USDⓈ-Margined SLXUSDT Perpetual Contract (2026-06-01)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-01)",
+   "event_date": "2026-06-01",
+   "article_id": 275555,
+   "article_code": "73769d872a644d7082bc79cde6c12d98",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=73769d872a644d7082bc79cde6c12d98",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 275555,
+    "code": "73769d872a644d7082bc79cde6c12d98",
+    "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-06-01)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "QNTXUSDT,IPO",
+   "symbols": [
+    "QNTXUSDT",
+    "IPO"
+   ],
+   "title": "Binance Futures Will Launch QNTXUSDT USDⓈ-Margined Perpetual Contract Pre-IPO Trading (2026-05-29)",
+   "event_date": "2026-05-29",
+   "article_id": 275489,
+   "article_code": "3bdaff694bde45ccb443709336c8686d",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=3bdaff694bde45ccb443709336c8686d",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 275489,
+    "code": "3bdaff694bde45ccb443709336c8686d",
+    "title": "Binance Futures Will Launch QNTXUSDT USDⓈ-Margined Perpetual Contract Pre-IPO Trading (2026-05-29)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "CTRUSDT",
+   "symbols": [
+    "CTRUSDT"
+   ],
+   "title": "Binance Futures Will Launch USDⓈ-Margined CTRUSDT Perpetual Contract (2026-05-28)",
+   "event_date": "2026-05-28",
+   "article_id": 275356,
+   "article_code": "ee40eb721abc460cb7edca6df04d782b",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=ee40eb721abc460cb7edca6df04d782b",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 275356,
+    "code": "ee40eb721abc460cb7edca6df04d782b",
+    "title": "Binance Futures Will Launch USDⓈ-Margined CTRUSDT Perpetual Contract (2026-05-28)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "OPENAIUSDT,IPO",
+   "symbols": [
+    "OPENAIUSDT",
+    "IPO"
+   ],
+   "title": "Binance Futures Will Launch OPENAIUSDT USDⓈ-Margined Perpetual Contract Pre-IPO Trading (2026-05-26)",
+   "event_date": "2026-05-26",
+   "article_id": 275104,
+   "article_code": "94f88766c6c84d68a07f006bc076ba6a",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=94f88766c6c84d68a07f006bc076ba6a",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 275104,
+    "code": "94f88766c6c84d68a07f006bc076ba6a",
+    "title": "Binance Futures Will Launch OPENAIUSDT USDⓈ-Margined Perpetual Contract Pre-IPO Trading (2026-05-26)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "new_perp_listing",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-05-26)",
+   "event_date": "2026-05-26",
+   "article_id": 275072,
+   "article_code": "f3a598a5ab4344af993f67a9c3f4544a",
+   "catalog_id": 48,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=f3a598a5ab4344af993f67a9c3f4544a",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=48&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 275072,
+    "code": "f3a598a5ab4344af993f67a9c3f4544a",
+    "title": "Binance Futures Will Launch Multiple USDⓈ-Margined TradFi Perpetual Contracts (2026-05-26)",
+    "catalog_id": 48
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "futures_contract_size_adjustment",
+   "symbol": "KORUUSDT",
+   "symbols": [
+    "KORUUSDT"
+   ],
+   "title": "Binance Futures Has Completed USDⓈ-Margined KORUUSDT Perpetual Contract’s Contract Size Adjustment (2026-07-15)",
+   "event_date": "2026-07-15",
+   "article_id": 280047,
+   "article_code": "2ce887ba8fe14fdaa088e5bed7553a4e",
+   "catalog_id": 49,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=2ce887ba8fe14fdaa088e5bed7553a4e",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=49&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 280047,
+    "code": "2ce887ba8fe14fdaa088e5bed7553a4e",
+    "title": "Binance Futures Has Completed USDⓈ-Margined KORUUSDT Perpetual Contract’s Contract Size Adjustment (2026-07-15)",
+    "catalog_id": 49
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "futures_contract_size_adjustment",
+   "symbol": "KORUUSDT",
+   "symbols": [
+    "KORUUSDT"
+   ],
+   "title": "Binance Futures Will Adjust The Contract Size of USDⓈ-Margined KORUUSDT Perpetual Contract (2026-07-15)",
+   "event_date": "2026-07-15",
+   "article_id": 279807,
+   "article_code": "c226162366c54b78a7f98021b38e10c5",
+   "catalog_id": 49,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=c226162366c54b78a7f98021b38e10c5",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=49&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 279807,
+    "code": "c226162366c54b78a7f98021b38e10c5",
+    "title": "Binance Futures Will Adjust The Contract Size of USDⓈ-Margined KORUUSDT Perpetual Contract (2026-07-15)",
+    "catalog_id": 49
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "futures_contract_size_adjustment",
+   "symbol": "CRWDUSDT",
+   "symbols": [
+    "CRWDUSDT"
+   ],
+   "title": "Binance Futures Will Adjust The Contract Size of USDⓈ-Margined CRWDUSDT Perpetual Contract (2026-07-02)",
+   "event_date": "2026-07-02",
+   "article_id": 278455,
+   "article_code": "68134e3f478c4b379fc5558374afc8e6",
+   "catalog_id": 49,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=68134e3f478c4b379fc5558374afc8e6",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=49&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 278455,
+    "code": "68134e3f478c4b379fc5558374afc8e6",
+    "title": "Binance Futures Will Adjust The Contract Size of USDⓈ-Margined CRWDUSDT Perpetual Contract (2026-07-02)",
+    "catalog_id": 49
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-07-17",
+   "event_date": "2026-07-17",
+   "article_id": 279872,
+   "article_code": "154a1621547b4862a56eebddf401bb95",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=154a1621547b4862a56eebddf401bb95",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 279872,
+    "code": "154a1621547b4862a56eebddf401bb95",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-07-17",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Margin Trading Pairs - 2026-07-17",
+   "event_date": "2026-07-17",
+   "article_id": 279840,
+   "article_code": "148235767ff84acfb9096d60c6eedd01",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=148235767ff84acfb9096d60c6eedd01",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 279840,
+    "code": "148235767ff84acfb9096d60c6eedd01",
+    "title": "Notice of Removal of Margin Trading Pairs - 2026-07-17",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-07-10",
+   "event_date": "2026-07-10",
+   "article_id": 279327,
+   "article_code": "277c0e32800b40c3b8ed88a46ceac791",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=277c0e32800b40c3b8ed88a46ceac791",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 279327,
+    "code": "277c0e32800b40c3b8ed88a46ceac791",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-07-10",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "TST,IOTX",
+   "symbols": [
+    "TST",
+    "IOTX"
+   ],
+   "title": "Binance Margin And Loan Will Delist TST & IOTX on 2026-07-10",
+   "event_date": "2026-07-10",
+   "article_id": 279189,
+   "article_code": "2733031786ea4b2688696cf578ac339f",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=2733031786ea4b2688696cf578ac339f",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 279189,
+    "code": "2733031786ea4b2688696cf578ac339f",
+    "title": "Binance Margin And Loan Will Delist TST & IOTX on 2026-07-10",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Updated Notice of Removal of Spot Trading Pairs - 2026-07-01",
+   "event_date": "2026-07-01",
+   "article_id": 278778,
+   "article_code": "323b8b8ebe79436ca833cc1e870158af",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=323b8b8ebe79436ca833cc1e870158af",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 278778,
+    "code": "323b8b8ebe79436ca833cc1e870158af",
+    "title": "Updated Notice of Removal of Spot Trading Pairs - 2026-07-01",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "TTD,OIK,LUNAI,TOWN,VINU,PUP,CYPR,DGRAM",
+   "symbols": [
+    "TTD",
+    "OIK",
+    "LUNAI",
+    "TOWN",
+    "VINU",
+    "PUP",
+    "CYPR",
+    "DGRAM"
+   ],
+   "title": "Binance Alpha Will Remove TTD, OIK, LUNAI, TOWN, VINU, PUP, CYPR, DGRAM (2026-06-30)",
+   "event_date": "2026-06-30",
+   "article_id": 278720,
+   "article_code": "dc8c4b58f26549b1b629cbd254115dc0",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=dc8c4b58f26549b1b629cbd254115dc0",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 278720,
+    "code": "dc8c4b58f26549b1b629cbd254115dc0",
+    "title": "Binance Alpha Will Remove TTD, OIK, LUNAI, TOWN, VINU, PUP, CYPR, DGRAM (2026-06-30)",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-07-03",
+   "event_date": "2026-07-03",
+   "article_id": 278637,
+   "article_code": "5a086ab9b6844ebd89838fbc8e5ac266",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=5a086ab9b6844ebd89838fbc8e5ac266",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 278637,
+    "code": "5a086ab9b6844ebd89838fbc8e5ac266",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-07-03",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "HOT",
+   "symbols": [
+    "HOT"
+   ],
+   "title": "Binance Margin And Loan Will Delist HOT, THE on 2026-07-03",
+   "event_date": "2026-07-03",
+   "article_id": 278398,
+   "article_code": "b703403f123b4d95af7222431d053c7c",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=b703403f123b4d95af7222431d053c7c",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 278398,
+    "code": "b703403f123b4d95af7222431d053c7c",
+    "title": "Binance Margin And Loan Will Delist HOT, THE on 2026-07-03",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "ALCX,ARDR,NFP,POND",
+   "symbols": [
+    "ALCX",
+    "ARDR",
+    "NFP",
+    "POND"
+   ],
+   "title": "Binance Will Delist ALCX, ARDR, NFP, POND on 2026-07-10",
+   "event_date": "2026-07-10",
+   "article_id": 278301,
+   "article_code": "a9c1a7bb97064c69a660316bff39f2bd",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=a9c1a7bb97064c69a660316bff39f2bd",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 278301,
+    "code": "a9c1a7bb97064c69a660316bff39f2bd",
+    "title": "Binance Will Delist ALCX, ARDR, NFP, POND on 2026-07-10",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "futures_delist",
+   "symbol": "IPUSDT,IPUSDC",
+   "symbols": [
+    "IPUSDT",
+    "IPUSDC"
+   ],
+   "title": "Binance Futures Will Delist USDⓈ-Margined IPUSDT and IPUSDC Perpetual Contracts (2026-06-28)",
+   "event_date": "2026-06-28",
+   "article_id": 278283,
+   "article_code": "5702f93568604ea7bfd2f4233f054bd1",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=5702f93568604ea7bfd2f4233f054bd1",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 278283,
+    "code": "5702f93568604ea7bfd2f4233f054bd1",
+    "title": "Binance Futures Will Delist USDⓈ-Margined IPUSDT and IPUSDC Perpetual Contracts (2026-06-28)",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-06-26",
+   "event_date": "2026-06-26",
+   "article_id": 277894,
+   "article_code": "f91d022b57e549a19bab454148082694",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=f91d022b57e549a19bab454148082694",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 277894,
+    "code": "f91d022b57e549a19bab454148082694",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-06-26",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Margin Trading Pairs - 2026-06-26",
+   "event_date": "2026-06-26",
+   "article_id": 277781,
+   "article_code": "51ca50f3c3ed444eacec1fa46ffdbcde",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=51ca50f3c3ed444eacec1fa46ffdbcde",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 277781,
+    "code": "51ca50f3c3ed444eacec1fa46ffdbcde",
+    "title": "Notice of Removal of Margin Trading Pairs - 2026-06-26",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-06-19",
+   "event_date": "2026-06-19",
+   "article_id": 277105,
+   "article_code": "965d2d68914b4f95b57ac426ea9e497e",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=965d2d68914b4f95b57ac426ea9e497e",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 277105,
+    "code": "965d2d68914b4f95b57ac426ea9e497e",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-06-19",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Margin Trading Pairs - 2026-06-19",
+   "event_date": "2026-06-19",
+   "article_id": 277028,
+   "article_code": "0ca7d76b3b5a42c390262ad4d23e4ff9",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=0ca7d76b3b5a42c390262ad4d23e4ff9",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 277028,
+    "code": "0ca7d76b3b5a42c390262ad4d23e4ff9",
+    "title": "Notice of Removal of Margin Trading Pairs - 2026-06-19",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-06-12",
+   "event_date": "2026-06-12",
+   "article_id": 276498,
+   "article_code": "b150e2ec801b4be1addd89533b8f6217",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=b150e2ec801b4be1addd89533b8f6217",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 276498,
+    "code": "b150e2ec801b4be1addd89533b8f6217",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-06-12",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "XNO,IQ,QUICK,DGB",
+   "symbols": [
+    "XNO",
+    "IQ",
+    "QUICK",
+    "DGB"
+   ],
+   "title": "Binance Margin And Loan Will Delist XNO, IQ, QUICK, DGB on 2026-06-12",
+   "event_date": "2026-06-12",
+   "article_id": 276427,
+   "article_code": "d5d69ae4b2f0497aa45d06da33796f9d",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=d5d69ae4b2f0497aa45d06da33796f9d",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 276427,
+    "code": "d5d69ae4b2f0497aa45d06da33796f9d",
+    "title": "Binance Margin And Loan Will Delist XNO, IQ, QUICK, DGB on 2026-06-12",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "COS,HIGH,MBOX",
+   "symbols": [
+    "COS",
+    "HIGH",
+    "MBOX"
+   ],
+   "title": "Binance Will Delist COS, D, HIGH, MBOX on 2026-06-19",
+   "event_date": "2026-06-19",
+   "article_id": 276280,
+   "article_code": "24aced8c698649d9a552a47eeead5e34",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=24aced8c698649d9a552a47eeead5e34",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 276280,
+    "code": "24aced8c698649d9a552a47eeead5e34",
+    "title": "Binance Will Delist COS, D, HIGH, MBOX on 2026-06-19",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-06-05",
+   "event_date": "2026-06-05",
+   "article_id": 275780,
+   "article_code": "38737d4df3a8429d88bed7f057d03297",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=38737d4df3a8429d88bed7f057d03297",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 275780,
+    "code": "38737d4df3a8429d88bed7f057d03297",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-06-05",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Margin Trading Pairs - 2026-06-05",
+   "event_date": "2026-06-05",
+   "article_id": 275687,
+   "article_code": "af69ba2e070e48a29fcc12515fc60742",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=af69ba2e070e48a29fcc12515fc60742",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 275687,
+    "code": "af69ba2e070e48a29fcc12515fc60742",
+    "title": "Notice of Removal of Margin Trading Pairs - 2026-06-05",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "DIGI,SKI,JOJO,PLAYSOLANA,PAL,TYCOON,HIPPO,LN,BNBXBT,BOOM",
+   "symbols": [
+    "DIGI",
+    "SKI",
+    "JOJO",
+    "PLAYSOLANA",
+    "PAL",
+    "TYCOON",
+    "HIPPO",
+    "LN",
+    "BNBXBT",
+    "BOOM"
+   ],
+   "title": "Binance Alpha Will Remove DIGI, K, SKI, JOJO, PLAYSOLANA, 恶俗企鹅, PAL, TYCOON, HIPPO, LN, BNBXBT, BOOM  (2026-05-29)",
+   "event_date": "2026-05-29",
+   "article_id": 275485,
+   "article_code": "318ddd21e0ee4e3690633b5ccd5e41d9",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=318ddd21e0ee4e3690633b5ccd5e41d9",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 275485,
+    "code": "318ddd21e0ee4e3690633b5ccd5e41d9",
+    "title": "Binance Alpha Will Remove DIGI, K, SKI, JOJO, PLAYSOLANA, 恶俗企鹅, PAL, TYCOON, HIPPO, LN, BNBXBT, BOOM  (2026-05-29)",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-05-29",
+   "event_date": "2026-05-29",
+   "article_id": 275108,
+   "article_code": "eff79d1a82d74b4d9811d90fb2daf899",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=eff79d1a82d74b4d9811d90fb2daf899",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 275108,
+    "code": "eff79d1a82d74b4d9811d90fb2daf899",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-05-29",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Margin Trading Pairs - 2026-05-29",
+   "event_date": "2026-05-29",
+   "article_id": 275018,
+   "article_code": "86bf0d14db4c44d5a88bf2e7c861db13",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=86bf0d14db4c44d5a88bf2e7c861db13",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 275018,
+    "code": "86bf0d14db4c44d5a88bf2e7c861db13",
+    "title": "Notice of Removal of Margin Trading Pairs - 2026-05-29",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-05-22",
+   "event_date": "2026-05-22",
+   "article_id": 274306,
+   "article_code": "9e237a2623354411a65c70cbd66937c8",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=9e237a2623354411a65c70cbd66937c8",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 274306,
+    "code": "9e237a2623354411a65c70cbd66937c8",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-05-22",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "AEUR,AI",
+   "symbols": [
+    "AEUR",
+    "AI"
+   ],
+   "title": "Binance Margin And Binance Loans Will Delist AEUR and AI on 2026-05-22",
+   "event_date": "2026-05-22",
+   "article_id": 274273,
+   "article_code": "6492bd3434204b29a1709e64f72e2ee6",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=6492bd3434204b29a1709e64f72e2ee6",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 274273,
+    "code": "6492bd3434204b29a1709e64f72e2ee6",
+    "title": "Binance Margin And Binance Loans Will Delist AEUR and AI on 2026-05-22",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "PRAI,COMMON,PINGPONG,TAKER,JANITOR,GATA,KLINK,CORL,SWTCH,ARIAIP,LONG,ZKWASM,GORILLA,ECHO,LITKEY,FIR,GM,DELABS,DONKEY,WHY",
+   "symbols": [
+    "PRAI",
+    "COMMON",
+    "PINGPONG",
+    "TAKER",
+    "JANITOR",
+    "GATA",
+    "KLINK",
+    "CORL",
+    "SWTCH",
+    "ARIAIP",
+    "LONG",
+    "ZKWASM",
+    "GORILLA",
+    "ECHO",
+    "LITKEY",
+    "FIR",
+    "GM",
+    "DELABS",
+    "DONKEY",
+    "WHY"
+   ],
+   "title": "Binance Alpha Will Remove PRAI, COMMON, PINGPONG, TAKER, JANITOR, GATA, KLINK, CORL, SWTCH, ARIAIP, LONG, ZKWASM, GORILLA, ECHO, LITKEY, FIR, GM, DELABS, DONKEY, WHY (2026-05-14)",
+   "event_date": "2026-05-14",
+   "article_id": 273972,
+   "article_code": "03e842182ca341699fd34fe1769ae413",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=03e842182ca341699fd34fe1769ae413",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 273972,
+    "code": "03e842182ca341699fd34fe1769ae413",
+    "title": "Binance Alpha Will Remove PRAI, COMMON, PINGPONG, TAKER, JANITOR, GATA, KLINK, CORL, SWTCH, ARIAIP, LONG, ZKWASM, GORILLA, ECHO, LITKEY, FIR, GM, DELABS, DONKEY, WHY (2026-05-14)",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "ATA,FARM,MLN,PHB,SYS",
+   "symbols": [
+    "ATA",
+    "FARM",
+    "MLN",
+    "PHB",
+    "SYS"
+   ],
+   "title": "Binance Will Delist ATA, FARM, MLN, PHB, SYS on 2026-05-27",
+   "event_date": "2026-05-27",
+   "article_id": 273798,
+   "article_code": "a42f51022cb649aea0b4cb808205fd76",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=a42f51022cb649aea0b4cb808205fd76",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 273798,
+    "code": "a42f51022cb649aea0b4cb808205fd76",
+    "title": "Binance Will Delist ATA, FARM, MLN, PHB, SYS on 2026-05-27",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-05-15",
+   "event_date": "2026-05-15",
+   "article_id": 273615,
+   "article_code": "7a7a2466e68d4762b982e955f98dfcf7",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=7a7a2466e68d4762b982e955f98dfcf7",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 273615,
+    "code": "7a7a2466e68d4762b982e955f98dfcf7",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-05-15",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Margin Trading Pairs - 2026-05-15",
+   "event_date": "2026-05-15",
+   "article_id": 273473,
+   "article_code": "4df13a8c24be4abca874a4ff44f3e4ce",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=4df13a8c24be4abca874a4ff44f3e4ce",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 273473,
+    "code": "4df13a8c24be4abca874a4ff44f3e4ce",
+    "title": "Notice of Removal of Margin Trading Pairs - 2026-05-15",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-05-08",
+   "event_date": "2026-05-08",
+   "article_id": 273135,
+   "article_code": "3a8fb2daed2b4f949d0bb4b943076155",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=3a8fb2daed2b4f949d0bb4b943076155",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 273135,
+    "code": "3a8fb2daed2b4f949d0bb4b943076155",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-05-08",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "REX,XO,TANSSI,DARKSTAR,YALA,RCADE,RDAC,SKATE,OVL,SLAY,SOL,BSC,PHY,VLR,SVSA,WBAI,EDGEN,FAIR3,MM,BUBB,AICELL,XLAB,SIGHT",
+   "symbols": [
+    "REX",
+    "XO",
+    "TANSSI",
+    "DARKSTAR",
+    "YALA",
+    "RCADE",
+    "RDAC",
+    "SKATE",
+    "OVL",
+    "SLAY",
+    "SOL",
+    "BSC",
+    "PHY",
+    "VLR",
+    "SVSA",
+    "WBAI",
+    "EDGEN",
+    "FAIR3",
+    "MM",
+    "BUBB",
+    "AICELL",
+    "XLAB",
+    "SIGHT"
+   ],
+   "title": "Binance Alpha Will Remove REX, XO, TANSSI, DARKSTAR, YALA, RCADE, RDAC, SKATE, OVL, SLAY, Ghibli (SOL), Ghibli (BSC), PHY, VLR, SVSA, WBAI, EDGEN, FAIR3, MM, BUBB, AICELL, XLAB, SIGHT (2026-04-30)",
+   "event_date": "2026-04-30",
+   "article_id": 272982,
+   "article_code": "9b3112ca2a4b4d8098403d9cc4a1a855",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=9b3112ca2a4b4d8098403d9cc4a1a855",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 272982,
+    "code": "9b3112ca2a4b4d8098403d9cc4a1a855",
+    "title": "Binance Alpha Will Remove REX, XO, TANSSI, DARKSTAR, YALA, RCADE, RDAC, SKATE, OVL, SLAY, Ghibli (SOL), Ghibli (BSC), PHY, VLR, SVSA, WBAI, EDGEN, FAIR3, MM, BUBB, AICELL, XLAB, SIGHT (2026-04-30)",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-05-01",
+   "event_date": "2026-05-01",
+   "article_id": 272602,
+   "article_code": "47db7c6e460c4978b2c0e479c4123716",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=47db7c6e460c4978b2c0e479c4123716",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 272602,
+    "code": "47db7c6e460c4978b2c0e479c4123716",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-05-01",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Margin Trading Pairs - 2026-05-01",
+   "event_date": "2026-05-01",
+   "article_id": 272506,
+   "article_code": "13d3b15fdb0c41a89542ba1114be13da",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=13d3b15fdb0c41a89542ba1114be13da",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 272506,
+    "code": "13d3b15fdb0c41a89542ba1114be13da",
+    "title": "Notice of Removal of Margin Trading Pairs - 2026-05-01",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "futures_delist",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Delist USDⓈ-M Multiple Perpetual Contracts (2026-04-28)",
+   "event_date": "2026-04-28",
+   "article_id": 272271,
+   "article_code": "ba5d61807b474b0ca9f40250e7fa782c",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=ba5d61807b474b0ca9f40250e7fa782c",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 272271,
+    "code": "ba5d61807b474b0ca9f40250e7fa782c",
+    "title": "Binance Futures Will Delist USDⓈ-M Multiple Perpetual Contracts (2026-04-28)",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "futures_delist",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Delist USDⓈ-M Multiple Perpetual Contracts (2026-04-28 & 2026-04-29)",
+   "event_date": "2026-04-28",
+   "article_id": 272208,
+   "article_code": "1d2b6970facd470dbba6a674e1595bd4",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=1d2b6970facd470dbba6a674e1595bd4",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 272208,
+    "code": "1d2b6970facd470dbba6a674e1595bd4",
+    "title": "Binance Futures Will Delist USDⓈ-M Multiple Perpetual Contracts (2026-04-28 & 2026-04-29)",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-04-24",
+   "event_date": "2026-04-24",
+   "article_id": 271897,
+   "article_code": "c498db770fa844e188bbad8cc5986674",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=c498db770fa844e188bbad8cc5986674",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 271897,
+    "code": "c498db770fa844e188bbad8cc5986674",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-04-24",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Margin Trading Pairs - 2026-04-24",
+   "event_date": "2026-04-24",
+   "article_id": 271863,
+   "article_code": "3f43b46c541c48e18b146574ead1c1f1",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=3f43b46c541c48e18b146574ead1c1f1",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 271863,
+    "code": "3f43b46c541c48e18b146574ead1c1f1",
+    "title": "Notice of Removal of Margin Trading Pairs - 2026-04-24",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "DEGO,DENT,TRU",
+   "symbols": [
+    "DEGO",
+    "DENT",
+    "TRU"
+   ],
+   "title": "Binance Will Delist DEGO, DENT, TRU on 2026-04-28",
+   "event_date": "2026-04-28",
+   "article_id": 271696,
+   "article_code": "d067b373496c44a4ab8d28f3e90b66ad",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=d067b373496c44a4ab8d28f3e90b66ad",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 271696,
+    "code": "d067b373496c44a4ab8d28f3e90b66ad",
+    "title": "Binance Will Delist DEGO, DENT, TRU on 2026-04-28",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-04-17",
+   "event_date": "2026-04-17",
+   "article_id": 271474,
+   "article_code": "c621ffe8d8474540b63c521568a5b95c",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=c621ffe8d8474540b63c521568a5b95c",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 271474,
+    "code": "c621ffe8d8474540b63c521568a5b95c",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-04-17",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "BAR,PIVX,XVG",
+   "symbols": [
+    "BAR",
+    "PIVX",
+    "XVG"
+   ],
+   "title": "Binance Margin And Loan Will Delist BAR, PIVX, XVG on 2026-04-17",
+   "event_date": "2026-04-17",
+   "article_id": 271217,
+   "article_code": "bb7238d13db14c9ebce9fa8704e3098f",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=bb7238d13db14c9ebce9fa8704e3098f",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 271217,
+    "code": "bb7238d13db14c9ebce9fa8704e3098f",
+    "title": "Binance Margin And Loan Will Delist BAR, PIVX, XVG on 2026-04-17",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "UTK",
+   "symbols": [
+    "UTK"
+   ],
+   "title": "Binance Will Delist UTK and Support Rebranding and Airdrop Plan on Binance Alpha",
+   "event_date": null,
+   "article_id": 271160,
+   "article_code": "895c114d247a41159cc7e4c913f42c36",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=895c114d247a41159cc7e4c913f42c36",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 271160,
+    "code": "895c114d247a41159cc7e4c913f42c36",
+    "title": "Binance Will Delist UTK and Support Rebranding and Airdrop Plan on Binance Alpha",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "BIFI,FIO,FUN,MDT,OXT,WAN",
+   "symbols": [
+    "BIFI",
+    "FIO",
+    "FUN",
+    "MDT",
+    "OXT",
+    "WAN"
+   ],
+   "title": "Binance Will Delist BIFI, FIO, FUN, MDT, OXT, WAN on 2026-04-23",
+   "event_date": "2026-04-23",
+   "article_id": 270759,
+   "article_code": "d26a627649ee44fca27e07672add9ac2",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=d26a627649ee44fca27e07672add9ac2",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 270759,
+    "code": "d26a627649ee44fca27e07672add9ac2",
+    "title": "Binance Will Delist BIFI, FIO, FUN, MDT, OXT, WAN on 2026-04-23",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "WAN",
+   "symbols": [
+    "WAN"
+   ],
+   "title": "Binance Margin Will Delist WAN on 2026-04-10",
+   "event_date": "2026-04-10",
+   "article_id": 270623,
+   "article_code": "f263d2f8ac7e488ead84b181b12bb69d",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=f263d2f8ac7e488ead84b181b12bb69d",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 270623,
+    "code": "f263d2f8ac7e488ead84b181b12bb69d",
+    "title": "Binance Margin Will Delist WAN on 2026-04-10",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-04-10",
+   "event_date": "2026-04-10",
+   "article_id": 270529,
+   "article_code": "946c744172a942399a6ce96506e03fce",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=946c744172a942399a6ce96506e03fce",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 270529,
+    "code": "946c744172a942399a6ce96506e03fce",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-04-10",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "futures_delist",
+   "symbol": "",
+   "symbols": [],
+   "title": "Binance Futures Will Delist Multiple Perpetual Contracts (2026-04-08 & 2026-04-09)",
+   "event_date": "2026-04-08",
+   "article_id": 270310,
+   "article_code": "97b4f3a7d02a486c8d412ada2281b907",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=97b4f3a7d02a486c8d412ada2281b907",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 270310,
+    "code": "97b4f3a7d02a486c8d412ada2281b907",
+    "title": "Binance Futures Will Delist Multiple Perpetual Contracts (2026-04-08 & 2026-04-09)",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-04-02",
+   "event_date": "2026-04-02",
+   "article_id": 269891,
+   "article_code": "262ee892d2db4fb6b4d2f152db53001c",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=262ee892d2db4fb6b4d2f152db53001c",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 269891,
+    "code": "262ee892d2db4fb6b4d2f152db53001c",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-04-02",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "UTK",
+   "symbols": [
+    "UTK"
+   ],
+   "title": "Binance Margin Will Delist UTK on 2026-03-30",
+   "event_date": "2026-03-30",
+   "article_id": 269432,
+   "article_code": "cb0ce24d50ac4db782f7484dbc6377b5",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=cb0ce24d50ac4db782f7484dbc6377b5",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 269432,
+    "code": "cb0ce24d50ac4db782f7484dbc6377b5",
+    "title": "Binance Margin Will Delist UTK on 2026-03-30",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Spot Trading Pairs - 2026-03-27",
+   "event_date": "2026-03-27",
+   "article_id": 269188,
+   "article_code": "c8fb39371ed44553b27d9e4419ca86d0",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=c8fb39371ed44553b27d9e4419ca86d0",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 269188,
+    "code": "c8fb39371ed44553b27d9e4419ca86d0",
+    "title": "Notice of Removal of Spot Trading Pairs - 2026-03-27",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "binance_announcement",
+   "event_type": "binance_removal_notice",
+   "symbol": "",
+   "symbols": [],
+   "title": "Notice of Removal of Margin Trading Pairs - 2026-03-27",
+   "event_date": "2026-03-27",
+   "article_id": 269059,
+   "article_code": "cc3a7e5882674ca4a8d296ef150ac0e8",
+   "catalog_id": 161,
+   "url": "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query?articleCode=cc3a7e5882674ca4a8d296ef150ac0e8",
+   "source_url": "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query?catalogId=161&pageNo=1&pageSize=50",
+   "raw": {
+    "id": 269059,
+    "code": "cc3a7e5882674ca4a8d296ef150ac0e8",
+    "title": "Notice of Removal of Margin Trading Pairs - 2026-03-27",
+    "catalog_id": 161
+   }
+  },
+  {
+   "source": "token_unlock_cryptorank",
+   "event_type": "upcoming_unlock",
+   "symbol": "BOX",
+   "name": "DeBox",
+   "unlock_date": "2026-07-16",
+   "days_until_unlock": 0,
+   "price_usd": 0.028989037713,
+   "unlock_tokens": 19443200.0,
+   "unlock_usd": 563639.66,
+   "unlock_market_cap_pct": 3.82580209581395,
+   "market_cap_usd": 14732587.9370006,
+   "allocations": [
+    {
+     "name": "Foundation",
+     "tokens": 2778000.0,
+     "date": "2026-07-16T00:00:00.000Z"
+    },
+    {
+     "name": "Ecosystem Incentives",
+     "tokens": 4861500.0,
+     "date": "2026-07-16T00:00:00.000Z"
+    },
+    {
+     "name": "Investor",
+     "tokens": 8334000.0,
+     "date": "2026-07-16T00:00:00.000Z"
+    },
+    {
+     "name": "Team",
+     "tokens": 3469699.9999999995,
+     "date": "2026-07-16T00:00:00.000Z"
+    }
+   ],
+   "url": "https://cryptorank.io/price/debox/vesting",
+   "source_url": "https://cryptorank.io/token-unlock",
+   "raw": {
+    "id": 176897,
+    "key": "debox",
+    "chg24h": -10.6151
+   }
+  },
+  {
+   "source": "token_unlock_cryptorank",
+   "event_type": "upcoming_unlock",
+   "symbol": "DRIFT",
+   "name": "Velocity (prev. Drift Protocol)",
+   "unlock_date": "2026-07-16",
+   "days_until_unlock": 0,
+   "price_usd": 0.013530670208,
+   "unlock_tokens": 13503999.999999998,
+   "unlock_usd": 182718.17,
+   "unlock_market_cap_pct": 2.20828300266519,
+   "market_cap_usd": 8274218.941517372,
+   "allocations": [
+    {
+     "name": "Ecosystem Development & Trading Rewards",
+     "tokens": 225500.0,
+     "date": "2026-07-16T00:00:00.000Z"
+    },
+    {
+     "name": "Strategic Participants",
+     "tokens": 121000.00000000001,
+     "date": "2026-07-16T00:00:00.000Z"
+    },
+    {
+     "name": "Protocol Development",
+     "tokens": 13157499.999999998,
+     "date": "2026-07-16T00:00:00.000Z"
+    }
+   ],
+   "url": "https://cryptorank.io/price/drift-protocol/vesting",
+   "source_url": "https://cryptorank.io/token-unlock",
+   "raw": {
+    "id": 178214,
+    "key": "drift-protocol",
+    "chg24h": 2.3582
+   }
+  },
+  {
+   "source": "token_unlock_cryptorank",
+   "event_type": "upcoming_unlock",
+   "symbol": "ARB",
+   "name": "Arbitrum",
+   "unlock_date": "2026-07-16",
+   "days_until_unlock": 0,
+   "price_usd": 0.087453976088,
+   "unlock_tokens": 92631010.0,
+   "unlock_usd": 8100950.13,
+   "unlock_market_cap_pct": 1.45581210325009,
+   "market_cap_usd": 556455748.338813,
+   "allocations": [
+    {
+     "name": "Investors",
+     "tokens": 36514990.0,
+     "date": "2026-07-16T00:00:00.000Z"
+    },
+    {
+     "name": "Team & Advisors",
+     "tokens": 56116020.0,
+     "date": "2026-07-16T00:00:00.000Z"
+    }
+   ],
+   "url": "https://cryptorank.io/price/arbitrum/vesting",
+   "source_url": "https://cryptorank.io/token-unlock",
+   "raw": {
+    "id": 175987,
+    "key": "arbitrum",
+    "chg24h": -2.9016
+   }
+  },
+  {
+   "symbol": "SKLUSDT",
+   "funding_8h": -0.00415601,
+   "chg24h_pct": 11.752,
+   "quote_vol_usdt": 83947462.243015,
+   "oi_24h_ago_usdt": 3341824.4583868,
+   "oi_now_usdt": 4336347.7901423,
+   "oi_24h_ratio": 1.298,
+   "source": "funding_oi_squeeze",
+   "event_type": "funding_oi_price_anomaly",
+   "url": "https://fapi.binance.com/fapi/v1/premiumIndex",
+   "source_url": "https://fapi.binance.com/fapi/v1/ticker/24hr",
+   "raw": {
+    "funding_8h": -0.00415601,
+    "chg24h_pct": 11.752,
+    "quote_vol_usdt": 83947462.243015,
+    "oi_24h_ratio": 1.298
+   }
+  },
+  {
+   "symbol": "FWDIUSDT",
+   "funding_8h": 0.00380759,
+   "chg24h_pct": -6.816,
+   "quote_vol_usdt": 567386.94724,
+   "oi_24h_ago_usdt": 99096.6096,
+   "oi_now_usdt": 70186.46997992,
+   "oi_24h_ratio": 0.708,
+   "source": "funding_oi_squeeze",
+   "event_type": "funding_oi_price_anomaly",
+   "url": "https://fapi.binance.com/fapi/v1/premiumIndex",
+   "source_url": "https://fapi.binance.com/fapi/v1/ticker/24hr",
+   "raw": {
+    "funding_8h": 0.00380759,
+    "chg24h_pct": -6.816,
+    "quote_vol_usdt": 567386.94724,
+    "oi_24h_ratio": 0.708
+   }
+  },
+  {
+   "symbol": "BOTUSDT",
+   "funding_8h": -0.0036062,
+   "chg24h_pct": -7.472,
+   "quote_vol_usdt": 4329800.2865,
+   "oi_24h_ago_usdt": 352898.4032,
+   "oi_now_usdt": 481048.7672,
+   "oi_24h_ratio": 1.363,
+   "source": "funding_oi_squeeze",
+   "event_type": "funding_oi_price_anomaly",
+   "url": "https://fapi.binance.com/fapi/v1/premiumIndex",
+   "source_url": "https://fapi.binance.com/fapi/v1/ticker/24hr",
+   "raw": {
+    "funding_8h": -0.0036062,
+    "chg24h_pct": -7.472,
+    "quote_vol_usdt": 4329800.2865,
+    "oi_24h_ratio": 1.363
+   }
+  },
+  {
+   "symbol": "EBAYUSDT",
+   "funding_8h": -0.00343954,
+   "chg24h_pct": 0.089,
+   "quote_vol_usdt": 235499.8241,
+   "oi_24h_ago_usdt": 160646.56745281,
+   "oi_now_usdt": 160070.98117086,
+   "oi_24h_ratio": 0.996,
+   "source": "funding_oi_squeeze",
+   "event_type": "funding_oi_price_anomaly",
+   "url": "https://fapi.binance.com/fapi/v1/premiumIndex",
+   "source_url": "https://fapi.binance.com/fapi/v1/ticker/24hr",
+   "raw": {
+    "funding_8h": -0.00343954,
+    "chg24h_pct": 0.089,
+    "quote_vol_usdt": 235499.8241,
+    "oi_24h_ratio": 0.996
+   }
+  },
+  {
+   "symbol": "USUSDT",
+   "funding_8h": 0.00043079,
+   "chg24h_pct": 56.566,
+   "quote_vol_usdt": 185032018.915808,
+   "oi_24h_ago_usdt": 15126247.71294,
+   "oi_now_usdt": 28613332.082995,
+   "oi_24h_ratio": 1.892,
+   "source": "funding_oi_squeeze",
+   "event_type": "funding_oi_price_anomaly",
+   "url": "https://fapi.binance.com/fapi/v1/premiumIndex",
+   "source_url": "https://fapi.binance.com/fapi/v1/ticker/24hr",
+   "raw": {
+    "funding_8h": 0.00043079,
+    "chg24h_pct": 56.566,
+    "quote_vol_usdt": 185032018.915808,
+    "oi_24h_ratio": 1.892
+   }
+  },
+  {
+   "symbol": "AKEUSDT",
+   "funding_8h": 0.00020831,
+   "chg24h_pct": 99.9,
+   "quote_vol_usdt": 1009345575.790335,
+   "oi_24h_ago_usdt": 10405967.3983805,
+   "oi_now_usdt": 38799216.3330471,
+   "oi_24h_ratio": 3.729,
+   "source": "funding_oi_squeeze",
+   "event_type": "funding_oi_price_anomaly",
+   "url": "https://fapi.binance.com/fapi/v1/premiumIndex",
+   "source_url": "https://fapi.binance.com/fapi/v1/ticker/24hr",
+   "raw": {
+    "funding_8h": 0.00020831,
+    "chg24h_pct": 99.9,
+    "quote_vol_usdt": 1009345575.790335,
+    "oi_24h_ratio": 3.729
+   }
+  },
+  {
+   "symbol": "BANKUSDT",
+   "funding_8h": 5e-05,
+   "chg24h_pct": 26.353,
+   "quote_vol_usdt": 63147784.54503,
+   "oi_24h_ago_usdt": 5912487.49707225,
+   "oi_now_usdt": 10582586.57656812,
+   "oi_24h_ratio": 1.79,
+   "source": "funding_oi_squeeze",
+   "event_type": "funding_oi_price_anomaly",
+   "url": "https://fapi.binance.com/fapi/v1/premiumIndex",
+   "source_url": "https://fapi.binance.com/fapi/v1/ticker/24hr",
+   "raw": {
+    "funding_8h": 5e-05,
+    "chg24h_pct": 26.353,
+    "quote_vol_usdt": 63147784.54503,
+    "oi_24h_ratio": 1.79
+   }
+  }
+ ]
+}

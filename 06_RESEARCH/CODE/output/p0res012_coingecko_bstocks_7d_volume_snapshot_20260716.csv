@@ -1,0 +1,33 @@
+id,symbol,name,status,points,volume_7d_sum_usd,total_volume,market_cap,first_ts,last_ts,last_updated
+invesco-qqq-trust-bstocks-tokenized-stock,qqqb,Invesco QQQ Trust (bStocks Tokenized Stock),200,8,847816903.16,100824275,1334371,1783641600000,1784182373000,2026-07-16T06:12:14.550Z
+micron-technology-bstock,mub,Micron Technology (bStocks Tokenized Stock),200,8,243784908.05,43426971,65197566,1783641600000,1784182370000,2026-07-16T06:12:10.920Z
+sandisk-bstocks-tokenized-stock,sndkb,SanDisk (bStocks Tokenized Stock),200,8,138576968.49,21180916,48807999,1783641600000,1784182370000,2026-07-16T06:12:11.033Z
+roundhill-memory-etf-bstocks-tokenized-stock,dramb,Roundhill Memory ETF (bStocks Tokenized Stock),429,0,,16539143,15557333,,,2026-07-16T06:12:11.229Z
+spacex-bstocks-tokenized-stock,spcxb,SpaceX (bStocks Tokenized Stock),429,0,,15081780,89973413,,,2026-07-16T06:12:13.449Z
+sk-hynix-bstocks-tokenized-stock,skhyb,SK Hynix (bStocks Tokenized Stock),429,0,,11425321,9311624,,,2026-07-16T06:12:11.286Z
+semicon-bull-3x-etf-bstocks-tokenized-stock,soxlb,Semicon Bull 3X ETF (bStocks Tokenized Stock),429,0,,10308756,6405254,,,2026-07-16T06:12:11.183Z
+alphabet-bstocks-tokenized-stock,googlb,Alphabet (bStocks Tokenized Stock),429,0,,7956625,1180014,,,2026-07-16T06:11:24.306Z
+circle-internet-group-bstock,crclb,Circle Internet Group (bStocks Tokenized Stock),429,0,,7506534,49512195,,,2026-07-16T06:12:10.915Z
+spy-bstocks-tokenized-stock,spyb,SPY (bStocks Tokenized Stock),429,0,,5493601,778324,,,2026-07-16T06:11:56.971Z
+nebius-bstocks-tokenized-stock,nbisb,Nebius (bStocks Tokenized Stock),429,0,,5056160,2866678,,,2026-07-16T06:11:24.284Z
+corning-bstocks-tokenized-stock,glwb,Corning (bStocks Tokenized Stock),429,0,,4177477,0.0,,,2026-07-16T06:11:24.519Z
+cerebras-bstocks-tokenized-stock,cbrsb,Cerebras (bStocks Tokenized Stock),429,0,,4174017,667390,,,2026-07-16T06:11:24.069Z
+qualcomm-bstocks-tokenized-stock,qcomb,Qualcomm (bStocks Tokenized Stock),429,0,,3584027,1679291,,,2026-07-16T06:11:24.063Z
+western-digital-bstocks-tokenized-stock,wdcb,Western Digital (bStocks Tokenized Stock),429,0,,2442649,741847,,,2026-07-16T06:11:24.119Z
+microsoft-bstocks-tokenized-stock,msftb,Microsoft (bStocks Tokenized Stock),429,0,,2108534,1240897,,,2026-07-16T06:11:23.908Z
+lumentum-holdings-bstocks-tokenized-stock,liteb,Lumentum Holdings (bStocks Tokenized Stock),429,0,,1923127,873915,,,2026-07-16T06:11:24.172Z
+nvidia-bstocks,nvdab,NVIDIA (bStocks Tokenized Stock),429,0,,1727644,8156125,,,2026-07-16T06:12:10.934Z
+palantir-technologies-bstocks-tokenized-stock,pltrb,Palantir Technologies (bStocks Tokenized Stock),429,0,,1523465,1163688,,,2026-07-16T06:11:24.105Z
+tsmc-bstocks-tokenized-stock,tsmb,TSMC (bStocks Tokenized Stock),429,0,,1429702,0.0,,,2026-07-16T06:11:28.789Z
+tesla-bstocks-tokenized-stock,tslab,Tesla (bStocks Tokenized Stock),429,0,,1337756,3810216,,,2026-07-16T06:11:28.055Z
+applied-optoelectronics-bstocks-tokenized-stock,aaoib,Applied Optoelectronics (bStocks Tokenized Stock),429,0,,531828,962313,,,2026-07-16T06:11:28.689Z
+marvell-technology-bstocks-tokenized-stock,mrvlb,Marvell Technology (bStocks Tokenized Stock),429,0,,377328,1043292,,,2026-07-16T06:11:28.843Z
+ibm-bstocks-tokenized-stock,ibmb,IBM (bStocks Tokenized Stock),429,0,,372156,0.0,,,2026-07-16T06:11:28.840Z
+coinbase-bstocks-tokenized-stock,coinb,Coinbase (bStocks Tokenized Stock),429,0,,298971,1244727,,,2026-07-16T06:11:28.600Z
+rocket-lab-bstocks-tokenized-stock,rklbb,Rocket Lab (bStocks Tokenized Stock),429,0,,201526,0.0,,,2026-07-16T06:11:28.925Z
+nokia-bstocks-tokenized-stock,nokb,Nokia (bStocks Tokenized Stock),429,0,,175147,1137870,,,2026-07-16T06:11:28.889Z
+robinhood-bstocks-tokenized-stock,hoodb,Robinhood (bStocks Tokenized Stock),429,0,,131407,591584,,,2026-07-16T06:11:28.869Z
+alibaba-bstocks-tokenized-stock,babab,Alibaba (bStocks Tokenized Stock),429,0,,130821,590890,,,2026-07-16T06:11:28.734Z
+arm-bstocks-tokenized-stock,armb,Arm (bStocks Tokenized Stock),429,0,,130541,0.0,,,2026-07-16T06:11:28.699Z
+meta-platforms-bstocks-tokenized-stock,metab,Meta Platforms (bStocks Tokenized Stock),429,0,,103604,1060423,,,2026-07-16T06:11:28.297Z
+broadcom-bstocks-tokenized-stock,avgob,Broadcom (bStocks Tokenized Stock),429,0,,84748,557976,,,2026-07-16T06:11:28.845Z

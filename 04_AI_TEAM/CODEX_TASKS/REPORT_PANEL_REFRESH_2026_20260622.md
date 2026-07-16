@@ -1,7 +1,7 @@
 # REPORT_PANEL_REFRESH_2026_20260622
 
 **任务**：DATA-PANEL-REFRESH-2026｜价格面板刷新到 2026 + 解锁日历 overlap 普查
-**Codex 执行时间**：2026-06-22T14:12:15Z
+**Codex 执行时间**：2026-07-16T06:00:34Z
 **纪律声明**：纯数据工程；未回测；未碰 Holdout；未调参；未做信号/方向；旧面板只读，新产出限定写入 `FUTURES_EXPANDED_2026/`、`CODE/output/`、本报告与 TASK_INBOX。
 
 ## 总裁决
@@ -15,48 +15,48 @@
 ## A. 面板刷新结果
 
 - Universe：旧面板 35 个 symbol + BTCUSDT/ETHUSDT 补齐后 37 个。
-- 成功/有文件：31；失败：6。
+- 成功/有文件：0；失败：37。
 - 输出目录：`06_RESEARCH/DATA/FUTURES_EXPANDED_2026`。
 
 | Symbol | 状态 | 源 | 新下载行 | 合并止点 | 行数 | 失败摘要 |
 |---|---|---|---:|---:|---:|---|
-| AAVEUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12450 |  |
-| ALGOUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9826 | binance_fapi URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c: |
-| ATOMUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 13960 |  |
-| AVAXUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12588 |  |
-| AXSUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12240 |  |
-| BTCUSDT | failed | - | 0 | - | 0 | binance_fapi URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c: |
-| COMPUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 13097 |  |
-| CRVUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12720 |  |
-| DASHUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 13979 |  |
-| DOTUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12780 |  |
-| EGLDUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12642 |  |
-| ENJUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12552 |  |
-| ETCUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 10738 | binance_fapi URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c: |
-| ETHUSDT | downloaded | binance_fapi | 3361 | 2026-06-22 00:00:00 | 3361 |  |
-| FILUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9065 | binance_fapi URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c: |
-| FTMUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12552 |  |
-| ICXUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12636 |  |
-| KNCUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 13115 |  |
-| KSMUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12432 |  |
-| LINKUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 14087 |  |
-| LRCUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12402 |  |
-| MKRUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9449 | binance_fapi URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c: |
-| NEARUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12425 |  |
-| OMGUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9700 | binance_fapi URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c: |
-| RENUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12468 |  |
-| RUNEUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12702 |  |
-| SNXUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12828 |  |
-| SUSHIUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12672 |  |
-| THETAUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 13301 |  |
-| TRXUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 14069 |  |
-| UNIUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12618 |  |
-| XLMUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 14039 |  |
-| XMRUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 13985 |  |
-| XTZUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 13967 |  |
-| YFIUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 12696 |  |
-| ZECUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 13943 |  |
-| ZRXUSDT | downloaded | binance_fapi | 3355 | 2026-06-22 00:00:00 | 13133 |  |
+| AAVEUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9095 | binance_fapi HTTPError: HTTP Error 451:  |
+| ALGOUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9826 | binance_fapi HTTPError: HTTP Error 451:  |
+| ATOMUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 10605 | binance_fapi HTTPError: HTTP Error 451:  |
+| AVAXUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9233 | binance_fapi HTTPError: HTTP Error 451:  |
+| AXSUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 8885 | binance_fapi HTTPError: HTTP Error 451:  |
+| BTCUSDT | failed | - | 0 | - | 0 | binance_fapi HTTPError: HTTP Error 451:  |
+| COMPUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9742 | binance_fapi HTTPError: HTTP Error 451:  |
+| CRVUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9365 | binance_fapi HTTPError: HTTP Error 451:  |
+| DASHUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 10624 | binance_fapi HTTPError: HTTP Error 451:  |
+| DOTUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9425 | binance_fapi HTTPError: HTTP Error 451:  |
+| EGLDUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9287 | binance_fapi HTTPError: HTTP Error 451:  |
+| ENJUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9197 | binance_fapi HTTPError: HTTP Error 451:  |
+| ETCUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 10738 | binance_fapi HTTPError: HTTP Error 451:  |
+| ETHUSDT | failed | - | 0 | - | 0 | binance_fapi HTTPError: HTTP Error 451:  |
+| FILUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9065 | binance_fapi HTTPError: HTTP Error 451:  |
+| FTMUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9197 | binance_fapi HTTPError: HTTP Error 451:  |
+| ICXUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9281 | binance_fapi HTTPError: HTTP Error 451:  |
+| KNCUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9760 | binance_fapi HTTPError: HTTP Error 451:  |
+| KSMUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9077 | binance_fapi HTTPError: HTTP Error 451:  |
+| LINKUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 10732 | binance_fapi HTTPError: HTTP Error 451:  |
+| LRCUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9047 | binance_fapi HTTPError: HTTP Error 451:  |
+| MKRUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9449 | binance_fapi HTTPError: HTTP Error 451:  |
+| NEARUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9070 | binance_fapi HTTPError: HTTP Error 451:  |
+| OMGUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9700 | binance_fapi HTTPError: HTTP Error 451:  |
+| RENUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9113 | binance_fapi HTTPError: HTTP Error 451:  |
+| RUNEUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9347 | binance_fapi HTTPError: HTTP Error 451:  |
+| SNXUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9473 | binance_fapi HTTPError: HTTP Error 451:  |
+| SUSHIUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9317 | binance_fapi HTTPError: HTTP Error 451:  |
+| THETAUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9946 | binance_fapi HTTPError: HTTP Error 451:  |
+| TRXUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 10714 | binance_fapi HTTPError: HTTP Error 451:  |
+| UNIUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9263 | binance_fapi HTTPError: HTTP Error 451:  |
+| XLMUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 10684 | binance_fapi HTTPError: HTTP Error 451:  |
+| XMRUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 10630 | binance_fapi HTTPError: HTTP Error 451:  |
+| XTZUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 10612 | binance_fapi HTTPError: HTTP Error 451:  |
+| YFIUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9341 | binance_fapi HTTPError: HTTP Error 451:  |
+| ZECUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 10588 | binance_fapi HTTPError: HTTP Error 451:  |
+| ZRXUSDT | failed | - | 0 | 2024-12-09 20:00:00 | 9778 | binance_fapi HTTPError: HTTP Error 451:  |
 
 ## B. 解锁日历 overlap 普查
 

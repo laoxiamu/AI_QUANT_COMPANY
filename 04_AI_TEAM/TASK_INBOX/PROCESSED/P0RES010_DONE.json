@@ -1,0 +1,8 @@
+{
+  "task_id": "P0RES010",
+  "completed_at": "2026-07-16T06:16:26Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_P0RES010_BINANCE_DELIST_EVENTS.md",
+  "next_task": null,
+  "notes": "生成 Binance 退市/下架可检索库存 CSV；本地面板覆盖期内可对齐 8 行，其中 USDⓈ-M 永续强制结算仅 1 行，不满足 >=30。"
+}

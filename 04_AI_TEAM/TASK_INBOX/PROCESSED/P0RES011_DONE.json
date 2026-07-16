@@ -1,0 +1,8 @@
+{
+  "task_id": "P0RES011",
+  "completed_at": "2026-07-16T06:16:26Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_P0RES011_OPTIONS_HEDGE_FLOW_DATA.md",
+  "next_task": null,
+  "notes": "复核 Deribit/Bybit/Binance 公开期权市场数据；免费数据足够初筛，Laevitas 免费档不足以作为可复跑核心源。"
+}

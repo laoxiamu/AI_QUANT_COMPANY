@@ -1,0 +1,33 @@
+id,symbol,name,current_price,market_cap,total_volume,high_24h,low_24h,price_change_percentage_24h,price_change_percentage_7d_in_currency,last_updated
+invesco-qqq-trust-bstocks-tokenized-stock,qqqb,Invesco QQQ Trust (bStocks Tokenized Stock),718.22,1334371,100824275,725.68,711.18,-0.95812,0.7438763004375616,2026-07-16T06:12:14.550Z
+micron-technology-bstock,mub,Micron Technology (bStocks Tokenized Stock),900.69,65197566,43426971,999.27,879.82,-9.61089,-5.0949209690712065,2026-07-16T06:12:10.920Z
+sandisk-bstocks-tokenized-stock,sndkb,SanDisk (bStocks Tokenized Stock),1585.58,48807999,21180916,1789.8,1497.31,-11.41053,-6.109731662082402,2026-07-16T06:12:11.033Z
+roundhill-memory-etf-bstocks-tokenized-stock,dramb,Roundhill Memory ETF (bStocks Tokenized Stock),55.65,15557333,16539143,62.1,55.26,-10.38847,-9.076605934468212,2026-07-16T06:12:11.229Z
+spacex-bstocks-tokenized-stock,spcxb,SpaceX (bStocks Tokenized Stock),136.34,89973413,15081780,139.0,132.79,-1.28432,-8.88254746745955,2026-07-16T06:12:13.449Z
+sk-hynix-bstocks-tokenized-stock,skhyb,SK Hynix (bStocks Tokenized Stock),168.98,9311624,11425321,187.99,166.55,-10.09767,,2026-07-16T06:12:11.286Z
+semicon-bull-3x-etf-bstocks-tokenized-stock,soxlb,Semicon Bull 3X ETF (bStocks Tokenized Stock),162.98,6405254,10308756,190.42,150.83,-14.40825,-8.134042990870762,2026-07-16T06:12:11.183Z
+alphabet-bstocks-tokenized-stock,googlb,Alphabet (bStocks Tokenized Stock),373.84,1180014,7956625,374.37,357.1,3.60714,3.1024378129595482,2026-07-16T06:11:24.306Z
+circle-internet-group-bstock,crclb,Circle Internet Group (bStocks Tokenized Stock),65.36,49512195,7506534,66.5,63.18,2.24985,1.622539087785614,2026-07-16T06:12:10.915Z
+spy-bstocks-tokenized-stock,spyb,SPY (bStocks Tokenized Stock),755.19,778324,5493601,755.79,750.45,0.12386,1.0760337411916714,2026-07-16T06:11:56.971Z
+nebius-bstocks-tokenized-stock,nbisb,Nebius (bStocks Tokenized Stock),197.41,2866678,5056160,202.8,187.9,-1.43869,-10.03274177982571,2026-07-16T06:11:24.284Z
+corning-bstocks-tokenized-stock,glwb,Corning (bStocks Tokenized Stock),172.87,0.0,4177477,190.57,167.89,-8.92572,-8.115016463022691,2026-07-16T06:11:24.519Z
+cerebras-bstocks-tokenized-stock,cbrsb,Cerebras (bStocks Tokenized Stock),184.22,667390,4174017,207.53,180.6,-10.9894,-0.25381701542308616,2026-07-16T06:11:24.069Z
+qualcomm-bstocks-tokenized-stock,qcomb,Qualcomm (bStocks Tokenized Stock),177.66,1679291,3584027,181.68,175.02,-2.10818,-5.404016445273893,2026-07-16T06:11:24.063Z
+western-digital-bstocks-tokenized-stock,wdcb,Western Digital (bStocks Tokenized Stock),504.13,741847,2442649,577.53,497.63,-12.70801,-7.713899225471967,2026-07-16T06:11:24.119Z
+microsoft-bstocks-tokenized-stock,msftb,Microsoft (bStocks Tokenized Stock),397.44,1240897,2108534,398.96,384.0,2.80674,3.2346727607493686,2026-07-16T06:11:23.908Z
+lumentum-holdings-bstocks-tokenized-stock,liteb,Lumentum Holdings (bStocks Tokenized Stock),748.37,873915,1923127,826.88,718.01,-9.37358,5.589092779705459,2026-07-16T06:11:24.172Z
+nvidia-bstocks,nvdab,NVIDIA (bStocks Tokenized Stock),211.24,8156125,1727644,213.17,206.34,-0.85274,3.3628537866426957,2026-07-16T06:12:10.934Z
+palantir-technologies-bstocks-tokenized-stock,pltrb,Palantir Technologies (bStocks Tokenized Stock),134.06,1163688,1523465,135.83,132.39,0.79617,0.965205309410061,2026-07-16T06:11:24.105Z
+tsmc-bstocks-tokenized-stock,tsmb,TSMC (bStocks Tokenized Stock),413.61,0.0,1429702,426.71,414.65,-2.20787,,2026-07-16T06:11:28.789Z
+tesla-bstocks-tokenized-stock,tslab,Tesla (bStocks Tokenized Stock),395.27,3810216,1337756,404.86,391.38,-0.72784,-0.07316795491738126,2026-07-16T06:11:28.055Z
+applied-optoelectronics-bstocks-tokenized-stock,aaoib,Applied Optoelectronics (bStocks Tokenized Stock),109.42,962313,531828,110.57,107.82,0.01129,,2026-07-16T06:11:28.689Z
+marvell-technology-bstocks-tokenized-stock,mrvlb,Marvell Technology (bStocks Tokenized Stock),206.12,1043292,377328,207.47,203.33,-0.35001,,2026-07-16T06:11:28.843Z
+ibm-bstocks-tokenized-stock,ibmb,IBM (bStocks Tokenized Stock),212.18,0.0,372156,212.42,210.89,0.45692,,2026-07-16T06:11:28.840Z
+coinbase-bstocks-tokenized-stock,coinb,Coinbase (bStocks Tokenized Stock),166.83,1244727,298971,168.41,163.01,2.13335,3.8906934668531443,2026-07-16T06:11:28.600Z
+rocket-lab-bstocks-tokenized-stock,rklbb,Rocket Lab (bStocks Tokenized Stock),76.0,0.0,201526,76.4,75.3,0.27425,,2026-07-16T06:11:28.925Z
+nokia-bstocks-tokenized-stock,nokb,Nokia (bStocks Tokenized Stock),11.23,1137870,175147,11.26,11.11,-0.28253,,2026-07-16T06:11:28.889Z
+robinhood-bstocks-tokenized-stock,hoodb,Robinhood (bStocks Tokenized Stock),115.28,591584,131407,115.92,114.81,-0.11122,,2026-07-16T06:11:28.869Z
+alibaba-bstocks-tokenized-stock,babab,Alibaba (bStocks Tokenized Stock),119.87,590890,130821,121.92,118.05,0.96586,,2026-07-16T06:11:28.734Z
+arm-bstocks-tokenized-stock,armb,Arm (bStocks Tokenized Stock),271.35,0.0,130541,276.68,268.69,-1.44232,,2026-07-16T06:11:28.699Z
+meta-platforms-bstocks-tokenized-stock,metab,Meta Platforms (bStocks Tokenized Stock),679.84,1060423,103604,684.68,657.72,2.91695,12.283663040650366,2026-07-16T06:11:28.297Z
+broadcom-bstocks-tokenized-stock,avgob,Broadcom (bStocks Tokenized Stock),394.79,557976,84748,395.65,391.41,0.03981,,2026-07-16T06:11:28.845Z
