@@ -17,5 +17,5 @@
 
 ## 待办（路径协调）
 
-- 定时任务 `ai-quant-monthly-audit` 的 SKILL.md 仍把 L1 月报写到 `09_OPERATIONS/MONTHLY_REVIEW/`。下次自动运行会再次散落到旧目录，需更新定时任务指令指向本目录（待 Founder 确认后由 Claude 用 schedule 工具更新）。
+- ~~定时任务 `ai-quant-monthly-audit` 的 SKILL.md 仍把 L1 月报写到 `09_OPERATIONS/MONTHLY_REVIEW/`~~ **已解决**（2026-07-16核实：SKILL.md v2/v3 已指向本目录，7月月报实际落对位置；本条系过时待办）。
 - DEC-022 正文记录的 L1/L2/L3 输出路径为历史口径，本次统一不回改决策日志；以本 README + CLAUDE.md「审计文件归档」节为现行准则。

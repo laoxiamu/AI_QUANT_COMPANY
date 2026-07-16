@@ -37,6 +37,11 @@ STALE_PATTERNS = [
     ("regime-adaptive误写新主线", r"新主线\s*=\s*regime-adaptive"),
     ("杠杆误作Alpha实验", r"(10[-–]20x\s*杠杆[^\n]{0,30}(实验|Alpha)|(实验|Alpha)[^\n]{0,30}10[-–]20x\s*杠杆)"),
     ("carry活跃主线误写", r"(唯一|当前|active|活动|研究)?主线[^\n]{0,40}carry(?![^\n]{0,20}(Dead|关闭|废弃|已死))"),
+    # 2026-07-16 L1审计R4补强：本次审计人工抓到、机器漏报的过时串
+    ("P0-C旧执行顺序残留", r"Claude继续P0-C"),
+    ("regime-adaptive误作当前主线", r"当前唯一执行主线[^\n]{0,40}regime-adaptive"),
+    ("引擎L-Holdout待决策过时", r"最重要待决策[^\n]{0,60}是否消耗Holdout"),
+    ("调度器自动拾取协议过时", r"15min调度器自动拾取"),
 ]
 
 # 关注的不变量（抽出来并排看）

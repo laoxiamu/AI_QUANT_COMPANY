@@ -33,11 +33,13 @@ OLD_PANEL_DIR = ROOT / "06_RESEARCH" / "DATA" / "FUTURES_EXPANDED"
 NEW_PANEL_DIR = ROOT / "06_RESEARCH" / "DATA" / "FUTURES_EXPANDED_2026"
 OUT_DIR = ROOT / "06_RESEARCH" / "CODE" / "output"
 AUDIT_PATH = OUT_DIR / "panel_refresh_2026_audit.json"
-REPORT_PATH = ROOT / "04_AI_TEAM" / "CODEX_TASKS" / "REPORT_PANEL_REFRESH_2026_20260622.md"
+# 2026-07-16：报告名按运行日期戳，保留历史（原硬编码 _20260622 会覆盖旧报告）
+REPORT_PATH = ROOT / "04_AI_TEAM" / "CODEX_TASKS" / f"REPORT_PANEL_REFRESH_2026_{pd.Timestamp.utcnow().strftime('%Y%m%d')}.md"
 DONE_PATH = ROOT / "04_AI_TEAM" / "TASK_INBOX" / "DATA-PANEL-REFRESH-2026_DONE.json"
 
 START_UTC = pd.Timestamp("2024-12-09 00:00:00")
-END_UTC = pd.Timestamp("2026-06-22 00:00:00")
+# 2026-07-16 L1审计R7修复：END_UTC 原硬编码 "2026-06-22 00:00:00"，是面板止步6/22、重跑无效的根因；改为动态刷到当前（floor 4H 保证末根K线完整）
+END_UTC = pd.Timestamp.utcnow().tz_localize(None).floor("4h")
 INTERVAL = pd.Timedelta(hours=4)
 REQUIRED_COLUMNS = ["datetime", "open", "high", "low", "close", "volume"]
 

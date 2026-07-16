@@ -1,0 +1,4 @@
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/06_RESEARCH/CODE/panel_refresh_2026.py:37: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+  REPORT_PATH = ROOT / "04_AI_TEAM" / "CODEX_TASKS" / f"REPORT_PANEL_REFRESH_2026_{pd.Timestamp.utcnow().strftime('%Y%m%d')}.md"
+/Users/yaomingyu/Documents/AI_QUANT_COMPANY/06_RESEARCH/CODE/panel_refresh_2026.py:42: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+  END_UTC = pd.Timestamp.utcnow().tz_localize(None).floor("4h")
