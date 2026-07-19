@@ -1,0 +1,8 @@
+{
+  "task_id": "P0RES016B",
+  "completed_at": "2026-07-17T08:11:38Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_P0RES016B_UNLOCK_LOOKAHEAD_20260717.md",
+  "next_task": null,
+  "notes": "CryptoRank important-upcoming-unlocks API restored token_unlock lookahead; SG full-source scan produced future unlock samples with source_errors empty."
+}

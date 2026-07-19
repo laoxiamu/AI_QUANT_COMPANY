@@ -1,0 +1,54 @@
++ KEY=/Users/yaomingyu/.ssh/id_ed25519_aiquant
++ SGHOST=root@43.160.200.224
++ SSHCMD='ssh -i /Users/yaomingyu/.ssh/id_ed25519_aiquant -o StrictHostKeyChecking=no'
++ R=/Users/yaomingyu/Documents/AI_QUANT_COMPANY
++ cd /Users/yaomingyu/Documents/AI_QUANT_COMPANY
++ echo '=== S1 采集器健康+缺口量化（关键：停机窗口内哪些天的文件缺失/偏小）==='
+=== S1 采集器健康+缺口量化（关键：停机窗口内哪些天的文件缺失/偏小）===
++ ssh -i /Users/yaomingyu/.ssh/id_ed25519_aiquant -o StrictHostKeyChecking=no root@43.160.200.224 'systemctl is-active aiquant-liq-collector.service; ls -la /opt/ai_quant_liq_collector/data/LIQUIDATIONS/ | tail -8; for f in /opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_2026071[5-9].jsonl; do echo -n "$f: "; wc -l < "$f" 2>/dev/null || echo MISSING; done'
+active
+-rw-r--r-- 1 root root  6492586 Jul 13 07:59 liq_20260712.jsonl
+-rw-r--r-- 1 root root  8906117 Jul 14 07:59 liq_20260713.jsonl
+-rw-r--r-- 1 root root  6060465 Jul 15 07:59 liq_20260714.jsonl
+-rw-r--r-- 1 root root  6847911 Jul 16 07:59 liq_20260715.jsonl
+-rw-r--r-- 1 root root  7275773 Jul 17 07:59 liq_20260716.jsonl
+-rw-r--r-- 1 root root 10194205 Jul 18 07:59 liq_20260717.jsonl
+-rw-r--r-- 1 root root  5936459 Jul 19 07:59 liq_20260718.jsonl
+-rw-r--r-- 1 root root  6265124 Jul 20 04:54 liq_20260719.jsonl
+/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260715.jsonl: 29262
+/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260716.jsonl: 31011
+/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260717.jsonl: 43429
+/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260718.jsonl: 25265
+/opt/ai_quant_liq_collector/data/LIQUIDATIONS/liq_20260719.jsonl: 26768
++ echo '=== S2 哨兵状态+推送修复版扫描器 ==='
+=== S2 哨兵状态+推送修复版扫描器 ===
++ scp -i /Users/yaomingyu/.ssh/id_ed25519_aiquant -o StrictHostKeyChecking=no 06_RESEARCH/CODE/thesis_hf_scan.py root@43.160.200.224:/root/thesis_sentinel/
++ ssh -i /Users/yaomingyu/.ssh/id_ed25519_aiquant -o StrictHostKeyChecking=no root@43.160.200.224 'crontab -l | grep thesis_sentinel; ls -t /root/thesis_sentinel/out/ | head -3; tail -2 /root/thesis_sentinel/last.log 2>/dev/null'
+7 */2 * * * cd /root/thesis_sentinel && timeout 600 python3 thesis_hf_scan.py --output-dir out > last.log 2>&1; find /root/thesis_sentinel/out -name "*.json" -mtime +7 -delete
+thesis_hf_scan_20260719_2053.json
+thesis_hf_scan_20260719_2007.json
+thesis_hf_scan_20260719_1807.json
+binance_announcement   KORUUSDT                 futures_contract_size_adjustm Binance Futures Will Adjust The Contract Size of USDⓈ-M
+binance_announcement   CRWDUSDT                 futures_contract_size_adjustm Binance Futures Will Adjust The Contract Size of USDⓈ-M
++ echo '=== S3 强平数据回流本地 ==='
+=== S3 强平数据回流本地 ===
+++ cat /Users/yaomingyu/.aiquant_sealed/sg_pass
++ sshpass -p Yao6527169 rsync -av -e 'ssh -o StrictHostKeyChecking=no' root@43.160.200.224:/opt/ai_quant_liq_collector/data/LIQUIDATIONS/ 06_RESEARCH/DATA/LIQUIDATIONS/
+Transfer starting: 36 files
+./
+liq_20260716.jsonl
+liq_20260717.jsonl
+liq_20260718.jsonl
+liq_20260719.jsonl
+
+sent 2450 bytes  received 29441497 bytes  294439470000 bytes/sec
+total size is 283771659  speedup is 9.64
++ ls 06_RESEARCH/DATA/LIQUIDATIONS/
++ tail -3
+liq_20260717.jsonl
+liq_20260718.jsonl
+liq_20260719.jsonl
++ echo '=== S4 git积压提交 ==='
+=== S4 git积压提交 ===
++ rm -f .git/index.lock .git/HEAD.lock
++ git add -A

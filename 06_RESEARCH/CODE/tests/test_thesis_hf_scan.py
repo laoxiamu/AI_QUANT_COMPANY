@@ -7,6 +7,7 @@ from thesis_hf_scan import (
     build_legacy_funding_output,
     build_ssh_curl_command,
     extract_announcement_symbols,
+    run_scan,
     scan_binance_announcements,
     scan_depeg_assets,
     scan_funding_oi,
@@ -165,6 +166,7 @@ def test_token_unlock_scan_parses_cryptorank_next_data() -> None:
         {
             "source": "token_unlock_cryptorank",
             "event_type": "upcoming_unlock",
+            "key": "sample-token",
             "symbol": "SMP",
             "name": "Sample Token",
             "unlock_date": "2026-07-20",
@@ -186,6 +188,86 @@ def test_token_unlock_scan_parses_cryptorank_next_data() -> None:
             "raw": {"id": 10, "key": "sample-token", "chg24h": -4.5},
         }
     ]
+
+
+def test_token_unlock_scan_prefers_cryptorank_upcoming_api() -> None:
+    payload = [
+        {
+            "key": "kaito",
+            "symbol": "KAITO",
+            "name": "Kaito",
+            "unlockUsd": 15252691,
+            "tokensPercent": 7.3,
+            "unlockDate": "2026-07-20T00:00:00.000Z",
+            "isHidden": False,
+        },
+        {
+            "unlockUsd": 5880827,
+            "tokensPercent": 6.7,
+            "unlockDate": "2026-07-21T00:00:00.000Z",
+            "isHidden": True,
+        },
+    ]
+    calls = []
+
+    def fake_fetch_text(url: str) -> str:
+        calls.append(url)
+        if "important-upcoming-unlocks?period=7D" in url:
+            return json.dumps(payload)
+        raise AssertionError(f"unexpected fetch {url}")
+
+    candidates = scan_token_unlocks(
+        fetch_text=fake_fetch_text,
+        now_dt=datetime(2026, 7, 17, tzinfo=timezone.utc),
+        min_unlock_usd=100000,
+    )
+
+    assert calls == [
+        "https://api.cryptorank.io/v0/consolidated-vesting/important-upcoming-unlocks?period=7D"
+    ]
+    assert candidates == [
+        {
+            "source": "token_unlock_cryptorank",
+            "event_type": "upcoming_unlock",
+            "key": "kaito",
+            "symbol": "KAITO",
+            "name": "Kaito",
+            "unlock_date": "2026-07-20",
+            "days_until_unlock": 3,
+            "price_usd": None,
+            "unlock_tokens": None,
+            "unlock_usd": 15252691.0,
+            "unlock_market_cap_pct": 7.3,
+            "market_cap_usd": None,
+            "allocations": [],
+            "url": "https://cryptorank.io/price/kaito/vesting",
+            "source_url": "https://api.cryptorank.io/v0/consolidated-vesting/important-upcoming-unlocks?period=7D",
+            "raw": {
+                "key": "kaito",
+                "isHidden": False,
+                "source_shape": "important_upcoming_unlocks",
+            },
+        }
+    ]
+
+
+def test_token_unlock_source_structure_change_goes_to_source_errors() -> None:
+    def fake_fetch_text(url: str) -> str:
+        if "important-upcoming-unlocks" in url:
+            return json.dumps({"unexpected": "shape"})
+        return "<html></html>"
+
+    candidates, errors, legacy_funding, funding_rows = run_scan(
+        fetch_text=fake_fetch_text,
+        sources=("token_unlocks",),
+    )
+
+    assert candidates == []
+    assert legacy_funding is None
+    assert funding_rows == []
+    assert errors
+    assert errors[0]["source"] == "token_unlocks"
+    assert "important-upcoming-unlocks" in errors[0]["error"]
 
 
 def test_depeg_scan_flags_assets_more_than_threshold_from_peg() -> None:

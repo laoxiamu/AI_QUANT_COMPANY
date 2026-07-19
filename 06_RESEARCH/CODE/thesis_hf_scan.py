@@ -21,6 +21,10 @@ BASE = "https://fapi.binance.com"
 BINANCE_CMS = "https://www.binance.com/bapi/composite/v1/public/cms/article/catalog/list/query"
 BINANCE_ARTICLE = "https://www.binance.com/bapi/composite/v1/public/cms/article/detail/query"
 CRYPTORANK_UNLOCK_URL = "https://cryptorank.io/token-unlock"
+CRYPTORANK_API_BASE = "https://api.cryptorank.io/v0"
+CRYPTORANK_IMPORTANT_UNLOCKS_URL = (
+    f"{CRYPTORANK_API_BASE}/consolidated-vesting/important-upcoming-unlocks?period=7D"
+)
 COINGECKO_SIMPLE_PRICE = "https://api.coingecko.com/api/v3/simple/price"
 COINGECKO_COIN_URL = "https://www.coingecko.com/en/coins"
 OUT = Path(__file__).resolve().parent / "output"
@@ -296,25 +300,108 @@ def _safe_float(value):
         return None
 
 
-def scan_token_unlocks(
-    fetch_text=get_text,
-    now_dt=None,
-    min_unlock_usd=100000,
-    min_unlock_market_cap_pct=0.5,
-    max_days=14,
-    url=CRYPTORANK_UNLOCK_URL,
+def _cryptorank_vesting_url(key, fallback_url):
+    return f"https://cryptorank.io/price/{key}/vesting" if key else fallback_url
+
+
+def _passes_unlock_thresholds(unlock_usd, unlock_market_cap_pct, min_unlock_usd, min_unlock_market_cap_pct):
+    if unlock_usd is None or unlock_usd < min_unlock_usd:
+        return False
+    if unlock_market_cap_pct is not None and unlock_market_cap_pct < min_unlock_market_cap_pct:
+        return False
+    return True
+
+
+def _days_until(event_dt, now_dt, max_days):
+    if not event_dt:
+        return None
+    days_until = (event_dt.date() - now_dt.date()).days
+    if days_until < 0 or days_until > max_days:
+        return None
+    return days_until
+
+
+def _sort_unlock_candidates(candidates):
+    candidates.sort(key=lambda r: (r["days_until_unlock"], -(r.get("unlock_market_cap_pct") or 0)))
+    return candidates
+
+
+def _scan_cryptorank_important_unlocks(
+    fetch_text,
+    now_dt,
+    min_unlock_usd,
+    min_unlock_market_cap_pct,
+    max_days,
+    source_url=CRYPTORANK_IMPORTANT_UNLOCKS_URL,
 ):
-    now_dt = now_dt or datetime.now(timezone.utc)
+    payload = json.loads(fetch_text(source_url))
+    if not isinstance(payload, list):
+        raise ValueError(f"{source_url} returned {type(payload).__name__}, expected list")
+
+    candidates = []
+    for row in payload:
+        if not isinstance(row, dict):
+            continue
+        key = row.get("key")
+        symbol = row.get("symbol")
+        if row.get("isHidden") or not key or not symbol:
+            continue
+        event_dt = _parse_iso_utc(row.get("unlockDate"))
+        days_until = _days_until(event_dt, now_dt, max_days)
+        if days_until is None:
+            continue
+        unlock_usd = _safe_float(row.get("unlockUsd"))
+        unlock_market_cap_pct = _safe_float(row.get("tokensPercent"))
+        if not _passes_unlock_thresholds(
+            unlock_usd,
+            unlock_market_cap_pct,
+            min_unlock_usd,
+            min_unlock_market_cap_pct,
+        ):
+            continue
+        candidates.append(
+            {
+                "source": "token_unlock_cryptorank",
+                "event_type": "upcoming_unlock",
+                "key": key,
+                "symbol": symbol,
+                "name": row.get("name"),
+                "unlock_date": event_dt.date().isoformat(),
+                "days_until_unlock": days_until,
+                "price_usd": None,
+                "unlock_tokens": None,
+                "unlock_usd": round(unlock_usd, 2),
+                "unlock_market_cap_pct": unlock_market_cap_pct,
+                "market_cap_usd": None,
+                "allocations": [],
+                "url": _cryptorank_vesting_url(key, source_url),
+                "source_url": source_url,
+                "raw": {
+                    "key": key,
+                    "isHidden": row.get("isHidden"),
+                    "source_shape": "important_upcoming_unlocks",
+                },
+            }
+        )
+    return _sort_unlock_candidates(candidates)
+
+
+def _scan_cryptorank_next_data_unlocks(
+    fetch_text,
+    now_dt,
+    min_unlock_usd,
+    min_unlock_market_cap_pct,
+    max_days,
+    url,
+):
     page = fetch_text(url)
     data = _json_from_next_data(page)
     rows = ((data.get("props") or {}).get("pageProps") or {}).get("fallbackData", {}).get("data") or []
     candidates = []
     for row in rows:
         event_dt = _parse_iso_utc(row.get("date"))
-        if not event_dt:
-            continue
-        days_until = (event_dt.date() - now_dt.date()).days
-        if days_until < 0 or days_until > max_days:
+        days_until = _days_until(event_dt, now_dt, max_days)
+        if days_until is None:
             continue
         price = _safe_float(row.get("price")) or 0.0
         allocations = []
@@ -331,15 +418,19 @@ def scan_token_unlocks(
             )
         unlock_usd = unlock_tokens * price
         unlock_market_cap_pct = _safe_float(row.get("nextUnlockPercent"))
-        if unlock_usd < min_unlock_usd:
-            continue
-        if unlock_market_cap_pct is not None and unlock_market_cap_pct < min_unlock_market_cap_pct:
+        if not _passes_unlock_thresholds(
+            unlock_usd,
+            unlock_market_cap_pct,
+            min_unlock_usd,
+            min_unlock_market_cap_pct,
+        ):
             continue
         key = row.get("key")
         candidates.append(
             {
                 "source": "token_unlock_cryptorank",
                 "event_type": "upcoming_unlock",
+                "key": key,
                 "symbol": row.get("symbol"),
                 "name": row.get("name"),
                 "unlock_date": event_dt.date().isoformat(),
@@ -350,13 +441,48 @@ def scan_token_unlocks(
                 "unlock_market_cap_pct": unlock_market_cap_pct,
                 "market_cap_usd": _safe_float(row.get("marketCap")),
                 "allocations": allocations[:5],
-                "url": f"https://cryptorank.io/price/{key}/vesting" if key else url,
+                "url": _cryptorank_vesting_url(key, url),
                 "source_url": url,
                 "raw": {"id": row.get("id"), "key": key, "chg24h": row.get("chg24h")},
             }
         )
-    candidates.sort(key=lambda r: (r["days_until_unlock"], -(r.get("unlock_market_cap_pct") or 0)))
-    return candidates
+    return _sort_unlock_candidates(candidates)
+
+
+def scan_token_unlocks(
+    fetch_text=get_text,
+    now_dt=None,
+    min_unlock_usd=100000,
+    min_unlock_market_cap_pct=0.5,
+    max_days=14,
+    url=CRYPTORANK_UNLOCK_URL,
+):
+    now_dt = now_dt or datetime.now(timezone.utc)
+    errors = []
+    try:
+        return _scan_cryptorank_important_unlocks(
+            fetch_text,
+            now_dt,
+            min_unlock_usd,
+            min_unlock_market_cap_pct,
+            max_days,
+        )
+    except Exception as e:  # noqa: BLE001 —— CryptoRank结构漂移时降级到SSR兜底
+        errors.append(f"{CRYPTORANK_IMPORTANT_UNLOCKS_URL}: {e}")
+
+    try:
+        return _scan_cryptorank_next_data_unlocks(
+            fetch_text,
+            now_dt,
+            min_unlock_usd,
+            min_unlock_market_cap_pct,
+            max_days,
+            url,
+        )
+    except Exception as e:  # noqa: BLE001 —— 让run_scan记录source_errors，不废全局扫描
+        errors.append(f"{url}: {e}")
+
+    raise ValueError("CryptoRank token_unlock sources failed: " + "; ".join(errors))
 
 
 def coingecko_price_url(assets):
