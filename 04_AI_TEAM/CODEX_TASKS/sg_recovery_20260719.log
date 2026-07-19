@@ -52,3 +52,17 @@ liq_20260719.jsonl
 === S4 git积压提交 ===
 + rm -f .git/index.lock .git/HEAD.lock
 + git add -A
++ git -c 'user.name=Claude (operating principal)' -c user.email=yaojinyu1129@gmail.com commit -q -m 'SG停机恢复: 016b验收PASS落库+缺口量化+哨兵新版扫描器+liq回流(7/19)'
++ git log --oneline -1
+41c62dd SG停机恢复: 016b验收PASS落库+缺口量化+哨兵新版扫描器+liq回流(7/19)
++ echo '=== S5 KAITO/ZRO T-1快照（若在7/20前跑到）==='
+=== S5 KAITO/ZRO T-1快照（若在7/20前跑到）===
++ ssh -i /Users/yaomingyu/.ssh/id_ed25519_aiquant -o StrictHostKeyChecking=no root@43.160.200.224 'for s in KAITOUSDT ZROUSDT; do echo "== $s"; curl -s "https://fapi.binance.com/fapi/v1/premiumIndex?symbol=$s" | head -c 300; echo; curl -s "https://fapi.binance.com/fapi/v1/ticker/24hr?symbol=$s" | head -c 300; echo; done'
+== KAITOUSDT
+{"symbol":"KAITOUSDT","markPrice":"0.94310000","indexPrice":"0.94363824","estimatedSettlePrice":"0.94846387","lastFundingRate":"0.00005000","interestRate":"0.00010000","nextFundingTime":1784505600000,"time":1784494870000}
+{"closeTime":1784494862213,"count":1802911,"firstId":362387516,"highPrice":"0.988000","lastId":364190520,"lastPrice":"0.943200","lastQty":"17.5","lowPrice":"0.808500","openPrice":"0.822400","openTime":1784408460000,"priceChange":"0.120800","priceChangePercent":"14.689","quoteVolume":"97495671.567560
+== ZROUSDT
+{"symbol":"ZROUSDT","markPrice":"0.79811029","indexPrice":"0.79938950","estimatedSettlePrice":"0.80078629","lastFundingRate":"0.00000001","interestRate":"0.00010000","nextFundingTime":1784505600000,"time":1784494870000}
+{"closeTime":1784494868054,"count":142065,"firstId":387430927,"highPrice":"0.8241000","lastId":387572999,"lastPrice":"0.7981000","lastQty":"42.4","lowPrice":"0.7805000","openPrice":"0.7829000","openTime":1784408460000,"priceChange":"0.0152000","priceChangePercent":"1.941","quoteVolume":"7129829.1062
++ echo SG_RECOVERY_DONE
+SG_RECOVERY_DONE
