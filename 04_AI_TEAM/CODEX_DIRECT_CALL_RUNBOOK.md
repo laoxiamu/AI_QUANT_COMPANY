@@ -41,6 +41,8 @@ nohup codex exec -m gpt-5.5 --skip-git-repo-check -C /Users/yaomingyu/Documents/
 然后 VM：`tail -N 04_AI_TEAM/CODEX_TASKS/xxx_run.log`。
 
 **注意：** Codex 的 429/"Reconnecting" = codex↔OpenAI（限流+双跳代理），与 DC 掉线是两个独立问题，勿混。
+
+**派发后强制验活（2026-07-20 教训，"已派≠在跑"第3次变体）：** 派发后 2-5 分钟内必须查 `wc -l LOG` 是否增长；**进程存在 ≠ 任务在跑**——2026-07-20 外部审计首派用 `--sandbox workspace-write`，进程活着但 ~2h 零输出（log 停在只回显任务书的 54 行），改 `--sandbox danger-full-access` 重派后立即正常流式输出。经验法则：**读全库/需 rg 遍历/联网的任务一律 danger-full-access**；workspace-write 留给纯写文件任务。log 中 `ERROR codex_models_manager: failed to renew cache TTL` 为非致命告警，不影响执行。
 **更强可选（未建，待 Founder）：** Mac launchd 监听 trigger 文件夹跑 codex（VM 可写 trigger），彻底脱 DC。
 
 ## 数据采集 / 出网通道（2026-06-22 定，强制——根治"沙箱出不去网"反复卡死）
