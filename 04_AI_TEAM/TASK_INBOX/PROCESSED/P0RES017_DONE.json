@@ -1,0 +1,8 @@
+{
+  "task_id": "P0RES017",
+  "completed_at": "2026-07-21T07:59:02Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_P0RES017_SCANNER_LEDGER_20260721.md",
+  "next_task": null,
+  "notes": "funding周期语义已按日归一；EVENT_LEDGER_V1 SQLite/parquet、写入器、回填与结算器已落地；历史4个扫描快照已回填，funding结局29/31 resolved。"
+}

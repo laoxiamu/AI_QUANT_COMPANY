@@ -1,0 +1,13 @@
+{
+  "generated_at": "2026-07-21 08:02:36 UTC",
+  "event_rows": 686,
+  "universe_pit_rows": 530,
+  "announcement_only_rows": 156,
+  "existing_spot_then_perp": 132,
+  "valid_existing_spot_sample": 89,
+  "delisted_later": 98,
+  "head_probe_rows": 67526,
+  "volume_rows": 4778,
+  "exit_threshold": 100,
+  "exit_conclusion": "not_qualified"
+}

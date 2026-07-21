@@ -3,10 +3,12 @@ from datetime import datetime, timezone
 
 import pytest
 
+from backfill_event_ledger_v1 import enrich_legacy_funding_candidate
 from thesis_hf_scan import (
     build_legacy_funding_output,
     build_ssh_curl_command,
     extract_announcement_symbols,
+    funding_rows_to_candidates,
     run_scan,
     scan_binance_announcements,
     scan_depeg_assets,
@@ -18,20 +20,34 @@ from thesis_hf_scan import (
 def test_funding_oi_scan_keeps_legacy_prescreen_and_oi_fields() -> None:
     fixtures = {
         "premiumIndex": [
-            {"symbol": "AAAUSDT", "lastFundingRate": "0.004"},
+            {"symbol": "AAAUSDT", "lastFundingRate": "0.004", "time": 1784181000000},
             {"symbol": "BBBUSDT", "lastFundingRate": "0.001"},
             {"symbol": "CCCBTC", "lastFundingRate": "0.010"},
         ],
         "ticker": [
-            {"symbol": "AAAUSDT", "priceChangePercent": "4.0", "quoteVolume": "1000000"},
-            {"symbol": "BBBUSDT", "priceChangePercent": "-30.0", "quoteVolume": "6000000"},
+            {"symbol": "AAAUSDT", "priceChangePercent": "4.0", "quoteVolume": "1000000", "lastPrice": "2.5"},
+            {"symbol": "BBBUSDT", "priceChangePercent": "-30.0", "quoteVolume": "6000000", "lastPrice": "0.5"},
+        ],
+        "fundingRate?symbol=AAAUSDT": [
+            {"fundingTime": 1784124000000, "fundingRate": "0.003"},
+            {"fundingTime": 1784152800000, "fundingRate": "0.004"},
+        ],
+        "fundingRate?symbol=BBBUSDT": [
+            {"fundingTime": 1784124000000, "fundingRate": "0.001"},
+            {"fundingTime": 1784152800000, "fundingRate": "0.001"},
         ],
         "openInterestHist?symbol=AAAUSDT": [
             {"sumOpenInterestValue": "100"},
+            {"sumOpenInterestValue": "120"},
+            {"sumOpenInterestValue": "140"},
+            {"sumOpenInterestValue": "160"},
             {"sumOpenInterestValue": "200"},
         ],
         "openInterestHist?symbol=BBBUSDT": [
             {"sumOpenInterestValue": "50"},
+            {"sumOpenInterestValue": "40"},
+            {"sumOpenInterestValue": "35"},
+            {"sumOpenInterestValue": "30"},
             {"sumOpenInterestValue": "25"},
         ],
     }
@@ -41,6 +57,10 @@ def test_funding_oi_scan_keeps_legacy_prescreen_and_oi_fields() -> None:
             return fixtures["premiumIndex"]
         if "ticker/24hr" in url:
             return fixtures["ticker"]
+        if "fundingRate?symbol=AAAUSDT" in url:
+            return fixtures["fundingRate?symbol=AAAUSDT"]
+        if "fundingRate?symbol=BBBUSDT" in url:
+            return fixtures["fundingRate?symbol=BBBUSDT"]
         if "openInterestHist?symbol=AAAUSDT" in url:
             return fixtures["openInterestHist?symbol=AAAUSDT"]
         if "openInterestHist?symbol=BBBUSDT" in url:
@@ -53,27 +73,170 @@ def test_funding_oi_scan_keeps_legacy_prescreen_and_oi_fields() -> None:
         {
             "symbol": "AAAUSDT",
             "funding_8h": 0.004,
+            "funding_per_settlement": 0.004,
+            "interval_hours": 8,
+            "funding_per_day": 0.012,
+            "funding_est_next": None,
+            "funding_seq_n_periods_over_threshold": 2,
             "chg24h_pct": 4.0,
+            "price_now": 2.5,
             "quote_vol_usdt": 1000000.0,
+            "quote_vol_24h_usd": 1000000.0,
             "oi_24h_ago_usdt": 100.0,
             "oi_now_usdt": 200.0,
             "oi_24h_ratio": 2.0,
+            "oi_usd_now": 200.0,
+            "oi_1h_ago": 160.0,
+            "oi_4h_ago": 100.0,
+            "oi_24h_ago": 100.0,
+            "d_oi_1h_pct": 25.0,
+            "d_oi_4h_pct": 100.0,
+            "d_oi_24h_ratio": 2.0,
+            "price_oi_quadrant": "价↑OI↑",
         },
         {
             "symbol": "BBBUSDT",
             "funding_8h": 0.001,
+            "funding_per_settlement": 0.001,
+            "interval_hours": 8,
+            "funding_per_day": 0.003,
+            "funding_est_next": None,
+            "funding_seq_n_periods_over_threshold": 0,
             "chg24h_pct": -30.0,
+            "price_now": 0.5,
             "quote_vol_usdt": 6000000.0,
+            "quote_vol_24h_usd": 6000000.0,
             "oi_24h_ago_usdt": 50.0,
             "oi_now_usdt": 25.0,
             "oi_24h_ratio": 0.5,
+            "oi_usd_now": 25.0,
+            "oi_1h_ago": 30.0,
+            "oi_4h_ago": 50.0,
+            "oi_24h_ago": 50.0,
+            "d_oi_1h_pct": -16.666667,
+            "d_oi_4h_pct": -50.0,
+            "d_oi_24h_ratio": 0.5,
+            "price_oi_quadrant": "价↓OI↓",
         },
     ]
     assert build_legacy_funding_output("20260716_0000", rows) == {
         "scan_utc": "20260716_0000",
         "n_prescreen": 2,
-        "candidates": rows,
+        "candidates": [
+            {
+                "symbol": "AAAUSDT",
+                "funding_8h": 0.004,
+                "chg24h_pct": 4.0,
+                "quote_vol_usdt": 1000000.0,
+                "oi_24h_ago_usdt": 100.0,
+                "oi_now_usdt": 200.0,
+                "oi_24h_ratio": 2.0,
+            },
+            {
+                "symbol": "BBBUSDT",
+                "funding_8h": 0.001,
+                "chg24h_pct": -30.0,
+                "quote_vol_usdt": 6000000.0,
+                "oi_24h_ago_usdt": 50.0,
+                "oi_now_usdt": 25.0,
+                "oi_24h_ratio": 0.5,
+            },
+        ],
     }
+
+
+def test_funding_interval_normalizes_same_settlement_rate_by_measured_hours() -> None:
+    calls = []
+
+    def funding_rows(symbol: str, interval_hours: int):
+        base = 1784124000000
+        step = interval_hours * 60 * 60 * 1000
+        return [
+            {"symbol": symbol, "fundingTime": base, "fundingRate": "-0.003"},
+            {"symbol": symbol, "fundingTime": base + step, "fundingRate": "-0.003"},
+        ]
+
+    def fake_fetch(url: str):
+        calls.append(url)
+        if "premiumIndex" in url:
+            return [
+                {"symbol": "ONEUSDT", "lastFundingRate": "-0.003"},
+                {"symbol": "EIGHTUSDT", "lastFundingRate": "-0.003"},
+            ]
+        if "ticker/24hr" in url:
+            return [
+                {"symbol": "ONEUSDT", "priceChangePercent": "1.0", "quoteVolume": "1000000"},
+                {"symbol": "EIGHTUSDT", "priceChangePercent": "1.0", "quoteVolume": "1000000"},
+            ]
+        if "fundingRate?symbol=ONEUSDT" in url:
+            return funding_rows("ONEUSDT", 1)
+        if "fundingRate?symbol=EIGHTUSDT" in url:
+            return funding_rows("EIGHTUSDT", 8)
+        if "openInterestHist?symbol=" in url:
+            return [{"sumOpenInterestValue": "100"}, {"sumOpenInterestValue": "100"}]
+        raise AssertionError(url)
+
+    rows = scan_funding_oi(fetch_json=fake_fetch, sleep_fn=lambda _: None)
+
+    assert [row["symbol"] for row in rows] == ["ONEUSDT", "EIGHTUSDT"]
+    one, eight = rows
+    assert one["interval_hours"] == 1
+    assert eight["interval_hours"] == 8
+    assert one["funding_per_day"] == pytest.approx(-0.072)
+    assert eight["funding_per_day"] == pytest.approx(-0.009)
+    assert abs(one["funding_per_day"]) == pytest.approx(abs(eight["funding_per_day"]) * 8)
+    assert sum("openInterestHist?symbol=" in call for call in calls) == 2
+
+
+def test_funding_candidates_and_table_sort_use_daily_normalized_funding() -> None:
+    def fake_fetch(url: str):
+        if "premiumIndex" in url:
+            return [
+                {"symbol": "RAWBIGUSDT", "lastFundingRate": "-0.004"},
+                {"symbol": "DAILYBIGUSDT", "lastFundingRate": "-0.002"},
+            ]
+        if "ticker/24hr" in url:
+            return [
+                {"symbol": "RAWBIGUSDT", "priceChangePercent": "2.0", "quoteVolume": "1000000"},
+                {"symbol": "DAILYBIGUSDT", "priceChangePercent": "2.0", "quoteVolume": "1000000"},
+            ]
+        if "fundingRate?symbol=RAWBIGUSDT" in url:
+            return [
+                {"fundingTime": 1784124000000, "fundingRate": "-0.004"},
+                {"fundingTime": 1784152800000, "fundingRate": "-0.004"},
+            ]
+        if "fundingRate?symbol=DAILYBIGUSDT" in url:
+            return [
+                {"fundingTime": 1784124000000, "fundingRate": "-0.002"},
+                {"fundingTime": 1784127600000, "fundingRate": "-0.002"},
+            ]
+        if "openInterestHist?symbol=" in url:
+            return [{"sumOpenInterestValue": "100"}, {"sumOpenInterestValue": "100"}]
+        raise AssertionError(url)
+
+    rows = scan_funding_oi(fetch_json=fake_fetch, sleep_fn=lambda _: None)
+    candidates = funding_rows_to_candidates(rows)
+
+    assert [row["symbol"] for row in rows] == ["DAILYBIGUSDT", "RAWBIGUSDT"]
+    assert candidates[0]["raw"]["funding_per_day"] == pytest.approx(-0.048)
+    assert candidates[0]["funding_8h"] == -0.002
+
+
+def test_backfill_enriches_legacy_funding_interval_without_assuming_8h() -> None:
+    def fake_fetch(url: str):
+        assert "fundingRate?symbol=LEGACYUSDT" in url
+        return [
+            {"fundingTime": 1784124000000, "fundingRate": "-0.003"},
+            {"fundingTime": 1784127600000, "fundingRate": "-0.003"},
+        ]
+
+    candidate = {"symbol": "LEGACYUSDT", "funding_8h": -0.003}
+
+    enriched = enrich_legacy_funding_candidate(candidate, "20260721_0100", fake_fetch)
+
+    assert enriched["funding_per_settlement"] == -0.003
+    assert enriched["interval_hours"] == 1
+    assert enriched["funding_per_day"] == pytest.approx(-0.072)
 
 
 def test_binance_announcement_scan_labels_new_perp_and_delist_events() -> None:

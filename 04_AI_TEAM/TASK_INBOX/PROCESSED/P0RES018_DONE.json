@@ -1,0 +1,8 @@
+{
+  "task_id": "P0RES018",
+  "completed_at": "2026-07-21T08:02:36Z",
+  "status": "completed",
+  "output_file": "04_AI_TEAM/CODEX_TASKS/REPORT_P0RES018_A4_LISTING_CENSUS_20260721.md",
+  "next_task": null,
+  "notes": "A-4 redefined census complete; valid_existing_spot_sample=89; exit=not_qualified"
+}

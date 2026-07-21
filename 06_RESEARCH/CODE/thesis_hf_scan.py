@@ -30,6 +30,20 @@ COINGECKO_COIN_URL = "https://www.coingecko.com/en/coins"
 OUT = Path(__file__).resolve().parent / "output"
 CTX = ssl.create_default_context()
 USER_AGENT = "aiquant-scan/1.0"
+SCANNER_VERSION = "P0-RES-017"
+FUNDING_DAILY_THRESHOLD = 0.009
+MIN_FUNDING_RATE_FOR_DAILY_THRESHOLD = FUNDING_DAILY_THRESHOLD / 24
+FUNDING_HISTORY_LIMIT = 10
+LEGACY_FUNDING_KEYS = (
+    "symbol",
+    "funding_8h",
+    "chg24h_pct",
+    "quote_vol_usdt",
+    "oi_24h_ago_usdt",
+    "oi_now_usdt",
+    "oi_24h_ratio",
+    "oi_error",
+)
 PROXY_ENV_KEYS = (
     "http_proxy",
     "https_proxy",
@@ -148,20 +162,54 @@ def scan_funding_oi(fetch_json=get, sleep_fn=time.sleep):
             t = tick.get(s, {})
             chg = float(t.get("priceChangePercent") or 0)
             qv = float(t.get("quoteVolume") or 0)
+            price_now = _safe_float(t.get("lastPrice"))
         except (TypeError, ValueError):
             continue
-        # 初筛：funding极端（|8h费率|>=0.3%）或 价格异动（|24h|>=25%且量>=500万USDT）
-        if abs(fr) >= 0.003 or (abs(chg) >= 25 and qv >= 5e6):
-            rows.append({"symbol": s, "funding_8h": fr, "chg24h_pct": chg, "quote_vol_usdt": qv})
-    rows.sort(key=lambda r: abs(r["funding_8h"]), reverse=True)
-    # 对前8个候选补OI 24h变化（骤增/骤降是机制核心变量）
-    for r in rows[:8]:
+        price_anomaly = abs(chg) >= 25 and qv >= 5e6
+        can_cross_daily_threshold = abs(fr) >= MIN_FUNDING_RATE_FOR_DAILY_THRESHOLD
+        if not can_cross_daily_threshold and not price_anomaly:
+            continue
+
+        row = {
+            "symbol": s,
+            "funding_8h": fr,
+            "funding_per_settlement": fr,
+            "interval_hours": None,
+            "funding_per_day": None,
+            "funding_est_next": None,
+            "funding_seq_n_periods_over_threshold": 0,
+            "chg24h_pct": chg,
+            "price_now": price_now,
+            "quote_vol_usdt": qv,
+            "quote_vol_24h_usd": qv,
+        }
+        try:
+            history = fetch_json(f"{BASE}/fapi/v1/fundingRate?symbol={s}&limit={FUNDING_HISTORY_LIMIT}")
+            interval_hours = infer_funding_interval_hours(history)
+            row["interval_hours"] = interval_hours
+            row["funding_per_day"] = normalize_funding_per_day(fr, interval_hours)
+            row["funding_seq_n_periods_over_threshold"] = count_funding_sequence_over_threshold(
+                history,
+                interval_hours,
+            )
+            sleep_fn(0.05)
+        except Exception as e:  # noqa: BLE001 —— 单symbol周期推断失败不能拖垮全源扫描
+            row["funding_interval_error"] = str(e)[:80]
+
+        funding_anomaly = (
+            row.get("funding_per_day") is not None
+            and abs(row["funding_per_day"]) >= FUNDING_DAILY_THRESHOLD
+        )
+        # 初筛：funding按日归一后极端，或价格异动（|24h|>=25%且量>=500万USDT）。
+        if funding_anomaly or price_anomaly:
+            rows.append(row)
+
+    rows.sort(key=lambda r: abs(r.get("funding_per_day") or 0), reverse=True)
+    # 对全部通过初筛的候选补OI 24h变化（骤增/骤降是机制核心变量）
+    for r in rows:
         try:
             oi = fetch_json(f"{BASE}/futures/data/openInterestHist?symbol={r['symbol']}&period=1h&limit=25")
-            if len(oi) >= 2:
-                a, b = float(oi[0]["sumOpenInterestValue"]), float(oi[-1]["sumOpenInterestValue"])
-                r["oi_24h_ago_usdt"], r["oi_now_usdt"] = a, b
-                r["oi_24h_ratio"] = round(b / a, 3) if a > 0 else None
+            apply_oi_metrics(r, oi)
             sleep_fn(0.3)
         except Exception as e:  # noqa: BLE001 —— 单symbol失败不废全扫描
             r["oi_error"] = str(e)[:80]
@@ -169,12 +217,16 @@ def scan_funding_oi(fetch_json=get, sleep_fn=time.sleep):
 
 
 def build_legacy_funding_output(scan_utc, rows):
-    return {"scan_utc": scan_utc, "n_prescreen": len(rows), "candidates": rows[:20]}
-
-
-def funding_rows_to_candidates(rows):
-    candidates = []
+    legacy_rows = []
     for row in rows[:20]:
+        legacy_rows.append({key: row[key] for key in LEGACY_FUNDING_KEYS if key in row})
+    return {"scan_utc": scan_utc, "n_prescreen": len(rows), "candidates": legacy_rows}
+
+
+def funding_rows_to_candidates(rows, limit=None):
+    candidates = []
+    selected_rows = rows if limit is None else rows[:limit]
+    for row in selected_rows:
         candidate = dict(row)
         candidate.update(
             {
@@ -184,6 +236,13 @@ def funding_rows_to_candidates(rows):
                 "source_url": f"{BASE}/fapi/v1/ticker/24hr",
                 "raw": {
                     "funding_8h": row.get("funding_8h"),
+                    "funding_per_settlement": row.get("funding_per_settlement"),
+                    "interval_hours": row.get("interval_hours"),
+                    "funding_per_day": row.get("funding_per_day"),
+                    "funding_est_next": row.get("funding_est_next"),
+                    "funding_seq_n_periods_over_threshold": row.get(
+                        "funding_seq_n_periods_over_threshold"
+                    ),
                     "chg24h_pct": row.get("chg24h_pct"),
                     "quote_vol_usdt": row.get("quote_vol_usdt"),
                     "oi_24h_ratio": row.get("oi_24h_ratio"),
@@ -298,6 +357,115 @@ def _safe_float(value):
         return float(value)
     except (TypeError, ValueError):
         return None
+
+
+def infer_funding_interval_hours(funding_history):
+    times = []
+    for row in funding_history or []:
+        try:
+            funding_time = int(row.get("fundingTime"))
+        except (TypeError, ValueError, AttributeError):
+            continue
+        if funding_time not in times:
+            times.append(funding_time)
+    times.sort()
+    if len(times) < 2:
+        return None
+    interval = (times[-1] - times[-2]) / (60 * 60 * 1000)
+    nearest = round(interval)
+    if nearest in (1, 4, 8) and abs(interval - nearest) <= 1 / 60:
+        return nearest
+    return round(interval, 6)
+
+
+def normalize_funding_per_day(funding_per_settlement, interval_hours):
+    if funding_per_settlement is None or not interval_hours:
+        return None
+    return funding_per_settlement * 24 / interval_hours
+
+
+def count_funding_sequence_over_threshold(funding_history, interval_hours):
+    if not interval_hours:
+        return 0
+    count = 0
+    rows = sorted(
+        [row for row in funding_history or [] if row.get("fundingTime") is not None],
+        key=lambda row: int(row["fundingTime"]),
+        reverse=True,
+    )
+    for row in rows:
+        rate = _safe_float(row.get("fundingRate"))
+        per_day = normalize_funding_per_day(rate, interval_hours)
+        if per_day is None or abs(per_day) < FUNDING_DAILY_THRESHOLD - 1e-12:
+            break
+        count += 1
+    return count
+
+
+def _round_or_none(value, ndigits):
+    if value is None:
+        return None
+    return round(value, ndigits)
+
+
+def _pct_change(now, before):
+    if now is None or before is None or before <= 0:
+        return None
+    return (now / before - 1) * 100
+
+
+def _ratio(now, before):
+    if now is None or before is None or before <= 0:
+        return None
+    return now / before
+
+
+def _oi_value(row):
+    return _safe_float((row or {}).get("sumOpenInterestValue"))
+
+
+def _sort_oi_history(oi_history):
+    rows = list(oi_history or [])
+    if all(isinstance(row, dict) and row.get("timestamp") is not None for row in rows):
+        return sorted(rows, key=lambda row: int(row["timestamp"]))
+    return rows
+
+
+def _price_oi_quadrant(chg24h_pct, oi_ratio):
+    if chg24h_pct is None or oi_ratio is None:
+        return None
+    price_up = chg24h_pct >= 0
+    oi_up = oi_ratio >= 1
+    if price_up and oi_up:
+        return "价↑OI↑"
+    if price_up and not oi_up:
+        return "价↑OI↓"
+    if not price_up and not oi_up:
+        return "价↓OI↓"
+    return "价↓OI↑"
+
+
+def apply_oi_metrics(row, oi_history):
+    rows = _sort_oi_history(oi_history)
+    if len(rows) < 2:
+        return row
+    now = _oi_value(rows[-1])
+    one_h_ago = _oi_value(rows[-2]) if len(rows) >= 2 else None
+    four_h_ago = _oi_value(rows[-5]) if len(rows) >= 5 else _oi_value(rows[0])
+    twenty_four_h_ago = _oi_value(rows[-25]) if len(rows) >= 25 else _oi_value(rows[0])
+
+    row["oi_24h_ago_usdt"] = twenty_four_h_ago
+    row["oi_now_usdt"] = now
+    row["oi_24h_ratio"] = _round_or_none(_ratio(now, twenty_four_h_ago), 3)
+    row["oi_usd_now"] = now
+    row["oi_1h_ago"] = one_h_ago
+    row["oi_4h_ago"] = four_h_ago
+    row["oi_24h_ago"] = twenty_four_h_ago
+    row["d_oi_1h_pct"] = _round_or_none(_pct_change(now, one_h_ago), 6)
+    row["d_oi_4h_pct"] = _round_or_none(_pct_change(now, four_h_ago), 6)
+    row["d_oi_24h_ratio"] = row["oi_24h_ratio"]
+    row["price_oi_quadrant"] = _price_oi_quadrant(row.get("chg24h_pct"), row["oi_24h_ratio"])
+    return row
 
 
 def _cryptorank_vesting_url(key, fallback_url):
@@ -569,15 +737,17 @@ def candidate_sort_key(candidate):
     return (
         source_rank.get(candidate.get("source"), 9),
         candidate.get("days_until_unlock", 999),
-        -abs(float(candidate.get("funding_8h") or 0)),
+        -abs(float(candidate.get("funding_per_day") or 0)),
         -abs(float(candidate.get("deviation_pct") or 0)),
     )
 
 
 def table_value(candidate):
     if candidate.get("source") == "funding_oi_squeeze":
-        return "fund %.4f%% chg %.1f%%" % (
-            candidate.get("funding_8h", 0) * 100,
+        return "fund/day %.4f%% set %.4f%% %sh chg %.1f%%" % (
+            (candidate.get("funding_per_day") or 0) * 100,
+            (candidate.get("funding_per_settlement") or candidate.get("funding_8h") or 0) * 100,
+            candidate.get("interval_hours") or "?",
             candidate.get("chg24h_pct", 0),
         )
     if candidate.get("source") == "depeg_coingecko":
@@ -610,7 +780,7 @@ def build_output(scan_utc, sources, candidates, errors, legacy_funding, funding_
     legacy = legacy_funding or {"scan_utc": scan_utc, "n_prescreen": 0, "candidates": []}
     legacy["scan_utc"] = scan_utc
     return {
-        "schema_version": "P0-RES-016",
+        "schema_version": SCANNER_VERSION,
         "scan_utc": scan_utc,
         "sources_requested": list(sources),
         "n_prescreen": len(funding_rows),
@@ -627,12 +797,17 @@ def parse_args():
     parser.add_argument("--fetch-via-ssh-sg", action="store_true", help="通道B：经SG SSH读取公开接口")
     parser.add_argument("--output-dir", default=str(OUT))
     parser.add_argument("--table-limit", type=int, default=30)
+    parser.add_argument(
+        "--no-event-ledger",
+        action="store_true",
+        help="仅调试用：不写 EVENT_LEDGER_V1 SQLite/parquet",
+    )
     return parser.parse_args()
 
 def main():
     args = parse_args()
     unset_proxy_env()
-    now = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M")
+    scan_utc = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M")
     sources = parse_sources(args.sources, args.skip_sources)
     fetch_json, fetch_text = make_fetchers(fetch_via_ssh_sg=args.fetch_via_ssh_sg)
     candidates, errors, legacy_funding, funding_rows = run_scan(
@@ -641,12 +816,25 @@ def main():
         sources=sources,
     )
     candidates = sorted(candidates, key=candidate_sort_key)
-    out = build_output(now, sources, candidates, errors, legacy_funding, funding_rows)
+    out = build_output(scan_utc, sources, candidates, errors, legacy_funding, funding_rows)
     output_dir = Path(args.output_dir)
     output_dir.mkdir(exist_ok=True)
-    f = output_dir / f"thesis_hf_scan_{now}.json"
+    f = output_dir / f"thesis_hf_scan_{scan_utc}.json"
     f.write_text(json.dumps(out, indent=1, ensure_ascii=False))
     print("WROTE", f)
+    if not args.no_event_ledger:
+        from event_ledger_v1 import DEFAULT_LEDGER_DB, DEFAULT_SNAPSHOT_DIR, upsert_scan_candidates, write_daily_snapshot
+
+        stats = upsert_scan_candidates(
+            DEFAULT_LEDGER_DB,
+            candidates,
+            scan_utc=scan_utc,
+            scanner_version=SCANNER_VERSION,
+            backfilled=False,
+            scan_file=str(f),
+        )
+        snapshot = write_daily_snapshot(DEFAULT_LEDGER_DB, DEFAULT_SNAPSHOT_DIR, snapshot_date=scan_utc[:8])
+        print("EVENT_LEDGER", json.dumps({**stats, "snapshot": str(snapshot)}, ensure_ascii=False))
     if errors:
         print("SOURCE_ERRORS", json.dumps(errors, ensure_ascii=False))
     print_candidate_table(candidates, limit=args.table_limit)
