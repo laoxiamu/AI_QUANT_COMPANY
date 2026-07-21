@@ -14,7 +14,8 @@ codex exec --skip-git-repo-check -C /Users/yaomingyu/Documents/AI_QUANT_COMPANY 
 1. **代理 env 必须显式给**（CLI 不走系统代理，缺了无输出卡死）。
 2. **`< /dev/null` 必须加**（否则等 stdin 卡死）。
 3. 写文件任务用 `--sandbox workspace-write`；纯分析可用默认 read-only。
-4. **必须显式 `-m gpt-5.5` 指定模型**（2026-07-12 P0-RES-015 教训：CLI v0.139.0 的默认模型已变为 gpt-5.6-sol，需新版 CLI，不带 `-m` 派发即刻报错死掉且 nohup 下无人看见；`-m gpt-5.5` 实测可用。升级 CLI 前所有派发一律带 `-m`，定时任务同样）。
+4. **必须显式 `-m` 指定模型**（2026-07-12 P0-RES-015 教训：不带 `-m` 派发可能即刻报错死掉且 nohup 下无人看见）。
+   **⚠️模型口径已更新（2026-07-21 实测）：CLI 已升级到 0.144.4，`gpt-5.6-sol` 可用**，且支持 `-c model_reasoning_effort='"xhigh"'` 提高推理预算（实测 smoke 通过 + R2 生成性审计正常运行）。选型建议：**重判断/战略/审计/红队类 → `-m gpt-5.6-sol -c model_reasoning_effort='"xhigh"'`；常规实现/取数/数据工程 → `-m gpt-5.5`（更省更快）**。旧条"CLI 太旧只能用 gpt-5.5"已作废。
 
 ## 护栏（DEC-061 原定，不变）
 - 任务书先落文件（04_AI_TEAM/CODEX_TASKS/），调用引用文件——保留文件留痕。
