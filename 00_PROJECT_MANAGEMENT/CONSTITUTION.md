@@ -1,3 +1,8 @@
+> # ⛔ 已降级·历史文件（2026-07-21 加，外部审计 S0-04）
+> **本文件不是现行权威。** 文件名"CONSTITUTION"+"v2.0 FROZEN"具误导性，其中的验收门槛（Holdout Sharpe>1.0 / Expectancy>1.0 / MaxDD<25% 等）**已全部作废**。
+> **现行验收权威 = `AGENTS.md` + `06_RESEARCH/RESEARCH_PROTOCOL_v1.3_ADDENDUM.md`（v1.5，四件套+事件滑点压力档）。** 现行目标函数=DEC-063。
+> 本文件仅作历史留档，禁止任何会话/低模型据此判定验收或据其旧门槛开工。
+
 # AI_QUANT_COMPANY_ARCHITECTURE_v2.md
 
 **版本：** 2.0  

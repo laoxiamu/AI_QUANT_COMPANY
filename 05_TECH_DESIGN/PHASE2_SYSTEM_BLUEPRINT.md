@@ -1,3 +1,7 @@
+> # ⚠️ 策略绑定已过时（2026-07-21 加，外部审计 S0-03）
+> **本蓝图内出现的具体策略名（TSMOM / A-1 / Carry sleeve）均已死或已排除**：TSMOM 全家族 Holdout FAIL 永闭（DEC-093）、A-1 已证伪、carry=政策排除（DEC-095）。**任何会话/Codex 不得据本文件的策略模块清单或上线里程碑开工建设**——那会建成已死策略的执行模块。
+> **Phase 2 一旦解冻（=出现活体 edge 或 forced-flow 过 B2），须重写为策略无关底座**：Decision Gateway / Risk Engine / 账务对账 / 数据契约 / paper-forward adapter；策略名只能作示例或历史，不作上线目标。当前 edge=0，**Phase 2 整体 DEFER，不动工**。
+
 # Phase 2 系统蓝图索引 v0.3
 
 > **v0.3 说明（2026-06-14）**：本文件已重构为**索引文档**。四张核心架构图已拆分为独立文件（E1-E4 Codex任务规格已就绪，待 Codex 生成正式文档）。
