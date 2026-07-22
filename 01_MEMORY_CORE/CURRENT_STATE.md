@@ -32,7 +32,7 @@
 | 低模型执行层 | ✅ 两次任务包验收通过；边界收紧（DEC-069 后只做逐字/格式/索引，禁触权威语义）|
 | **子代理/模型路由（DEC-082执行约定，2026-06-21）** | 一句话四档,临场选通道节省主上下文token：①重判断/权威语义/研究裁决/机制卡=**Claude自己**(不下放,DEC-069禁权威语义下放)；②多文件实现/迭代复现=**Codex**；③大批量只读检索/读日志/跑批/提取摘要=**Explore或haiku/sonnet子代理,只回传结构化摘要**；④逐字/格式/索引=**低模型/脚本**。⚠️子代理冷启动不继承项目认知,需深认知的活不下放(喂上下文成本>收益)。**非系统,不升级为七维路由器(DEC-082已DEFER)** |
 | Python 3.13 量化环境 / VectorBT / pytest | ✅ |
-| git + GitHub 私库 | ✅ `laoxiamu/AI_QUANT_COMPANY`（deploy key，验收后推送制）|
+| git + GitHub 私库 | ✅ `laoxiamu/AI_QUANT_COMPANY`（deploy key=`~/.ssh/id_ed25519_aiquant`，SSH别名`github-aiquant`走443端口，实测认证通）。**推送制度更新（2026-07-22 Founder授权"你自己定"）：Claude验收即推，不再逐次请示**——推送=私有备份非对外发布、密钥已配零凭据交互、单点故障=Mac磁盘，故默认每次commit后push；月审复核远端一致性。⚠️注意DC后台调用可能提前返回致误判"未推送"，须`git rev-list --count origin/master..HEAD`==0核实落地 |
 | 强平采集器 | ✅ **已修复并收数（2026-06-15）**：改 WS_URL→`/market/ws/!forceOrder@arr`(根因=Binance 2026-04-23路由迁移,非封IP,v4.6.2线索查实)→重启后**收到92帧**,LIQUIDATIONS 开始增长→路径B免费期权激活。曾误判经历:⚠️先以为零采集/封IP：service active 但 22h `process_messages=0`。根因=**Binance 对腾讯云SG服务器IP的WS行情流限制**（REST fapi HTTP200正常，但 aggTrade/forceOrder WS 握手OPEN后0帧——云IP被限推送）。**非代码bug**（ping+重连正常）。教训=信了"service active"未验真实数据流（风险E/A）。**根因查实（2026-06-15 VERIFY-V462，纠正先前"封IP"误判）**：**非IP封锁，是Binance 2026-04-23 WS路由迁移**。旧URL`wss://fstream.binance.com/ws/!forceOrder@arr`→0帧；**新路由`/market/ws/!forceOrder@arr`→立即收帧**（同机对照+历史v4.6.2 REST直连可用佐证）。**修法极简=改WS_URL路径,无需鉴权/代理**(Codex修复+验证中)。OI/funding改用REST(`/fapi/v1/openInterest`,`/futures/data/openInterestHist`,`/fapi/v1/fundingRate`)。修好后采集器即可正常攒数→路径B免费期权激活 |
 | 定时任务 | ⚠️ 周监控/月审 v2 已更新口径；夜间定时不可靠（两次事故），跑批优先 Codex nohup |
 | 腾讯云轻量（SG） | ✅ 活跃——采集器已部署 `/opt/ai_quant_liq_collector/`，现有服务（danted/v4-proxy/v4-strategy-runner/docker/nginx）未受影响；审计 P2-4 **已销项** |

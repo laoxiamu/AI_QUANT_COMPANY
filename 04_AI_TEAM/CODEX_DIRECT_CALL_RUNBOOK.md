@@ -57,6 +57,12 @@ nohup codex exec -m gpt-5.5 --skip-git-repo-check -C /Users/yaomingyu/Documents/
 4. **通道 B（兜底/被 geo 挡时）：** SSH SG 服务器 `root@43.160.200.224`（在 SG、无 geo 问题、采集器同源），跑取数 + rsync 回本地 repo（密钥 `~/.ssh/id_ed25519_aiquant`）。
 5. **预检纪律：** HTTP 4xx/5xx = 可达（拿到响应），不得判"网络不可达"。`panel_refresh_2026.py` 曾因裸 klines 探测 400 误跳全量，已修（probe 视 HTTPError 为 reachable）。
 
+## git 推送（2026-07-22 制度定）
+- **Claude 验收即推**（Founder 授权"你自己定"）：每次 commit 后 `git push origin master`，不逐次请示。
+- 命令：`cd <根> && git push origin master`（SSH 别名 `github-aiquant`→ssh.github.com:443，密钥 `~/.ssh/id_ed25519_aiquant` 已配，零凭据交互）。
+- **落地核实铁律**：DC 后台调用可能在推送完成前返回，导致误判"未推送/Everything up-to-date"假象。**推送后必须 `git rev-list --count origin/master..HEAD`，==0 才算真落地**；≠0 则同步重推并等待。
+- 推送=私有备份仓库，非对外发布；Holdout 数据本就在仓库内受同一封存纪律，push 不改变封存状态。
+
 ## 验证记录
 2026-06-11：smoke test 返回 CODEX_DIRECT_CALL_OK（model gpt-5.5，session 019eb623）。
 2026-06-22：DC 稳定性配方自证——#X3 经 nohup 发、全程 VM 轮询、DC 未碰，跑动期间未掉线（对照 #X2 长阻塞读致 DC 中途断）。
