@@ -90,6 +90,10 @@
 2026-07-22 | STXXUSDT est-0.345%/+10.4%/OI×1.22 | 触发条件未到 | 实结近8期最深-0.267%从未及-0.3%线(预估≠实结),OI×1.22<2x,量$2.5M/spread17.9bp偏薄,签名≤1/3不登记
 2026-07-22 | 其余squeeze(DEXE/DODOX/VANRY/HOME/BNC/BOT/SOPH/FWDI/ESPORTS/SMCI/NIGHT/SNXX/BANK/RIF等) | 无付钱方或方向反向 | DEXE/RIF/BANK价崩且OI收缩=空头正确无被挤压方;BNC/BOT/FWDI多头付费(正funding);SMCI/NIGHT/SNXX/HOME/ESPORTS funding≈0无强制流;批量记录不逐一立项
 2026-07-22 | XPL/HP(H)/MIM/现货&杠杆下架公告 | 持续态已裁不重计 | XPL(7/21闸0容量拒)/MIM(7/01脱锚拒,今-88%更深事后偏误)/现货removal(7/21非合约退市拒)均维持;HP(H)仍在watchlist(T-3,登记决定7/23-24班),晨间price-in轨迹见§1c
+2026-07-22晚 | GEVUSDT 正funding+0.4%/8h/OI×5.3/价-3.7% | 闸1(方向签名反向/短命) | 正funding=多头付费拥挤且价下跌=多头正被有序挤出,非被挤压的付钱方;仅0607-0807两快照出现即于1007消退,无稳定可入场窗;短命"多头挤压下行"候选,记录不立项
+2026-07-22晚 | FWDIUSDT/QNTXUSDT 短命挤压(OI×3-6峰) | 触发条件未到(已消退)+可执行性 | 两者0007前后OI暴增3-6倍但funding符号翻转/价冲高即回,至1407已跌出strict线=挤压已解决;FWDI量$0.3-1.5M(7/21已记容量拒)维持;post-hoc无live entry,记录不立项
+2026-07-22晚 | ONEUSDT(watchlist已关)事后确认 | 事后跟踪(非新登记) | 10:01班关闭后本班实测已反转-13.8%(自高0.00169→0.001318)、funding-0.96%后正常化=挤压确已耗竭反转;验证"入场晚+同机制非独立"不追的纪律正确,不追认(GUN先例)
+2026-07-22晚 | AERGOUSDT(退市7/24)/HP·H(解锁7/25)维持watchlist | 持续态(登记决定未到) | AERGO T-2仍无强制流签名(OI平$2.06M/funding+0.05~0.14%小正/价+2.9%横盘),逐日跟run-up作P0-RES-010素材;HP T-3无price-in(perp量$2.3M薄/funding+0.005%平/OI×1.01平),登记决定7/23-24班;均不重复计分母
 ```
 
 ---
