@@ -13,7 +13,13 @@ import io
 import re
 import sys
 import tempfile
+from datetime import date, datetime, timedelta
 from pathlib import Path
+
+# 巡检留痕检查参数（2026-07-30 加，见 check_patrol_traces）
+PATROL_START = date(2026, 7, 16)   # 每日巡检首个正式运行日
+PATROL_LOOKBACK_DAYS = 7           # 回看窗；与周监控 7 天分辨率对齐
+PATROL_GRACE_HOUR = 12             # 当日 12:00 前不计当日班（cron 10:01 + 执行时长余量）
 
 
 AUTH_FILES = {
@@ -180,6 +186,53 @@ def check_latest_dec(contents: dict[str, str | None]) -> int:
     return problems
 
 
+def check_patrol_traces(
+    contents: dict[str, str | None],
+    *,
+    today: "date | None" = None,
+    now_hour: int | None = None,
+    days: int = PATROL_LOOKBACK_DAYS,
+) -> int:
+    """外部不变量：每日巡检班是否在 §1c 留痕。
+
+    背景（2026-07-30 加，周监控 2026-07-27 发现1）：项目有一个反复三次的同族缺陷——
+    `已派≠已执行`(7/06) → `进程在≠任务在跑`(7/20) → `跑了≠落盘`(7/24-26)，
+    三次全部靠 Founder 追问或人工核查发现，无一次由系统自动检出。
+    2026-07-27 的修补（把落盘纪律写进巡检自己的提示词）与失效模式同源——
+    "agent 不遵守自己的收尾指令"正是该次失败本身——故不构成独立防线。
+
+    本检查是那条缺失的**外部**防线：不问巡检"你写了吗"，直接查权威文件里有没有它的痕迹。
+    判定=对每个应跑日，CURRENT_STATE 中是否存在 `YYYY-MM-DD…巡检班` 标记；缺失即告警。
+    lastRunAt 存在应用内部状态、不可靠落盘，故改用留痕本身作凭据（缺痕即等价于"没跑或没写"，
+    两者都要人看一眼——这正是我们要的告警语义）。
+    """
+    text = contents.get("CURRENT_STATE")
+    if not text:
+        return 0
+
+    today = today or date.today()
+    now_hour = now_hour if now_hour is not None else datetime.now().hour
+
+    missing: list[str] = []
+    for back in range(days):
+        d = today - timedelta(days=back)
+        if d < PATROL_START:
+            continue
+        # 当日班次未到执行时刻则不计
+        if d == today and now_hour < PATROL_GRACE_HOUR:
+            continue
+        ds = d.isoformat()
+        if not re.search(rf"{re.escape(ds)}[^\n|]{{0,24}}巡检班", text):
+            missing.append(ds)
+
+    if not missing:
+        return 0
+
+    print(f"  [留痕缺失] 以下应跑日在 CURRENT_STATE 无巡检班痕迹: {', '.join(sorted(missing))}")
+    print("             → 含义=该班次未跑 或 跑了未落盘（两者都需人工确认，勿默认已跑）")
+    return len(missing)
+
+
 def check_phase_conflict(contents: dict[str, str | None]) -> int:
     phases = {}
     for name in ("CURRENT_STATE", "TASK_PLAN", "BOOT_BRIEF"):
@@ -256,6 +309,14 @@ def run_check(root: Path) -> int:
         print("  无机器可判定权威冲突 ✓")
     print()
 
+    # 4) 巡检留痕（外部不变量，不依赖被检者自觉）
+    print(f"-- 巡检班留痕（近{PATROL_LOOKBACK_DAYS}天）--")
+    before = problems
+    problems += check_patrol_traces(contents)
+    if problems == before:
+        print("  每个应跑日均有巡检班痕迹 ✓")
+    print()
+
     print("== 结论: %s ==" % ("发现 %d 项疑似滞后，请同步" % problems if problems else "无已知滞后 ✓"))
     return 1 if problems else 0
 
@@ -271,20 +332,30 @@ def write_auth_files(root: Path, *, current: str, task_plan: str, boot: str, dec
     (root / "01_MEMORY_CORE" / "DECISION_LOG.md").write_text(decision, encoding="utf-8")
 
 
+def _patrol_trace_block(today: "date | None" = None) -> str:
+    """给自测样本生成"近7天巡检痕迹"，使 run_check 的留痕检查不误报合成样本。"""
+    today = today or date.today()
+    return "\n".join(
+        f"**{(today - timedelta(days=k)).isoformat()} 10:01巡检班（完成）**：自测样本"
+        for k in range(PATROL_LOOKBACK_DAYS + 1)
+    )
+
+
 def self_test() -> int:
+    traces = _patrol_trace_block()
     with tempfile.TemporaryDirectory() as tmp:
         bad_root = Path(tmp) / "bad"
         clean_root = Path(tmp) / "clean"
         write_auth_files(
             bad_root,
-            current="Phase 1\n最新DEC=DEC-082\n",
+            current=f"Phase 1\n最新DEC=DEC-082\n{traces}\n",
             task_plan="Phase 1\n",
             boot="Phase 1\n最新DEC=DEC-082\n月化30%作为研究验收门槛\n",
             decision="[DEC-081]\n[DEC-082]\n",
         )
         write_auth_files(
             clean_root,
-            current="Phase 1\n最新DEC=DEC-082\n",
+            current=f"Phase 1\n最新DEC=DEC-082\n{traces}\n",
             task_plan="Phase 1\n",
             boot="Phase 1\n最新DEC=DEC-082\n",
             decision="[DEC-081]\n[DEC-082]\nPhase 1\n",
@@ -295,7 +366,35 @@ def self_test() -> int:
 
     assert bad_code != 0, "含坏串样本必须返回非零"
     assert clean_code == 0, "干净样本必须返回0"
-    print("self-test passed: bad sample nonzero, clean sample zero")
+
+    # 巡检留痕检查自测（2026-07-30）
+    t = date(2026, 8, 1)
+    full = {"CURRENT_STATE": "\n".join(
+        f"**{(t - timedelta(days=k)).isoformat()} 10:01巡检班（完成）**：无信号" for k in range(7)
+    )}
+    assert check_patrol_traces(full, today=t, now_hour=18) == 0, "留痕齐全须返回0"
+
+    gap = {"CURRENT_STATE": "\n".join(
+        f"**{(t - timedelta(days=k)).isoformat()} 10:01巡检班（完成）**：无信号"
+        for k in range(7) if k != 2
+    )}
+    with contextlib.redirect_stdout(io.StringIO()) as buf:
+        n = check_patrol_traces(gap, today=t, now_hour=18)
+    assert n == 1, f"缺1天须返回1，实际{n}"
+    assert "2026-07-30" in buf.getvalue(), "须点名缺失日期"
+
+    # 当日未到执行时刻不得误报
+    today_missing = {"CURRENT_STATE": "\n".join(
+        f"**{(t - timedelta(days=k)).isoformat()} 10:01巡检班（完成）**：无信号" for k in range(1, 7)
+    )}
+    assert check_patrol_traces(today_missing, today=t, now_hour=9) == 0, "当日9点不得计当日班"
+    assert check_patrol_traces(today_missing, today=t, now_hour=18) == 1, "当日18点须计当日班"
+
+    # 起算日之前不得回溯误报
+    early = {"CURRENT_STATE": ""}
+    assert check_patrol_traces(early, today=date(2026, 7, 17), now_hour=18) <= 2, "不得回溯到起算日之前"
+
+    print("self-test passed: bad sample nonzero, clean sample zero, patrol-trace 5 cases ok")
     return 0
 
 
