@@ -8,3 +8,7 @@ collector.log
 08_DATA/
 *_RUN.log
 99_TEMP/
+
+# 2026-07-31: 1m K线数据不入 git（56MB/次，且 .git 已 368MB）
+06_RESEARCH/DATA/KLINES_1M/
+*.csv.gz
