@@ -124,6 +124,11 @@
 2026-07-31 10:01 | 解锁cohort GRASS(7/31今日 2.6%<3%)/EIGEN(8/01 5.0%大盘$6.7M)/FF(8/01 3.2%$6.2M)/KITE(8/01 2.5%<3%)/ZAMA(8/02 5.2%$6.1M)/BTW(8/02 4.6%$8.6M)/Q(8/02 4.4%$3.5M) | 已price-in/闸0(大盘·<3%线·小额被front-run) | 延续DEC-097日历型Δ<0判定;EIGEN大盘全网盯拒/GRASS·KITE<3%线不看/其余小额($3-8M)电报式front-run(H先例)。**唯BEAT(8/01 6.9%$83.9M)维持§5解锁行前向测试**:T-1守高$3.926无front-run下漂=**§5预测背离,潜在首个干净反驳**(详attribution §5.2),交8/01班T0±裁定,不登记thesis只作采证。
 2026-07-31 10:01 | 四源futures_delist全past(AERGO 7/24最近/IP 6/28/4月批)、removal为spot/margin(7/30-31)非perp | 触发条件未到(无前向可捕获窗) | 无新前向futures_delist,§5退市行(Δ<0结算于mark)结构性无窗再确认;removal notice为现货/杠杆下架非合约强制平仓流。
 2026-07-31 10:01 | MIM脱锚-92.64%(price$0.0736/24h-0.96%) | 已price-in(事后偏误·死锚) | 维持7/01起判定,长期崩锚死票,24h变动-0.96%与-92.6%累计偏离自相矛盾=数据假象,从严拒。
+2026-08-03 10:01 | squeeze全签名 CFXUSDT(07-31 0807-1407 ~6h f-0.42%→-0.33%/OIr2.36→2.26/chg+8.1%→+2.0%)/MANTRAUSDT(08-02 1207-1607 ~4h f-0.56%→-0.33%/OIr2.28→2.89/chg+11.3%→+18.1%)/HYPERUSDT(08-02 0607起 08-03 0007仍活 f-0.86%→-0.30%/OIr2.18→2.69/chg+20%→+7.3%) | DEC-097 squeeze族前向登记已关闭 | 三例均空头挤压型(负funding+价升+OI≥2x)=§5 squeeze行同型;CFX/MANTRA已按§5预期动量衰减褪签名,HYPER仍活留watchlist观测§5 Δ>0去杠杆死法。仅采证不登记(详attribution §5.2)。
+2026-08-03 10:01 | BEAT解锁(8/01 6.9%$83.9M)结算=NULL不可归类 | 非干净反驳/非支持/非edge(投机blow-off混淆) | 详attribution §5.2:未front-run下漂反抛物线冲$6.365后-39%崩,funding穿越解锁为正=无空头front-run签名;削弱§5解锁行front-run普适性但无tradeable结论。BEAT自watchlist移除(已结)。
+2026-08-03 10:01 | 解锁cohort GRASS(7/31$5.3M)/EIGEN(8/01$6.6M大盘)/FF(8/01$6.2M)/KITE(8/01$5.5M)/ZAMA(8/02$5.9M)/BTW(8/02$8.2M)/Q(8/02$3.6M)/JTO(8/07$5.6M) | 已price-in/闸0(大盘·小额$3-8M被front-run) | 延续DEC-097日历型Δ<0判定;EIGEN大盘拒,其余小额电报式front-run(H先例),无一升级前向测试;JTO(8/07)留watchlist。
+2026-08-03 10:01 | 四源futures_delist全past(AERGO7/24/IP6/28/4月批)、removal为spot/margin非perp | 触发条件未到(无前向可捕获窗) | gap窗(38快照07-31 0207→08-03 0007,0断档/0 source_errors)无新前向futures_delist,§5退市行结算于mark结构性无窗;removal notice均现货/杠杆下架非合约强制平仓流。
+2026-08-03 10:01 | MIM脱锚-93.08%(price$0.0692/24h-6.0%)、新perp GRVTUSDT(7/31)/TradFi批(7/29) | 脱锚:死锚事后偏误;新perp:A-4错位需两闸且无错位签名 | MIM维持死票从严拒;新上市永续GRVT/TradFi批仅记watchlist,无OI/funding错位签名不登记。
 ```
 
 ---

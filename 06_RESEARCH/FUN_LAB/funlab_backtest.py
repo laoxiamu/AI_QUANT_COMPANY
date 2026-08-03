@@ -10,28 +10,44 @@
 - 止损/止盈用其后的 1m 数据逐分钟检查
 - 同一根1m内同时触及止损和止盈 → 按【不利读法】算止损
 """
-import gzip, glob, os, json, math, statistics, collections
+import gzip, glob, os, json, math, statistics, collections, gc
+from array import array
 
-KL = "/root/DATA/KLINES_1M"
+KL = os.environ.get("FL_KL","/root/DATA/KLINES_1M")
 COST = 0.002          # 往返 0.2%（手续费+滑点）
 FUNDING_PER_8H = 0.0001   # 资金费 0.01%/8h（按名义），保守取值
 STOP_BUF = 0.003      # 止损缓冲 0.3%
 RR = 2.0              # 止盈 = 止损距离 × 2
 
+class M1:
+    """列式存储，省内存；支持 m1[i] 取回元组，t0/step 做算术索引"""
+    __slots__=("t","o","h","l","c","v","t0")
+    def __init__(self): 
+        self.t=array("q"); self.o=array("d"); self.h=array("d")
+        self.l=array("d"); self.c=array("d"); self.v=array("d"); self.t0=0
+    def __len__(self): return len(self.t)
+    def __getitem__(self,i): return (self.t[i],self.o[i],self.h[i],self.l[i],self.c[i],self.v[i])
+    def idx(self,ts):
+        i=(ts-self.t0)//60
+        return i if 0<=i<len(self.t) and self.t[i]==ts else None
+
 def load(sym):
-    rows = []
+    m=M1()
     with gzip.open(os.path.join(KL, f"{sym}_1m.csv.gz"), "rt") as f:
         f.readline()
         for line in f:
             a = line.split(",")
-            rows.append((int(a[0])//1000, float(a[1]), float(a[2]), float(a[3]), float(a[4]), float(a[5])))
-    return rows  # t,o,h,l,c,v
+            m.t.append(int(a[0])//1000); m.o.append(float(a[1])); m.h.append(float(a[2]))
+            m.l.append(float(a[3])); m.c.append(float(a[4])); m.v.append(float(a[5]))
+    m.t0 = m.t[0] if len(m.t) else 0
+    return m
 
 def agg(m1, minutes):
     """把1m聚合成N分钟K线，返回 [(t_open, o,h,l,c,v, t_close)]"""
     out, bucket = [], {}
     step = minutes*60
-    for t,o,h,l,c,v in m1:
+    for _i in range(len(m1)):
+        t,o,h,l,c,v = m1[_i]
         b = (t//step)*step
         if b not in bucket:
             bucket[b] = [o,h,l,c,v]
@@ -66,12 +82,12 @@ def swings(bars, k=2):
 def simulate(m1, idx_map, entry_t, direction, entry, stop, target, timeout_min):
     """从 entry_t 之后逐1m检查。返回 (exit_price, exit_t, reason, real_entry)
     ⚠️ 实际入场价 = entry_t 那根1m的【开盘价】，不是信号K线收盘价（实盘拿不到收盘价）"""
-    start = idx_map.get(entry_t)
+    start = m1.idx(entry_t)
     if start is None: return None
-    entry = m1[start][1]   # 用下一根1m的开盘价作为真实入场价
+    entry = m1.o[start]   # 用下一根1m的开盘价作为真实入场价
     end = start + timeout_min
     for i in range(start+1, min(end, len(m1))):
-        t,o,h,l,c,v = m1[i]
+        t=m1.t[i]; h=m1.h[i]; l=m1.l[i]
         if direction > 0:
             if l <= stop:  return (stop, t, "止损", entry, i-start)      # 不利读法优先
             if h >= target: return (target, t, "止盈", entry, i-start)
@@ -79,7 +95,7 @@ def simulate(m1, idx_map, entry_t, direction, entry, stop, target, timeout_min):
             if h >= stop:  return (stop, t, "止损", entry, i-start)
             if l <= target: return (target, t, "止盈", entry, i-start)
     j = min(end, len(m1))-1
-    return (m1[j][4], m1[j][0], "超时", entry, j-start)
+    return (m1.c[j], m1.t[j], "超时", entry, j-start)
 
 def net_pnl(direction, entry, exit_p, hold_min=0):
     gross = (exit_p-entry)/entry * direction
@@ -99,23 +115,14 @@ def strat1_trend_pullback(sym, m1, b15, b1h, b4h, idx_map, vol_filter):
     highs1= [(i,p) for i,p,t in sw1 if t=='H']
     v15 = [b[5] for b in b15]
 
-    def bar4_at(ts):
-        lo,hi=0,len(b4h)-1; r=None
-        for i in range(len(b4h)):
-            if b4h[i][6] <= ts: r=i
-            else: break
-        return r
-    def bar1_at(ts):
-        r=None
-        for i in range(len(b1h)):
-            if b1h[i][6] <= ts: r=i
-            else: break
-        return r
+    p4 = p1 = -1   # 单调指针：b15按时间递增，4H/1H下标只前进（O(n) 而非 O(n^2)）
 
     for i in range(20, len(b15)):
         bar = b15[i]; ts = bar[0]
-        i4 = bar4_at(ts); i1 = bar1_at(ts)
-        if i4 is None or i1 is None or i4 < 60 or i1 < 60: continue
+        while p4+1 < len(b4h) and b4h[p4+1][6] <= ts: p4 += 1
+        while p1+1 < len(b1h) and b1h[p1+1][6] <= ts: p1 += 1
+        i4, i1 = p4, p1
+        if i4 < 60 or i1 < 60: continue
         # 4H 大周期方向
         if not (b4h[i4][4] > e50_4[i4] > e200_4[i4]): continue
         # 1H 形态：从近24h高点回落 2%-8%
@@ -172,9 +179,15 @@ def strat2_2b(sym, m1, b15, b1h, b4h, idx_map, vol_filter, side=+1):
                     back=m; break
             if back is None: break
             ts_ok = b1h[back][6]
-            # 15m 入场确认
-            for i in range(len(b15)):
-                if b15[i][0] < ts_ok: continue
+            # 15m 入场确认（二分定位起点，避免全表扫描）
+            import bisect as _bi
+            start15 = _bi.bisect_left([b[0] for b in b15], ts_ok) if False else None
+            lo,hi=0,len(b15)-1; start15=len(b15)
+            while lo<=hi:
+                mid=(lo+hi)//2
+                if b15[mid][0] >= ts_ok: start15=mid; hi=mid-1
+                else: lo=mid+1
+            for i in range(start15, len(b15)):
                 bar=b15[i]
                 ok = (bar[4]>bar[1] and bar[4]>b15[i-1][2]) if side>0 else (bar[4]<bar[1] and bar[4]<b15[i-1][3])
                 if not ok:
@@ -203,8 +216,12 @@ def strat3_hammer(sym, m1, b15, b1h, b4h, idx_map, vol_filter):
         hi24=max(x[2] for x in b1h[i-24:i])
         if (hi24-c)/hi24 < 0.03: continue
         ts_ok=b1h[i][6]
-        for k in range(len(b15)):
-            if b15[k][0] < ts_ok: continue
+        lo,hi=0,len(b15)-1; k0=len(b15)
+        while lo<=hi:
+            mid=(lo+hi)//2
+            if b15[mid][0] >= ts_ok: k0=mid; hi=mid-1
+            else: lo=mid+1
+        for k in range(k0, len(b15)):
             bar=b15[k]
             if not (bar[4]>bar[1]):
                 if b15[k][0] > ts_ok+2*3600: break
@@ -219,12 +236,14 @@ def strat3_hammer(sym, m1, b15, b1h, b4h, idx_map, vol_filter):
 
 # ---------------- 主流程 ----------------
 def main():
+    only=os.environ.get("FL_SYMS","").strip()
     syms=[os.path.basename(p).replace("_1m.csv.gz","") for p in sorted(glob.glob(os.path.join(KL,"*_1m.csv.gz")))]
+    if only: syms=[x for x in syms if x in only.split(",")]
     results=collections.defaultdict(list)
     conflicts=0; conflict_detail=[]
     for sym in syms:
         m1=load(sym)
-        idx_map={t:i for i,(t,*_ ) in enumerate(m1)}
+        idx_map=None
         b15=agg(m1,15); b1h=agg(m1,60); b4h=agg(m1,240)
         for vf in (False,True):
             tag="缩量" if vf else "无过滤"
@@ -245,7 +264,11 @@ def main():
             for a in t1:
                 if any(abs(a-b)<7200 for b in t2s):
                     conflicts+=1; conflict_detail.append((sym,a))
-    json.dump({k[0]+"|"+k[1]:v for k,v in results.items()}, open("/root/funlab_raw_v2.json","w"))
+        del m1,b15,b1h,b4h; gc.collect()
+    json.dump({k[0]+"|"+k[1]:v for k,v in results.items()}, open(os.environ.get("FL_OUT","/root/funlab_raw_v2.json"),"w"))
+    if os.environ.get("FL_SHARD"):
+        json.dump({"conflicts":conflicts}, open(os.environ.get("FL_OUT")+".conf","w"))
+        return
     print("="*100)
     print("FUN_LAB 回测结果【v2 已修前视+入场价+资金费】 | 37 symbols | 2026-06-14→07-31 | 成本0.2%往返 | 止盈=2×止损")
     print("随机基准胜率 = 33.3%（止盈距离是止损2倍）| 覆盖成本需 40.0%")
@@ -275,9 +298,20 @@ def main():
         w=sum(1 for x in b if x["reason"]=="止盈")/len(b)
         print(f"  {name:<14}{tag:<8} n={len(b):>5}  二元胜率={w:>6.1%}  vs随机33.3% {w-1/3:>+6.1%}  {'✅过40%线' if w>0.40 else '❌'}")
     print()
+    K_TESTS=8; z_bonf=2.734   # alpha=0.05/8 双侧
+    print("【统计显著性】原始 95%CI vs Bonferroni 校正(8个组合)")
+    print(f"  {'策略':<14}{'过滤':<8}{'平均净':>9}   {'原始95%CI':<22}{'Bonf校正CI':<22}")
+    for (name,tag),tr in sorted(results.items()):
+        if len(tr)<30: continue
+        xs=[x["net"] for x in tr]; n=len(xs)
+        m=statistics.fmean(xs); sd=statistics.pstdev(xs); se=sd/math.sqrt(n)
+        lo1,hi1=m-1.96*se,m+1.96*se; lo2,hi2=m-z_bonf*se,m+z_bonf*se
+        f1="OK" if lo1>0 else "x"; f2="OK" if lo2>0 else "x"
+        print(f"  {name:<14}{tag:<8}{m*100:>8.3f}%   [{lo1*100:>+6.3f},{hi1*100:>+6.3f}] {f1:<4}[{lo2*100:>+6.3f},{hi2*100:>+6.3f}] {f2}")
+    print()
     print(f"【信号冲突检测】S1做多 与 S2做空 在同币2小时内同时出现：{conflicts} 次")
     print("  → 若接近0，说明 Founder 判断正确：A/B 在不同市场状态触发，不冲突")
-    json.dump({"conflicts":conflicts}, open("/root/funlab_conflicts.json","w"))
+    json.dump({"conflicts":conflicts}, open("/root/funlab_conflicts_v2.json","w"))
 
 if __name__=="__main__":
     main()
