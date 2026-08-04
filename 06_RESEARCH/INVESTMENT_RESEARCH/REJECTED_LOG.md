@@ -129,6 +129,11 @@
 2026-08-03 10:01 | 解锁cohort GRASS(7/31$5.3M)/EIGEN(8/01$6.6M大盘)/FF(8/01$6.2M)/KITE(8/01$5.5M)/ZAMA(8/02$5.9M)/BTW(8/02$8.2M)/Q(8/02$3.6M)/JTO(8/07$5.6M) | 已price-in/闸0(大盘·小额$3-8M被front-run) | 延续DEC-097日历型Δ<0判定;EIGEN大盘拒,其余小额电报式front-run(H先例),无一升级前向测试;JTO(8/07)留watchlist。
 2026-08-03 10:01 | 四源futures_delist全past(AERGO7/24/IP6/28/4月批)、removal为spot/margin非perp | 触发条件未到(无前向可捕获窗) | gap窗(38快照07-31 0207→08-03 0007,0断档/0 source_errors)无新前向futures_delist,§5退市行结算于mark结构性无窗;removal notice均现货/杠杆下架非合约强制平仓流。
 2026-08-03 10:01 | MIM脱锚-93.08%(price$0.0692/24h-6.0%)、新perp GRVTUSDT(7/31)/TradFi批(7/29) | 脱锚:死锚事后偏误;新perp:A-4错位需两闸且无错位签名 | MIM维持死票从严拒;新上市永续GRVT/TradFi批仅记watchlist,无OI/funding错位签名不登记。
+2026-08-04 10:01 | HYPERUSDT §5 Δ>0去杠杆死法·确证(承接08-03 watchlist) | DEC-097 squeeze登记已关闭(attribution采证,非thesis) | 签名峰08-02 0807-1607(f-1.0%/OIr2.9-3.0/chg+18~20%/OI4.7-4.9M)时价已在顶;其后OIr 2.98→1.02(去杠杆)/OI 4.89M→3.52M(洗出)/chg+20%→-8%(回吐)/funding-1.0%→-0.16%(常态化),08-03 0807后跌出复合门;实时mark0.0598/f-0.069%/chg-3.2%/qVol仅10M=签名完全褪去。**§5 squeeze行第3个预登记→确证give-back支持例(COTI/ZIL/HYPER同路径)**;诚实边界:仍走回吐路径,未把§5逼到边缘。已回填attribution §5.2。
+2026-08-04 10:01 | 实时+gap squeeze批(WAXP/DEXE/BNC/SYN/NIL/ERA/LA/MIRA/QNTX/EUL/BICO/UAI/SKYAI/BLESS/BTW/IDOL等) | DEC-097 squeeze族前向登记已关闭 | gap窗12快照churning名单,均负funding+价升+OI≥2x同型或已消退,无一构成§5反驳;LAUSDT=已结THESIS_007标的复现不重登;仅分母纪律,无§5新增采证。
+2026-08-04 10:01 | VICUSDT +88.5%/OIr5.97/f-0.042% | 无干净payer(funding非深负=动量拉盘非空头强制流) | 实时f-0.042%/8h未达≤-0.3%深负门,+88%抛物线拉盘=纯动量,不映射§5 squeeze行(需空头付费痕迹);同ON/KOMA边界样本,兼在Binance监控tag名单。记以界定§5边界,非反驳。
+2026-08-04 10:01 | 解锁cohort ENA(8/05 1.8%$15.8M大盘)/JTO(8/07 2.2%$5.7M大盘)/ADI(8/09 7.2%$48.2M)/RAIN(8/10 7.2%$637.8M)/VELVET(8/10 2.5%$4.5M) | 闸0(大盘/人人盯·<3%线)+日历型Δ<0被front-run+allocation空不可核 | ENA/JTO大盘全网追踪零容量edge拒;VELVET 2.5%<3%线不看;ADI/RAIN虽≥3%但allocation明细空(付钱路径不可核,同H 404)+日历型Δ<0电报式front-run(H先例-12%/BEAT blow-off),§6问2无具体摩擦理由=默认已被抢跑到零,拒。JTO(8/07)维持watchlist。
+2026-08-04 10:01 | 四源futures_delist全past+removal现货/杠杆非perp;MIM脱锚(死锚);新perp GRVT | 无前向可捕获窗+死锚事后偏误 | 静态74公告存量无新增前向futures_delist,§5退市行结算于mark无窗;MIM长期崩锚死票从严拒;新永续GRVT无OI/funding错位签名仅watchlist。
 ```
 
 ---
