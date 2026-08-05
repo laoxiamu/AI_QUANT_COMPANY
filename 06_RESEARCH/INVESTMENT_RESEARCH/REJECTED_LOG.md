@@ -134,6 +134,11 @@
 2026-08-04 10:01 | VICUSDT +88.5%/OIr5.97/f-0.042% | 无干净payer(funding非深负=动量拉盘非空头强制流) | 实时f-0.042%/8h未达≤-0.3%深负门,+88%抛物线拉盘=纯动量,不映射§5 squeeze行(需空头付费痕迹);同ON/KOMA边界样本,兼在Binance监控tag名单。记以界定§5边界,非反驳。
 2026-08-04 10:01 | 解锁cohort ENA(8/05 1.8%$15.8M大盘)/JTO(8/07 2.2%$5.7M大盘)/ADI(8/09 7.2%$48.2M)/RAIN(8/10 7.2%$637.8M)/VELVET(8/10 2.5%$4.5M) | 闸0(大盘/人人盯·<3%线)+日历型Δ<0被front-run+allocation空不可核 | ENA/JTO大盘全网追踪零容量edge拒;VELVET 2.5%<3%线不看;ADI/RAIN虽≥3%但allocation明细空(付钱路径不可核,同H 404)+日历型Δ<0电报式front-run(H先例-12%/BEAT blow-off),§6问2无具体摩擦理由=默认已被抢跑到零,拒。JTO(8/07)维持watchlist。
 2026-08-04 10:01 | 四源futures_delist全past+removal现货/杠杆非perp;MIM脱锚(死锚);新perp GRVT | 无前向可捕获窗+死锚事后偏误 | 静态74公告存量无新增前向futures_delist,§5退市行结算于mark无窗;MIM长期崩锚死票从严拒;新永续GRVT无OI/funding错位签名仅watchlist。
+2026-08-05 10:01 | HOMEUSDT 复合签名挤压(08-04 1207起首现三腿:f-1.708%/期 OIr2.18 chg+45.6% → 08-05 0207 f-1.031%/OIr2.10/chg+23.7%) | DEC-097 squeeze登记已关闭 + §5反例形态核验未通过 | 08-04实时后新出、本冲刺至今最深负funding(-1.7%/8h)样本。**按08-04班「转找反例形态」议程逐条核**:①守高不回吐?否——chg+45.6%→+23.7%给回;②signal后价续创新高?否——首现即近峰其后单调降(本体先于痕迹);③OI续增?否——OIr2.18→2.10持平略降。三条反例形态无一成立=签名点亮时价已在顶、其后回吐=§5 squeeze行Δ>0标准give-back(非反驳);深负funding仅顶部痕迹,做多入场=买耗竭。仅采证不登记。
+2026-08-05 10:01 | GIGADEVUSDT 新perp(2026-08-03上市)+复合签名挤压(08-04 0407-1007 f-0.6%→-0.4%/OIr2.83→2.08/chg+3.7→+6.1) | 闸0(A-4错位候选非当前议程)+DEC-097 squeeze关闭 | new_perp_listing=A-4错位候选(队列Candidate非焦点),上市首周即现负funding+OI建仓;A-4首周随机性高、无强制流机制,squeeze侧登记已关;仅watchlist,不评不立项。
+2026-08-05 10:01 | 解锁cohort US/talus-network(8/11新出)+延续ADI(8/09)/RAIN(8/10)/VELVET(8/10 2.5%<3%)/JTO(8/07)/ENA(8/05大盘) | 闸0(大盘/人人盯·<3%线)+日历型Δ<0被front-run+allocation不可核 | 承接08-04:ENA/JTO大盘拒;VELVET<3%线;ADI/RAIN allocation明细空+日历型电报式front-run(H先例);新出US(talus 8/11)小额同类默认已被抢跑拒;JTO(8/07)维持watchlist。
+2026-08-05 10:01 | 现货delist前向 ACX/HFT/PIVX/PYR/VANRY/VIC(2026-08-17)+removal notice(8/07 spot) | 触发条件未到(现货/杠杆下架非perp强制流) | 前向08-17批为现货delist(binance_removal_notice标签非futures_delist),现货下架不强制平perp、结算于mark无perp捕获窗(§5退市行结构性无窗);若后续任一标的现独立futures_delist(perp)公告再评。**列watchlist逐日核是否升级perp退市**(首个前向、可捕获的退市样本仍是P0-RES-010缺口)。
+2026-08-05 10:01 | MIM脱锚(维持)+四源futures_delist全past | 死锚事后偏误+无前向可捕获窗 | MIM长期崩锚死票维持从严拒;gap窗(26快照08-03 0207→08-05 0207,0断档/0 source_errors,哨兵健康)无新前向futures_delist,§5退市行结算于mark结构性无窗。
 ```
 
 ---
